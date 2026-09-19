@@ -1,94 +1,94 @@
 /**
  * Central identity / branding configuration.
  *
- * All personal data (name, alias, contact info, social profiles, resume files)
- * is read from environment variables so this project can be reused as a
- * template without editing component source. See `.env.example` for the full
- * list. Fallbacks are intentionally generic placeholders.
+ * ⚠️ This is STATIC, CODE-BASED configuration (NOT environment variables).
+ *    Personal data lives here so it is versioned and reusable without env
+ *    juggling. Edit the values below and rebuild.
+ *
+ * This module is intentionally PURE (no `import.meta.env`) so it can be
+ * imported from BOTH the browser app AND the Vite Node build config
+ * (vite.config.ts) that generates the <head>, sitemap.xml and robots.txt.
  */
 
-const env = import.meta.env;
-
 /** Brand name used across UI, metadata and structured data. */
-export const BRAND_NAME = (env.VITE_BRAND_NAME as string) || "FIQTOR";
+export const BRAND_NAME = "FIQTOR";
 
 /** Owner's full name. */
-export const OWNER_NAME = (env.VITE_OWNER_NAME as string) || "Your Name";
+export const OWNER_NAME = "Taufiiqul Hakim";
 
 /** Owner's online alias / handle (without the leading @). */
-export const OWNER_ALIAS = (env.VITE_OWNER_ALIAS as string) || BRAND_NAME;
+export const OWNER_ALIAS = "FIQTOR";
 
 /** Job title / role. */
-export const JOB_TITLE = (env.VITE_OWNER_JOB_TITLE as string) || "Software Engineer";
+export const JOB_TITLE = "AI & Software Engineer";
 
 /** Short headline / tagline used in metadata. */
 export const HEADLINE =
-  (env.VITE_OWNER_HEADLINE as string) ||
-  "An engineer building full stack web applications, AI automation, and business systems.";
+  "FIQTOR is an AI and software engineer from Indonesia building full stack web applications, AI automation, and business systems.";
 
 /** Years of professional experience (number). */
-export const YEARS_OF_EXPERIENCE = Number(env.VITE_OWNER_YEARS_EXPERIENCE) || 0;
+export const YEARS_OF_EXPERIENCE = 5;
 
 /** Country of origin / operation. */
-export const COUNTRY = (env.VITE_OWNER_COUNTRY as string) || "Indonesia";
+export const COUNTRY = "Indonesia";
 
 /** ISO country code (e.g. "ID"). */
-export const COUNTRY_CODE = (env.VITE_OWNER_COUNTRY_CODE as string) || "ID";
+export const COUNTRY_CODE = "ID";
 
-/** Spoken languages (comma separated in env, array here). */
-export const LANGUAGES = ((env.VITE_OWNER_LANGUAGES as string) || "English")
-  .split(",")
-  .map((lang) => lang.trim())
-  .filter(Boolean);
+/** Spoken languages. */
+export const LANGUAGES = ["English", "Bahasa Indonesia"];
 
 /** Public contact email address. */
-export const CONTACT_EMAIL = (env.VITE_CONTACT_EMAIL as string) || "contact@example.com";
+export const CONTACT_EMAIL = "contact@fiqtor.com";
 
 /** Secondary / business email address. */
-export const BUSINESS_EMAIL = (env.VITE_CONTACT_BUSINESS_EMAIL as string) || CONTACT_EMAIL;
+export const BUSINESS_EMAIL = "business@fiqtor.com";
 
 /** Public contact phone number (E.164 format recommended). */
-export const CONTACT_PHONE = (env.VITE_CONTACT_PHONE as string) || "";
+export const CONTACT_PHONE = "+6281617262908";
 
 /** WhatsApp number in international format without "+" (for wa.me links). */
-export const WHATSAPP_NUMBER = (env.VITE_CONTACT_WHATSAPP as string) || "";
+export const WHATSAPP_NUMBER = "6281617262908";
 
 /** X / Twitter handle (with leading @). */
-export const TWITTER_HANDLE = (env.VITE_TWITTER_HANDLE as string) || `@${OWNER_ALIAS}`;
+export const TWITTER_HANDLE = "@fiqtor";
 
-/** Optional Google Analytics measurement ID (e.g. "G-XXXXXXXXXX"). */
-export const GA_MEASUREMENT_ID = (env.VITE_GA_MEASUREMENT_ID as string) || "";
+/** Optional Google Analytics measurement ID (e.g. "G-XXXXXXXXXX"). Empty disables it. */
+export const GA_MEASUREMENT_ID = "G-FTJ2LRGE5P";
 
-/** Social profile URLs, overridable individually via env. */
+/** Canonical site origin (no trailing slash). Used for canonical/OG/JSON-LD URLs. */
+export const SITE_ORIGIN = "https://fiqtor.com";
+
+/** Social profile URLs. */
 export const SOCIAL_LINKS = {
-  instagram: (env.VITE_SOCIAL_INSTAGRAM as string) || "",
-  tiktok: (env.VITE_SOCIAL_TIKTOK as string) || "",
-  youtube: (env.VITE_SOCIAL_YOUTUBE as string) || "",
-  linkedin: (env.VITE_SOCIAL_LINKEDIN as string) || "",
-  github: (env.VITE_SOCIAL_GITHUB as string) || "",
-  threads: (env.VITE_SOCIAL_THREADS as string) || "",
+  instagram: "https://www.instagram.com/fiqtorr/",
+  tiktok: "https://www.tiktok.com/@fiqtor",
+  youtube: "https://www.youtube.com/@fiqtor",
+  linkedin: "https://www.linkedin.com/in/fiqtor",
+  github: "https://github.com/fiqtor",
+  threads: "https://www.threads.net/@fiqtorr",
 };
 
 /** Resume PDF paths (served from /public). */
 export const RESUME = {
-  creativeEn: (env.VITE_RESUME_CREATIVE_EN as string) || "/pdf/creative-resume-en.pdf",
-  creativeId: (env.VITE_RESUME_CREATIVE_ID as string) || "/pdf/creative-resume-id.pdf",
-  atsEn: (env.VITE_RESUME_ATS_EN as string) || "/pdf/resume-en.pdf",
-  atsId: (env.VITE_RESUME_ATS_ID as string) || "/pdf/resume-id.pdf",
+  creativeEn: "/pdf/Taufiiqul_Hakim-Creative_Resume-en.pdf",
+  creativeId: "/pdf/Taufiiqul_Hakim-Creative_Resume-id.pdf",
+  atsEn: "/pdf/Taufiiqul_Hakim-Resume-en.pdf",
+  atsId: "/pdf/Taufiiqul_Hakim-Resume-id.pdf",
 };
 
-/** Optional portrait image path (served from /public). */
-export const PORTRAIT_IMAGE = (env.VITE_PORTRAIT_IMAGE as string) || "/img/hero.png";
+/** Portrait image path (served from /public). */
+export const PORTRAIT_IMAGE = "/icon.webp";
 
-/** Optional company / business brand details (for services & linktree). */
+/** Company / business brand details (for services & linktree). */
 export const COMPANY = {
-  name: (env.VITE_COMPANY_NAME as string) || "IARTY",
-  url: (env.VITE_COMPANY_URL as string) || "",
-  aiUrl: (env.VITE_COMPANY_AI_URL as string) || "",
-  educationUrl: (env.VITE_COMPANY_EDUCATION_URL as string) || "",
-  marketplaceUrl: (env.VITE_COMPANY_MARKETPLACE_URL as string) || "",
-  templatesUrl: (env.VITE_COMPANY_TEMPLATES_URL as string) || "",
-  image: (env.VITE_COMPANY_IMAGE as string) || "/img/iarty.webp",
+  name: "IARTY",
+  url: "https://iarty.biz.id",
+  aiUrl: "https://ai.iarty.biz.id",
+  educationUrl: "https://education.iarty.biz.id",
+  marketplaceUrl: "https://marketplace.iarty.biz.id",
+  templatesUrl: "https://iarty.biz.id/templates",
+  image: "/img/iarty.webp",
 };
 
 /** Build a wa.me link from the configured WhatsApp number. */

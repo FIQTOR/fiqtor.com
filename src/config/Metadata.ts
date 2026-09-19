@@ -13,11 +13,13 @@ import {
   CONTACT_PHONE,
   TWITTER_HANDLE,
   PORTRAIT_IMAGE,
+  SITE_ORIGIN,
 } from "@/config/Identity";
 
 /**
- * Canonical origin of the site. `VITE_DOMAIN` may omit the protocol, so it is
- * normalised here to guarantee absolute canonical / OpenGraph / JSON-LD URLs.
+ * Canonical origin of the site. `VITE_DOMAIN` (if set) overrides the
+ * code-based `SITE_ORIGIN`; it may omit the protocol, so it is normalised here
+ * to guarantee absolute canonical / OpenGraph / JSON-LD URLs.
  */
 const normalizeOrigin = (raw?: string): string => {
   const value = (raw || "").trim().replace(/\/+$/, "");
@@ -26,7 +28,7 @@ const normalizeOrigin = (raw?: string): string => {
 };
 
 export const SITE_URL = normalizeOrigin(
-  import.meta.env.VITE_DOMAIN as string | undefined
+  (import.meta.env.VITE_DOMAIN as string | undefined) || SITE_ORIGIN
 );
 
 /** Last content revision, also used as `lastmod` reference for the sitemap. */

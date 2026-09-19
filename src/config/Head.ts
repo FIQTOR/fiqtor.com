@@ -7,11 +7,26 @@
  * crawlers which do NOT execute JavaScript still receive correct metadata.
  *
  * At runtime, react-helmet-async overrides these tags with the same values
- * (see src/config/Metadata.ts, which reads `import.meta.env`).
+ * (see src/config/Metadata.ts, which reads from src/config/Identity.ts).
  *
- * This module is intentionally PURE (no import.meta.env usage) so it can be
+ * Branding/identity comes from `src/config/Identity.ts` (static, code-based).
+ * The ONLY env var still honored is `VITE_DOMAIN` (optional site-origin
+ * override for local/staging deployments). This module stays PURE so it can be
  * imported from both the Vite Node config AND the browser app code.
  */
+
+import {
+  BRAND_NAME,
+  OWNER_NAME,
+  JOB_TITLE,
+  HEADLINE,
+  COUNTRY,
+  COUNTRY_CODE,
+  CONTACT_EMAIL,
+  TWITTER_HANDLE,
+  GA_MEASUREMENT_ID,
+  SITE_ORIGIN,
+} from "./Identity";
 
 /** Env record – either Vite's `import.meta.env` or the object from `loadEnv`. */
 export type EnvRecord = Record<string, string | boolean | undefined>;
@@ -70,18 +85,19 @@ export const normalizeOrigin = (raw?: string): string => {
   return /^https?:\/\//.test(value) ? value : `https://${value}`;
 };
 
-/** Derive the full head configuration from an env record. */
-export const buildHeadConfig = (env: EnvRecord): HeadConfig => {
+/** Derive the full head configuration from the static identity config. */
+export const buildHeadConfig = (env: EnvRecord = {}): HeadConfig => {
   const str = (k: string, fallback = ""): string => {
     const v = env[k];
     return v === undefined || v === null ? fallback : String(v);
   };
 
-  const brand = str("VITE_BRAND_NAME");
-  const jobTitle = str("VITE_OWNER_JOB_TITLE");
-  const ownerName = str("VITE_OWNER_NAME");
-  const headline = str("VITE_OWNER_HEADLINE");
-  const origin = normalizeOrigin(str("VITE_DOMAIN"));
+  // Identity is code-based; only the domain may be overridden via env.
+  const brand = BRAND_NAME;
+  const jobTitle = JOB_TITLE;
+  const ownerName = OWNER_NAME;
+  const headline = HEADLINE;
+  const origin = normalizeOrigin(str("VITE_DOMAIN") || SITE_ORIGIN);
   const title = `${brand} - ${jobTitle}`.trim();
 
   return {
@@ -92,11 +108,11 @@ export const buildHeadConfig = (env: EnvRecord): HeadConfig => {
     description: headline,
     keywords: [brand, ownerName].filter(Boolean).join(", "),
     author: brand,
-    contactEmail: str("VITE_CONTACT_EMAIL"),
+    contactEmail: CONTACT_EMAIL,
     themeColor: "#000000",
     applicationName: brand,
-    geoRegion: str("VITE_OWNER_COUNTRY_CODE"),
-    geoPlaceName: str("VITE_OWNER_COUNTRY"),
+    geoRegion: COUNTRY_CODE,
+    geoPlaceName: COUNTRY,
     canonical: `${origin}/`,
     og: {
       type: "profile",
@@ -113,8 +129,8 @@ export const buildHeadConfig = (env: EnvRecord): HeadConfig => {
     },
     twitter: {
       card: "summary_large_image",
-      site: str("VITE_TWITTER_HANDLE"),
-      creator: str("VITE_TWITTER_HANDLE"),
+      site: TWITTER_HANDLE,
+      creator: TWITTER_HANDLE,
       url: `${origin}/`,
       title,
       description: headline,
@@ -125,7 +141,7 @@ export const buildHeadConfig = (env: EnvRecord): HeadConfig => {
       favicon: "/favicon.ico",
       appleTouch: "/icon.webp",
     },
-    gaMeasurementId: str("VITE_GA_MEASUREMENT_ID"),
+    gaMeasurementId: GA_MEASUREMENT_ID,
   };
 };
 
