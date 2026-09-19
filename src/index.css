@@ -1,0 +1,428 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@source "../src/**/*.{ts,tsx,html}";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-primary: #3b82f6;
+  --color-primary-hover: #2563eb;
+  --color-secondary: #64748b;
+
+  --color-bg-base: var(--bg-base);
+  --color-bg-surface: var(--bg-surface);
+  --color-text-main: var(--text-main);
+  --color-text-muted: var(--text-muted);
+  --color-text-heading: var(--text-heading);
+  --color-border-main: var(--border-main);
+  --color-accent-blue: var(--accent-blue);
+
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-heading: 'Outfit', 'Inter', system-ui, sans-serif;
+
+  --animate-blob: blob 7s infinite;
+
+  @keyframes blob {
+    0% {
+      transform: translate(0px, 0px) scale(1);
+    }
+
+    33% {
+      transform: translate(30px, -50px) scale(1.1);
+    }
+
+    66% {
+      transform: translate(-20px, 20px) scale(0.9);
+    }
+
+    100% {
+      transform: translate(0px, 0px) scale(1);
+    }
+  }
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+
+:root {
+  --bg-base: #f1f5f9;
+  --bg-surface: #ffffff;
+  --text-main: #334155;
+  --text-muted: #64748b;
+  /* --text-heading: #0f172a; */
+  --border-main: #e2e8f0;
+  --accent-blue: #3b82f6;
+}
+
+.dark {
+  --bg-base: #020617;
+  --bg-surface: #0f172a;
+  --text-main: #cbd5e1;
+  --text-muted: #94a3b8;
+  --text-heading: #f8fafc;
+  --border-main: #1e293b;
+  --accent-blue: #60a5fa;
+}
+
+@layer base {
+  * {
+    @apply border-border-main;
+  }
+
+  body {
+    @apply bg-bg-base text-text-main font-sans selection:bg-primary/30;
+    /* Do not transition background-color here if using view transitions, let the API handle it smoothly */
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply text-text-heading font-heading font-bold tracking-tight;
+  }
+}
+
+/* View Transition API for Theme Toggle */
+/* Circle reveal is driven purely by CSS (custom props set on :root in Navbar), so it
+   works cross-browser including mobile Safari — no WAAPI pseudo-element animation. */
+:root {
+  --reveal-x: 50vw;
+  --reveal-y: 50vh;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 9999;
+  clip-path: circle(0px at var(--reveal-x) var(--reveal-y));
+  animation: circle-reveal 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes circle-reveal {
+  to {
+    clip-path: circle(150vmax at var(--reveal-x) var(--reveal-y));
+  }
+}
+
+::view-transition-image-pair(root) {
+  isolation: auto;
+}
+
+/* Let's Talk CTA shine sweep + icon wiggle */
+.cta {
+  isolation: isolate;
+}
+
+.cta-shine {
+  width: 45%;
+  transform: translateX(-160%) skewX(-20deg);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+  transition: transform 0.65s ease;
+}
+
+.cta:hover .cta-shine {
+  transform: translateX(280%) skewX(-20deg);
+}
+
+.dark .cta-shine {
+  background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.14), transparent);
+}
+
+.cta-icon {
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.cta:hover .cta-icon {
+  transform: translate(2px, -2px) rotate(-8deg);
+}
+
+
+@font-face {
+  font-family: "Ginto";
+  src: url("/font/Ginto.ttf") format("truetype");
+  font-style: normal;
+}
+
+html,
+body {
+  scroll-behavior: smooth;
+}
+
+.animate-flying {
+  transform: translateY(0);
+  animation: 3s flying infinite ease-in-out;
+}
+
+@keyframes flying {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-25px);
+  }
+}
+
+.top {
+  animation: rotate 15s infinite linear;
+}
+
+.middle {
+  animation: rotate 18s infinite reverse linear;
+}
+
+.bottom {
+  animation: rotate 20s infinite linear;
+}
+
+.blobs {
+  transition: transform 5s;
+}
+
+.blobs:hover {
+  transform: translate(100px, 100px) scale(0);
+}
+
+@keyframes rotate {
+  0% {
+    transform: translate(100px, 100px) rotate(0deg);
+  }
+
+  100% {
+    transform: translate(100px, 100px) rotate(359deg);
+  }
+}
+
+/* .clipgsap {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+}
+
+.transgsap {
+  transition: transform 0.5s;
+  -webkit-transition: transform 0.5s;
+  -moz-transition: transform 0.5s;
+  -ms-transition: transform 0.5s;
+  -o-transition: transform 0.5s;
+} */
+
+.goodbye-animate {
+  padding-bottom: 20px;
+  animation-name: goodbyeanimate;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes goodbyeanimate {
+
+  0%,
+  100% {
+    rotate: -30deg;
+  }
+
+  50% {
+    rotate: 30deg;
+  }
+}
+
+.rocket-animate {
+  animation-name: rocketanimation;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes rocketanimation {
+
+  0%,
+  100% {
+    transform: translateX(0) translateY(0);
+    -webkit-transform: translateX(0) translateY(0);
+    -moz-transform: translateX(0) translateY(0);
+    -ms-transform: translateX(0) translateY(0);
+    -o-transform: translateX(0) translateY(0);
+  }
+
+  50% {
+    transform: translateX(10px) translateY(-10px);
+    -webkit-transform: translateX(10px) translateY(-10px);
+    -moz-transform: translateX(10px) translateY(-10px);
+    -ms-transform: translateX(10px) translateY(-10px);
+    -o-transform: translateX(10px) translateY(-10px);
+  }
+}
+
+.loader {
+  transform: rotateZ(45deg);
+  perspective: 1000px;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  color: grey;
+}
+
+.loader:before,
+.loader:after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: inherit;
+  height: inherit;
+  border-radius: 50%;
+  transform: rotateX(70deg);
+  animation: 1s spin_ linear infinite;
+}
+
+.loader:after {
+  color: grey;
+  transform: rotateY(70deg);
+  animation-delay: .4s;
+}
+
+@keyframes rotate {
+  0% {
+    transform: translate(-50%, -50%) rotateZ(0deg);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) rotateZ(360deg);
+  }
+}
+
+@keyframes rotateccw {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) rotate(-360deg);
+  }
+}
+
+@keyframes spin_ {
+
+  0%,
+  100% {
+    box-shadow: .2em 0px 0 0px currentcolor;
+  }
+
+  12% {
+    box-shadow: .2em .2em 0 0 currentcolor;
+  }
+
+  25% {
+    box-shadow: 0 .2em 0 0px currentcolor;
+  }
+
+  37% {
+    box-shadow: -.2em .2em 0 0 currentcolor;
+  }
+
+  50% {
+    box-shadow: -.2em 0 0 0 currentcolor;
+  }
+
+  62% {
+    box-shadow: -.2em -.2em 0 0 currentcolor;
+  }
+
+  75% {
+    box-shadow: 0px -.2em 0 0 currentcolor;
+  }
+
+  87% {
+    box-shadow: .2em -.2em 0 0 currentcolor;
+  }
+}
+
+
+.animate-readmore {
+  animation: readmore-keyframe 4s infinite ease-in-out;
+  -webkit-animation: readmore-keyframe 4s infinite ease-in-out;
+}
+
+@keyframes readmore-keyframe {
+
+  0%,
+  100% {
+    transform: translateX(0);
+    -webkit-transform: translateX(0);
+    -moz-transform: translateX(0);
+    -ms-transform: translateX(0);
+    -o-transform: translateX(0);
+  }
+
+  50% {
+    transform: translateX(20px);
+    -webkit-transform: translateX(20px);
+    -moz-transform: translateX(20px);
+    -ms-transform: translateX(20px);
+    -o-transform: translateX(20px);
+  }
+}
+
+.animate-up-down {
+  animation: up-down 4s infinite ease-in-out;
+  -webkit-animation: up-down 4s infinite ease-in-out;
+}
+
+@keyframes up-down {
+
+  0%,
+  100% {
+    transform: translateY(-20px);
+    -webkit-transform: translateY(-20px);
+    -moz-transform: translateY(-20px);
+    -ms-transform: translateY(-20px);
+    -o-transform: translateY(-20px);
+  }
+
+  50% {
+    transform: translateY(0);
+    -webkit-transform: translateY(0);
+    -moz-transform: translateY(0);
+    -ms-transform: translateY(0);
+    -o-transform: translateY(0);
+  }
+}
+
+.nav-shadow {
+  height: 200vh;
+  box-shadow: 200px -50vh 150px #f5f5f4;
+}
+
+.blob-animate {
+  animation: blob-animation 50s infinite ease-in-out;
+}
+
+@keyframes blob-animation {
+
+  0%,
+  100% {
+    left: -200px;
+    top: -200px;
+  }
+
+  50% {
+    left: 200px;
+    top: 200px;
+  }
+}
