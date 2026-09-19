@@ -49,12 +49,7 @@ interface ImportMetaEnv {
   readonly VITE_COMPANY_IMAGE: string
 
   // Usernames / integrations
-  readonly VITE_GITHUB_USERNAME: string
-  readonly VITE_WAKATIME_USERNAME: string
-  readonly VITE_INSTAGRAM_USERNAME: string
-  readonly VITE_INSTAGRAM_USER_ID: string
-  readonly VITE_TIKTOK_USERNAME: string
-  readonly VITE_TIKTOK_API_KEY: string
+  // (Public usernames live in src/config/*.ts — secrets live on the backend.)
 
   // Resume files
   readonly VITE_RESUME_CREATIVE_EN: string
@@ -64,6 +59,9 @@ interface ImportMetaEnv {
 
   // Feature flags
   readonly VITE_ENABLE_AI: string
+
+  // reCAPTCHA (site key only — never the secret)
+  readonly VITE_RECAPTCHA_SITE_KEY: string
 
   // Analytics
   readonly VITE_GA_MEASUREMENT_ID: string

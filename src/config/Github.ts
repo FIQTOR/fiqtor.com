@@ -1,9 +1,13 @@
 /**
- * Configuration object for GitHub API integration
- * @property {string} username - GitHub username from environment variables
+ * Configuration for the GitHub integration.
+ *
+ * Only the PUBLIC username is needed on the client (used to build profile
+ * links). Access tokens are SECRETS and must live on the backend
+ * (`backend/.env` → `GITHUB_TOKEN`). The contribution graph is fetched from
+ * our own backend endpoint (`/api/v1/github/contributions`).
  */
 const GithubConfig = {
-  username: import.meta.env.VITE_GITHUB_USERNAME,
+  username: "FIQTOR",
 };
 
 export default GithubConfig;

@@ -1,11 +1,15 @@
 /**
- * Configuration object for TikTok API integration
- * @property {string} username - TikTok account username from environment variables
- * @property {string} apiKey - TikTok API key from environment variables
+ * Configuration for the TikTok integration.
+ *
+ * ⚠️ SECURITY: any TikTok/RapidAPI key is a SECRET and must NEVER be shipped
+ * in the frontend bundle. This project fetches follower stats from our own
+ * backend (`/api/v1/social/stats`) which serves hand-maintained static data —
+ * no third-party API key on the client.
+ *
+ * Only the PUBLIC username is kept here (for profile links).
  */
 const TiktokConfig = {
-  username: import.meta.env.VITE_TIKTOK_USERNAME,
-  apiKey: import.meta.env.VITE_TIKTOK_API_KEY,
+  username: "fiqtor",
 };
 
 export default TiktokConfig;

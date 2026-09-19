@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import axios from "axios";
-import { OWNER_ALIAS, SOCIAL_LINKS } from "@/config/Identity";
+import { SOCIAL_LINKS } from "@/config/Identity";
+import WakatimeConfig from "@/config/Wakatime";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -18,9 +19,12 @@ const SubHeader = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Panggil file JSON lokal yang diupdate otomatis oleh GitHub
-        const response = await axios.get('/social-stats.json');
-        const { tiktok, instagram } = response.data;
+        // Stats are served by OUR backend as static data — no third-party
+        // API keys or scraping, and nothing secret reaches the browser.
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_BASE_URL}/v1/social/stats`
+        );
+        const { tiktok, instagram } = response.data.data;
 
         setTiktok({
           followers: tiktok.followers,
@@ -33,7 +37,7 @@ const SubHeader = () => {
         });
       } catch (err) {
         console.log("Gagal mengambil stats, menggunakan data fallback.");
-        // Fallback data jika file belum ada
+        // Fallback data jika backend tidak tersedia
         setTiktok({ followers: 1977, following: 30 });
         setInstagram({ followers: 691, following: 577 });
       }
@@ -191,7 +195,7 @@ const SubHeader = () => {
               </>}
           </div>
           <a
-            href={`https://www.wakatime.com/${import.meta.env.VITE_WAKATIME_USERNAME || OWNER_ALIAS}`}
+            href={`https://www.wakatime.com/${WakatimeConfig.username}`}
             target="_blank"
             rel="noopener noreferrer"
             className="px-8 py-3 bg-white rounded-full text-xl hover:bg-white/90 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/50 text-black"

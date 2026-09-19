@@ -1,10 +1,13 @@
 /**
- * Configuration object for WakaTime API integration
- * @typedef {Object} WakatimeConfig
- * @property {string} username - The WakaTime username from environment variables
+ * Configuration for the WakaTime integration.
+ *
+ * Only PUBLIC, non-secret values live here (the username shown in links).
+ * The WakaTime API key is a SECRET and lives on the backend
+ * (`backend/.env` → `WAKATIME_APP_SECRET`). The frontend fetches stats from
+ * our own backend endpoint (`/api/v1/wakatime`) — never directly from WakaTime.
  */
 const WakatimeConfig = {
-  username: import.meta.env.VITE_WAKATIME_USERNAME,
+  username: "FIQTOR",
 };
 
 export default WakatimeConfig;

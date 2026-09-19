@@ -11,7 +11,8 @@ React 19 + TypeScript + Vite single-page app for the portfolio. All branding, id
 - 🧭 **File-based routing** via `vite-plugin-pages` (`src/pages/*.tsx`).
 - 🔍 **Config-driven SEO** — `<head>`, OpenGraph, Twitter, JSON-LD, `sitemap.xml`, and `robots.txt` are **generated at build time** from `src/config/Head.ts` + env vars.
 - 🤖 **Interactive widgets** — AI assistant, contact form (reCAPTCHA), live GitHub/WakaTime stats, crypto widget.
-- 🌐 **Fully configurable** — no personal data in component code; everything comes from `VITE_*` env vars.
+- 🌐 **Fully configurable** — no personal data in component code; everything comes from `VITE_*` env vars + `src/config/*.ts`.
+- 🔐 **No secrets in the bundle** — crypto prices and social stats are fetched from *our backend* (static data); integration usernames live in `src/config/*.ts`. No third-party API key ever reaches the browser.
 
 ## 🛠 Tech Stack
 
@@ -61,10 +62,18 @@ Key groups:
 | Contact | `VITE_CONTACT_EMAIL`, `VITE_CONTACT_BUSINESS_EMAIL`, `VITE_CONTACT_PHONE`, `VITE_CONTACT_WHATSAPP`, `VITE_TWITTER_HANDLE` |
 | Social | `VITE_SOCIAL_INSTAGRAM`, `VITE_SOCIAL_TIKTOK`, `VITE_SOCIAL_YOUTUBE`, `VITE_SOCIAL_LINKEDIN`, `VITE_SOCIAL_GITHUB`, `VITE_SOCIAL_THREADS` |
 | Resume | `VITE_RESUME_CREATIVE_EN`, `VITE_RESUME_CREATIVE_ID`, `VITE_RESUME_ATS_EN`, `VITE_RESUME_ATS_ID` |
-| Integrations | `VITE_GITHUB_USERNAME`, `VITE_WAKATIME_USERNAME`, `VITE_INSTAGRAM_USERNAME`, `VITE_INSTAGRAM_USER_ID`, `VITE_INSTAGRAM_ACCESS_TOKEN`, `VITE_TIKTOK_USERNAME`, `VITE_TIKTOK_API_KEY`, `VITE_LIVECOINWATCH_API_KEY` |
 | reCAPTCHA | `VITE_RECAPTCHA_SITE_KEY` (site key only) |
 | Company | `VITE_COMPANY_NAME`, `VITE_COMPANY_URL`, `VITE_COMPANY_AI_URL`, `VITE_COMPANY_EDUCATION_URL`, `VITE_COMPANY_MARKETPLACE_URL`, `VITE_COMPANY_TEMPLATES_URL`, `VITE_COMPANY_IMAGE` |
 | Flags | `VITE_ENABLE_AI`, `VITE_GA_MEASUREMENT_ID` |
+
+> 🔐 **No API keys here anymore.** Crypto prices (`/v1/crypto`) and social stats (`/v1/social/stats`) are fetched from the backend, which serves static data. Integration usernames live in source, not env:
+>
+> | File | Controls |
+> |------|----------|
+> | `src/config/Github.ts` | GitHub username (profile link) |
+> | `src/config/Wakatime.ts` | WakaTime username (profile link) |
+> | `src/config/Instagram.ts` | Instagram username (profile link) |
+> | `src/config/Tiktok.ts` | TikTok username (profile link) |
 
 ### Content (`src/data/`)
 
@@ -78,6 +87,10 @@ Replace the sample content with your own:
 | `skills.ts` / `services.ts` | Skills & services |
 | `menu.ts` | Navigation |
 | `social.ts` | Social links (wired to `Identity.ts`) |
+
+### Integration usernames (`src/config/`)
+
+Public usernames are kept out of env and live in source, since they're not secrets and are edited far less often than env vars: `Github.ts`, `Wakatime.ts`, `Instagram.ts`, `Tiktok.ts`. Secrets for those integrations stay on the **backend**.
 
 ### `<head>` / SEO generation
 
@@ -93,7 +106,7 @@ frontend/
 ├── public/            # static assets (img, pdf, favicon) — sitemap/robots are generated
 ├── src/
 │   ├── components/    # shared UI components
-│   ├── config/        # Identity, Metadata, Head, AppConfig, integrations
+│   ├── config/        # Identity, Metadata, Head, AppConfig + integration usernames (Github/Wakatime/Instagram/Tiktok)
 │   ├── context/       # React contexts (theme, container, welcome)
 │   ├── data/          # 📝 your content (projects, career, certificates…)
 │   ├── layouts/       # layout wrappers
@@ -115,7 +128,8 @@ Vercel-ready (`vercel.json`, SPA rewrite that preserves `sitemap.xml` / `robots.
 - Never commit `.env` (gitignored) — only `.env.example` is tracked.
 - `VITE_*` values are **public**; no secrets in the frontend.
 - reCAPTCHA **secret** key belongs on the backend, never here.
-- No hardcoded personal data or credentials in source — all via env vars.
+- **No third-party API keys on the client.** Crypto/social data comes from the backend (static), and integration usernames live in `src/config/*.ts`. If you add a live provider later, proxy it through the backend.
+- No hardcoded personal data or credentials in source — all via env vars + `src/config`.
 
 ## 📄 License
 
