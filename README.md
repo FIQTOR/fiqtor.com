@@ -10,7 +10,11 @@ React 19 + TypeScript + Vite single-page app for the portfolio. Branding, identi
 - 🎨 **Tailwind CSS v4** (`@tailwindcss/vite`) + Framer Motion animations, dark/light theme.
 - 🧭 **File-based routing** via `vite-plugin-pages` (`src/pages/*.tsx`).
 - 🔍 **Config-driven SEO** — `<head>`, OpenGraph, Twitter, JSON-LD, `sitemap.xml`, and `robots.txt` are **generated at build time** from `src/config/Head.ts` + `src/config/Identity.ts`.
-- 🤖 **Interactive widgets** — AI assistant, contact form (reCAPTCHA), live GitHub/WakaTime stats, crypto widget.
+- 🤖 **AI Assistant (`src/components/AIHelper.tsx`)** — streaming chat with:
+  - 🎙️ **Voice dictation** — Web Speech API transcribes speech straight into the composer textarea (append mode, auto-stops on close).
+  - 📎 **Attachment type picker** — a popup to choose **Image / Video / Document** before opening the file dialog (max 4.5MB; drag-and-drop also supported).
+  - A 4-bar equalizer animation while listening, copy & regenerate actions, and a dimmed + blurred backdrop (with a width-stable scroll lock) while the panel is open.
+- 🖼️ **Interactive widgets** — contact form (reCAPTCHA), live GitHub/WakaTime stats, crypto widget.
 - 🌐 **Fully configurable** — no personal data in component code; identity comes from `src/config/Identity.ts` and only a few `VITE_*` env vars.
 - 🔐 **No secrets in the bundle** — crypto prices and social stats are fetched from *our backend* (static data); integration usernames live in `src/config/*.ts`. No third-party API key ever reaches the browser.
 
@@ -106,14 +110,20 @@ Public usernames are kept out of env and live in source, since they're not secre
 - `index.html` is a minimal shell with a `<!--vite-html-head-->` marker — **don't edit it directly**; change `src/config/Identity.ts` (or the optional `VITE_DOMAIN`) instead.
 - Origin defaults to `SITE_ORIGIN` in `src/config/Identity.ts`, optionally overridden via `VITE_DOMAIN`.
 
+### Styling & layout notes
+
+- **No horizontal scroll:** `html, body { overflow-x: clip }` in `src/index.css` guards against page-wide horizontal scroll from full-bleed / off-screen decorative elements. Use `w-full` (not `w-screen` / `100vw`, which includes the scrollbar width).
+- **Stable layout width:** `html { scrollbar-gutter: stable }` permanently reserves the scrollbar space, so opening overlays that lock scrolling (e.g. the AI panel) never causes a layout shift.
+- **Voice-input types:** the Web Speech API typings live in `src/vite-env.d.ts` (not in the default TS DOM lib).
+
 ## 📂 Project Structure
 
 ```
 frontend/
 ├── public/            # static assets (img, pdf, favicon) — sitemap/robots are generated
 ├── src/
-│   ├── components/    # shared UI components
-│   ├── config/        # Identity, Metadata, Head, Github/Wakatime (kebab-case files soon)
+│   ├── components/    # shared UI components (incl. AIHelper.tsx, Footer.tsx)
+│   ├── config/        # Identity, Metadata, Head, Github/Wakatime
 │   ├── context/       # React contexts (theme, container, welcome)
 │   ├── data/          # 📝 your content (projects, career, certificates…)
 │   ├── layouts/       # layout wrappers
