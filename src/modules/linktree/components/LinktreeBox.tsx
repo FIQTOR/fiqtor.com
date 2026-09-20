@@ -49,7 +49,7 @@ const socialLinks: SocialLinkType[] = [
     image: COMPANY.image,
   },
   {
-    name: `TikTok • @${OWNER_ALIAS}`,
+    name: `TikTok (1900+ Followers) • @${OWNER_ALIAS}`,
     href: SocialLink.tiktok,
     icon: (
       <SiTiktok className="h-6 w-6 transform transition-transform group-hover:scale-125" />

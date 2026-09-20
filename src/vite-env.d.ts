@@ -21,10 +21,62 @@ interface ImportMetaEnv {
   // NOTE: Branding/identity, contact info, social URLs, resume paths, the
   // company brand and integration usernames are ALL code-based now:
   //   - src/config/Identity.ts
-  //   - src/config/{Github,Wakatime,Instagram,Tiktok}.ts
+  //   - src/config/{Github,Wakatime}.ts
   // Crypto & social stats are served by the backend (static data).
 }
 
 interface ImportMeta {
   readonly env: ImportMetaEnv
+}
+
+// --- Web Speech API (SpeechRecognition) — not in the default TS DOM lib ---
+interface SpeechRecognitionAlternative {
+  readonly transcript: string
+  readonly confidence: number
+}
+
+interface SpeechRecognitionResult {
+  readonly isFinal: boolean
+  readonly length: number
+  item(index: number): SpeechRecognitionAlternative
+  [index: number]: SpeechRecognitionAlternative
+}
+
+interface SpeechRecognitionResultList {
+  readonly length: number
+  item(index: number): SpeechRecognitionResult
+  [index: number]: SpeechRecognitionResult
+}
+
+interface SpeechRecognitionEvent extends Event {
+  readonly resultIndex: number
+  readonly results: SpeechRecognitionResultList
+}
+
+interface SpeechRecognitionErrorEvent extends Event {
+  readonly error: string
+  readonly message: string
+}
+
+interface SpeechRecognition extends EventTarget {
+  lang: string
+  continuous: boolean
+  interimResults: boolean
+  maxAlternatives: number
+  start(): void
+  stop(): void
+  abort(): void
+  onresult: ((event: SpeechRecognitionEvent) => void) | null
+  onerror: ((event: SpeechRecognitionErrorEvent) => void) | null
+  onend: (() => void) | null
+  onstart: (() => void) | null
+}
+
+interface SpeechRecognitionConstructor {
+  new (): SpeechRecognition
+}
+
+interface Window {
+  SpeechRecognition?: SpeechRecognitionConstructor
+  webkitSpeechRecognition?: SpeechRecognitionConstructor
 }

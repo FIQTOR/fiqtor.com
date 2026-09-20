@@ -1,4 +1,4 @@
-import CareerView from "@/modules/career/elements/career-view";
+import CareerView from "@/modules/career/components/CareerView";
 import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import { BackgroundBlobs } from "@/components/BackgroundBlobs";
 import HelmetContainer from "@/components/HelmetContainer";

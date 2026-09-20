@@ -1,6 +1,6 @@
 import LineWaves from "@/components/LineWaves";
 import HelmetContainer from "@/components/HelmetContainer";
-import LinktreeBox from "@/modules/linktree/elements/linktree-box";
+import LinktreeBox from "@/modules/linktree/components/LinktreeBox";
 import { AnimatePresence, motion } from "framer-motion";
 import { BRAND_NAME, COMPANY } from "@/config/Identity";
 
@@ -11,7 +11,7 @@ const LinktreePage = () => {
       <AnimatePresence mode="wait">
         <div
           key="line-waves"
-          className="fixed top-0 left-0 w-screen h-screen z-0 inset-0"
+          className="fixed top-0 left-0 w-full h-screen z-0 inset-0 overflow-hidden"
         >
           <LineWaves
             speed={0.3}
@@ -50,7 +50,7 @@ const LinktreePage = () => {
             animate={{ opacity: 1, x: 0 }}
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.98 }}
-            className="fixed left-4 md:bottom-4 top-4 md:top-auto z-30 group"
+            className="fixed left-7 md:bottom-7 top-4 md:top-auto z-30 group"
           >
             <div className="relative backdrop-blur-xl bg-white/10 dark:bg-black/20 border border-white/20 dark:border-white/10 rounded-2xl shadow-2xl p-4 max-w-xs">
               {/* Glassmorphism gradient overlay */}

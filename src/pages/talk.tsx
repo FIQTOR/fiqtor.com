@@ -2,8 +2,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import HelmetContainer from "@/components/HelmetContainer";
 import { BackgroundBlobs } from "@/components/BackgroundBlobs";
-import ResponseMessage from "@/modules/contact/elements/response-message";
-import ContactForm from "@/modules/contact/elements/contact-form";
+import ResponseMessage from "@/modules/contact/components/ResponseMessage";
+import ContactForm from "@/modules/contact/components/ContactForm";
 import Loading from "@/components/Loading";
 import {
   BRAND_NAME,

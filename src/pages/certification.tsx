@@ -3,7 +3,7 @@ import { useState, useMemo } from "react";
 import HelmetContainer from "@/components/HelmetContainer";
 import { BackgroundBlobs } from "@/components/BackgroundBlobs";
 import { Certificates } from "@/data/certificate";
-import CertificatesGrid from "@/modules/certificate/components/certificates-grid";
+import CertificatesGrid from "@/modules/certification/components/CertificatesGrid";
 import { TbAward, TbSearch, TbFilter, TbSchool, TbBriefcase } from "react-icons/tb";
 import { motion } from "framer-motion";
 

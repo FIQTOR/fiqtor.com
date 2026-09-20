@@ -8,7 +8,7 @@ import {
   TbShoppingCart,
   TbExternalLink,
 } from "react-icons/tb";
-import Service from "../components/service";
+import Service from "../components/Service";
 import { ContainerContext } from "@/context/ContainerProvider";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { TbSend, TbChevronDown, TbCheck } from "react-icons/tb";
-import Recaptcha from "./recapthcha";
+import Recaptcha from "./Recaptcha";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface formProps {

@@ -162,6 +162,21 @@ body {
   scroll-behavior: smooth;
 }
 
+/* Guard against accidental horizontal scroll from full-bleed / off-screen
+   decorative elements. `clip` (not `hidden`) avoids creating a scroll
+   container, so `position: sticky/fixed` keeps working. */
+html,
+body {
+  overflow-x: clip;
+}
+
+/* Reserve the scrollbar gutter permanently so the page width stays constant
+   (no layout shift) even when scrolling is temporarily blocked — e.g. while
+   the AI panel is open. The scrollbar remains visible. */
+html {
+  scrollbar-gutter: stable;
+}
+
 .animate-flying {
   transform: translateY(0);
   animation: 3s flying infinite ease-in-out;
@@ -424,5 +439,53 @@ body {
   50% {
     left: 200px;
     top: 200px;
+  }
+}
+/* --- AI composer: voice-recording equalizer bars --- */
+.recording-bars {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  height: 20px;
+}
+
+.recording-bars span {
+  display: block;
+  width: 3px;
+  height: 100%;
+  border-radius: 9999px;
+  background-color: #ef4444;
+  animation: recording-bar 1s ease-in-out infinite;
+  transform-origin: center;
+}
+
+.recording-bars span:nth-child(1) {
+  animation-delay: -0.4s;
+}
+
+.recording-bars span:nth-child(2) {
+  animation-delay: -0.2s;
+}
+
+.recording-bars span:nth-child(3) {
+  animation-delay: -0.6s;
+}
+
+.recording-bars span:nth-child(4) {
+  animation-delay: -0.1s;
+}
+
+@keyframes recording-bar {
+
+  0%,
+  100% {
+    transform: scaleY(0.3);
+    opacity: 0.6;
+  }
+
+  50% {
+    transform: scaleY(1);
+    opacity: 1;
   }
 }

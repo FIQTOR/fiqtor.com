@@ -73,14 +73,14 @@ Only a handful of values remain in env — everything else is code-based. See [`
 | `COMPANY` | Company/business brand (services & linktree) |
 | `SITE_ORIGIN`, `GA_MEASUREMENT_ID` | Canonical origin & analytics |
 
-> 🔐 **No API keys here.** Crypto prices (`/v1/crypto`) and social stats (`/v1/social/stats`) are fetched from the backend, which serves static data. Integration usernames also live in source, not env:
+> 🔐 **No API keys here.** Crypto prices (`/api/v1/crypto`) and social stats (`/api/v1/social/stats`) are fetched from the backend, which serves static data. Integration usernames also live in source, not env:
 >
 > | File | Controls |
 > |------|----------|
 > | `src/config/Github.ts` | GitHub username (profile link) |
 > | `src/config/Wakatime.ts` | WakaTime username (profile link) |
-> | `src/config/Instagram.ts` | Instagram username (profile link) |
-> | `src/config/Tiktok.ts` | TikTok username (profile link) |
+>
+> Social handles (Instagram, TikTok, YouTube, LinkedIn, GitHub) come from `SOCIAL_LINKS` in `src/config/Identity.ts`.
 
 ### Content (`src/data/`)
 
@@ -97,7 +97,7 @@ Replace the sample content with your own:
 
 ### Integration usernames (`src/config/`)
 
-Public usernames are kept out of env and live in source, since they're not secrets and are edited far less often than env vars: `Github.ts`, `Wakatime.ts`, `Instagram.ts`, `Tiktok.ts`. Secrets for those integrations stay on the **backend**.
+Public usernames are kept out of env and live in source, since they're not secrets and are edited far less often than env vars: `Github.ts`, `Wakatime.ts`. Social handles live in `SOCIAL_LINKS` inside `src/config/Identity.ts`. Secrets for those integrations stay on the **backend**.
 
 ### `<head>` / SEO generation
 
@@ -113,18 +113,26 @@ frontend/
 ├── public/            # static assets (img, pdf, favicon) — sitemap/robots are generated
 ├── src/
 │   ├── components/    # shared UI components
-│   ├── config/        # Identity, Metadata, Head, AppConfig + integration usernames (Github/Wakatime/Instagram/Tiktok)
+│   ├── config/        # Identity, Metadata, Head, Github/Wakatime (kebab-case files soon)
 │   ├── context/       # React contexts (theme, container, welcome)
 │   ├── data/          # 📝 your content (projects, career, certificates…)
 │   ├── layouts/       # layout wrappers
-│   ├── modules/       # feature modules (home, contact, linktree…)
-│   ├── pages/         # file-based routes
+│   ├── modules/       # feature modules — page = folder
+│   │   ├── home/      #   ├── sections/  (header, about, skills…) + components/ + index.tsx
+│   │   ├── career/    #   └── components/ (CareerView.tsx)
+│   │   ├── certification/  # certificates grid
+│   │   ├── contact/   # contact form, recaptcha, response message
+│   │   ├── linktree/  # linktree box
+│   │   └── projects/  # projects grid
+│   ├── pages/         # file-based routes (thin wrappers around modules)
 │   ├── App.tsx
 │   └── main.tsx
 ├── index.html         # minimal shell (head injected at build)
 ├── vite.config.ts     # htmlHeadPlugin (head + sitemap + robots)
 └── .env.example
 ```
+
+> 🧹 **Naming conventions:** shared `components/` and module files use **PascalCase** (`CareerView.tsx`); module sub-folders are `sections/` (page blocks) and `components/` (domain pieces); each page-module has an `index.tsx` entry.
 
 ## 🚢 Deployment
 

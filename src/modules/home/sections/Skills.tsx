@@ -11,7 +11,7 @@ import {
   OtherSkills,
   FrontendSkills,
   LanguageSkills,
-} from "../components/skill-icon";
+} from "../components/SkillIcon";
 import * as motion from "framer-motion/client";
 
 interface SkillSectionItemProps {

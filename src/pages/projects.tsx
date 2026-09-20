@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import HelmetContainer from "@/components/HelmetContainer";
 import { BackgroundBlobs } from "@/components/BackgroundBlobs";
 import InitialMotion from "@/components/InitialMotion";
-import ProjectsGrid from "@/modules/project/elements/projects-grid";
+import ProjectsGrid from "@/modules/projects/components/ProjectsGrid";
 import { TbStack2, TbTerminal, TbSearch, TbFilter } from "react-icons/tb";
 import { motion } from "framer-motion";
 import { Projects, ProjectCategories } from "@/data/projects";

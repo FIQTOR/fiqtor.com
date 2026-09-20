@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect, useCallback, useContext } from "react";
 import { TbCode, TbRocket, TbBulb, TbSchool, TbBriefcase } from "react-icons/tb";
-import CryptocurrencyPrice from "../components/cryptocurrency-price";
+import CryptocurrencyPrice from "../components/CryptoPrice";
 import { motion } from "framer-motion";
 import { ContainerContext } from "@/context/ContainerProvider";
 import { BRAND_NAME, OWNER_NAME, PORTRAIT_IMAGE } from "@/config/Identity";

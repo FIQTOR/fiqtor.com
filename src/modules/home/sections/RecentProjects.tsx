@@ -4,7 +4,7 @@ import { TbStack2, TbCornerDownRight, TbTerminal, TbRocket, TbTarget } from "rea
 import { ContainerContext } from "@/context/ContainerProvider";
 import { motion } from "framer-motion";
 import { Projects } from "@/data/projects";
-import ProjectsComponents from "../components/project-component";
+import ProjectsComponents from "../components/ProjectItem";
 
 export default function RecentProjects() {
   const { setFullPathName, isTiny } = useContext(ContainerContext);

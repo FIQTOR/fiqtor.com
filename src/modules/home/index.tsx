@@ -1,12 +1,12 @@
 import { Suspense } from "react";
-import Skills from "./section/skills";
-import About from "./section/about";
-import Header from "./section/header";
-import SubHeader from "./section/subheader";
+import Skills from "./sections/Skills";
+import About from "./sections/About";
+import Header from "./sections/Header";
+import SubHeader from "./sections/SubHeader";
 import Loading from "@/components/Loading";
-import ServicesSection from "./section/services";
-import RecentProjects from "./section/recent-projects";
-import Certification from "./section/certification";
+import ServicesSection from "./sections/Services";
+import RecentProjects from "./sections/RecentProjects";
+import Certification from "./sections/Certification";
 import ContributionsGithub from "@/components/github/ContributionsGithub";
 import LineWaves from "@/components/LineWaves";
 
