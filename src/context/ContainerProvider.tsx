@@ -21,8 +21,15 @@ interface ContainerContextProps {
 
 export default function ContainerProvider({ children }: ContainerContextProps) {
   const [fullPathName, setFullPathName] = useState("/");
-  const [isTiny, setIsTiny] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  // Initialise from the viewport synchronously so the first render already has
+  // the correct flags. Otherwise `isMobile` starts as false and LineWaves mounts
+  // (creating a WebGL context) for one frame on phones before unmounting.
+  const [isTiny, setIsTiny] = useState(
+    () => typeof window !== "undefined" && window.innerWidth < 350
+  );
+  const [isMobile, setIsMobile] = useState(
+    () => typeof window !== "undefined" && window.innerWidth < 768
+  );
   const [fadeOut, setFadeOut] = useState(false);
 
   useEffect(() => {

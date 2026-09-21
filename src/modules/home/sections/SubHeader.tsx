@@ -7,6 +7,12 @@ import WakatimeConfig from "@/config/Wakatime";
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Mobile browsers fire resize constantly as the address bar shows/hides during
+// scroll. Without this, ScrollTrigger recomputes pin positions on every tick
+// and the 300vh pinned section janks hard. Ignoring those resizes keeps the
+// same visual effect while eliminating the thrash.
+ScrollTrigger.config({ ignoreMobileResize: true });
+
 const SubHeader = () => {
   const containerRef = useRef<any>(null);
   const wakatimeRef = useRef<any>(null);
@@ -79,6 +85,8 @@ const SubHeader = () => {
           end: "bottom center",
           pin: true,
           scrub: 1,
+          anticipatePin: 1,
+          fastScrollEnd: true,
           // markers: true
         }
       })
@@ -161,7 +169,7 @@ const SubHeader = () => {
     <>
       <div
         ref={containerRef}
-        className="relative w-full min-h-[300vh] flex flex-col items-center"
+        className="relative w-full min-h-[200vh] flex flex-col items-center"
       >
         <div
           ref={wakatimeRef}

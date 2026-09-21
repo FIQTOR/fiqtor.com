@@ -85,7 +85,7 @@ const TimelineItem = ({
             >
               {/* Ambient logo glow: blurred, blends into glass */}
               <div className="pointer-events-none absolute -left-10 -top-10 h-48 w-48 opacity-40 blur-3xl saturate-150 dark:opacity-30">
-                <img src={career.companyImage} alt="" aria-hidden className="h-full w-full object-contain" />
+                <img src={career.companyImage} alt="" aria-hidden loading="lazy" decoding="async" className="h-full w-full object-contain" />
               </div>
 
               <div className="relative z-10 flex flex-col gap-4">
@@ -95,6 +95,8 @@ const TimelineItem = ({
                     <img
                       src={career.companyImage}
                       alt={career.companyName}
+                      loading="lazy"
+                      decoding="async"
                       className="h-full w-full object-contain"
                     />
                   </div>

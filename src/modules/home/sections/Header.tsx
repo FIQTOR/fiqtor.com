@@ -1,5 +1,5 @@
-import { AnimatePresence, motion } from "framer-motion";
-import { useContext, useEffect, useState } from "react";
+import { AnimatePresence, motion, useInView } from "framer-motion";
+import { useContext, useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { TbArrowDown, TbBrandGithub, TbBrandLinkedin, TbBrandWhatsapp, TbDownload, TbMail, TbX } from "react-icons/tb";
 import { ContainerContext } from "@/context/ContainerProvider";
@@ -13,10 +13,11 @@ import {
 } from "@/config/Identity";
 import { Link as Link } from "react-router-dom";
 
-const StatCounter = ({ target, suffix }: { target: number; suffix: string }) => {
+const StatCounter = ({ target, suffix, start }: { target: number; suffix: string; start: boolean }) => {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
+    if (!start) return;
     const duration = 5000;
     const startTime = performance.now();
 
@@ -37,7 +38,7 @@ const StatCounter = ({ target, suffix }: { target: number; suffix: string }) => 
     }, 1000);
 
     return () => clearTimeout(timer);
-  }, [target]);
+  }, [target, start]);
 
   return (
     <div className="flex flex-col items-center px-4 py-2 ">
@@ -59,6 +60,19 @@ export default function Header() {
   const [badgePositions, setBadgePositions] = useState<
     { top: string; left: string; rotate: number; isReverse: boolean }[]
   >([]);
+
+  // Gate the looping float animations: they only run while the hero is on
+  // screen AND the tab is visible. Off-screen they'd keep the compositor busy
+  // for nothing. The visual is unchanged when the user is actually looking.
+  const headerRef = useRef<HTMLElement | null>(null);
+  const inView = useInView(headerRef, { amount: 0.05 });
+  const [tabVisible, setTabVisible] = useState(true);
+  useEffect(() => {
+    const onVis = () => setTabVisible(!document.hidden);
+    document.addEventListener("visibilitychange", onVis);
+    return () => document.removeEventListener("visibilitychange", onVis);
+  }, []);
+  const animateBadges = inView && tabVisible;
 
   useEffect(() => {
     // Generate abstract non-2:2 randomized coordinates on mount (every refresh)
@@ -141,7 +155,7 @@ export default function Header() {
 
   return (
     <AnimatePresence>
-      <header className="relative h-full min-h-screen w-full">
+      <header ref={headerRef} className="relative h-full min-h-screen w-full">
 
         <div
           id="textContent"
@@ -201,9 +215,9 @@ export default function Header() {
             className="flex w-fit gap-1 lg:gap-4 z-10 text-base font-light"
           >
             <div className="flex gap-3 sm:gap-5 flex-wrap justify-center items-center mt-1">
-              <StatCounter target={100} suffix="Projects Completed" />
-              <StatCounter target={100} suffix="Satisfied Clients" />
-              <StatCounter target={10000} suffix="Pages Designed" />
+              <StatCounter target={100} suffix="Projects Completed" start={animateBadges} />
+              <StatCounter target={100} suffix="Satisfied Clients" start={animateBadges} />
+              <StatCounter target={10000} suffix="Pages Designed" start={animateBadges} />
             </div>
           </motion.div>
           <motion.div
@@ -271,8 +285,8 @@ export default function Header() {
                   {/* Click Indicator Badge */}
                   <motion.div
                     initial={{ scale: 0 }}
-                    animate={{ scale: [1, 1.1, 1] }}
-                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                    animate={animateBadges ? { scale: [1, 1.1, 1] } : { scale: 1 }}
+                    transition={animateBadges ? { duration: 2, repeat: Infinity, ease: "easeInOut" } : { duration: 0.3 }}
                     className="absolute -top-3 -right-2 z-50 flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-600 text-[9px] font-black tracking-wider text-white shadow-[0_0_12px_rgba(37,99,235,0.8)] border border-white/40 pointer-events-none"
                   >
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
@@ -280,23 +294,23 @@ export default function Header() {
                   </motion.div>
 
                   <motion.div
-                    animate={{
+                    animate={animateBadges ? {
                       y: [0, -20, 0, 20, 0],
                       x: [0, 14, 0, -14, 0],
                       rotate: [badgePositions[0].rotate, badgePositions[0].rotate + 14, badgePositions[0].rotate, badgePositions[0].rotate - 14, badgePositions[0].rotate]
-                    }}
-                    transition={{ duration: 5.7, repeat: Infinity, ease: "easeInOut" }}
+                    } : { y: 0, x: 0, rotate: badgePositions[0].rotate }}
+                    transition={animateBadges ? { duration: 5.7, repeat: Infinity, ease: "easeInOut" } : { duration: 0.3 }}
                     className="flex items-center justify-center w-20 h-20 rounded-full bg-white/80 dark:bg-neutral-800/90 backdrop-blur-md border-2 border-blue-500/50 text-blue-600 dark:text-blue-400 group-hover:scale-125 group-hover:rotate-12 group-hover:bg-blue-600 group-hover:text-white group-hover:shadow-[0_0_35px_rgba(59,130,246,0.8)] transition-all duration-300 relative"
                   >
                     <TbBrandLinkedin className="w-10 h-10" />
                   </motion.div>
                   <motion.span
-                    animate={{
+                    animate={animateBadges ? {
                       y: [0, 14, 0, -14, 0],
                       x: [0, -10, 0, 10, 0],
                       rotate: [4, -8, 4, 6, 4]
-                    }}
-                    transition={{ duration: 7.2, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
+                    } : { y: 0, x: 0, rotate: 4 }}
+                    transition={animateBadges ? { duration: 7.2, repeat: Infinity, ease: "easeInOut", delay: 0.3 } : { duration: 0.3 }}
                     className="text-base font-black tracking-widest uppercase text-blue-500 group-hover:text-blue-400 transition-colors drop-shadow-md"
                   >
                     Let's Connect
@@ -318,23 +332,23 @@ export default function Header() {
                   className={`flex items-center gap-2 group cursor-pointer ${badgePositions[1].isReverse ? "flex-row-reverse" : ""}`}
                 >
                   <motion.div
-                    animate={{
+                    animate={animateBadges ? {
                       y: [0, 22, 0, -22, 0],
                       x: [0, -16, 0, 16, 0],
                       rotate: [badgePositions[1].rotate, badgePositions[1].rotate - 12, badgePositions[1].rotate, badgePositions[1].rotate + 16, badgePositions[1].rotate]
-                    }}
-                    transition={{ duration: 6.8, repeat: Infinity, ease: "easeInOut" }}
+                    } : { y: 0, x: 0, rotate: badgePositions[1].rotate }}
+                    transition={animateBadges ? { duration: 6.8, repeat: Infinity, ease: "easeInOut" } : { duration: 0.3 }}
                     className="flex items-center justify-center w-9 h-9 rounded-full bg-white/80 dark:bg-neutral-800/90 backdrop-blur-md border border-neutral-400/60 dark:border-neutral-600/60 text-neutral-800 dark:text-neutral-200 group-hover:scale-125 group-hover:-rotate-12 group-hover:bg-black group-hover:text-white dark:group-hover:bg-white dark:group-hover:text-black group-hover:shadow-[0_0_20px_rgba(255,255,255,0.6)] transition-all duration-300"
                   >
                     <TbBrandGithub className="w-4 h-4" />
                   </motion.div>
                   <motion.span
-                    animate={{
+                    animate={animateBadges ? {
                       y: [0, -16, 0, 16, 0],
                       x: [0, 12, 0, -12, 0],
                       rotate: [-5, 9, -5, -9, -5]
-                    }}
-                    transition={{ duration: 8.8, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+                    } : { y: 0, x: 0, rotate: -5 }}
+                    transition={animateBadges ? { duration: 8.8, repeat: Infinity, ease: "easeInOut", delay: 0.5 } : { duration: 0.3 }}
                     className="text-[10px] font-medium tracking-normal text-neutral-500 dark:text-neutral-400 group-hover:text-white transition-colors"
                   >
                     Explore Code
@@ -355,23 +369,23 @@ export default function Header() {
                   className={`flex items-center gap-3 group cursor-pointer ${badgePositions[2].isReverse ? "flex-row-reverse" : ""}`}
                 >
                   <motion.div
-                    animate={{
+                    animate={animateBadges ? {
                       y: [0, -24, 0, 24, 0],
                       x: [0, -14, 0, 14, 0],
                       rotate: [badgePositions[2].rotate, badgePositions[2].rotate + 18, badgePositions[2].rotate, badgePositions[2].rotate - 14, badgePositions[2].rotate]
-                    }}
-                    transition={{ duration: 8.2, repeat: Infinity, ease: "easeInOut" }}
+                    } : { y: 0, x: 0, rotate: badgePositions[2].rotate }}
+                    transition={animateBadges ? { duration: 8.2, repeat: Infinity, ease: "easeInOut" } : { duration: 0.3 }}
                     className="flex items-center justify-center w-11 h-11 rounded-full bg-white/80 dark:bg-neutral-800/90 backdrop-blur-md border border-red-500/40 text-red-500 group-hover:scale-125 group-hover:rotate-12 group-hover:bg-red-500 group-hover:text-white group-hover:shadow-[0_0_25px_rgba(239,68,68,0.7)] transition-all duration-300"
                   >
                     <TbMail className="w-5 h-5" />
                   </motion.div>
                   <motion.span
-                    animate={{
+                    animate={animateBadges ? {
                       y: [0, 18, 0, -18, 0],
                       x: [0, 14, 0, -14, 0],
                       rotate: [-2, 10, -2, -14, -2]
-                    }}
-                    transition={{ duration: 6.4, repeat: Infinity, ease: "easeInOut", delay: 0.7 }}
+                    } : { y: 0, x: 0, rotate: -2 }}
+                    transition={animateBadges ? { duration: 6.4, repeat: Infinity, ease: "easeInOut", delay: 0.7 } : { duration: 0.3 }}
                     className="text-xs font-semibold tracking-wider uppercase text-red-500/90 group-hover:text-red-500 transition-colors drop-shadow-xs"
                   >
                     Send Inquiry
@@ -393,23 +407,23 @@ export default function Header() {
                   className={`flex items-center gap-3 group cursor-pointer ${badgePositions[3].isReverse ? "flex-row-reverse" : ""}`}
                 >
                   <motion.div
-                    animate={{
+                    animate={animateBadges ? {
                       y: [0, 20, 0, -20, 0],
                       x: [0, 16, 0, -16, 0],
                       rotate: [badgePositions[3].rotate, badgePositions[3].rotate - 18, badgePositions[3].rotate, badgePositions[3].rotate + 12, badgePositions[3].rotate]
-                    }}
-                    transition={{ duration: 6.2, repeat: Infinity, ease: "easeInOut" }}
+                    } : { y: 0, x: 0, rotate: badgePositions[3].rotate }}
+                    transition={animateBadges ? { duration: 6.2, repeat: Infinity, ease: "easeInOut" } : { duration: 0.3 }}
                     className="flex items-center justify-center w-16 h-16 rounded-full bg-white/80 dark:bg-neutral-800/90 backdrop-blur-md border border-emerald-500/50 text-emerald-500 group-hover:scale-125 group-hover:-rotate-12 group-hover:bg-emerald-500 group-hover:text-white group-hover:shadow-[0_0_35px_rgba(16,185,129,0.8)] transition-all duration-300"
                   >
                     <TbBrandWhatsapp className="w-8 h-8" />
                   </motion.div>
                   <motion.span
-                    animate={{
+                    animate={animateBadges ? {
                       y: [0, -16, 0, 16, 0],
                       x: [0, -12, 0, 12, 0],
                       rotate: [5, -12, 5, 10, 5]
-                    }}
-                    transition={{ duration: 8.6, repeat: Infinity, ease: "easeInOut", delay: 0.9 }}
+                    } : { y: 0, x: 0, rotate: 5 }}
+                    transition={animateBadges ? { duration: 8.6, repeat: Infinity, ease: "easeInOut", delay: 0.9 } : { duration: 0.3 }}
                     className="text-sm font-black tracking-wide text-neutral-800 dark:text-neutral-100 group-hover:text-emerald-500 transition-colors drop-shadow-xs"
                   >
                     Quick Chat
@@ -420,17 +434,19 @@ export default function Header() {
           )}
           <motion.a
             initial={{ opacity: 0, y: -50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 1.2,
-              delay: 1.5,
+            animate={animateBadges ? {
+              opacity: 1,
+              y: [0, -8, 0],
+            } : { opacity: 1, y: 0 }}
+            transition={animateBadges ? {
+              opacity: { duration: 1.2, delay: 1.5 },
               y: {
                 duration: 1.5,
                 repeat: Infinity,
                 repeatType: "reverse",
                 ease: "easeInOut"
               }
-            }}
+            } : { opacity: { duration: 1.2, delay: 1.5 }, y: { duration: 0.3 } }}
             href="/#subheader"
             className="absolute z-10 bottom-8 cursor-pointer flex flex-col items-center gap-3 group"
             onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}

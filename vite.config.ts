@@ -78,6 +78,29 @@ export default defineConfig(({ mode }) => {
         '@': path.resolve(__dirname, './src'),
       },
     },
+    build: {
+      // Split heavy third-party libs out of the entry chunk so the initial
+      // payload (and parse/execute time) drops sharply. Each group only loads
+      // on routes that actually use it.
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            if (!id.includes('node_modules')) return;
+            if (id.includes('three')) return 'vendor-three';
+            if (id.includes('mermaid')) return 'vendor-mermaid';
+            if (id.includes('xlsx')) return 'vendor-xlsx';
+            if (id.includes('chart.js') || id.includes('react-chartjs-2')) return 'vendor-charts';
+            if (id.includes('gsap')) return 'vendor-gsap';
+            if (id.includes('framer-motion')) return 'vendor-motion';
+            if (id.includes('react-markdown') || id.includes('remark') || id.includes('unified') || id.includes('micromark') || id.includes('mdast') || id.includes('hast')) return 'vendor-markdown';
+            if (id.includes('lottie-web')) return 'vendor-lottie';
+            if (id.includes('ogl') || id.includes('postprocessing')) return 'vendor-webgl';
+            if (id.includes('react-router') || id.includes('@remix-run')) return 'vendor-router';
+            if (id.includes('react-dom') || id.includes('/react/') || id.includes('scheduler')) return 'vendor-react';
+          },
+        },
+      },
+    },
     base: '/',
   }
 })

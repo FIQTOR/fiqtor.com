@@ -1,7 +1,11 @@
+import { Suspense, lazy } from "react";
 import type { ReactNode } from "react";
 import Footer from "../components/Footer";
-import AIHelper from "../components/AIHelper";
 import Navbar from "@/components/Navbar";
+
+// AIHelper is a large component (chat UI + toolbar). Splitting it out keeps it
+// from bloating the initial bundle; it renders after the shell in its own chunk.
+const AIHelper = lazy(() => import("../components/AIHelper"));
 
 interface LayoutProps {
   children: ReactNode;
@@ -24,7 +28,9 @@ export default function MainLayout({
         {children}
       </div>
       {import.meta.env.VITE_ENABLE_AI === 'TRUE' &&
-        <AIHelper />}
+        <Suspense fallback={null}>
+          <AIHelper />
+        </Suspense>}
       <Footer />
     </>
   );

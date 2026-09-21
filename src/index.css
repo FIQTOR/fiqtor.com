@@ -16,10 +16,25 @@
   --color-border-main: var(--border-main);
   --color-accent-blue: var(--accent-blue);
 
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-heading: 'Outfit', 'Inter', system-ui, sans-serif;
+  --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-heading: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 
   --animate-blob: blob 7s infinite;
+  --animate-float: float-blob 22s ease-in-out infinite;
+  --animate-float-slow: float-blob 30s ease-in-out infinite;
+  --animate-float-slower: float-blob 40s ease-in-out infinite;
+
+  @keyframes float-blob {
+
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+
+    50% {
+      transform: translate3d(4%, -3%, 0) scale(1.06);
+    }
+  }
 
   @keyframes blob {
     0% {
@@ -42,6 +57,96 @@
 
 .animation-delay-2000 {
   animation-delay: 2s;
+}
+
+/* --- Background blobs: radial-gradient replacement for huge blur filters ---
+   Same colors/positions as the old blurred <div>s, but painted as gradients so
+   mobile GPUs don't choke. Animated via transform (compositor-only). */
+.bg-blob {
+  position: absolute;
+  border-radius: 9999px;
+  will-change: transform;
+  pointer-events: none;
+}
+
+.bg-blob-1 {
+  top: -10%;
+  left: -10%;
+  width: min(60rem, 140vw);
+  height: min(60rem, 140vw);
+  background: radial-gradient(circle at 40% 40%, rgba(96, 165, 250, 0.20), rgba(129, 140, 248, 0.20) 45%, transparent 70%);
+}
+
+.dark .bg-blob-1 {
+  background: radial-gradient(circle at 40% 40%, rgba(59, 130, 246, 0.12), rgba(99, 102, 241, 0.10) 45%, transparent 70%);
+}
+
+.bg-blob-2 {
+  top: 20%;
+  left: 50%;
+  width: min(30rem, 90vw);
+  height: min(30rem, 90vw);
+  background: radial-gradient(circle, rgba(251, 146, 60, 0.30), transparent 70%);
+}
+
+.dark .bg-blob-2 {
+  background: radial-gradient(circle, rgba(249, 115, 22, 0.12), transparent 70%);
+}
+
+.bg-blob-3 {
+  top: 60%;
+  left: 10%;
+  width: min(18rem, 70vw);
+  height: min(18rem, 70vw);
+  background: radial-gradient(circle, rgba(248, 113, 113, 0.40), transparent 68%);
+}
+
+.dark .bg-blob-3 {
+  background: radial-gradient(circle, rgba(220, 38, 38, 0.16), transparent 68%);
+}
+
+.bg-blob-4 {
+  top: 40%;
+  right: 5vw;
+  width: min(42rem, 120vw);
+  height: min(32rem, 100vw);
+  border-radius: 100%;
+  background: radial-gradient(ellipse at center, rgba(192, 132, 252, 0.25), rgba(244, 114, 182, 0.22) 50%, transparent 75%);
+}
+
+.dark .bg-blob-4 {
+  background: radial-gradient(ellipse at center, rgba(88, 28, 135, 0.22), rgba(131, 24, 67, 0.18) 50%, transparent 75%);
+}
+
+.bg-blob-5 {
+  bottom: -20%;
+  right: 20%;
+  width: min(56rem, 140vw);
+  height: min(56rem, 140vw);
+  background: radial-gradient(circle, rgba(45, 212, 191, 0.20), transparent 72%);
+}
+
+.dark .bg-blob-5 {
+  background: radial-gradient(circle, rgba(13, 148, 136, 0.12), transparent 72%);
+}
+
+/* Pause the float animations when the layer is off-screen or the tab is hidden
+   (toggle handled in BackgroundBlobs.tsx). */
+.bg-blobs-paused .bg-blob {
+  animation-play-state: paused;
+}
+
+/* Respect user motion preferences globally (accessibility + battery). */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 .animation-delay-4000 {
@@ -155,6 +260,10 @@
   font-family: "Ginto";
   src: url("/font/Ginto.ttf") format("truetype");
   font-style: normal;
+  font-weight: 100 900;
+  /* Render with a fallback immediately, then swap in Ginto — avoids blocking
+     paint on the 1 MB font file. */
+  font-display: swap;
 }
 
 html,
@@ -177,53 +286,6 @@ html {
   scrollbar-gutter: stable;
 }
 
-.animate-flying {
-  transform: translateY(0);
-  animation: 3s flying infinite ease-in-out;
-}
-
-@keyframes flying {
-
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-25px);
-  }
-}
-
-.top {
-  animation: rotate 15s infinite linear;
-}
-
-.middle {
-  animation: rotate 18s infinite reverse linear;
-}
-
-.bottom {
-  animation: rotate 20s infinite linear;
-}
-
-.blobs {
-  transition: transform 5s;
-}
-
-.blobs:hover {
-  transform: translate(100px, 100px) scale(0);
-}
-
-@keyframes rotate {
-  0% {
-    transform: translate(100px, 100px) rotate(0deg);
-  }
-
-  100% {
-    transform: translate(100px, 100px) rotate(359deg);
-  }
-}
-
 /* .clipgsap {
   clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
 }
@@ -235,26 +297,6 @@ html {
   -ms-transition: transform 0.5s;
   -o-transition: transform 0.5s;
 } */
-
-.goodbye-animate {
-  padding-bottom: 20px;
-  animation-name: goodbyeanimate;
-  animation-duration: 3s;
-  animation-iteration-count: infinite;
-  animation-timing-function: ease-in-out;
-}
-
-@keyframes goodbyeanimate {
-
-  0%,
-  100% {
-    rotate: -30deg;
-  }
-
-  50% {
-    rotate: 30deg;
-  }
-}
 
 .rocket-animate {
   animation-name: rocketanimation;
@@ -283,165 +325,7 @@ html {
   }
 }
 
-.loader {
-  transform: rotateZ(45deg);
-  perspective: 1000px;
-  border-radius: 50%;
-  width: 48px;
-  height: 48px;
-  color: grey;
-}
-
-.loader:before,
-.loader:after {
-  content: '';
-  display: block;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: inherit;
-  height: inherit;
-  border-radius: 50%;
-  transform: rotateX(70deg);
-  animation: 1s spin_ linear infinite;
-}
-
-.loader:after {
-  color: grey;
-  transform: rotateY(70deg);
-  animation-delay: .4s;
-}
-
-@keyframes rotate {
-  0% {
-    transform: translate(-50%, -50%) rotateZ(0deg);
-  }
-
-  100% {
-    transform: translate(-50%, -50%) rotateZ(360deg);
-  }
-}
-
-@keyframes rotateccw {
-  0% {
-    transform: translate(-50%, -50%) rotate(0deg);
-  }
-
-  100% {
-    transform: translate(-50%, -50%) rotate(-360deg);
-  }
-}
-
-@keyframes spin_ {
-
-  0%,
-  100% {
-    box-shadow: .2em 0px 0 0px currentcolor;
-  }
-
-  12% {
-    box-shadow: .2em .2em 0 0 currentcolor;
-  }
-
-  25% {
-    box-shadow: 0 .2em 0 0px currentcolor;
-  }
-
-  37% {
-    box-shadow: -.2em .2em 0 0 currentcolor;
-  }
-
-  50% {
-    box-shadow: -.2em 0 0 0 currentcolor;
-  }
-
-  62% {
-    box-shadow: -.2em -.2em 0 0 currentcolor;
-  }
-
-  75% {
-    box-shadow: 0px -.2em 0 0 currentcolor;
-  }
-
-  87% {
-    box-shadow: .2em -.2em 0 0 currentcolor;
-  }
-}
-
-
-.animate-readmore {
-  animation: readmore-keyframe 4s infinite ease-in-out;
-  -webkit-animation: readmore-keyframe 4s infinite ease-in-out;
-}
-
-@keyframes readmore-keyframe {
-
-  0%,
-  100% {
-    transform: translateX(0);
-    -webkit-transform: translateX(0);
-    -moz-transform: translateX(0);
-    -ms-transform: translateX(0);
-    -o-transform: translateX(0);
-  }
-
-  50% {
-    transform: translateX(20px);
-    -webkit-transform: translateX(20px);
-    -moz-transform: translateX(20px);
-    -ms-transform: translateX(20px);
-    -o-transform: translateX(20px);
-  }
-}
-
-.animate-up-down {
-  animation: up-down 4s infinite ease-in-out;
-  -webkit-animation: up-down 4s infinite ease-in-out;
-}
-
-@keyframes up-down {
-
-  0%,
-  100% {
-    transform: translateY(-20px);
-    -webkit-transform: translateY(-20px);
-    -moz-transform: translateY(-20px);
-    -ms-transform: translateY(-20px);
-    -o-transform: translateY(-20px);
-  }
-
-  50% {
-    transform: translateY(0);
-    -webkit-transform: translateY(0);
-    -moz-transform: translateY(0);
-    -ms-transform: translateY(0);
-    -o-transform: translateY(0);
-  }
-}
-
-.nav-shadow {
-  height: 200vh;
-  box-shadow: 200px -50vh 150px #f5f5f4;
-}
-
-.blob-animate {
-  animation: blob-animation 50s infinite ease-in-out;
-}
-
-@keyframes blob-animation {
-
-  0%,
-  100% {
-    left: -200px;
-    top: -200px;
-  }
-
-  50% {
-    left: 200px;
-    top: 200px;
-  }
-}
-/* --- AI composer: voice-recording equalizer bars --- */
+/* --- recording-bars (AI voice equalizer) unchanged below --- */
 .recording-bars {
   display: flex;
   align-items: center;

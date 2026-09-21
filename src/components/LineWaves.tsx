@@ -165,7 +165,13 @@ export default function LineWaves({
   useEffect(() => {
     if (!containerRef.current) return;
     const container = containerRef.current;
-    const renderer = new Renderer({ alpha: true, premultipliedAlpha: false });
+    const renderer = new Renderer({
+      alpha: true,
+      premultipliedAlpha: false,
+      // Cap DPR: this is a soft, low-contrast background. Rendering at 1.5x
+      // looks the same but paints far fewer pixels (big win on mobile/retina).
+      dpr: Math.min(window.devicePixelRatio || 1, 1.5),
+    });
     const gl = renderer.gl;
     gl.clearColor(0, 0, 0, 0);
 
@@ -233,15 +239,32 @@ export default function LineWaves({
     const mesh = new Mesh(gl, { geometry, program });
     container.appendChild(gl.canvas);
 
+    // Fade the canvas in once it's actually rendering, so the background never
+    // pops in abruptly if the chunk/GL init arrives a touch late.
+    gl.canvas.style.opacity = "0";
+    gl.canvas.style.transition = "opacity 0.8s ease-out";
+
     if (enableMouseInteraction) {
       gl.canvas.addEventListener('mousemove', handleMouseMove);
       gl.canvas.addEventListener('mouseleave', handleMouseLeave);
     }
 
     let animationFrameId: number;
+    let visible = true;
+    let lastRender = 0;
+    let fadedIn = false;
+    const FRAME_INTERVAL = 1000 / 30; // ~30fps is plenty for a slow wave field
 
     function update(time: number) {
       animationFrameId = requestAnimationFrame(update);
+
+      // Throttle to ~30fps.
+      if (time - lastRender < FRAME_INTERVAL) return;
+      lastRender = time;
+
+      // Pause rendering when off-screen (but still allow the initial paint).
+      if (!visible && fadedIn) return;
+
       program.uniforms.uTime.value = time * 0.001;
 
       if (enableMouseInteraction) {
@@ -255,13 +278,34 @@ export default function LineWaves({
       }
 
       renderer.render({ scene: mesh });
+
+      if (!fadedIn) {
+        fadedIn = true;
+        gl.canvas.style.opacity = "1";
+      }
     }
     animationFrameId = requestAnimationFrame(update);
+
+    // Pause when scrolled out of view or tab hidden — no point burning GPU.
+    let io: IntersectionObserver | undefined;
+    if (typeof IntersectionObserver !== "undefined") {
+      io = new IntersectionObserver(
+        ([entry]) => { visible = !document.hidden && entry.isIntersecting; },
+        { threshold: 0 }
+      );
+      io.observe(container);
+    }
+    const onVisibility = () => {
+      visible = !document.hidden;
+    };
+    document.addEventListener("visibilitychange", onVisibility);
 
     return () => {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize', resize);
       resizeObserver.disconnect();
+      io?.disconnect();
+      document.removeEventListener("visibilitychange", onVisibility);
       if (enableMouseInteraction) {
         gl.canvas.removeEventListener('mousemove', handleMouseMove);
         gl.canvas.removeEventListener('mouseleave', handleMouseLeave);

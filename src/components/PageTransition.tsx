@@ -11,7 +11,7 @@ const pageVariants = {
   initial: {
     opacity: 0,
     y: 10,
-    filter: 'blur(10px)',
+    filter: 'blur(4px)',
   },
   animate: {
     opacity: 1,
@@ -31,7 +31,7 @@ const pageVariants = {
   exit: {
     opacity: 0,
     y: -10,
-    filter: 'blur(10px)',
+    filter: 'blur(4px)',
     transition: {
       duration: 0.3,
       ease: [0.22, 1, 0.36, 1] as const,

@@ -71,6 +71,8 @@ export default function ProjectsComponents() {
                 <img
                   src={project.srcImage}
                   alt={project.title}
+                  loading="lazy"
+                  decoding="async"
                   className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                   style={{
                     WebkitMaskImage: isEven
@@ -158,6 +160,8 @@ export default function ProjectsComponents() {
                   <img
                     src={selectedProject.srcImage}
                     alt={selectedProject.title}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover"
                   />
                   <div className="absolute inset-0 bg-linear-to-t from-white dark:from-neutral-900 via-transparent" />

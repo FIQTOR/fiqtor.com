@@ -1,13 +1,14 @@
 import { Suspense, useEffect, useRef } from 'react';
 import { BrowserRouter as Router, useRoutes, useLocation } from 'react-router-dom';
 import routes from '~react-pages';
-import { AnimatePresence, motion, useScroll, useSpring } from 'framer-motion';
+import { AnimatePresence, motion, useMotionValue } from 'framer-motion';
 import ThemeProviderContext from './context/ThemeProviderContext';
 import ContainerProvider from './context/ContainerProvider';
 import WelcomeProvider, { useWelcome } from './context/WelcomeProvider';
 import MainLayout from './layouts/MainLayout';
 import Loading from './components/Loading';
 import PageTransition from './components/PageTransition';
+import { preloadLineWaves } from './components/lineWavesLoader';
 import './App.css';
 import { inject } from "@vercel/analytics";
 import { BRAND_NAME } from "@/config/Identity";
@@ -53,17 +54,30 @@ function NeuralNetworkCanvas() {
     if (!ctx) return;
 
     let animationFrameId: number;
-    let width = (canvas.width = window.innerWidth);
-    let height = (canvas.height = window.innerHeight);
+    let running = true;
+    let lastFrame = 0;
+    const FRAME_INTERVAL = 1000 / 30; // cap to ~30fps — plenty for this effect
 
-    const handleResize = () => {
-      if (!canvas) return;
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
+    // Cap device pixel ratio so we don't paint 3–4x the pixels on retina/mobile.
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    let width = 0;
+    let height = 0;
+
+    const applySize = () => {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = Math.floor(width * dpr);
+      canvas.height = Math.floor(height * dpr);
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
+    applySize();
+
+    const handleResize = () => applySize();
     window.addEventListener("resize", handleResize);
 
-    const numNodes = Math.min(Math.floor((width * height) / 14000), 55);
+    const numNodes = Math.min(Math.floor((width * height) / 18000), 45);
     const nodes = Array.from({ length: numNodes }, () => ({
       x: Math.random() * width,
       y: Math.random() * height,
@@ -72,17 +86,25 @@ function NeuralNetworkCanvas() {
       radius: Math.random() * 2 + 1.2,
     }));
 
-    const render = () => {
+    const render = (now: number) => {
+      if (!running) return;
+      animationFrameId = requestAnimationFrame(render);
+
+      // Throttle: skip drawing when the frame budget hasn't elapsed.
+      if (now - lastFrame < FRAME_INTERVAL) return;
+      lastFrame = now;
+
       ctx.clearRect(0, 0, width, height);
 
       for (let i = 0; i < nodes.length; i++) {
         for (let j = i + 1; j < nodes.length; j++) {
           const dx = nodes[i].x - nodes[j].x;
           const dy = nodes[i].y - nodes[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
+          const distSq = dx * dx + dy * dy;
           const maxDist = 130;
 
-          if (dist < maxDist) {
+          if (distSq < maxDist * maxDist) {
+            const dist = Math.sqrt(distSq);
             const alpha = (1 - dist / maxDist) * 0.35;
             ctx.beginPath();
             ctx.moveTo(nodes[i].x, nodes[i].y);
@@ -106,14 +128,27 @@ function NeuralNetworkCanvas() {
         ctx.fillStyle = "rgba(147, 51, 234, 0.75)";
         ctx.fill();
       }
-
-      animationFrameId = requestAnimationFrame(render);
     };
 
-    render();
+    animationFrameId = requestAnimationFrame(render);
+
+    // Pause entirely when the tab is hidden (no reason to burn CPU off-screen).
+    const onVisibility = () => {
+      if (document.hidden) {
+        running = false;
+        cancelAnimationFrame(animationFrameId);
+      } else if (!running) {
+        running = true;
+        lastFrame = 0;
+        animationFrameId = requestAnimationFrame(render);
+      }
+    };
+    document.addEventListener("visibilitychange", onVisibility);
 
     return () => {
+      running = false;
       window.removeEventListener("resize", handleResize);
+      document.removeEventListener("visibilitychange", onVisibility);
       cancelAnimationFrame(animationFrameId);
     };
   }, []);
@@ -145,7 +180,7 @@ function WelcomeScreen() {
           <motion.div
             animate={{ scale: [1, 1.1, 1], opacity: [0.2, 0.4, 0.2] }}
             transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute inset-0 bg-blue-500 blur-2xl rounded-full"
+            className="absolute inset-0 rounded-full bg-[radial-gradient(circle,rgba(59,130,246,0.85),transparent_70%)]"
           />
           <img
             src="/icon.webp"
@@ -199,8 +234,38 @@ function WelcomeScreen() {
 }
 
 function ScrollProgressBar() {
-  const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
+  // Previously: useScroll() + useSpring() re-evaluated through framer-motion on
+  // every scroll frame for the whole session. We drive the same visual (a bar
+  // that scales with scroll) from a single rAF-throttled scroll listener and a
+  // MotionValue, so React never re-renders during scroll.
+  const scaleX = useMotionValue(0);
+
+  useEffect(() => {
+    let ticking = false;
+
+    const update = () => {
+      ticking = false;
+      const scrollable =
+        document.documentElement.scrollHeight - window.innerHeight;
+      const progress = scrollable > 0 ? window.scrollY / scrollable : 0;
+      scaleX.set(Math.min(Math.max(progress, 0), 1));
+    };
+
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    };
+
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [scaleX]);
 
   return (
     <motion.div
@@ -238,6 +303,17 @@ function AppShell() {
 
   useEffect(() => {
     inject();
+  }, []);
+
+  // Warm the WebGL background chunk during the welcome screen so it's ready
+  // before Home mounts (otherwise it lazily pops in after the hero animation).
+  // Skipped on mobile, where LineWaves is never rendered. The wrapper module is
+  // tiny, so importing it eagerly is fine — it only pulls the heavy GL chunk
+  // when preloadLineWaves() runs.
+  useEffect(() => {
+    if (window.innerWidth >= 768) {
+      preloadLineWaves();
+    }
   }, []);
 
   return (

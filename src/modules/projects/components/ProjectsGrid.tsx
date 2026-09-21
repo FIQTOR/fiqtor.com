@@ -70,6 +70,8 @@ export default function ProjectsCard({ projects }: ProjectsGridProps) {
                 <img
                   src={project.srcImage}
                   alt="projectImage.webp"
+                  loading="lazy"
+                  decoding="async"
                   className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-linear-to-t from-neutral-950/95 via-neutral-950/40 to-neutral-950/10" />
@@ -170,6 +172,8 @@ export default function ProjectsCard({ projects }: ProjectsGridProps) {
                   <img
                     src={selectedProject.srcImage}
                     alt={selectedProject.title}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover"
                   />
                   <div className="absolute top-0 left-0 w-full h-full bg-linear-to-b from-transparent to-white dark:to-neutral-900"></div>

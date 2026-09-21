@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
+import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
+const MarkdownMessage = lazy(() => import('./MarkdownMessage'));
 import {
   TbBrandGithubCopilot,
   TbSend,
@@ -537,7 +536,7 @@ const AIHelper: React.FC = () => {
                         </span>
                       )}
                       <div className="whitespace-pre-wrap wrap-break-word font-extralight text-sm markdown-body">
-                        <ReactMarkdown remarkPlugins={[remarkGfm]}>{message.text}</ReactMarkdown>
+                        <Suspense fallback={<span className="whitespace-pre-wrap">{message.text}</span>}><MarkdownMessage text={message.text} /></Suspense>
                       </div>
                     </div>
 
@@ -557,7 +556,7 @@ const AIHelper: React.FC = () => {
                 <div key={index} className="flex flex-col items-start gap-1 w-full">
                   <div className="relative px-4 py-2 w-fit max-w-full bg-transparent backdrop-blur-md rounded-2xl shadow-xl text-left">
                     <div className="whitespace-pre-wrap wrap-break-word font-extralight text-sm markdown-body">
-                      <ReactMarkdown remarkPlugins={[remarkGfm]}>{message.text}</ReactMarkdown>
+                      <Suspense fallback={<span className="whitespace-pre-wrap">{message.text}</span>}><MarkdownMessage text={message.text} /></Suspense>
                     </div>
 
                     {message.type === 'redirect' && (
