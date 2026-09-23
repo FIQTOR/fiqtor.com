@@ -8,17 +8,20 @@ import {
   renderHeadHtml,
   renderSitemap,
   renderRobots,
+  renderSecurityTxt,
 } from './src/config/Head'
 
 /**
  * Injects the full <head> (title, meta, OpenGraph, Twitter, JSON-LD, GA) into
- * index.html at build/dev time, and emits sitemap.xml + robots.txt derived from
- * the configured domain — all from src/config/Head.ts. This keeps every piece
- * of branding/SEO derived from env vars (no hardcoded domain in the repo).
+ * index.html at build/dev time, and emits sitemap.xml + robots.txt +
+ * .well-known/security.txt derived from the configured domain — all from
+ * src/config/Head.ts. This keeps every piece of branding/SEO/security metadata
+ * derived from env vars (no hardcoded domain in the repo).
  */
 function htmlHeadPlugin(env: Record<string, string>): Plugin {
   const sitemap = 'sitemap.xml'
   const robots = 'robots.txt'
+  const securityTxt = '.well-known/security.txt'
 
   return {
     name: 'vite-html-head',
@@ -45,6 +48,11 @@ function htmlHeadPlugin(env: Record<string, string>): Plugin {
           res.end(renderRobots(config))
           return
         }
+        if (url === `/${securityTxt}`) {
+          res.setHeader('Content-Type', 'text/plain; charset=utf-8')
+          res.end(renderSecurityTxt(config))
+          return
+        }
         next()
       })
     },
@@ -54,6 +62,7 @@ function htmlHeadPlugin(env: Record<string, string>): Plugin {
       const config = buildHeadConfig(env)
       this.emitFile({ type: 'asset', fileName: sitemap, source: renderSitemap(config) })
       this.emitFile({ type: 'asset', fileName: robots, source: renderRobots(config) })
+      this.emitFile({ type: 'asset', fileName: securityTxt, source: renderSecurityTxt(config) })
     },
   }
 }

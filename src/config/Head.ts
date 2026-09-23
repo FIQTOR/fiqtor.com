@@ -315,6 +315,20 @@ ${urls}
 `;
 };
 
+/**
+ * Render .well-known/security.txt (RFC 9116) from the configured origin.
+ * `expires` defaults to roughly one year out; callers may override it.
+ */
+export const renderSecurityTxt = (cfg: HeadConfig, expires?: string): string => {
+  const o = cfg.canonical.replace(/\/$/, "");
+  const expiry = expires || "2027-09-23T00:00:00.000Z";
+  return `Contact: mailto:${cfg.contactEmail}
+Expires: ${expiry}
+Preferred-Languages: en, id
+Canonical: ${o}/.well-known/security.txt
+`;
+};
+
 /** Render robots.txt from the configured origin (no hardcoded domain). */
 export const renderRobots = (cfg: HeadConfig): string => {
   const o = cfg.canonical.replace(/\/$/, "");
