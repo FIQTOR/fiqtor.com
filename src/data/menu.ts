@@ -4,6 +4,7 @@ import {
   TbBinaryTree,
   TbBuildingCommunity,
   TbHome,
+  TbLayoutKanban,
   TbStack2,
 } from "react-icons/tb";
 
@@ -40,5 +41,10 @@ export const Menu: Array<Project> = [
     label: "Linktree",
     Svg: TbBinaryTree,
     pathName: "/linktree",
+  },
+  {
+    label: "Kanban",
+    Svg: TbLayoutKanban,
+    pathName: "/kanban",
   },
 ];

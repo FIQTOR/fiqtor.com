@@ -71,6 +71,7 @@ export const SITE_NAVIGATION: Array<{ name: string; path: string }> = [
   { name: "Projects", path: "/projects" },
   { name: "Certification", path: "/certification" },
   { name: "Linktree", path: "/linktree" },
+  { name: "Kanban", path: "/kanban" },
   { name: "Contact", path: "/talk" },
 ];
 
@@ -81,6 +82,7 @@ export type PageKey =
   | "certification"
   | "linktree"
   | "talk"
+  | "kanban"
   | "notFound";
 
 export type PageSchemaType =
@@ -238,6 +240,22 @@ export const PageMetadata: Record<PageKey, PageMeta> = {
           "WhatsApp is the fastest channel; email is better for detailed project briefs.",
       },
     ],
+  },
+  kanban: {
+    path: "/kanban",
+    title: `Kanban Board Management System - ${BRAND_NAME}`,
+    label: "Kanban",
+    description:
+      `An interactive Kanban board for managing tasks across a five-stage workflow — Backlog, To Do, In Progress, On Hold, and Done — with drag and drop, priority badges, and progressive outreach counters.`,
+    keywords: [
+      `${BRAND_NAME} kanban`,
+      "kanban board",
+      "task management system",
+      "drag and drop board",
+    ],
+    schemaType: "WebPage",
+    answer:
+      `A Kanban board with five workflow columns (Backlog, To Do, In Progress, On Hold / Waiting, and Done). Tasks carry a priority badge, an optional progress counter such as 10/46, and a due date. Cards can be dragged between columns, and the whole board can be exported to or imported from a JSON file. Data is persisted locally in the browser.`,
   },
   notFound: {
     path: "/404",
