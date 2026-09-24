@@ -13,7 +13,8 @@ import { useCallback, useMemo, useState } from "react";
 import {
   KANBAN_SCHEMA_VERSION,
   KANBAN_STORAGE_KEY,
-  createSeedState,
+  createEmptyState,
+  createSampleState,
   createTaskId,
 } from "@/data/kanban";
 import type {
@@ -49,7 +50,7 @@ export const parseKanbanState = (raw: unknown): KanbanState | null => {
 
   const tasks: Task[] = candidate.tasks
     .filter((t): t is Task => !!t && typeof t === "object")
-    .map((t) => ({
+    .map((t, index) => ({
       id: typeof t.id === "string" && t.id ? t.id : createTaskId(),
       title: String(t.title ?? "Untitled"),
       description: String(t.description ?? ""),
@@ -61,6 +62,9 @@ export const parseKanbanState = (raw: unknown): KanbanState | null => {
         unit: String(t.progress?.unit ?? ""),
       },
       dueDate: String(t.dueDate ?? ""),
+      // Missing order (legacy boards) → fall back to the stored array index so
+      // the visual order is preserved on first load.
+      order: Number.isFinite(Number(t.order)) ? Number(t.order) : index,
       createdAt: t.createdAt ?? new Date().toISOString(),
       updatedAt: t.updatedAt ?? new Date().toISOString(),
     }));
@@ -72,7 +76,7 @@ export const parseKanbanState = (raw: unknown): KanbanState | null => {
   };
 };
 
-/** Read the initial state: localStorage if valid, otherwise the seed. */
+/** Read the initial state: localStorage if valid, otherwise an EMPTY board. */
 const loadInitialState = (): KanbanState => {
   const raw = safeGet(KANBAN_STORAGE_KEY);
   if (raw) {
@@ -80,10 +84,10 @@ const loadInitialState = (): KanbanState => {
       const parsed = parseKanbanState(JSON.parse(raw));
       if (parsed) return parsed;
     } catch {
-      /* corrupted — fall through to seed */
+      /* corrupted — fall through to an empty board */
     }
   }
-  return createSeedState();
+  return createEmptyState();
 };
 
 export interface KanbanStore {
@@ -101,8 +105,10 @@ export interface KanbanStore {
   replaceState: (raw: unknown) => boolean;
   /** Serialize the current board to a pretty JSON string. */
   exportJson: () => string;
-  /** Wipe storage and reset to seed data. */
-  resetToSeed: () => void;
+  /** Replace the board with the optional sample tasks (wipes current tasks). */
+  loadSamples: () => void;
+  /** Delete every task, leaving an empty board. */
+  clearBoard: () => void;
 }
 
 export function useKanbanStore(): KanbanStore {
@@ -138,13 +144,21 @@ export function useKanbanStore(): KanbanStore {
   const addTask = useCallback(
     (draft: TaskDraft) => {
       const now = new Date().toISOString();
-      const task: Task = {
-        ...draft,
-        id: createTaskId(),
-        createdAt: now,
-        updatedAt: now,
-      };
-      mutate((tasks) => [task, ...tasks]);
+      mutate((tasks) => {
+        // Put the new card at the TOP of its column: give it order 0 and push
+        // every sibling down by one.
+        const task: Task = {
+          ...draft,
+          order: 0,
+          id: createTaskId(),
+          createdAt: now,
+          updatedAt: now,
+        };
+        const shifted = tasks.map((t) =>
+          t.status === draft.status ? { ...t, order: (t.order ?? 0) + 1 } : t
+        );
+        return [task, ...shifted];
+      });
     },
     [mutate]
   );
@@ -175,28 +189,36 @@ export function useKanbanStore(): KanbanStore {
         const moving = tasks.find((t) => t.id === id);
         if (!moving) return tasks;
 
-        const rest = tasks.filter((t) => t.id !== id);
+        // Build the target column's ordered list (excluding the moving card),
+        // honouring each task's manual `order` so the drop lands exactly where
+        // the user released it — not where a priority re-sort would put it.
+        const target = tasks
+          .filter((t) => t.status === toStatus && t.id !== id)
+          .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+
+        const insertAt = beforeId
+          ? target.findIndex((t) => t.id === beforeId)
+          : target.length;
+        const at = insertAt === -1 ? target.length : insertAt;
+
         const updated: Task = {
           ...moving,
           status: toStatus,
           updatedAt: new Date().toISOString(),
         };
+        target.splice(at, 0, updated);
 
-        // No explicit anchor → drop at the end of the target column's segment.
-        if (!beforeId) {
-          const lastIndex = rest.reduce(
-            (acc, t, i) => (t.status === toStatus ? i : acc),
-            -1
-          );
-          const insertAt = lastIndex === -1 ? rest.length : lastIndex + 1;
-          rest.splice(insertAt, 0, updated);
-          return rest;
-        }
+        // Re-number the target column 0..n-1.
+        const renumbered = new Map<string, number>();
+        target.forEach((t, i) => renumbered.set(t.id, i));
 
-        const anchorIndex = rest.findIndex((t) => t.id === beforeId);
-        const insertAt = anchorIndex === -1 ? rest.length : anchorIndex;
-        rest.splice(insertAt, 0, updated);
-        return rest;
+        return tasks.map((t) => {
+          if (t.id === id) {
+            return { ...updated, order: renumbered.get(id) ?? 0 };
+          }
+          const nextOrder = renumbered.get(t.id);
+          return nextOrder === undefined ? t : { ...t, order: nextOrder };
+        });
       });
     },
     [mutate]
@@ -217,8 +239,12 @@ export function useKanbanStore(): KanbanStore {
     [state]
   );
 
-  const resetToSeed = useCallback(() => {
-    commit(() => createSeedState());
+  const loadSamples = useCallback(() => {
+    commit(() => createSampleState());
+  }, [commit]);
+
+  const clearBoard = useCallback(() => {
+    commit(() => ({ ...createEmptyState(), savedAt: Date.now() }));
   }, [commit]);
 
   return useMemo(
@@ -232,7 +258,8 @@ export function useKanbanStore(): KanbanStore {
       moveTask,
       replaceState,
       exportJson,
-      resetToSeed,
+      loadSamples,
+      clearBoard,
     }),
     [
       state.tasks,
@@ -244,7 +271,8 @@ export function useKanbanStore(): KanbanStore {
       moveTask,
       replaceState,
       exportJson,
-      resetToSeed,
+      loadSamples,
+      clearBoard,
     ]
   );
 }

@@ -7,7 +7,7 @@
  */
 import { useCallback, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { TbLayoutKanban } from "react-icons/tb";
+import { TbLayoutKanban, TbPlus } from "react-icons/tb";
 import KanbanColumn from "@/modules/kanban/components/KanbanColumn";
 import KanbanToolbar from "@/modules/kanban/components/KanbanToolbar";
 import TaskModal from "@/modules/kanban/components/TaskModal";
@@ -31,7 +31,7 @@ export default function KanbanBoard() {
   );
   const [modal, setModal] = useState<ModalState>({ open: false });
   const [pendingDelete, setPendingDelete] = useState<Task | null>(null);
-  const [confirmReset, setConfirmReset] = useState(false);
+  const [confirmClear, setConfirmClear] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
 
   const dnd = useKanbanDnD({ onMove: store.moveTask });
@@ -41,7 +41,7 @@ export default function KanbanBoard() {
     window.setTimeout(() => setToast(null), 2600);
   }, []);
 
-  // Filter + group tasks into columns, sorting by priority then recency.
+  // Filter + group tasks into columns, preserving the user's drag order.
   const grouped = useMemo(() => {
     const q = query.trim().toLowerCase();
     const filtered = store.tasks.filter((task) => {
@@ -65,7 +65,12 @@ export default function KanbanBoard() {
 
     for (const status of Object.keys(byStatus) as KanbanStatus[]) {
       byStatus[status].sort((a, b) => {
-        const p = KANBAN_PRIORITY_MAP[a.priority].order - KANBAN_PRIORITY_MAP[b.priority].order;
+        const orderDelta = (a.order ?? 0) - (b.order ?? 0);
+        if (orderDelta !== 0) return orderDelta;
+        // Stable tie-breaker for legacy tasks with no manual order yet.
+        const p =
+          KANBAN_PRIORITY_MAP[a.priority].order -
+          KANBAN_PRIORITY_MAP[b.priority].order;
         if (p !== 0) return p;
         return b.updatedAt.localeCompare(a.updatedAt);
       });
@@ -125,8 +130,13 @@ export default function KanbanBoard() {
     flash("Board exported");
   }, [store, flash]);
 
+  const handleLoadSamples = useCallback(() => {
+    store.loadSamples();
+    flash("Sample tasks loaded");
+  }, [store, flash]);
+
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex w-full flex-col gap-5">
       <KanbanToolbar
         query={query}
         onQueryChange={setQuery}
@@ -137,7 +147,8 @@ export default function KanbanBoard() {
         onAddTask={() => setModal({ open: true, mode: "add", status: "backlog" })}
         onExport={handleExport}
         onImportFile={handleImportFile}
-        onReset={() => setConfirmReset(true)}
+        onLoadSamples={handleLoadSamples}
+        onClear={() => setConfirmClear(true)}
       />
 
       {store.persistError && (
@@ -147,8 +158,9 @@ export default function KanbanBoard() {
         </p>
       )}
 
-      {/* Board */}
-      <div className="-mx-1 flex gap-3 overflow-x-auto px-1 pb-4">
+      {/* Board — horizontally scrollable on small screens, full-width grid on
+          large screens. */}
+      <div className="-mx-1 flex w-full snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-4 lg:mx-0 lg:grid lg:snap-none lg:grid-cols-5 lg:gap-4 lg:overflow-visible lg:px-0">
         {KANBAN_COLUMNS.map((column) => (
           <KanbanColumn
             key={column.id}
@@ -162,7 +174,39 @@ export default function KanbanBoard() {
         ))}
       </div>
 
-      {/* Empty board hint */}
+      {/* Empty board (nothing created yet) */}
+      {store.tasks.length === 0 && (
+        <div className="flex flex-col items-center gap-3 py-10 text-center text-neutral-400">
+          <TbLayoutKanban className="h-10 w-10 opacity-40" />
+          <div>
+            <p className="text-sm font-medium text-neutral-500 dark:text-neutral-400">
+              Your board is empty.
+            </p>
+            <p className="mt-1 text-xs">
+              Create a task to get started — or load the sample tasks.
+            </p>
+          </div>
+          <div className="mt-2 flex flex-wrap items-center justify-center gap-2">
+            <button
+              type="button"
+              onClick={() => setModal({ open: true, mode: "add", status: "backlog" })}
+              className="inline-flex cursor-pointer items-center gap-1.5 rounded-xl bg-blue-600 px-3.5 py-2 text-xs font-semibold text-white shadow-md shadow-blue-600/20 transition-all hover:-translate-y-0.5 hover:bg-blue-500 active:scale-95"
+            >
+              <TbPlus className="h-4 w-4" />
+              New Task
+            </button>
+            <button
+              type="button"
+              onClick={handleLoadSamples}
+              className="cursor-pointer rounded-xl border border-neutral-200/70 bg-white/70 px-3.5 py-2 text-xs font-semibold text-neutral-600 shadow-sm backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:shadow-md dark:border-neutral-800/70 dark:bg-neutral-900/70 dark:text-neutral-300"
+            >
+              Load samples
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* No matches (board has tasks, filters hide them all) */}
       {visibleCount === 0 && store.tasks.length > 0 && (
         <div className="flex flex-col items-center gap-2 py-10 text-center text-neutral-400">
           <TbLayoutKanban className="h-8 w-8 opacity-40" />
@@ -194,17 +238,17 @@ export default function KanbanBoard() {
         }}
       />
 
-      {/* Reset confirmation */}
+      {/* Clear-board confirmation */}
       <ConfirmDialog
-        open={confirmReset}
-        title="Reset board?"
-        message="This restores the sample tasks and discards all your current tasks."
-        confirmLabel="Reset"
-        onCancel={() => setConfirmReset(false)}
+        open={confirmClear}
+        title="Clear the board?"
+        message="This permanently deletes every task. This cannot be undone."
+        confirmLabel="Clear all"
+        onCancel={() => setConfirmClear(false)}
         onConfirm={() => {
-          store.resetToSeed();
-          setConfirmReset(false);
-          flash("Board reset to sample data");
+          store.clearBoard();
+          setConfirmClear(false);
+          flash("Board cleared");
         }}
       />
 

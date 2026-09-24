@@ -94,13 +94,13 @@ const TaskCard = memo(function TaskCard({
             </span>
           </div>
 
-          {/* Quick actions (appear on hover) */}
-          <div className="flex items-center gap-1 opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100">
+          {/* Quick actions — always visible on touch, hover-reveal on desktop */}
+          <div className="flex items-center gap-1 opacity-100 transition-opacity duration-200 lg:opacity-0 lg:group-hover:opacity-100 lg:group-focus-within:opacity-100">
             <button
               type="button"
               onClick={() => onEdit(task)}
               aria-label={`Edit ${task.title}`}
-              className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-md text-neutral-500 transition-colors hover:bg-neutral-200/70 hover:text-blue-600 dark:hover:bg-neutral-800 dark:hover:text-blue-400"
+              className="flex h-7 w-7 cursor-pointer items-center justify-center rounded-md text-neutral-500 transition-colors hover:bg-neutral-200/70 hover:text-blue-600 dark:hover:bg-neutral-800 dark:hover:text-blue-400 lg:h-6 lg:w-6"
             >
               <TbPencil className="h-3.5 w-3.5" />
             </button>
@@ -108,7 +108,7 @@ const TaskCard = memo(function TaskCard({
               type="button"
               onClick={() => onDelete(task)}
               aria-label={`Delete ${task.title}`}
-              className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-md text-neutral-500 transition-colors hover:bg-red-500/10 hover:text-red-600 dark:hover:text-red-400"
+              className="flex h-7 w-7 cursor-pointer items-center justify-center rounded-md text-neutral-500 transition-colors hover:bg-red-500/10 hover:text-red-600 dark:hover:text-red-400 lg:h-6 lg:w-6"
             >
               <TbTrash className="h-3.5 w-3.5" />
             </button>

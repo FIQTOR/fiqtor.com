@@ -7,7 +7,8 @@ import {
   TbDownload,
   TbFilter,
   TbPlus,
-  TbRefresh,
+  TbSparkles,
+  TbTrash,
   TbSearch,
   TbUpload,
 } from "react-icons/tb";
@@ -24,7 +25,8 @@ interface KanbanToolbarProps {
   onAddTask: () => void;
   onExport: () => void;
   onImportFile: (file: File) => void;
-  onReset: () => void;
+  onLoadSamples: () => void;
+  onClear: () => void;
 }
 
 const KanbanToolbar = ({
@@ -37,7 +39,8 @@ const KanbanToolbar = ({
   onAddTask,
   onExport,
   onImportFile,
-  onReset,
+  onLoadSamples,
+  onClear,
 }: KanbanToolbarProps) => {
   const fileRef = useRef<HTMLInputElement | null>(null);
 
@@ -125,9 +128,19 @@ const KanbanToolbar = ({
           }}
         />
 
-        <button type="button" onClick={onReset} className={actionBtn}>
-          <TbRefresh className="h-4 w-4" />
-          Reset
+        <button type="button" onClick={onLoadSamples} className={actionBtn}>
+          <TbSparkles className="h-4 w-4" />
+          Samples
+        </button>
+
+        <button
+          type="button"
+          onClick={onClear}
+          className={actionBtn}
+          disabled={taskCount === 0}
+        >
+          <TbTrash className="h-4 w-4" />
+          Clear
         </button>
 
         <button

@@ -46,6 +46,12 @@ export interface Task {
   progress: TaskProgress;
   /** ISO date string (yyyy-mm-dd) or empty string when unset. */
   dueDate: string;
+  /**
+   * Manual sort position *within its column* (ascending). Preserves the exact
+   * drag-and-drop order the user chose. Optional for backward compatibility
+   * with boards saved before this field existed.
+   */
+  order?: number;
   /** ISO timestamp of creation. */
   createdAt: string;
   /** ISO timestamp of the last mutation. */

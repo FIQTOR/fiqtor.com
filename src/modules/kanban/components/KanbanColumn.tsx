@@ -34,7 +34,7 @@ const KanbanColumn = memo(function KanbanColumn({
   return (
     <div
       {...dnd.getColumnHandlers(column.id)}
-      className={`flex h-full w-72 shrink-0 flex-col rounded-2xl border bg-neutral-100/60 backdrop-blur-sm transition-colors duration-200 dark:bg-neutral-900/40 ${
+      className={`flex h-full w-[80vw] max-w-[19rem] shrink-0 snap-start flex-col rounded-2xl border bg-neutral-100/60 backdrop-blur-sm transition-colors duration-200 sm:w-72 sm:max-w-none lg:w-auto lg:shrink dark:bg-neutral-900/40 ${
         isDropTarget
           ? "border-blue-500/40 bg-blue-500/5 dark:border-blue-500/30"
           : "border-neutral-200/60 dark:border-neutral-800/60"

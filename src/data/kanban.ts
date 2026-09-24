@@ -118,14 +118,19 @@ export const createEmptyDraft = (): Omit<Task, "id" | "createdAt" | "updatedAt">
   priority: "medium",
   progress: { current: 0, target: 0, unit: "" },
   dueDate: "",
+  order: 0,
 });
 
-/** ISO date (yyyy-mm-dd) helper offset from today, for seed data. */
+/** ISO date (yyyy-mm-dd) helper offset from today, for sample data. */
 const isoOffset = (days: number): string =>
   new Date(Date.now() + days * 86400000).toISOString().slice(0, 10);
 
-/** Seed tasks shown on first load (before any saved state exists). */
-export const createSeedTasks = (): Task[] => {
+/**
+ * Optional sample tasks — ONLY loaded when the user explicitly asks for them
+ * ("Load samples"). The board is empty by default so a first-time visitor
+ * starts with a clean slate.
+ */
+export const createSampleTasks = (): Task[] => {
   const now = Date.now();
   const stamp = (offsetMs: number) => new Date(now - offsetMs).toISOString();
 
@@ -189,12 +194,16 @@ export const createSeedTasks = (): Task[] => {
   ];
 };
 
-/** Build a fresh board state from the seed data. */
-export const createSeedState = (): KanbanState => {
-  const tasks = createSeedTasks();
-  return {
-    version: KANBAN_SCHEMA_VERSION,
-    tasks,
-    savedAt: Date.now(),
-  };
-};
+/** Build a brand-new, EMPTY board state (the default first-run state). */
+export const createEmptyState = (): KanbanState => ({
+  version: KANBAN_SCHEMA_VERSION,
+  tasks: [],
+  savedAt: 0,
+});
+
+/** Build a board state pre-filled with the optional sample tasks. */
+export const createSampleState = (): KanbanState => ({
+  version: KANBAN_SCHEMA_VERSION,
+  tasks: createSampleTasks(),
+  savedAt: Date.now(),
+});
