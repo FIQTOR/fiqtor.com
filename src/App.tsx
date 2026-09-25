@@ -159,6 +159,7 @@ function NeuralNetworkCanvas() {
 
 function WelcomeScreen() {
   const name = BRAND_NAME;
+  const { skipWelcome } = useWelcome();
 
   return (
     <motion.div
@@ -170,6 +171,16 @@ function WelcomeScreen() {
       className="fixed inset-0 z-30 flex flex-col items-center justify-center bg-white dark:bg-neutral-950 overflow-hidden"
     >
       <NeuralNetworkCanvas />
+
+      {/* Skip — returning/impatient visitors don't wait out the intro. */}
+      <button
+        type="button"
+        onClick={skipWelcome}
+        aria-label="Skip intro"
+        className="absolute right-5 top-5 z-30 rounded-full border border-neutral-200/70 bg-white/70 px-4 py-1.5 text-xs font-semibold text-neutral-600 shadow-sm backdrop-blur-md transition-colors hover:bg-white hover:text-neutral-900 dark:border-neutral-800/70 dark:bg-neutral-900/70 dark:text-neutral-300 dark:hover:bg-neutral-800"
+      >
+        Skip
+      </button>
 
       <motion.div className="relative z-10 flex flex-col items-center">
         <motion.div

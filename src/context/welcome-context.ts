@@ -3,6 +3,8 @@ import { createContext, useContext } from "react";
 export interface WelcomeContextProps {
   showWelcome: boolean;
   isWelcomeDone: boolean;
+  /** Skip the intro immediately (used by the "Skip" button / reduced motion). */
+  skipWelcome: () => void;
 }
 
 /**
@@ -13,6 +15,7 @@ export interface WelcomeContextProps {
 export const WelcomeContext = createContext<WelcomeContextProps>({
   showWelcome: true,
   isWelcomeDone: false,
+  skipWelcome: () => {},
 });
 
 export const useWelcome = () => useContext(WelcomeContext);

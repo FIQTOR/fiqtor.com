@@ -1,8 +1,8 @@
 import { createContext } from "react";
 
 export interface ContainerContextProps {
+  /** Current router pathname (owned by ContainerProvider via useLocation). */
   fullPathName: string;
-  setFullPathName: (titles: string) => void;
   isTiny: boolean;
   isMobile: boolean;
 }
@@ -14,7 +14,6 @@ export interface ContainerContextProps {
  */
 export const ContainerContext = createContext<ContainerContextProps>({
   fullPathName: "",
-  setFullPathName: () => {},
   isTiny: false,
   isMobile: false,
 });
