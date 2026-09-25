@@ -42,7 +42,7 @@ const FloatingBadge = ({
       {icon}
     </div>
     <div className="flex flex-col text-left">
-      <span className="text-[10px] sm:text-xs font-bold text-neutral-400 dark:text-neutral-500 uppercase tracking-wider">
+      <span className="text-xs font-bold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">
         {title}
       </span>
       <span className="text-sm font-semibold text-neutral-800 dark:text-neutral-200">

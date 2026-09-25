@@ -18,12 +18,12 @@ const CareerPage = () => {
                 style={{ scaleX: pageProgress }}
                 className="fixed inset-x-0 top-0 z-50 h-0.5 origin-left bg-linear-to-r from-blue-500 to-blue-300"
             />
-            <div className="relative min-h-screen font-light text-neutral-700 dark:text-neutral-300 overflow-hidden">
+            <div className="page-base relative">
                 <BackgroundBlobs />
 
                 <motion.header
                     style={{ y: heroY, opacity: heroOpacity, scale: heroScale }}
-                    className="relative z-10 px-7 pt-24 md:px-24 will-change-transform"
+                    className="page-x relative z-10 pt-24 will-change-transform"
                 >
                     <section className="flex flex-col items-center justify-center text-center py-12">
                         <motion.span

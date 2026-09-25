@@ -75,6 +75,9 @@ const SubHeader = () => {
     const tiktokEl = tiktokRef.current;
     const instagramEl = instagramRef.current;
     const containerEl = containerRef.current;
+    // Only pin on desktop: a 200vh pinned section hijacks touch scrolling on
+    // phones. On small screens the three stats simply fade/scroll normally.
+    const isDesktop = window.matchMedia("(min-width: 768px)").matches;
 
     const ctx = gsap.context(() => {
       // Set initial states
@@ -89,7 +92,7 @@ const SubHeader = () => {
           trigger: containerEl,
           start: "top center",
           end: "bottom center",
-          pin: true,
+          pin: isDesktop,
           scrub: 1,
           anticipatePin: 1,
           fastScrollEnd: true,
@@ -175,7 +178,7 @@ const SubHeader = () => {
     <>
       <div
         ref={containerRef}
-        className="relative w-full min-h-[200vh] flex flex-col items-center"
+        className="relative flex min-h-[140vh] w-full flex-col items-center md:min-h-[200vh]"
       >
         <div
           ref={wakatimeRef}

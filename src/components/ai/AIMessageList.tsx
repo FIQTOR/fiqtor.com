@@ -29,6 +29,8 @@ export default function AIMessageList({
     <div
       className="ai-scrollable max-h-[min(60vh,32rem)] overflow-y-auto overflow-x-hidden overscroll-contain rounded-2xl p-1"
       id="responses"
+      aria-live="polite"
+      aria-busy={loading}
     >
       <div className="flex flex-col gap-4">
         {messages.map((message, index) => {
@@ -55,7 +57,8 @@ export default function AIMessageList({
                 <button
                   onClick={() => onEdit(message.text)}
                   className="p-1 rounded-full hover:bg-neutral-800/40 text-neutral-400 hover:text-white transition-colors shrink-0"
-                  title="Edit question"
+                  aria-label="Edit question"
+                      title="Edit question"
                 >
                   <TbPencil className="h-3.5 w-3.5" />
                 </button>
@@ -86,6 +89,7 @@ export default function AIMessageList({
                 <button
                   onClick={() => onCopy(message.text, index)}
                   className="p-1 rounded-full hover:bg-neutral-800/40 hover:text-white transition-colors"
+                  aria-label="Copy message"
                   title="Copy message"
                 >
                   {copiedIndex === index ? (
@@ -99,6 +103,7 @@ export default function AIMessageList({
                   <button
                     onClick={onRegenerate}
                     className="p-1 rounded-full hover:bg-neutral-800/40 hover:text-white transition-colors"
+                    aria-label="Regenerate response"
                     title="Regenerate response"
                   >
                     <TbRefresh className="h-3.5 w-3.5" />
@@ -110,7 +115,7 @@ export default function AIMessageList({
         })}
 
         {loading && (
-          <div className="flex w-full justify-start items-center gap-2">
+          <div role="status" className="flex w-full justify-start items-center gap-2">
             <span className="loader scale-50"></span>
             <span className="text-neutral-700 dark:text-neutral-300 text-sm">Thinking...</span>
           </div>

@@ -130,6 +130,32 @@
   background: radial-gradient(circle, rgba(13, 148, 136, 0.12), transparent 72%);
 }
 
+/* --- Shared layout tokens ---
+   One horizontal rhythm for page content and one base text treatment so pages
+   stop drifting between px-7/md:px-24, md:px-36, sm:px-6 lg:px-10, etc. */
+.page-x {
+  padding-inline: 1.75rem; /* px-7 */
+}
+
+@media (min-width: 768px) {
+  .page-x {
+    padding-inline: 6rem; /* md:px-24 */
+  }
+}
+
+@media (min-width: 1024px) {
+  .page-x {
+    padding-inline: 9rem; /* lg:px-36 */
+  }
+}
+
+.page-base {
+  min-height: 100vh;
+  font-weight: 300;
+  color: var(--text-main);
+  overflow: hidden;
+}
+
 /* Pause the float animations when the layer is off-screen or the tab is hidden
    (toggle handled in BackgroundBlobs.tsx). */
 .bg-blobs-paused .bg-blob {

@@ -34,7 +34,7 @@ const CertificatesPage = () => {
       <HelmetContainer page="certification" />
       <section
         id="certificates"
-        className="relative min-h-screen px-7 py-24 font-light text-neutral-700 dark:text-neutral-300 md:px-36 overflow-hidden"
+        className="page-base page-x relative py-24"
       >
         <BackgroundBlobs />
 
@@ -125,7 +125,7 @@ const CertificatesPage = () => {
               className="px-4 py-1.5 rounded-full border border-neutral-200 dark:border-neutral-800 bg-white/50 dark:bg-neutral-900/50 backdrop-blur-sm flex items-center gap-2"
             >
               <span className={`text-sm font-bold ${stat.color}`}>{stat.value}</span>
-              <span className="text-[10px] font-bold uppercase tracking-wider opacity-60">{stat.label}</span>
+              <span className="text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">{stat.label}</span>
             </motion.div>
           ))}
         </motion.div>

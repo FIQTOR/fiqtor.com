@@ -1,7 +1,5 @@
 // Import required dependencies
 import { SocialLink } from "@/data/social";
-import { ContainerContext } from "@/context/container-context";
-import { useContext } from "react";
 import {
   SiGithub,
   SiInstagram,
@@ -93,8 +91,6 @@ const socialLinks: SocialLinkType[] = [
 ];
 
 export default function LinktreeBox() {
-  const { setFullPathName } = useContext(ContainerContext);
-
   return (
     <div className="relative flex h-full w-full flex-col gap-2 mb-14 rounded-xl shadow-xl backdrop-blur-md dark:border-t dark:border-neutral-800 dark:bg-neutral-900/50">
       {/* Background header image section */}
@@ -149,8 +145,7 @@ export default function LinktreeBox() {
                 <Link
                   to={href}
                   target={href.startsWith("https") ? "_blank" : undefined}
-                  className="flex w-full items-center justify-center group gap-2 hover:gap-4 rounded-md border-b border-b-black py-2 shadow-xl duration-200 hover:scale-105 hover:border-b-8 hover:opacity-70 dark:border-x-0 dark:border-t-0 dark:border-b-white"
-                  onClick={() => setFullPathName(href)}
+                  className="flex w-full items-center justify-center group gap-2 hover:gap-4 rounded-md border-b border-b-black py-2 shadow-xl duration-200 hover:scale-105 hover:border-b-8 hover:opacity-70 dark:border-x-0 dark:border-t-0 dark:border-b-white"
                 >
                   {icon ||
                     (image && (

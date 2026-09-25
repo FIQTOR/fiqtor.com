@@ -9,7 +9,7 @@ const KanbanPage = () => (
     <HelmetContainer page="kanban" />
     <section
       id="kanban"
-      className="relative min-h-screen overflow-hidden px-4 pb-24 pt-24 font-light text-neutral-700 dark:text-neutral-300 sm:px-6 md:px-8 lg:px-10"
+      className="page-base page-x relative pb-24 pt-24"
     >
       <BackgroundBlobs />
 

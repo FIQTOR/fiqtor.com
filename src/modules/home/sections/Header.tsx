@@ -346,7 +346,7 @@ export default function Header() {
                       rotate: [-5, 9, -5, -9, -5]
                     } : { y: 0, x: 0, rotate: -5 }}
                     transition={animateBadges ? { duration: 8.8, repeat: Infinity, ease: "easeInOut", delay: 0.5 } : { duration: 0.3 }}
-                    className="text-[10px] font-medium tracking-normal text-neutral-500 dark:text-neutral-400 group-hover:text-white transition-colors"
+                    className="text-xs font-medium tracking-normal text-neutral-600 dark:text-neutral-300 group-hover:text-white transition-colors"
                   >
                     Explore Code
                   </motion.span>

@@ -7,7 +7,7 @@ import { Projects } from "@/data/projects";
 import ProjectsComponents from "../components/ProjectItem";
 
 export default function RecentProjects() {
-  const { setFullPathName, isTiny } = useContext(ContainerContext);
+  const { isTiny } = useContext(ContainerContext);
 
   const stats = useMemo(() => ({
     total: Projects.length,
@@ -88,7 +88,6 @@ export default function RecentProjects() {
         >
           <Link
             to="/projects"
-            onClick={() => setFullPathName("/projects")}
             className="group relative flex items-center gap-3 self-end rounded-full border border-neutral-400/30 bg-linear-to-r from-neutral-200/50 to-neutral-300/50 px-8 py-3 shadow-xl backdrop-blur-md transition-all duration-300 hover:scale-105 hover:border-neutral-500/50 hover:shadow-2xl hover:shadow-neutral-400/20 dark:border-neutral-600/30 dark:from-neutral-700/20 dark:to-neutral-600/20 dark:hover:border-neutral-500/50 dark:hover:shadow-neutral-400/20"
           >
             <div className="absolute inset-0 bg-linear-to-r from-neutral-400/20 to-neutral-500/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl" />

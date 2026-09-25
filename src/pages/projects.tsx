@@ -96,7 +96,7 @@ const ProjectsPage = () => {
       <HelmetContainer page="projects" />
       <section
         id="projects"
-        className="relative min-h-screen px-7 py-24 font-light text-neutral-700 dark:text-neutral-300 md:px-36 overflow-hidden"
+        className="page-base page-x relative py-24"
       >
         <BackgroundBlobs />
 
@@ -148,7 +148,7 @@ const ProjectsPage = () => {
               >
                 <stat.icon className="h-4 w-4 text-blue-500" />
                 <span className="text-xl font-bold text-neutral-800 dark:text-neutral-200">{stat.value}</span>
-                <span className="text-xs font-bold uppercase tracking-widest opacity-60">{stat.label}</span>
+                <span className="text-xs font-bold uppercase tracking-widest text-neutral-500 dark:text-neutral-400">{stat.label}</span>
               </motion.div>
             ))}
           </div>
@@ -181,7 +181,7 @@ const ProjectsPage = () => {
                   }`}
               >
                 {tab.label}
-                <span className="text-[10px] font-bold opacity-60">{tab.count}</span>
+                <span className="text-xs font-bold opacity-70">{tab.count}</span>
               </button>
             ))}
           </div>

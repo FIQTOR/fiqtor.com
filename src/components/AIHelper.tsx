@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { TbBrandGithubCopilot, TbX, TbUpload } from 'react-icons/tb';
 import { BRAND_NAME } from "@/config/Identity";
+import { useFocusTrap } from '@/hooks/useFocusTrap';
 import { useAIChat } from './ai/useAIChat';
 import { useSpeechDictation } from './ai/useSpeechDictation';
 import { useFileAttachment } from './ai/useFileAttachment';
@@ -33,6 +34,10 @@ const AIHelper: React.FC = () => {
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
   const attachMenuRef = useRef<HTMLDivElement | null>(null);
 
+  const closePanel = React.useCallback(() => setActive(false), []);
+  // Trap focus + Escape-to-close while the panel is open.
+  const panelRef = useFocusTrap<HTMLDivElement>(active, closePanel);
+
   const file = useFileAttachment(setError);
   const { attachedFile, clearAttachment, fileInputRef, isDragging } = file;
 
@@ -63,16 +68,6 @@ const AIHelper: React.FC = () => {
       window.removeEventListener('wheel', blockScroll);
       window.removeEventListener('touchmove', blockScroll);
     };
-  }, [active]);
-
-  // Close on Escape.
-  useEffect(() => {
-    if (!active) return;
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setActive(false);
-    };
-    window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
   }, [active]);
 
   // Focus the composer when the panel opens.
@@ -164,6 +159,7 @@ const AIHelper: React.FC = () => {
                 dismissTooltip();
               }}
               className="text-neutral-400 hover:text-white p-0.5 rounded-full hover:bg-white/10 transition-colors"
+              aria-label="Dismiss tip"
               title="Dismiss"
             >
               <TbX className="h-3 w-3" />
@@ -189,6 +185,10 @@ const AIHelper: React.FC = () => {
 
       {/* Stacked panel: message history (scrolls) above the composer (pinned) */}
       <div
+        ref={panelRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label="FIQ AI assistant"
         className={`absolute bottom-0 right-0 flex w-[min(92vw,26rem)] flex-col gap-3 transition-all duration-300 ease-out origin-bottom-right ${active
           ? 'opacity-100 translate-y-0 scale-100 pointer-events-auto'
           : 'opacity-0 translate-y-4 scale-90 pointer-events-none'
@@ -197,6 +197,7 @@ const AIHelper: React.FC = () => {
         {/* Close button */}
         <button
           onClick={() => setActive(false)}
+          aria-label="Close assistant"
           title="Close"
           className={`absolute -top-2 -right-2 z-20 flex h-9 w-9 items-center justify-center rounded-full bg-neutral-900/90 text-white shadow-xl backdrop-blur-md transition-all hover:bg-neutral-700 ${active ? 'opacity-100 delay-150' : 'opacity-0'
             }`}

@@ -69,6 +69,7 @@ export default function AIComposer({
               type="button"
               onClick={() => setShowAttachMenu((v) => !v)}
               disabled={loading}
+              aria-label="Attach file (max 4.5MB)"
               title="Attach file (Max 4.5MB)"
               className={`flex h-9 w-9 items-center justify-center rounded-full transition-colors hover:bg-neutral-200/70 hover:text-blue-500 dark:hover:bg-neutral-700/60 ${showAttachMenu ? 'bg-neutral-200/70 text-blue-500 dark:bg-neutral-700/60' : ''
                 }`}
@@ -116,7 +117,7 @@ export default function AIComposer({
           {/* Mic / recording bars / Send */}
           <div className="flex items-center gap-1.5">
             {isRecording && (
-              <div className="recording-bars" title="Recording…">
+              <div className="recording-bars" role="img" aria-label="Recording in progress" title="Recording…">
                 <span />
                 <span />
                 <span />
@@ -128,7 +129,8 @@ export default function AIComposer({
               type="button"
               onClick={onToggleRecording}
               disabled={loading}
-              title={isRecording ? 'Stop dictation' : 'Dictate with your voice'}
+              aria-label={isRecording ? "Stop dictation" : "Start voice dictation"}
+              title={isRecording ? "Stop dictation" : "Dictate with your voice"}
               className={`flex h-10 w-10 items-center justify-center rounded-full transition-colors disabled:cursor-not-allowed disabled:opacity-40 ${isRecording
                 ? 'bg-red-500/15 text-red-500 hover:bg-red-500/25'
                 : 'text-neutral-500 hover:bg-neutral-200/70 hover:text-blue-500 dark:text-neutral-400 dark:hover:bg-neutral-700/60'
@@ -145,6 +147,7 @@ export default function AIComposer({
               type="button"
               onClick={onSubmit}
               disabled={loading || (!prompt.trim() && !attachedFile)}
+              aria-label="Send message"
               title="Send message"
               className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 text-white shadow-lg transition-all hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-40"
             >

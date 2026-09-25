@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
-import { useContext, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { TbArrowRight, TbChevronsRight } from "react-icons/tb";
-import { ContainerContext } from "@/context/container-context";
 import { Certificates } from "@/data/certificate";
 import { CertificateCard } from "@/components/certificate/CertificateCard";
 import type { Certificate } from "@/components/certificate/CertificateCard";
@@ -13,7 +12,6 @@ type CarouselCard =
   | { uniqueId: string; isViewAll: true; originalIndex: number };
 
 export default function Certification() {
-  const { setFullPathName } = useContext(ContainerContext);
   const sectionRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { once: false, amount: 0.1 });
 
@@ -114,7 +112,7 @@ export default function Certification() {
                 <span className="text-3xl md:text-4xl font-light tracking-tighter text-neutral-900 dark:text-white">
                   {stat.value}
                 </span>
-                <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-500 dark:text-neutral-500">
+                <span className="text-xs font-bold uppercase tracking-widest text-neutral-600 dark:text-neutral-400">
                   {stat.label}
                 </span>
               </div>
@@ -176,7 +174,6 @@ export default function Certification() {
                   {card.isViewAll ? (
                     <Link
                       to="/certification"
-                      onClick={() => setFullPathName("/certification")}
                       className="group relative flex h-70 sm:h-87.5 lg:h-100 w-full flex-col items-center justify-center gap-4 md:gap-6 rounded-4xl md:rounded-[2.5rem] border-2 border-dashed border-neutral-300 dark:border-neutral-700 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-md transition-all duration-500 hover:border-blue-500 hover:shadow-2xl hover:shadow-blue-500/20 p-4"
                     >
                       <div className="relative flex h-20 w-20 md:h-24 md:w-24 items-center justify-center rounded-3xl md:rounded-3xl bg-neutral-100 shadow-sm transition-all duration-500 group-hover:bg-blue-600 group-hover:-rotate-12 group-hover:scale-110 dark:bg-neutral-800">
@@ -223,7 +220,7 @@ export default function Certification() {
                             </motion.span>
                             <span className="sr-only">Swipe indicator</span>
                           </span>
-                          <span className="text-[9px] font-bold uppercase tracking-[0.28em] text-white/70">
+                          <span className="text-[10px] font-bold uppercase tracking-[0.28em] text-white/90">
                             Swipe
                           </span>
                         </span>
@@ -241,8 +238,11 @@ export default function Certification() {
               );
             })}
 
-            {/* Dots Pagination */}
-            <div className="absolute -bottom-2 md:-bottom-4 flex gap-2 z-10">
+            {/* Dots Pagination — purely decorative (the arrows/drag drive it). */}
+            <div
+              aria-hidden
+              className="absolute -bottom-2 md:-bottom-4 flex gap-2 z-10"
+            >
               {Array.from({ length: totalItems }).map((_, idx) => (
                 <div
                   key={idx}
