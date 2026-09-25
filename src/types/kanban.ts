@@ -23,7 +23,7 @@ export const KANBAN_PRIORITIES = ["high", "medium", "low"] as const;
 export type KanbanPriority = (typeof KANBAN_PRIORITIES)[number];
 
 /**
- * Progressive / outreach progress counter (e.g. "WA ke 46 Kafe" → 10/46).
+ * Progressive / outreach progress counter (e.g. "Outreach: message 46 cafés" → 10/46).
  * `target` of 0 (or a non-positive value) means "no target" → the card hides
  * the progress bar entirely.
  */
@@ -32,7 +32,7 @@ export interface TaskProgress {
   current: number;
   /** Goal amount, e.g. 46. 0 = no target → hides the bar. */
   target: number;
-  /** Display unit for the counter, e.g. "Kafe", "%", "hari". */
+  /** Display unit for the counter, e.g. "Cafés", "%", "days". */
   unit: string;
 }
 

@@ -42,8 +42,8 @@ const SubHeader = () => {
           following: instagram.following
         });
       } catch {
-        console.log("Gagal mengambil stats, menggunakan data fallback.");
-        // Fallback data jika backend tidak tersedia
+        console.log("Failed to fetch stats, using fallback data.");
+        // Fallback data when the backend is unavailable.
         setTiktok({ followers: 1977, following: 30 });
         setInstagram({ followers: 691, following: 577 });
       }

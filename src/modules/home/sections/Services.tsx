@@ -52,7 +52,7 @@ const FloatingBadge = ({
   </Link>
 );
 
-// Koordinat sebaran presisi mengelilingi IARTY Hub (cx, cy disesuaikan dengan posisi icon masing-masing service)
+// Precise spreading coordinates around the IARTY Hub (cx, cy tuned to each service icon's position)
 const servicePositions = [
   {
     tailwind: "md:absolute md:top-[0%] md:left-[38%]",

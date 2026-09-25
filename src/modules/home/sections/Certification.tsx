@@ -124,7 +124,7 @@ export default function Certification() {
         {/* Right Side: Interactive Card Stack */}
         <div className="w-full xl:w-3/5 flex flex-col items-center mt-4 xl:mt-0 z-10">
 
-          {/* Pembungkus Kartu dengan height yang menyesuaikan */}
+          {/* Card stack wrapper with a responsive height */}
           <div className="relative min-h-[22rem] sm:min-h-[28rem] lg:min-h-[32rem] w-full flex items-center justify-center perspective-[1000px]">
             {cards.map((card, index) => {
               const isFront = index === 0;

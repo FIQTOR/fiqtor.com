@@ -35,7 +35,7 @@ describe('kanban.utils numeric helpers', () => {
   });
 
   it('progressLabel omits an empty unit', () => {
-    expect(progressLabel({ current: 10, target: 46, unit: 'Kafe' })).toBe('10/46 Kafe');
+    expect(progressLabel({ current: 10, target: 46, unit: 'Cafés' })).toBe('10/46 Cafés');
     expect(progressLabel({ current: 1, target: 2, unit: '' })).toBe('1/2');
   });
 });

@@ -67,10 +67,10 @@ const LinktreePage = () => {
                 </div>
                 <div className="flex-1">
                   <p className="text-sm font-semibold text-gray-900 dark:text-white group-hover:text-neutral-600 dark:group-hover:text-blue-600 transition-colors">
-                    Diskon Website Coffee shop
+                    Coffee shop website discount
                   </p>
                   <p className="text-xs text-gray-700 dark:text-gray-300 font-medium">
-                    Mulai dari Rp300.000
+                    From Rp300,000
                   </p>
                 </div>
                 <div className="shrink-0">

@@ -3,7 +3,7 @@
  *
  * Controlled by the parent: `mode` decides the title + submit label, `initial`
  * seeds the form. Includes the progressive counter (current/target/unit) so a
- * task like "WA ke 46 Kafe" can jump from 10 → 15 in one edit.
+ * task like "Outreach: message 46 cafés" can jump from 10 → 15 in one edit.
  */
 import { useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -139,7 +139,7 @@ const TaskModalForm = ({
               setDraft((d) => ({ ...d, title: e.target.value }));
               if (titleError) setTitleError(false);
             }}
-            placeholder="e.g. Outreach WA ke 46 Kafe"
+            placeholder="e.g. Outreach: message 46 cafés"
             className={`${inputClass} ${
               titleError ? "border-red-500/70 ring-2 ring-red-500/20" : ""
             }`}
@@ -277,7 +277,7 @@ const TaskModalForm = ({
                 type="text"
                 value={draft.progress.unit}
                 onChange={(e) => setProgress({ unit: e.target.value })}
-                placeholder="Kafe"
+                placeholder="Cafés"
                 className={inputClass}
               />
             </div>

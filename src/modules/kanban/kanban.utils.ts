@@ -23,7 +23,7 @@ export const hasProgressTarget = (progress: TaskProgress): boolean =>
   Number.isFinite(progress.target) && progress.target > 0;
 
 /**
- * "10/46 Kafe" — human counter label. Falls back gracefully when unit is empty.
+ * "10/46 Cafés" — human counter label. Falls back gracefully when unit is empty.
  */
 export const progressLabel = (progress: TaskProgress): string => {
   const base = `${progress.current}/${progress.target}`;

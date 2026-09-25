@@ -11,7 +11,7 @@ interface ServiceProps {
 }
 
 const Service = ({ service, variant = "default", iconRef }: ServiceProps) => {
-  // Jika variant minimal (Untuk melayang tanpa background kotak di sekitar logo)
+  // "minimal" variant floats the logo without a surrounding box background.
   if (variant === "minimal") {
     return (
       <div className="flex flex-col items-center gap-2 group cursor-default text-center select-none max-w-50 md:max-w-55">

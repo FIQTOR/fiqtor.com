@@ -74,7 +74,7 @@ export default function Navbar() {
   const itemRefs = useRef<Map<string, HTMLAnchorElement>>(new Map());
   const [indicator, setIndicator] = useState({ left: 0, top: 0, size: 0, ready: false });
 
-  // Apakah menu aktif ada di dalam daftar menu navbar
+  // Whether the active route is one of the navbar menu items
   const isActiveInMenu = useMemo(
     () => Menu.some((menu) => menu.pathName === fullPathName),
     [fullPathName]
@@ -88,7 +88,7 @@ export default function Navbar() {
     []
   );
 
-  // Hitung posisi indikator lingkaran mengikuti menu aktif
+  // Position the circular indicator under the active menu item
   const updateIndicator = useCallback(() => {
     const container = containerRef.current;
     const activeEl = itemRefs.current.get(fullPathName);
@@ -107,7 +107,7 @@ export default function Navbar() {
 
   useEffect(() => {
     updateIndicator();
-    // re-calculate saat resize agar tetap presisi
+    // Recalculate on resize to keep the indicator precise
     window.addEventListener("resize", updateIndicator);
     return () => window.removeEventListener("resize", updateIndicator);
   }, [updateIndicator, mounted]);
@@ -187,7 +187,7 @@ export default function Navbar() {
           )}
 
           <div ref={containerRef} className="relative flex items-center gap-0.5 md:gap-1">
-            {/* Circle indicator yang berpindah-pindah mengikuti menu aktif */}
+            {/* Circle indicator that slides to follow the active menu item */}
             <span
               aria-hidden
               className={`pointer-events-none absolute z-0 bg-neutral-200/70 dark:bg-neutral-800/70 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${
