@@ -1,19 +1,8 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
+import { WelcomeContext } from "./welcome-context";
 
 const WELCOME_DURATION = 3200;
-
-interface WelcomeContextProps {
-  showWelcome: boolean;
-  isWelcomeDone: boolean;
-}
-
-export const WelcomeContext = createContext<WelcomeContextProps>({
-  showWelcome: true,
-  isWelcomeDone: false,
-});
-
-export const useWelcome = () => useContext(WelcomeContext);
 
 interface WelcomeProviderProps {
   children: ReactNode;

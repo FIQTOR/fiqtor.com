@@ -1,26 +1,15 @@
-import { createContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
-
-interface ContextProps {
-  fullPathName: string;
-  setFullPathName: (titles: string) => void;
-  isTiny: boolean;
-  isMobile: boolean;
-}
-
-export const ContainerContext = createContext<ContextProps>({
-  fullPathName: "",
-  setFullPathName: () => { },
-  isTiny: false,
-  isMobile: false,
-});
+import { ContainerContext } from "./container-context";
 
 interface ContainerContextProps {
   children: ReactNode;
 }
 
 export default function ContainerProvider({ children }: ContainerContextProps) {
-  const [fullPathName, setFullPathName] = useState("/");
+  const [fullPathName, setFullPathName] = useState(
+    () => (typeof window !== "undefined" ? window.location.pathname + window.location.hash : "/")
+  );
   // Initialise from the viewport synchronously so the first render already has
   // the correct flags. Otherwise `isMobile` starts as false and LineWaves mounts
   // (creating a WebGL context) for one frame on phones before unmounting.
@@ -33,15 +22,11 @@ export default function ContainerProvider({ children }: ContainerContextProps) {
   const [fadeOut, setFadeOut] = useState(false);
 
   useEffect(() => {
-    setFullPathName(window.location.pathname + window.location.hash);
     // Function to check window width
     const checkViewportWidth = () => {
       setIsTiny(window.innerWidth < 350);
       setIsMobile(window.innerWidth < 768);
     };
-
-    // Initial check
-    checkViewportWidth();
 
     // Add event listeners
     window.addEventListener("resize", checkViewportWidth);
