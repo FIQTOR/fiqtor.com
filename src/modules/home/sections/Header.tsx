@@ -2,7 +2,7 @@ import { AnimatePresence, motion, useInView } from "framer-motion";
 import { useContext, useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { TbArrowDown, TbBrandGithub, TbBrandLinkedin, TbBrandWhatsapp, TbDownload, TbMail, TbX } from "react-icons/tb";
-import { ContainerContext } from "@/context/ContainerProvider";
+import { ContainerContext } from "@/context/container-context";
 import MetadataConfig from "@/config/Metadata";
 import {
   SOCIAL_LINKS,
@@ -53,13 +53,32 @@ const StatCounter = ({ target, suffix, start }: { target: number; suffix: string
 };
 
 export default function Header() {
-  const metadata: any = MetadataConfig;
+  const metadata = MetadataConfig;
 
   const { isTiny } = useContext(ContainerContext);
   const [showCVLanguage, setShowCVLanguage] = useState(false);
-  const [badgePositions, setBadgePositions] = useState<
+  // Generate abstract, randomized badge positions lazily on first render
+  // (lazy initializer runs once — no state-setting effect needed).
+  const [badgePositions] = useState<
     { top: string; left: string; rotate: number; isReverse: boolean }[]
-  >([]);
+  >(() => {
+    const possibleCoords = [
+      { top: `${14 + Math.floor(Math.random() * 12)}%`, left: `${10 + Math.floor(Math.random() * 14)}%`, isReverse: false },
+      { top: `${48 + Math.floor(Math.random() * 14)}%`, left: `${8 + Math.floor(Math.random() * 14)}%`, isReverse: false },
+      { top: `${16 + Math.floor(Math.random() * 14)}%`, left: `${62 + Math.floor(Math.random() * 18)}%`, isReverse: true },
+      { top: `${58 + Math.floor(Math.random() * 14)}%`, left: `${60 + Math.floor(Math.random() * 18)}%`, isReverse: true },
+    ];
+
+    // Shuffle preset positions to break fixed 2:2 layout patterns randomly
+    const shuffled = [...possibleCoords].sort(() => Math.random() - 0.5);
+
+    return shuffled.map((pos) => ({
+      top: pos.top,
+      left: pos.left,
+      isReverse: pos.isReverse,
+      rotate: Math.floor(Math.random() * 50) - 25, // -25deg to +25deg initial tilt
+    }));
+  });
 
   // Gate the looping float animations: they only run while the hero is on
   // screen AND the tab is visible. Off-screen they'd keep the compositor busy
@@ -73,28 +92,6 @@ export default function Header() {
     return () => document.removeEventListener("visibilitychange", onVis);
   }, []);
   const animateBadges = inView && tabVisible;
-
-  useEffect(() => {
-    // Generate abstract non-2:2 randomized coordinates on mount (every refresh)
-    const possibleCoords = [
-      { top: `${14 + Math.floor(Math.random() * 12)}%`, left: `${10 + Math.floor(Math.random() * 14)}%`, isReverse: false },
-      { top: `${48 + Math.floor(Math.random() * 14)}%`, left: `${8 + Math.floor(Math.random() * 14)}%`, isReverse: false },
-      { top: `${16 + Math.floor(Math.random() * 14)}%`, left: `${62 + Math.floor(Math.random() * 18)}%`, isReverse: true },
-      { top: `${58 + Math.floor(Math.random() * 14)}%`, left: `${60 + Math.floor(Math.random() * 18)}%`, isReverse: true }
-    ];
-
-    // Shuffle preset positions to break fixed 2:2 layout patterns randomly
-    const shuffled = [...possibleCoords].sort(() => Math.random() - 0.5);
-
-    const generated = shuffled.map((pos) => ({
-      top: pos.top,
-      left: pos.left,
-      isReverse: pos.isReverse,
-      rotate: Math.floor(Math.random() * 50) - 25, // -25deg to +25deg initial tilt
-    }));
-
-    setBadgePositions(generated);
-  }, []);
 
   useEffect(() => {
     const textContent = document.getElementById("textContent");

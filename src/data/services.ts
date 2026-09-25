@@ -4,9 +4,10 @@ import {
   TbRobot,
   TbSettingsAutomation
 } from "react-icons/tb";
+import type { IconComponent } from "./icons";
 
 type Service = {
-  SvgIcon: any;
+  SvgIcon: IconComponent;
   title: string;
   description: string;
 };

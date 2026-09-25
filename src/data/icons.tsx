@@ -1,10 +1,15 @@
+import type { ComponentType } from "react";
 import { FcGoogle } from "react-icons/fc";
 import * as Icons from "react-icons/si";
 import { FaAmazon, FaAws, FaCss3Alt } from "react-icons/fa";
 
-interface iconProps {
+export interface iconProps {
   className?: string;
+  strokeWidth?: string | number;
 }
+
+/** Any icon component (react-icons or a local SVG) rendered with a className. */
+export type IconComponent = ComponentType<iconProps>;
 
 // Language
 export const Html5 = ({ className }: iconProps) => (

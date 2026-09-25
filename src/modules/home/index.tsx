@@ -6,7 +6,7 @@ import SubHeader from "./sections/SubHeader";
 import Loading from "@/components/Loading";
 import ServicesSection from "./sections/Services";
 import RecentProjects from "./sections/RecentProjects";
-import { ContainerContext } from "@/context/ContainerProvider";
+import { ContainerContext } from "@/context/container-context";
 import LineWaves from "@/components/LineWavesLazy";
 
 // Heavy, below-the-fold sections: loaded on their own chunks, keeping the home

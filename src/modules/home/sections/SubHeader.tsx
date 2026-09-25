@@ -14,10 +14,10 @@ gsap.registerPlugin(ScrollTrigger);
 ScrollTrigger.config({ ignoreMobileResize: true });
 
 const SubHeader = () => {
-  const containerRef = useRef<any>(null);
-  const wakatimeRef = useRef<any>(null);
-  const tiktokRef = useRef<any>(null);
-  const instagramRef = useRef<any>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const wakatimeRef = useRef<HTMLDivElement>(null);
+  const tiktokRef = useRef<HTMLDivElement>(null);
+  const instagramRef = useRef<HTMLDivElement>(null);
   const [wakatime, setWakatime] = useState({ coding_lifetime: '', since: '' });
   const [tiktok, setTiktok] = useState({ followers: 0, following: 0 });
   const [instagram, setInstagram] = useState({ followers: 0, following: 0 });
@@ -41,7 +41,7 @@ const SubHeader = () => {
           followers: instagram.followers,
           following: instagram.following
         });
-      } catch (err) {
+      } catch {
         console.log("Gagal mengambil stats, menggunakan data fallback.");
         // Fallback data jika backend tidak tersedia
         setTiktok({ followers: 1977, following: 30 });
@@ -55,7 +55,7 @@ const SubHeader = () => {
             .replace("mins", "minutes"),
           since: response.data.data.range.start_text
         });
-      } catch (err) {
+      } catch {
         // console.log(err);
         setWakatime({
           coding_lifetime: '',
@@ -70,9 +70,15 @@ const SubHeader = () => {
   useEffect(() => {
     if (!wakatimeRef.current || !tiktokRef.current || !instagramRef.current || !containerRef.current) return;
 
+    // Capture non-null elements so their types stay narrowed inside the context.
+    const wakatimeEl = wakatimeRef.current;
+    const tiktokEl = tiktokRef.current;
+    const instagramEl = instagramRef.current;
+    const containerEl = containerRef.current;
+
     const ctx = gsap.context(() => {
       // Set initial states
-      gsap.set([wakatimeRef.current, tiktokRef.current, instagramRef.current], {
+      gsap.set([wakatimeEl, tiktokEl, instagramEl], {
         opacity: 0,
         y: 100
       });
@@ -80,7 +86,7 @@ const SubHeader = () => {
       // Animation timeline
       gsap.timeline({
         scrollTrigger: {
-          trigger: containerRef.current,
+          trigger: containerEl,
           start: "top center",
           end: "bottom center",
           pin: true,
@@ -90,14 +96,14 @@ const SubHeader = () => {
           // markers: true
         }
       })
-        .to(wakatimeRef.current, {
+        .to(wakatimeEl, {
           opacity: 1,
           y: 0,
           duration: 1,
           immediateRender: false,
           zIndex: 1
         })
-        .to(wakatimeRef.current?.querySelectorAll('.animate-text'), {
+        .to(wakatimeEl.querySelectorAll('.animate-text'), {
           opacity: 1,
           scale: 1,
           stagger: 0.1,
@@ -106,21 +112,21 @@ const SubHeader = () => {
           immediateRender: false,
           zIndex: 1
         }, ">-0.5")
-        .to(wakatimeRef.current, {
+        .to(wakatimeEl, {
           opacity: 0,
           y: -100,
           duration: 1,
           immediateRender: false,
           zIndex: 0
         }, "+=1")
-        .to(tiktokRef.current, {
+        .to(tiktokEl, {
           opacity: 1,
           y: 0,
           duration: 1,
           immediateRender: false,
           zIndex: 2
         }, "-=0.5")
-        .to(tiktokRef.current?.querySelectorAll('.animate-text'), {
+        .to(tiktokEl.querySelectorAll('.animate-text'), {
           opacity: 1,
           scale: 1,
           stagger: 0.1,
@@ -129,21 +135,21 @@ const SubHeader = () => {
           immediateRender: false,
           zIndex: 2
         }, ">-0.5")
-        .to(tiktokRef.current, {
+        .to(tiktokEl, {
           opacity: 0,
           y: -100,
           duration: 1,
           immediateRender: false,
           zIndex: 0
         }, "+=1")
-        .to(instagramRef.current, {
+        .to(instagramEl, {
           opacity: 1,
           y: 0,
           duration: 1,
           immediateRender: false,
           zIndex: 3
         }, "-=1")
-        .to(instagramRef.current?.querySelectorAll('.animate-text'), {
+        .to(instagramEl.querySelectorAll('.animate-text'), {
           opacity: 1,
           scale: 1,
           stagger: 0.1,
@@ -152,7 +158,7 @@ const SubHeader = () => {
           immediateRender: false,
           zIndex: 3
         }, ">-0.5")
-        .to(instagramRef.current, {
+        .to(instagramEl, {
           opacity: 0,
           y: -100,
           duration: 1,

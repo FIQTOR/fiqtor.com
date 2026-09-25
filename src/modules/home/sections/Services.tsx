@@ -9,12 +9,12 @@ import {
   TbExternalLink,
 } from "react-icons/tb";
 import Service from "../components/Service";
-import { ContainerContext } from "@/context/ContainerProvider";
+import { ContainerContext } from "@/context/container-context";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { COMPANY } from "@/config/Identity";
 
-const Image = (p: any) => <img {...p} />;
+const Image = (p: React.ImgHTMLAttributes<HTMLImageElement>) => <img {...p} />;
 
 const FloatingBadge = ({
   to,

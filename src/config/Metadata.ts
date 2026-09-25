@@ -12,7 +12,6 @@ import {
   CONTACT_EMAIL,
   CONTACT_PHONE,
   TWITTER_HANDLE,
-  PORTRAIT_IMAGE,
   SITE_ORIGIN,
 } from "@/config/Identity";
 

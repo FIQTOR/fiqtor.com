@@ -1,10 +1,16 @@
 import { Link } from "react-router-dom";
 import { useContext, useRef, useState } from "react";
 import { TbArrowRight, TbChevronsRight } from "react-icons/tb";
-import { ContainerContext } from "@/context/ContainerProvider";
+import { ContainerContext } from "@/context/container-context";
 import { Certificates } from "@/data/certificate";
 import { CertificateCard } from "@/components/certificate/CertificateCard";
+import type { Certificate } from "@/components/certificate/CertificateCard";
 import { motion, useInView } from "framer-motion";
+
+/** A carousel slot: either a real certificate or the "view all" marker card. */
+type CarouselCard =
+  | (Certificate & { uniqueId: string; isViewAll: false; originalIndex: number })
+  | { uniqueId: string; isViewAll: true; originalIndex: number };
 
 export default function Certification() {
   const { setFullPathName } = useContext(ContainerContext);
@@ -14,8 +20,8 @@ export default function Certification() {
   const featured = Certificates.slice(0, 8);
   const totalItems = featured.length + 1;
 
-  const [cards, setCards] = useState(() => {
-    const certCards = featured.map((cert, i) => ({
+  const [cards, setCards] = useState<CarouselCard[]>(() => {
+    const certCards: CarouselCard[] = featured.map((cert, i) => ({
       ...cert,
       uniqueId: `cert-${i}`,
       isViewAll: false,
@@ -28,7 +34,7 @@ export default function Certification() {
         uniqueId: "view-all-card",
         isViewAll: true,
         originalIndex: featured.length,
-      } as any
+      },
     ];
   });
 

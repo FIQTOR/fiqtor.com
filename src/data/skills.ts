@@ -38,16 +38,17 @@ import {
   Node,
   Lua,
 } from "./icons";
+import type { IconComponent } from "./icons";
 
 // Interface for basic skill items with icon and tooltip
-type Item = {
-  SvgIcon: any; // SVG component for the skill icon
+export type Item = {
+  SvgIcon: IconComponent; // SVG component for the skill icon
   tooltip: string; // Tooltip text to display on hover
 };
 
 // Interface for API-related skill items with additional fields
-type APIItem = {
-  SvgIcon: any; // SVG component for the API icon
+export type APIItem = {
+  SvgIcon: IconComponent; // SVG component for the API icon
   title: string; // Title of the API
   description: string; // Detailed description of the API
 };

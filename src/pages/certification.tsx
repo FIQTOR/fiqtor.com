@@ -76,14 +76,14 @@ const CertificatesPage = () => {
         {/* Filters & Search UI */}
         <div className="relative z-10 mb-12 flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div className="flex p-1 gap-1 rounded-2xl bg-neutral-200/50 dark:bg-neutral-800/50 backdrop-blur-md border border-neutral-300/30 dark:border-neutral-700/30 w-fit">
-            {[
+            {([
               { id: "all", label: "All", icon: TbFilter },
               { id: "professional", label: "Professional", icon: TbBriefcase },
               { id: "academic", label: "Academic", icon: TbSchool }
-            ].map((tab) => (
+            ] as const).map((tab) => (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id as any)}
+                onClick={() => setActiveTab(tab.id)}
                 className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-300 ${activeTab === tab.id
                   ? "bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white shadow-lg"
                   : "text-neutral-500 hover:text-neutral-700 dark:hover:text-neutral-300"

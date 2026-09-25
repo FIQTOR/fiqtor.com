@@ -1,10 +1,11 @@
 import { useContext } from "react";
 import { motion } from "framer-motion";
-import { ContainerContext } from "@/context/ContainerProvider";
+import { ContainerContext } from "@/context/container-context";
 import { CertificateCard } from "@/components/certificate/CertificateCard";
+import type { Certificate } from "@/components/certificate/CertificateCard";
 
 interface Props {
-  certificate: any;
+  certificate: Certificate;
 }
 
 export default function CertificateComponent({ certificate }: Props) {

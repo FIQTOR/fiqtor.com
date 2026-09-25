@@ -41,7 +41,7 @@ export default function ContactPage() {
   const [captcha, setCaptcha] = useState(false);
   const [status, setStatus] = useState("idle");
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const name_ = name == "" ? "Name required *" : "";
@@ -69,7 +69,7 @@ export default function ContactPage() {
           },
           body: JSON.stringify({ name, email, type, message }),
         }
-      ).then((res: any) => {
+      ).then((res: Response) => {
         if (res.status === 200) {
           setStatus("success");
           setName("");

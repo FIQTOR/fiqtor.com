@@ -1,6 +1,6 @@
 // Import required dependencies
 import { SocialLink } from "@/data/social";
-import { ContainerContext } from "@/context/ContainerProvider";
+import { ContainerContext } from "@/context/container-context";
 import { useContext } from "react";
 import {
   SiGithub,

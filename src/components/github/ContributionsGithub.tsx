@@ -2,7 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import { TbBrandGithub, TbGitFork } from "react-icons/tb";
 import { motion } from "framer-motion";
 import GithubConfig from "@/config/Github";
-import { ContainerContext } from "@/context/ContainerProvider";
+import { ContainerContext } from "@/context/container-context";
 import axios from "axios";
 
 // --- Types ---
@@ -79,15 +79,26 @@ const DefinitionGithub = () => {
   );
 };
 
+/** Deterministic 0..1 pseudo-random value from a string (stable per color). */
+const hashToUnit = (value: string): number => {
+  let hash = 0;
+  for (let i = 0; i < value.length; i += 1) {
+    hash = (hash * 31 + value.charCodeAt(i)) | 0;
+  }
+  return Math.abs(hash % 1000) / 1000;
+};
+
 const Square = ({ color }: { color: string }) => {
   const { isTiny } = useContext(ContainerContext);
+  // Stable per-card delay derived purely from the color (no impure randomness).
+  const delay = hashToUnit(color || "empty") * 0.9 + 0.1;
   return (
     <motion.li
       className="aspect-square rounded-full bg-neutral-300 dark:bg-neutral-700"
       style={!isTiny ? { backgroundColor: color || undefined } : {}}
       initial={!isTiny ? { opacity: 0 } : {}}
       whileInView={!isTiny ? { opacity: 1 } : {}}
-      transition={!isTiny ? { delay: Math.random() * 0.9 + 0.1 } : {}}
+      transition={!isTiny ? { delay } : {}}
       viewport={!isTiny ? { once: true, amount: 0.8 } : {}}
     />
   );
@@ -104,8 +115,8 @@ function ContributionsGithub() {
       try {
         const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/v1/github/contributions`);
         setData(response.data);
-      } catch (error: any) {
-        setError(error.message);
+      } catch (error) {
+        setError(error instanceof Error ? error.message : "Failed to load contributions.");
         console.log(error);
       } finally {
         setLoading(false);

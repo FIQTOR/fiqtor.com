@@ -7,12 +7,13 @@ import {
   TbLayoutKanban,
   TbStack2,
 } from "react-icons/tb";
+import type { IconComponent } from "./icons";
 
 // Define the structure for menu items
-type Project = {
-  label: string;    // Display text for the menu item
-  Svg: any;         // Icon component to be displayed
-  pathName: string; // Route path for navigation
+export type Project = {
+  label: string;        // Display text for the menu item
+  Svg: IconComponent;   // Icon component to be displayed
+  pathName: string;     // Route path for navigation
 };
 
 // Export menu configuration array

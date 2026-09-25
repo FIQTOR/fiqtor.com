@@ -19,10 +19,11 @@ const CounterAnimation: React.FC<CounterProps> = ({
       round: 1, // Membulatkan angka
       easing: "easeInOutBounce",
       duration: 6000, // Durasi animasi dalam milisecond
-      update: function (anim: any) {
+      update: function (anim) {
         if (numberRef.current) {
+          const target = anim.animatables[0]?.target as unknown as HTMLElement;
           numberRef.current.innerText = Math.round(
-            anim.animatables[0].target.innerHTML,
+            Number(target?.innerHTML ?? start),
           ).toString();
         }
       },

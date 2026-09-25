@@ -1,6 +1,6 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import type { LottiePlayer } from "lottie-web";
-import { ContainerContext } from "@/context/ContainerProvider";
+import { ContainerContext } from "@/context/container-context";
 
 export const Anim: React.FC = () => {
   const ref = useRef<HTMLDivElement>(null);

@@ -1,4 +1,5 @@
 import { Projects } from "@/data/projects";
+import type { Project } from "@/data/projects";
 import { AnimatePresence, motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
@@ -6,7 +7,7 @@ import { TbWorldShare, TbX } from "react-icons/tb";
 import gsap from "gsap";
 
 export default function ProjectsComponents() {
-  const [selectedProject, setSelectedProject] = useState<any>(null);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -55,13 +56,13 @@ export default function ProjectsComponents() {
   return (
     <div ref={containerRef} className="w-full">
       <div className="flex flex-col w-full divide-y divide-neutral-200/20 dark:divide-neutral-800/40">
-        {Projects.slice(0, 4).map((project: any, index: number) => {
+        {Projects.slice(0, 4).map((project: Project, index: number) => {
           const isEven = index % 2 === 0;
 
           return (
             <div
               key={index}
-              onClick={() => setSelectedProject({ ...project, index })}
+              onClick={() => setSelectedProject(project)}
               className={`group cursor-pointer relative w-full flex flex-col md:flex-row ${
                 isEven ? "md:flex-row" : "md:flex-row-reverse"
               } min-h-[320px] md:min-h-[380px] overflow-hidden transition-colors duration-300 hover:bg-neutral-500/5`}
@@ -113,7 +114,7 @@ export default function ProjectsComponents() {
                   <span className="text-xs font-semibold uppercase tracking-wider text-neutral-500 mr-1">
                     Tech Stack:
                   </span>
-                  {project.icons?.map((icon: any, iconIndex: number) => (
+                  {project.icons?.map((icon, iconIndex: number) => (
                     <div key={iconIndex} className="group/tooltip relative flex items-center justify-center">
                       <span className="grid place-items-center rounded-lg border border-neutral-300/30 dark:border-neutral-700/40 bg-neutral-200/50 dark:bg-neutral-800/50 p-2 text-neutral-800 dark:text-neutral-200 backdrop-blur-md transition-transform group-hover/tooltip:scale-110">
                         <icon.SvgIcon className="h-5 w-5" />
@@ -178,7 +179,7 @@ export default function ProjectsComponents() {
                   <div className="mb-8">
                     <h4 className="text-xs font-bold uppercase tracking-widest text-neutral-500 mb-4">Tech Stack</h4>
                     <div className="flex flex-wrap gap-4">
-                      {selectedProject.icons?.map((icon: any, i: number) => (
+                      {selectedProject.icons?.map((icon, i: number) => (
                         <div key={i} className="group/tooltip relative flex flex-col items-center">
                           <span className="grid place-items-center rounded-xl border border-neutral-300/40 dark:border-neutral-700/50 bg-neutral-100 dark:bg-neutral-800/80 p-3 text-neutral-800 dark:text-neutral-200 transition-transform group-hover/tooltip:scale-110">
                             <icon.SvgIcon className="h-7 w-7" />

@@ -1,5 +1,6 @@
 import { Skills } from "@/data/skills";
-import { ContainerContext } from "@/context/ContainerProvider";
+import type { Item } from "@/data/skills";
+import { ContainerContext } from "@/context/container-context";
 import { motion } from 'framer-motion';
 import { useContext } from "react";
 
@@ -7,7 +8,7 @@ export const LanguageSkills = () => {
   const { isTiny } = useContext(ContainerContext);
   return (
     <>
-      {Skills.language?.map((icon: any, index: number) => (
+      {Skills.language?.map((icon: Item, index: number) => (
         <li
           key={index}
           className="relative cursor-pointer group"
@@ -26,7 +27,7 @@ export const FrontendSkills = () => {
   const { isTiny } = useContext(ContainerContext);
   return (
     <>
-      {Skills.frontend?.map((icon: any, index: number) => (
+      {Skills.frontend?.map((icon: Item, index: number) => (
         <li
           key={index}
           className="relative cursor-pointer group"
@@ -45,7 +46,7 @@ export const BackendSkills = () => {
   const { isTiny } = useContext(ContainerContext);
   return (
     <>
-      {Skills.backend?.map((icon: any, index: number) => (
+      {Skills.backend?.map((icon: Item, index: number) => (
         <li
           key={index}
           className="relative cursor-pointer group"
@@ -64,7 +65,7 @@ export const OtherSkills = () => {
   const { isTiny } = useContext(ContainerContext);
   return (
     <>
-      {Skills.other?.map((icon: any, index: number) => (
+      {Skills.other?.map((icon: Item, index: number) => (
         <li
           key={index}
           className="relative cursor-pointer group"
@@ -82,7 +83,7 @@ export const OtherSkills = () => {
 };
 
 interface IconSkillsProps {
-  icon: any;
+  icon: Item;
   animation: boolean;
   index_: number;
 }

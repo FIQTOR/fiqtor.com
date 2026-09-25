@@ -4,13 +4,13 @@ import Recaptcha from "./Recaptcha";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface formProps {
-  setName: any;
-  setEmail: any;
-  setType: any;
-  setMessage: any;
-  setCaptcha: any;
-  handleSubmit: any;
-  errors: any;
+  setName: React.Dispatch<React.SetStateAction<string>>;
+  setEmail: React.Dispatch<React.SetStateAction<string>>;
+  setType: React.Dispatch<React.SetStateAction<string>>;
+  setMessage: React.Dispatch<React.SetStateAction<string>>;
+  setCaptcha: React.Dispatch<React.SetStateAction<boolean>>;
+  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  errors: { tname: string; temail: string; tmessage: string; tcaptcha: string };
 }
 
 const OPTIONS = [
@@ -141,7 +141,7 @@ export default function ContactForm({
               placeholder="e.g., Indonesia Studio"
               className={inputStyles}
               required
-              onChange={(e: any) => setName(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setName(e.target.value)}
             />
             {errors.tname && (
               <p className="text-sm text-red-500 font-medium">{errors.tname}</p>
@@ -164,7 +164,7 @@ export default function ContactForm({
               placeholder="e.g., yourname@email.com"
               className={inputStyles}
               required
-              onChange={(e: any) => setEmail(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setEmail(e.target.value)}
             />
             {errors.temail && (
               <p className="text-sm text-red-500 font-medium">
@@ -203,7 +203,7 @@ export default function ContactForm({
             placeholder="Tell me about your project, goals, timeline, or any questions you have..."
             required
             rows={5}
-            onChange={(e: any) => setMessage(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setMessage(e.target.value)}
             className={`${inputStyles} resize-none`}
           />
           {errors.tmessage && (

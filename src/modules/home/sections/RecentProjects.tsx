@@ -1,7 +1,7 @@
 import { Link as Link } from "react-router-dom";
 import { useContext, useMemo } from "react";
-import { TbStack2, TbCornerDownRight, TbTerminal, TbRocket, TbTarget } from "react-icons/tb";
-import { ContainerContext } from "@/context/ContainerProvider";
+import { TbStack2, TbCornerDownRight, TbTerminal } from "react-icons/tb";
+import { ContainerContext } from "@/context/container-context";
 import { motion } from "framer-motion";
 import { Projects } from "@/data/projects";
 import ProjectsComponents from "../components/ProjectItem";

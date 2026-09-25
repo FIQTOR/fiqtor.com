@@ -1,9 +1,10 @@
 import { useTheme } from "next-themes";
 import { Link as Link } from "react-router-dom";
-import { useContext, useEffect, useMemo, memo, useCallback, useState, useRef } from "react";
+import { useContext, useEffect, useMemo, memo, useCallback, useState, useRef, useSyncExternalStore } from "react";
 import { TbMoon, TbSun, TbMessage } from "react-icons/tb";
 import { Menu } from "../data/menu";
-import { ContainerContext } from "@/context/ContainerProvider";
+import type { Project as MenuItem } from "../data/menu";
+import { ContainerContext } from "@/context/container-context";
 
 const THEME_CYCLE = ["light", "dark"] as const;
 type ThemeMode = (typeof THEME_CYCLE)[number];
@@ -19,8 +20,8 @@ const NavLink = memo(function NavLink({
   fullPathName,
   registerRef,
 }: {
-  menu: any;
-  handle: any;
+  menu: MenuItem;
+  handle: (pathName: string) => void;
   fullPathName: string;
   registerRef: (el: HTMLAnchorElement | null) => void;
 }) {
@@ -61,7 +62,12 @@ const NavLink = memo(function NavLink({
 export default function Navbar() {
   const { fullPathName, setFullPathName } = useContext(ContainerContext);
   const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
+  // Client-only flag without a state-setting effect (hydration-safe).
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
 
   const containerRef = useRef<HTMLDivElement | null>(null);
   const itemRefs = useRef<Map<string, HTMLAnchorElement>>(new Map());
@@ -72,10 +78,6 @@ export default function Navbar() {
     () => Menu.some((menu) => menu.pathName === fullPathName),
     [fullPathName]
   );
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   const registerRef = useCallback(
     (pathName: string) => (el: HTMLAnchorElement | null) => {
