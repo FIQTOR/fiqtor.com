@@ -9,7 +9,7 @@ import { memo } from "react";
 import { TbPlus } from "react-icons/tb";
 import TaskCard from "@/modules/kanban/components/TaskCard";
 import type { KanbanColumnDef } from "@/data/kanban";
-import type { Task } from "@/types/kanban";
+import type { KanbanStatus, Task } from "@/types/kanban";
 import type { KanbanDnD } from "@/modules/kanban/hooks/useKanbanDnD";
 
 interface KanbanColumnProps {
@@ -18,6 +18,7 @@ interface KanbanColumnProps {
   dnd: KanbanDnD;
   onEdit: (task: Task) => void;
   onDelete: (task: Task) => void;
+  onMove: (id: string, toStatus: KanbanStatus) => void;
   onAdd: (columnId: KanbanColumnDef["id"]) => void;
 }
 
@@ -27,6 +28,7 @@ const KanbanColumn = memo(function KanbanColumn({
   dnd,
   onEdit,
   onDelete,
+  onMove,
   onAdd,
 }: KanbanColumnProps) {
   const isDropTarget = dnd.overStatus === column.id;
@@ -80,6 +82,7 @@ const KanbanColumn = memo(function KanbanColumn({
               isDragging={dnd.draggingId === task.id}
               onEdit={onEdit}
               onDelete={onDelete}
+              onMove={onMove}
               dragHandlers={dnd.getCardHandlers(task.id)}
             />
 

@@ -99,7 +99,7 @@ const KanbanToolbar = ({
             {taskCount} task{taskCount === 1 ? "" : "s"}
           </span>
           {savedLabel && (
-            <span className="text-[10px] text-neutral-400">{savedLabel}</span>
+            <span className="text-xs text-neutral-500 dark:text-neutral-400">{savedLabel}</span>
           )}
         </div>
 

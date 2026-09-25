@@ -5,7 +5,7 @@
  * seeds the form. Includes the progressive counter (current/target/unit) so a
  * task like "WA ke 46 Kafe" can jump from 10 → 15 in one edit.
  */
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { TbX } from "react-icons/tb";
 import {
@@ -14,6 +14,7 @@ import {
   createEmptyDraft,
 } from "@/data/kanban";
 import { progressPercent } from "@/modules/kanban/kanban.utils";
+import { useFocusTrap } from "@/hooks/useFocusTrap";
 import type { Task, TaskDraft } from "@/types/kanban";
 
 interface TaskModalProps {
@@ -71,15 +72,8 @@ const TaskModalForm = ({
   );
   const [titleError, setTitleError] = useState(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
-
-  // Close on Escape.
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [onClose]);
+  // Trap focus + close on Escape (returns focus to the trigger on unmount).
+  const trapRef = useFocusTrap<HTMLDivElement>(true, onClose);
 
   const percent = progressPercent(draft.progress);
 
@@ -99,7 +93,10 @@ const TaskModalForm = ({
 
   return (
     <motion.div
-      ref={containerRef}
+      ref={(node) => {
+        containerRef.current = node;
+        trapRef.current = node;
+      }}
       initial={{ opacity: 0, y: 24, scale: 0.98 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: 24, scale: 0.98 }}
@@ -107,7 +104,8 @@ const TaskModalForm = ({
       role="dialog"
       aria-modal="true"
       aria-labelledby="task-modal-title"
-      className="max-h-[92vh] w-full max-w-lg overflow-y-auto rounded-t-2xl border border-neutral-200/70 bg-white/95 p-5 shadow-2xl backdrop-blur-xl dark:border-neutral-800/70 dark:bg-neutral-950/95 sm:rounded-2xl"
+      tabIndex={-1}
+      className="max-h-[92vh] w-full max-w-lg overflow-y-auto rounded-t-2xl border border-neutral-200/70 bg-white/95 p-5 shadow-2xl backdrop-blur-xl outline-none dark:border-neutral-800/70 dark:bg-neutral-950/95 sm:rounded-2xl"
     >
       {/* Header */}
       <div className="mb-5 flex items-center justify-between">
