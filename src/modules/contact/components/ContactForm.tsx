@@ -3,14 +3,28 @@ import { TbSend, TbChevronDown, TbCheck } from "react-icons/tb";
 import Recaptcha from "./Recaptcha";
 import { motion, AnimatePresence } from "framer-motion";
 
+export interface ContactErrors {
+  tname: string;
+  temail: string;
+  tmessage: string;
+  tcaptcha: string;
+}
+
+export interface ContactValues {
+  name: string;
+  email: string;
+  type: string;
+  message: string;
+}
+
 interface formProps {
-  setName: React.Dispatch<React.SetStateAction<string>>;
-  setEmail: React.Dispatch<React.SetStateAction<string>>;
-  setType: React.Dispatch<React.SetStateAction<string>>;
-  setMessage: React.Dispatch<React.SetStateAction<string>>;
+  values: ContactValues;
+  onFieldChange: (field: keyof ContactValues, value: string) => void;
+  onFieldBlur: (field: keyof ContactValues) => void;
   setCaptcha: React.Dispatch<React.SetStateAction<boolean>>;
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-  errors: { tname: string; temail: string; tmessage: string; tcaptcha: string };
+  submitting: boolean;
+  errors: ContactErrors;
 }
 
 const OPTIONS = [
@@ -27,15 +41,22 @@ const OPTIONS = [
   { label: "Other (Please Specify)", value: "Other" },
 ];
 
+/** Accessible custom dropdown implemented as a listbox with keyboard support. */
 function CustomDropdown({
   value,
   onChange,
+  labelledBy,
 }: {
   value: string;
   onChange: (val: string) => void;
+  labelledBy: string;
 }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(() =>
+    Math.max(0, OPTIONS.findIndex((o) => o.value === value))
+  );
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLUListElement>(null);
 
   const selectedOption = OPTIONS.find((opt) => opt.value === value) || OPTIONS[0];
 
@@ -49,12 +70,65 @@ function CustomDropdown({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const open = () => {
+    setActiveIndex(Math.max(0, OPTIONS.findIndex((o) => o.value === value)));
+    setIsOpen(true);
+  };
+
+  const commit = (index: number) => {
+    onChange(OPTIONS[index].value);
+    setIsOpen(false);
+  };
+
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    if (!isOpen) {
+      if (["ArrowDown", "ArrowUp", "Enter", " "].includes(e.key)) {
+        e.preventDefault();
+        open();
+      }
+      return;
+    }
+    switch (e.key) {
+      case "ArrowDown":
+        e.preventDefault();
+        setActiveIndex((i) => Math.min(i + 1, OPTIONS.length - 1));
+        break;
+      case "ArrowUp":
+        e.preventDefault();
+        setActiveIndex((i) => Math.max(i - 1, 0));
+        break;
+      case "Home":
+        e.preventDefault();
+        setActiveIndex(0);
+        break;
+      case "End":
+        e.preventDefault();
+        setActiveIndex(OPTIONS.length - 1);
+        break;
+      case "Enter":
+      case " ":
+        e.preventDefault();
+        commit(activeIndex);
+        break;
+      case "Escape":
+        e.preventDefault();
+        setIsOpen(false);
+        break;
+    }
+  };
+
   return (
     <div ref={dropdownRef} className="relative w-full">
       <button
         type="button"
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-full rounded-2xl border border-neutral-300/40 bg-white/60 px-5 py-3.5 text-left text-neutral-800 backdrop-blur-md transition-all duration-300 flex items-center justify-between focus:border-blue-500/50 focus:outline-none dark:border-neutral-700/40 dark:bg-neutral-900/60 dark:text-neutral-200 cursor-pointer"
+        role="combobox"
+        aria-haspopup="listbox"
+        aria-expanded={isOpen}
+        aria-controls="contact-type-listbox"
+        aria-labelledby={labelledBy}
+        onClick={() => (isOpen ? setIsOpen(false) : open())}
+        onKeyDown={onKeyDown}
+        className="w-full rounded-2xl border border-neutral-300/40 bg-white/60 px-5 py-3.5 text-left text-neutral-800 backdrop-blur-md transition-all duration-300 flex items-center justify-between focus:border-blue-500/50 focus:outline-none focus:ring-2 focus:ring-blue-500/10 dark:border-neutral-700/40 dark:bg-neutral-900/60 dark:text-neutral-200 cursor-pointer"
       >
         <span className="truncate">{selectedOption.label}</span>
         <TbChevronDown className={`h-5 w-5 text-neutral-400 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`} />
@@ -62,32 +136,42 @@ function CustomDropdown({
 
       <AnimatePresence>
         {isOpen && (
-          <motion.div
+          <motion.ul
+            id="contact-type-listbox"
+            ref={listRef}
+            role="listbox"
+            aria-labelledby={labelledBy}
             initial={{ opacity: 0, y: -10, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.95 }}
             transition={{ duration: 0.2 }}
             className="absolute left-0 right-0 top-full mt-2 z-50 max-h-60 overflow-y-auto rounded-2xl border border-neutral-300/50 bg-white/95 dark:bg-neutral-900/95 p-2 shadow-2xl backdrop-blur-xl dark:border-neutral-700/50"
           >
-            {OPTIONS.map((option) => (
-              <button
-                key={option.value}
-                type="button"
-                onClick={() => {
-                  onChange(option.value);
-                  setIsOpen(false);
-                }}
-                className={`w-full text-left px-4 py-2.5 rounded-xl text-sm font-medium transition-colors cursor-pointer flex items-center justify-between ${
-                  value === option.value
-                    ? "bg-blue-600 text-white"
-                    : "text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800"
-                }`}
-              >
-                <span>{option.label}</span>
-                {value === option.value && <TbCheck className="h-4 w-4" />}
-              </button>
-            ))}
-          </motion.div>
+            {OPTIONS.map((option, index) => {
+              const selected = value === option.value;
+              const active = index === activeIndex;
+              return (
+                <li key={option.value} role="option" aria-selected={selected}>
+                  <button
+                    type="button"
+                    tabIndex={-1}
+                    onMouseEnter={() => setActiveIndex(index)}
+                    onClick={() => commit(index)}
+                    className={`w-full text-left px-4 py-2.5 rounded-xl text-sm font-medium transition-colors cursor-pointer flex items-center justify-between ${
+                      selected
+                        ? "bg-blue-600 text-white"
+                        : active
+                          ? "bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300"
+                          : "text-neutral-700 dark:text-neutral-300"
+                    }`}
+                  >
+                    <span>{option.label}</span>
+                    {selected && <TbCheck className="h-4 w-4" />}
+                  </button>
+                </li>
+              );
+            })}
+          </motion.ul>
         )}
       </AnimatePresence>
     </div>
@@ -95,21 +179,14 @@ function CustomDropdown({
 }
 
 export default function ContactForm({
-  setName,
-  setEmail,
-  setType,
-  setMessage,
+  values,
+  onFieldChange,
+  onFieldBlur,
   setCaptcha,
   handleSubmit,
+  submitting,
   errors,
 }: formProps) {
-  const [selectedType, setSelectedType] = useState("Landing Page");
-
-  const handleTypeChange = (val: string) => {
-    setSelectedType(val);
-    setType(val);
-  };
-
   const handleRecaptchaChange = (value: boolean) => {
     setCaptcha(value);
   };
@@ -117,12 +194,16 @@ export default function ContactForm({
   const inputStyles =
     "w-full rounded-2xl border border-neutral-300/40 bg-white/60 px-5 py-3.5 text-neutral-800 backdrop-blur-md transition-all duration-300 placeholder:text-neutral-400 focus:border-blue-500/50 focus:outline-none focus:ring-2 focus:ring-blue-500/10 dark:border-neutral-700/40 dark:bg-neutral-900/60 dark:text-neutral-200 dark:placeholder:text-neutral-500 dark:focus:border-blue-400/50 dark:focus:ring-blue-400/10";
 
+  const invalidStyles = "border-red-500/60 focus:border-red-500/60 focus:ring-red-500/15";
+
   const labelStyles =
     "text-sm font-semibold text-neutral-700 dark:text-neutral-300";
 
+  const errorClass = "text-sm text-red-500 font-medium";
+
   return (
     <div className="rounded-3xl border border-neutral-300/30 bg-white/40 backdrop-blur-md p-8 md:p-10 dark:border-neutral-800/40 dark:bg-neutral-900/40">
-      <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-6" noValidate>
         {/* Name & Email Row */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <motion.div
@@ -138,13 +219,20 @@ export default function ContactForm({
               type="text"
               name="name"
               id="contact-name"
+              autoComplete="name"
               placeholder="e.g., Indonesia Studio"
-              className={inputStyles}
-              required
-              onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setName(e.target.value)}
+              value={values.name}
+              aria-required="true"
+              aria-invalid={Boolean(errors.tname)}
+              aria-describedby={errors.tname ? "contact-name-error" : undefined}
+              className={`${inputStyles} ${errors.tname ? invalidStyles : ""}`}
+              onChange={(e) => onFieldChange("name", e.target.value)}
+              onBlur={() => onFieldBlur("name")}
             />
             {errors.tname && (
-              <p className="text-sm text-red-500 font-medium">{errors.tname}</p>
+              <p id="contact-name-error" role="alert" className={errorClass}>
+                {errors.tname}
+              </p>
             )}
           </motion.div>
 
@@ -161,13 +249,18 @@ export default function ContactForm({
               type="email"
               name="email"
               id="contact-email"
+              autoComplete="email"
               placeholder="e.g., yourname@email.com"
-              className={inputStyles}
-              required
-              onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setEmail(e.target.value)}
+              value={values.email}
+              aria-required="true"
+              aria-invalid={Boolean(errors.temail)}
+              aria-describedby={errors.temail ? "contact-email-error" : undefined}
+              className={`${inputStyles} ${errors.temail ? invalidStyles : ""}`}
+              onChange={(e) => onFieldChange("email", e.target.value)}
+              onBlur={() => onFieldBlur("email")}
             />
             {errors.temail && (
-              <p className="text-sm text-red-500 font-medium">
+              <p id="contact-email-error" role="alert" className={errorClass}>
                 {errors.temail}
               </p>
             )}
@@ -181,10 +274,14 @@ export default function ContactForm({
           transition={{ delay: 0.2 }}
           className="flex flex-col gap-2"
         >
-          <label className={labelStyles}>
+          <label id="contact-type-label" className={labelStyles}>
             How can I help you?
           </label>
-          <CustomDropdown value={selectedType} onChange={handleTypeChange} />
+          <CustomDropdown
+            value={values.type}
+            onChange={(val) => onFieldChange("type", val)}
+            labelledBy="contact-type-label"
+          />
         </motion.div>
 
         {/* Message */}
@@ -203,11 +300,16 @@ export default function ContactForm({
             placeholder="Tell me about your project, goals, timeline, or any questions you have..."
             required
             rows={5}
-            onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setMessage(e.target.value)}
-            className={`${inputStyles} resize-none`}
+            value={values.message}
+            aria-required="true"
+            aria-invalid={Boolean(errors.tmessage)}
+            aria-describedby={errors.tmessage ? "contact-message-error" : undefined}
+            onChange={(e) => onFieldChange("message", e.target.value)}
+            onBlur={() => onFieldBlur("message")}
+            className={`${inputStyles} resize-none ${errors.tmessage ? invalidStyles : ""}`}
           />
           {errors.tmessage && (
-            <p className="text-sm text-red-500 font-medium">
+            <p id="contact-message-error" role="alert" className={errorClass}>
               {errors.tmessage}
             </p>
           )}
@@ -220,7 +322,7 @@ export default function ContactForm({
           transition={{ delay: 0.3 }}
           className="flex flex-col gap-4"
         >
-          <div className="overflow-hidden rounded-2xl w-fit">
+          <div className="min-h-[78px] w-fit rounded-2xl">
             <Recaptcha
               sitekey={`${import.meta.env.VITE_RECAPTCHA_SITE_KEY}`}
               onChange={handleRecaptchaChange}
@@ -228,7 +330,7 @@ export default function ContactForm({
             />
           </div>
           {errors.tcaptcha && (
-            <p className="text-sm text-red-500 font-medium">
+            <p role="alert" className={errorClass}>
               {errors.tcaptcha}
             </p>
           )}
@@ -238,13 +340,23 @@ export default function ContactForm({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.35 }}
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
+          whileHover={{ scale: submitting ? 1 : 1.02 }}
+          whileTap={{ scale: submitting ? 1 : 0.98 }}
           type="submit"
-          className="group flex w-full items-center justify-center gap-3 rounded-2xl bg-black dark:bg-white  px-8 py-4 text-white dark:text-black font-bold shadow-lg shadow-blue-500/20 transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/30"
+          disabled={submitting}
+          className="group flex w-full items-center justify-center gap-3 rounded-2xl bg-black dark:bg-white  px-8 py-4 text-white dark:text-black font-bold shadow-lg shadow-blue-500/20 transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/30 disabled:cursor-not-allowed disabled:opacity-70"
         >
-          <TbSend className="h-5 w-5 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
-          Send Message
+          {submitting ? (
+            <>
+              <span className="h-5 w-5 animate-spin rounded-full border-2 border-current border-t-transparent" />
+              Sending…
+            </>
+          ) : (
+            <>
+              <TbSend className="h-5 w-5 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+              Send Message
+            </>
+          )}
         </motion.button>
       </form>
     </div>

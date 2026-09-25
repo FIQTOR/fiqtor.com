@@ -1,10 +1,10 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import HelmetContainer from "@/components/HelmetContainer";
 import { BackgroundBlobs } from "@/components/BackgroundBlobs";
 import ResponseMessage from "@/modules/contact/components/ResponseMessage";
 import ContactForm from "@/modules/contact/components/ContactForm";
-import Loading from "@/components/Loading";
+import type { ContactErrors, ContactValues } from "@/modules/contact/components/ContactForm";
 import {
   BRAND_NAME,
   OWNER_ALIAS,
@@ -25,67 +25,112 @@ import {
   TbArrowUpRight,
 } from "react-icons/tb";
 
-const initialErrors = {
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const initialErrors: ContactErrors = {
   tname: "",
   temail: "",
   tmessage: "",
   tcaptcha: "",
 };
 
+const initialValues: ContactValues = {
+  name: "",
+  email: "",
+  type: "Landing Page",
+  message: "",
+};
+
+/** Validate a single field; returns an error string ("" when valid). */
+const validateField = (
+  field: keyof ContactValues,
+  values: ContactValues
+): string => {
+  switch (field) {
+    case "name":
+      return values.name.trim() ? "" : "Name is required.";
+    case "email":
+      if (!values.email.trim()) return "Email is required.";
+      return EMAIL_RE.test(values.email.trim()) ? "" : "Enter a valid email address.";
+    case "message":
+      return values.message.trim() ? "" : "Message is required.";
+    case "type":
+      return "";
+    default:
+      return "";
+  }
+};
+
 export default function ContactPage() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [type, setType] = useState("Landing Page");
-  const [message, setMessage] = useState("");
-  const [errors, setErrors] = useState(initialErrors);
+  const [values, setValues] = useState<ContactValues>(initialValues);
+  const [errors, setErrors] = useState<ContactErrors>(initialErrors);
   const [captcha, setCaptcha] = useState(false);
-  const [status, setStatus] = useState("idle");
+  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+  const [submitting, setSubmitting] = useState(false);
+
+  const onFieldChange = useCallback((field: keyof ContactValues, value: string) => {
+    setValues((prev) => ({ ...prev, [field]: value }));
+    // Clear the field's error as soon as the user edits it.
+    if (field !== "type") {
+      const key = `t${field}` as keyof ContactErrors;
+      setErrors((prev) => (prev[key] ? { ...prev, [key]: "" } : prev));
+    }
+  }, []);
+
+  const onFieldBlur = useCallback(
+    (field: keyof ContactValues) => {
+      if (field === "type") return;
+      const message = validateField(field, values);
+      const key = `t${field}` as keyof ContactErrors;
+      setErrors((prev) => ({ ...prev, [key]: message }));
+    },
+    [values]
+  );
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const name_ = name == "" ? "Name required *" : "";
-    const email_ = email == "" ? "Email required *" : "";
-    const message_ = message == "" ? "Message required *" : "";
-    const captcha_ = !captcha ? "Captcha required *" : "";
+    const nextErrors: ContactErrors = {
+      tname: validateField("name", values),
+      temail: validateField("email", values),
+      tmessage: validateField("message", values),
+      tcaptcha: captcha ? "" : "Please complete the captcha.",
+    };
+    setErrors(nextErrors);
 
-    setErrors((prevErrors) => ({
-      ...prevErrors,
-      tname: name_,
-      temail: email_,
-      tmessage: message_,
-      tcaptcha: captcha_,
-    }));
+    const hasErrors = Object.values(nextErrors).some(Boolean);
+    if (hasErrors) return;
 
-    if (name_ == "" && email_ == "" && message_ == "" && captcha) {
-      setStatus("pending");
-      await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/v1/contact/send`,
-        {
-          method: "POST",
-          headers: {
-            Accept: "application/json, text/plain, */*",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ name, email, type, message }),
-        }
-      ).then((res: Response) => {
-        if (res.status === 200) {
-          setStatus("success");
-          setName("");
-          setEmail("");
-          setMessage("");
-        } else {
-          setStatus("error");
-        }
+    setSubmitting(true);
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/v1/contact/send`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
       });
+
+      if (res.ok) {
+        setStatus("success");
+        setValues(initialValues);
+        setCaptcha(false);
+      } else {
+        setStatus("error");
+      }
+    } catch {
+      // Network failure — always resolve to a terminal error state.
+      setStatus("error");
+    } finally {
+      setSubmitting(false);
     }
   };
 
   return (
     <>
       <HelmetContainer page="talk" />
-      <div className="relative min-h-screen font-light text-neutral-700 dark:text-neutral-300 overflow-hidden">
+      <div className="page-base relative">
         <BackgroundBlobs />
 
         <AnimatePresence mode="wait">
@@ -98,7 +143,7 @@ export default function ContactPage() {
               className="relative z-10"
             >
               {/* Header */}
-              <header className="px-7 pt-28 pb-14 md:px-24 lg:px-36">
+              <header className="page-x pt-28 pb-14">
                 <div className="flex flex-col items-center text-center mb-6">
                   {/* Decorative badge */}
                   <motion.div
@@ -139,7 +184,7 @@ export default function ContactPage() {
               </header>
 
               {/* Main Content Grid */}
-              <main className="px-7 pb-24 md:px-24 lg:px-36">
+              <main className="page-x pb-24">
                 <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12">
                   {/* Contact Form - Takes 3 columns */}
                   <motion.div
@@ -149,12 +194,12 @@ export default function ContactPage() {
                     className="lg:col-span-3"
                   >
                     <ContactForm
-                      setName={setName}
-                      setEmail={setEmail}
-                      setType={setType}
-                      setMessage={setMessage}
+                      values={values}
+                      onFieldChange={onFieldChange}
+                      onFieldBlur={onFieldBlur}
                       setCaptcha={setCaptcha}
                       handleSubmit={handleSubmit}
+                      submitting={submitting}
                       errors={errors}
                     />
                   </motion.div>
@@ -287,26 +332,13 @@ export default function ContactPage() {
           }
 
           {
-            status === "pending" && (
-
-              <motion.div
-                key="loading"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="relative z-10 margin-auto flex min-h-screen w-full items-center justify-center px-7"
-              >
-                <Loading />
-              </motion.div>
-            )
-          }
-
-          {
             (status === "success" || status === "error") && (
               <motion.div
                 key="response"
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
+                role="status"
+                aria-live="polite"
                 className="relative z-10"
               >
                 <ResponseMessage status={status} />

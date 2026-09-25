@@ -155,13 +155,14 @@ const ResponseMessage = ({ status }: ResponseProps) => {
               Back to Home
             </Link>
           ) : (
-            <a
-              href="/talk"
+            <Link
+              to="/talk"
+              reloadDocument
               className="group flex items-center gap-3 rounded-2xl bg-linear-to-r from-red-500 to-rose-600 px-8 py-4 text-white font-bold shadow-lg shadow-red-500/20 transition-all duration-300 hover:shadow-xl hover:scale-105"
             >
               <TbRefresh className="h-5 w-5" />
               Try Again
-            </a>
+            </Link>
           )}
         </motion.div>
       </motion.div>
