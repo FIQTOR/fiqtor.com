@@ -194,12 +194,14 @@ const AIHelper: React.FC = () => {
           : 'opacity-0 translate-y-4 scale-90 pointer-events-none'
           }`}
       >
-        {/* Close button */}
+        {/* Close button — floats just off the panel's top-right corner. Offset is
+            kept within the container's right inset so it never clips off-screen on
+            narrow viewports. Ring + shadow tie it visually to the panel. */}
         <button
           onClick={() => setActive(false)}
           aria-label="Close assistant"
           title="Close"
-          className={`absolute -top-3 -right-3 z-20 flex h-9 w-9 items-center justify-center rounded-full bg-neutral-900/90 text-white shadow-xl backdrop-blur-md transition-all hover:bg-neutral-700 hover:scale-105 ${active ? 'opacity-100 delay-150' : 'opacity-0'
+          className={`absolute -top-3 -right-3 z-20 flex h-9 w-9 items-center justify-center rounded-full bg-neutral-900/90 text-white shadow-xl ring-1 ring-white/15 backdrop-blur-md transition-all hover:bg-neutral-700 hover:scale-105 active:scale-95 ${active ? 'opacity-100 delay-150' : 'opacity-0'
             }`}
         >
           <TbX className="h-4 w-4" />

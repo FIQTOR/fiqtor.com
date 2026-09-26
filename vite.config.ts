@@ -97,7 +97,6 @@ export default defineConfig(({ mode }) => {
             if (!id.includes('node_modules')) return;
             if (id.includes('three')) return 'vendor-three';
             if (id.includes('mermaid')) return 'vendor-mermaid';
-            if (id.includes('xlsx')) return 'vendor-xlsx';
             if (id.includes('chart.js') || id.includes('react-chartjs-2')) return 'vendor-charts';
             if (id.includes('gsap')) return 'vendor-gsap';
             if (id.includes('framer-motion')) return 'vendor-motion';
