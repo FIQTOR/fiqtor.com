@@ -199,7 +199,7 @@ const AIHelper: React.FC = () => {
           onClick={() => setActive(false)}
           aria-label="Close assistant"
           title="Close"
-          className={`absolute -top-2 -right-2 z-20 flex h-9 w-9 items-center justify-center rounded-full bg-neutral-900/90 text-white shadow-xl backdrop-blur-md transition-all hover:bg-neutral-700 ${active ? 'opacity-100 delay-150' : 'opacity-0'
+          className={`absolute -top-3 -right-3 z-20 flex h-9 w-9 items-center justify-center rounded-full bg-neutral-900/90 text-white shadow-xl backdrop-blur-md transition-all hover:bg-neutral-700 hover:scale-105 ${active ? 'opacity-100 delay-150' : 'opacity-0'
             }`}
         >
           <TbX className="h-4 w-4" />
