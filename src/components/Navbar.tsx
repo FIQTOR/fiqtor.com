@@ -1,8 +1,7 @@
 import { useTheme } from "next-themes";
 import { Link as Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 import { useContext, useEffect, useMemo, memo, useCallback, useState, useRef, useSyncExternalStore } from "react";
-import { TbMoon, TbSun, TbMessage, TbArrowLeft } from "react-icons/tb";
+import { TbMoon, TbSun, TbMessage } from "react-icons/tb";
 import { Menu } from "../data/menu";
 import type { Project as MenuItem } from "../data/menu";
 import { ContainerContext } from "@/context/container-context";
@@ -61,7 +60,6 @@ const NavLink = memo(function NavLink({
 
 export default function Navbar() {
   const { fullPathName } = useContext(ContainerContext);
-  const navigate = useNavigate();
   const { theme, setTheme } = useTheme();
   // Client-only flag without a state-setting effect (hydration-safe).
   const mounted = useSyncExternalStore(
@@ -173,19 +171,6 @@ export default function Navbar() {
       {/* Bottom Navbar */}
       <div className="fixed bottom-6 left-1/2 z-40 -translate-x-1/2 px-4 w-fit max-w-[95vw]">
         <nav className="flex items-center gap-1 md:gap-2 rounded-full border border-neutral-200/50 bg-white/70 p-1.5 md:p-2 shadow-2xl backdrop-blur-xl dark:border-neutral-800/50 dark:bg-neutral-900/70">
-          {/* Back affordance — shown on every route except home. */}
-          {fullPathName !== "/" && (
-            <button
-              type="button"
-              onClick={() => navigate(-1)}
-              aria-label="Go back"
-              title="Back"
-              className="flex h-9 w-9 items-center justify-center rounded-full text-neutral-600 transition-colors hover:bg-neutral-200/70 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800/70 dark:hover:text-neutral-100"
-            >
-              <TbArrowLeft className="h-5 w-5" strokeWidth="1.5" />
-            </button>
-          )}
-
           <div ref={containerRef} className="relative flex items-center gap-0.5 md:gap-1">
             {/* Circle indicator that slides to follow the active menu item */}
             <span
