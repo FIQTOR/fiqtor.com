@@ -2,6 +2,7 @@ import { Suspense, useEffect, useRef } from 'react';
 import { BrowserRouter as Router, useRoutes, useLocation } from 'react-router-dom';
 import routes from '~react-pages';
 import { AnimatePresence, motion, useMotionValue } from 'framer-motion';
+import { useTheme } from 'next-themes';
 import ThemeProviderContext from './context/ThemeProviderContext';
 import ContainerProvider from './context/ContainerProvider';
 import WelcomeProvider from './context/WelcomeProvider';
@@ -45,7 +46,7 @@ const charVariants = {
   }),
 };
 
-function NeuralNetworkCanvas() {
+function NeuralNetworkCanvas({ dark }: { dark: boolean }) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
@@ -77,6 +78,11 @@ function NeuralNetworkCanvas() {
 
     const handleResize = () => applySize();
     window.addEventListener("resize", handleResize);
+
+    // White on the dark welcome backdrop, dark ink on the white one — otherwise
+    // the effect disappears in light mode.
+    const lineRGB = dark ? "255, 255, 255" : "17, 24, 39";
+    const nodeRGB = dark ? "255, 255, 255" : "17, 24, 39";
 
     const numNodes = Math.min(Math.floor((width * height) / 18000), 45);
     const nodes = Array.from({ length: numNodes }, () => ({
@@ -110,7 +116,7 @@ function NeuralNetworkCanvas() {
             ctx.beginPath();
             ctx.moveTo(nodes[i].x, nodes[i].y);
             ctx.lineTo(nodes[j].x, nodes[j].y);
-            ctx.strokeStyle = `rgba(59, 130, 246, ${alpha})`;
+            ctx.strokeStyle = `rgba(${lineRGB}, ${alpha})`;
             ctx.lineWidth = 1;
             ctx.stroke();
           }
@@ -126,7 +132,7 @@ function NeuralNetworkCanvas() {
 
         ctx.beginPath();
         ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(147, 51, 234, 0.75)";
+        ctx.fillStyle = `rgba(${nodeRGB}, 0.75)`;
         ctx.fill();
       }
     };
@@ -152,7 +158,7 @@ function NeuralNetworkCanvas() {
       document.removeEventListener("visibilitychange", onVisibility);
       cancelAnimationFrame(animationFrameId);
     };
-  }, []);
+  }, [dark]);
 
   return <canvas ref={canvasRef} className="absolute inset-0 z-0 pointer-events-none opacity-50" />;
 }
@@ -160,6 +166,7 @@ function NeuralNetworkCanvas() {
 function WelcomeScreen() {
   const name = BRAND_NAME;
   const { skipWelcome } = useWelcome();
+  const { resolvedTheme } = useTheme();
 
   return (
     <motion.div
@@ -170,7 +177,7 @@ function WelcomeScreen() {
       }}
       className="fixed inset-0 z-30 flex flex-col items-center justify-center bg-white dark:bg-neutral-950 overflow-hidden"
     >
-      <NeuralNetworkCanvas />
+      <NeuralNetworkCanvas dark={resolvedTheme !== "light"} />
 
       {/* Skip — returning/impatient visitors don't wait out the intro. */}
       <button
