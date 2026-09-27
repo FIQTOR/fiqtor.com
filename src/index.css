@@ -19,7 +19,6 @@
   --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --font-heading: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 
-  --animate-blob: blob 7s infinite;
   --animate-float: float-blob 22s ease-in-out infinite;
   --animate-float-slow: float-blob 30s ease-in-out infinite;
   --animate-float-slower: float-blob 40s ease-in-out infinite;
@@ -35,28 +34,6 @@
       transform: translate3d(4%, -3%, 0) scale(1.06);
     }
   }
-
-  @keyframes blob {
-    0% {
-      transform: translate(0px, 0px) scale(1);
-    }
-
-    33% {
-      transform: translate(30px, -50px) scale(1.1);
-    }
-
-    66% {
-      transform: translate(-20px, 20px) scale(0.9);
-    }
-
-    100% {
-      transform: translate(0px, 0px) scale(1);
-    }
-  }
-}
-
-.animation-delay-2000 {
-  animation-delay: 2s;
 }
 
 /* --- Background blobs: radial-gradient replacement for huge blur filters ---
@@ -173,10 +150,6 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-}
-
-.animation-delay-4000 {
-  animation-delay: 4s;
 }
 
 :root {
@@ -311,18 +284,6 @@ body {
 html {
   scrollbar-gutter: stable;
 }
-
-/* .clipgsap {
-  clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
-}
-
-.transgsap {
-  transition: transform 0.5s;
-  -webkit-transition: transform 0.5s;
-  -moz-transition: transform 0.5s;
-  -ms-transition: transform 0.5s;
-  -o-transition: transform 0.5s;
-} */
 
 .rocket-animate {
   animation-name: rocketanimation;
