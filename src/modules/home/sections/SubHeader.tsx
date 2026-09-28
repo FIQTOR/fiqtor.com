@@ -25,27 +25,29 @@ const SubHeader = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Stats are served by OUR backend as static data — no third-party
-        // API keys or scraping, and nothing secret reaches the browser.
+        // Our backend fetches the follower counts REALTIME (public profile
+        // scrape) and already degrades to cached/default numbers, so this
+        // request always returns a usable payload. We only need a local
+        // fallback for the case where the backend itself is unreachable.
         const response = await axios.get(
           `${import.meta.env.VITE_API_BASE_URL}/v1/social/stats`
         );
         const { tiktok, instagram } = response.data.data;
 
         setTiktok({
-          followers: tiktok.followers,
-          following: tiktok.following
+          followers: tiktok?.followers ?? 0,
+          following: tiktok?.following ?? 0
         });
 
         setInstagram({
-          followers: instagram.followers,
-          following: instagram.following
+          followers: instagram?.followers ?? 0,
+          following: instagram?.following ?? 0
         });
       } catch {
         console.log("Failed to fetch stats, using fallback data.");
-        // Fallback data when the backend is unavailable.
-        setTiktok({ followers: 1977, following: 30 });
-        setInstagram({ followers: 691, following: 577 });
+        // Fallback data when the backend itself is unavailable.
+        setTiktok({ followers: 2006, following: 49 });
+        setInstagram({ followers: 671, following: 572 });
       }
 
       try {
@@ -75,99 +77,83 @@ const SubHeader = () => {
     const tiktokEl = tiktokRef.current;
     const instagramEl = instagramRef.current;
     const containerEl = containerRef.current;
-    // Only pin on desktop: a 200vh pinned section hijacks touch scrolling on
-    // phones. On small screens the three stats simply fade/scroll normally.
+    // Only pin on desktop: a pinned 200vh section hijacks touch scrolling on
+    // phones (the page "grabs" the finger). On mobile we instead let the section
+    // scroll normally and drive the same cross-fade from scroll progress, so the
+    // section still follows the scroll like desktop — without the pin.
     const isDesktop = window.matchMedia("(min-width: 768px)").matches;
 
+    // Mobile uses a shorter travel distance so fewer pixels are repainted per frame.
+    const travel = isDesktop ? 100 : 32;
+
     const ctx = gsap.context(() => {
+      const cards: [HTMLDivElement, number][] = [
+        [wakatimeEl, 1],
+        [tiktokEl, 2],
+        [instagramEl, 3]
+      ];
+
       // Set initial states
       gsap.set([wakatimeEl, tiktokEl, instagramEl], {
         opacity: 0,
-        y: 100
+        y: travel
       });
 
-      // Animation timeline
-      gsap.timeline({
+      const tl = gsap.timeline({
         scrollTrigger: {
           trigger: containerEl,
-          start: "top center",
-          end: "bottom center",
+          start: isDesktop ? "top center" : "top 70%",
+          end: isDesktop ? "bottom center" : "bottom 60%",
           pin: isDesktop,
-          scrub: 1,
-          anticipatePin: 1,
-          fastScrollEnd: true,
+          scrub: isDesktop ? 1 : 0.5,
+          anticipatePin: isDesktop ? 1 : 0,
+          fastScrollEnd: true
           // markers: true
         }
-      })
-        .to(wakatimeEl, {
+      });
+
+      cards.forEach(([el, zIndex], i) => {
+        // Bring the card in.
+        tl.to(el, {
           opacity: 1,
           y: 0,
           duration: 1,
           immediateRender: false,
-          zIndex: 1
-        })
-        .to(wakatimeEl.querySelectorAll('.animate-text'), {
-          opacity: 1,
-          scale: 1,
-          stagger: 0.1,
-          duration: 0.5,
-          ease: "back.out(1.7)",
-          immediateRender: false,
-          zIndex: 1
-        }, ">-0.5")
-        .to(wakatimeEl, {
-          opacity: 0,
-          y: -100,
-          duration: 1,
-          immediateRender: false,
-          zIndex: 0
-        }, "+=1")
-        .to(tiktokEl, {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          immediateRender: false,
-          zIndex: 2
-        }, "-=0.5")
-        .to(tiktokEl.querySelectorAll('.animate-text'), {
-          opacity: 1,
-          scale: 1,
-          stagger: 0.1,
-          duration: 0.5,
-          ease: "back.out(1.7)",
-          immediateRender: false,
-          zIndex: 2
-        }, ">-0.5")
-        .to(tiktokEl, {
-          opacity: 0,
-          y: -100,
-          duration: 1,
-          immediateRender: false,
-          zIndex: 0
-        }, "+=1")
-        .to(instagramEl, {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          immediateRender: false,
-          zIndex: 3
-        }, "-=1")
-        .to(instagramEl.querySelectorAll('.animate-text'), {
-          opacity: 1,
-          scale: 1,
-          stagger: 0.1,
-          duration: 0.5,
-          ease: "back.out(1.7)",
-          immediateRender: false,
-          zIndex: 3
-        }, ">-0.5")
-        .to(instagramEl, {
-          opacity: 0,
-          y: -100,
-          duration: 1,
-          immediateRender: false,
-          zIndex: 0
-        }, "+=1");
+          zIndex
+        }, i === 0 ? "<" : "-=0.5");
+
+        if (isDesktop) {
+          // Per-character reveal (desktop only): one tween per glyph animating
+          // scale + opacity. This is the heavy part — skipped on mobile.
+          tl.to(el.querySelectorAll('.animate-text'), {
+            opacity: 1,
+            scale: 1,
+            stagger: 0.1,
+            duration: 0.5,
+            ease: "back.out(1.7)",
+            immediateRender: false,
+            zIndex
+          }, ">-0.5");
+        } else {
+          // Mobile: reveal the whole heading block in one cheap step instead of
+          // staggering dozens of individual characters.
+          tl.set(el.querySelectorAll('.animate-text'), {
+            opacity: 1,
+            scale: 1
+          }, ">-0.5");
+        }
+
+        // Send the card out — except the last, which is where we land.
+        if (i < cards.length - 1) {
+          tl.to(el, {
+            opacity: 0,
+            y: -travel,
+            duration: 1,
+            immediateRender: false,
+            zIndex: 0
+          }, "+=1");
+        }
+      });
     });
 
     return () => ctx.revert();
@@ -180,9 +166,17 @@ const SubHeader = () => {
         ref={containerRef}
         className="relative flex min-h-[140vh] w-full flex-col items-center md:min-h-[200vh]"
       >
+        {/*
+          Positioning layer for the three cards.
+          - Desktop: absolutely fills the pinned container; cards stack dead-center.
+          - Mobile: `sticky` full-viewport layer so the cards stay centred while the
+            tall container scrolls past — the section "follows" the scroll like
+            desktop, without ScrollTrigger's pin hijacking the touch scroller.
+        */}
+        <div className="sticky top-0 z-10 flex h-[100svh] w-full items-center justify-center md:absolute md:inset-0 md:h-full">
         <div
           ref={wakatimeRef}
-          className="flex flex-col items-center justify-center space-y-4 absolute  -translate-y-1/2"
+          className="flex flex-col items-center justify-center space-y-4 absolute left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2"
         >
           <div className="relative w-full px-4 md:px-0">
             <h3 className="sr-only">Coding Lifetime</h3>
@@ -224,7 +218,7 @@ const SubHeader = () => {
 
         <div
           ref={tiktokRef}
-          className="flex flex-col items-center justify-center space-y-4 absolute  -translate-y-1/2"
+          className="flex flex-col items-center justify-center space-y-4 absolute left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2"
         >
           <div className="relative w-full px-4 md:px-0">
             <h3 className="sr-only">Follow my Tiktok</h3>
@@ -262,7 +256,7 @@ const SubHeader = () => {
 
         <div
           ref={instagramRef}
-          className="flex flex-col items-center justify-center space-y-4 absolute  -translate-y-1/2"
+          className="flex flex-col items-center justify-center space-y-4 absolute left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2"
         >
           <div className="relative w-full px-4 md:px-0">
             <h3 className="sr-only">Connect my Instagram</h3>
@@ -296,6 +290,7 @@ const SubHeader = () => {
           >
             Visit Instagram Profile
           </a>
+        </div>
         </div>
       </div>
     </>

@@ -89,17 +89,21 @@ const hashToUnit = (value: string): number => {
 };
 
 const Square = ({ color }: { color: string }) => {
-  const { isTiny } = useContext(ContainerContext);
+  const { isMobile } = useContext(ContainerContext);
+  // Per-square whileInView animation spawns one motion component per day
+  // (~365 of them) with its own IntersectionObserver — too heavy for phones.
+  // Skip it on mobile; the colour still renders instantly.
+  const animate = !isMobile;
   // Stable per-card delay derived purely from the color (no impure randomness).
   const delay = hashToUnit(color || "empty") * 0.9 + 0.1;
   return (
     <motion.li
       className="aspect-square rounded-full bg-neutral-300 dark:bg-neutral-700"
-      style={!isTiny ? { backgroundColor: color || undefined } : {}}
-      initial={!isTiny ? { opacity: 0 } : {}}
-      whileInView={!isTiny ? { opacity: 1 } : {}}
-      transition={!isTiny ? { delay } : {}}
-      viewport={!isTiny ? { once: true, amount: 0.8 } : {}}
+      style={animate ? { backgroundColor: color || undefined } : {}}
+      initial={animate ? { opacity: 0 } : {}}
+      whileInView={animate ? { opacity: 1 } : {}}
+      transition={animate ? { delay } : {}}
+      viewport={animate ? { once: true, amount: 0.8 } : {}}
     />
   );
 };

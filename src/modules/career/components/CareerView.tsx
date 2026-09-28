@@ -1,14 +1,16 @@
 import { Careers } from "@/data/career";
-import { useRef } from "react";
+import { useContext, useRef } from "react";
 import { TbWorld, TbMapPin, TbCalendar } from "react-icons/tb";
 import {
   motion,
+  useReducedMotion,
   useScroll,
   useSpring,
   useTransform,
   useVelocity,
   type MotionValue,
 } from "framer-motion";
+import { ContainerContext } from "@/context/container-context";
 
 type Career = (typeof Careers)[number];
 
@@ -18,7 +20,18 @@ type VelocityEffect = {
   glow: MotionValue<number>;
 };
 
+/**
+ * Scroll-velocity effect for the timeline cards (skew / stretch / glow).
+ *
+ * This runs a `useVelocity → useSpring → useTransform` chain on every scroll
+ * frame and, when it drives `skewY`/`scaleY` on each card, forces a repaint of
+ * the whole (blurred, glass) card. That is the main source of jank on phones,
+ * so we return three CONSTANT motion values on mobile (no per-frame work) while
+ * keeping the exact same visual behaviour on desktop.
+ */
 const useScrollVelocityEffect = (): VelocityEffect => {
+  const { isMobile } = useContext(ContainerContext);
+  const reduceMotion = useReducedMotion();
   const { scrollY } = useScroll();
   const scrollVelocity = useVelocity(scrollY);
   const smoothVelocity = useSpring(scrollVelocity, {
@@ -31,7 +44,15 @@ const useScrollVelocityEffect = (): VelocityEffect => {
   const scaleY = useTransform(smoothVelocity, [-2500, 0, 2500], [1.06, 1, 1.06]);
   const glow = useTransform(smoothVelocity, [-2000, 0, 2000], [1, 0.3, 1]);
 
-  return { skewY, scaleY, glow };
+  // Static values → framer-motion skips the animation entirely when motion is
+  // heavy/undesired (mobile) or the user prefers reduced motion.
+  const staticEffect = {
+    skewY: useTransform(smoothVelocity, () => 0),
+    scaleY: useTransform(smoothVelocity, () => 1),
+    glow: useTransform(smoothVelocity, () => 1),
+  };
+
+  return isMobile || reduceMotion ? staticEffect : { skewY, scaleY, glow };
 };
 
 const TimelineItem = ({
@@ -44,7 +65,22 @@ const TimelineItem = ({
   velocity: VelocityEffect;
 }) => {
   const isEven = index % 2 === 0;
+  const { isMobile } = useContext(ContainerContext);
   const dotScale = useTransform(velocity.glow, [0.3, 1], [1, 1.35]);
+
+  // On mobile: a soft solid card instead of a live `backdrop-blur` (the blur is
+  // what murders the frame rate over a long, scroll-driven list), and a plain
+  // fade-in instead of animating `x` + `filter: blur()` per card.
+  const cardClassName = isMobile
+    ? "group block relative w-full overflow-hidden rounded-3xl p-6 border border-white/40 bg-white/80 dark:border-white/10 dark:bg-neutral-900/80 shadow-lg shadow-black/5"
+    : `group block relative w-full overflow-hidden rounded-3xl p-6 border border-white/30 bg-white/20 backdrop-blur-xl dark:border-white/10 dark:bg-white/5 shadow-lg shadow-black/5 transition-colors duration-300 hover:bg-white/30 dark:hover:bg-white/10 hover:border-white-500/30`;
+
+  const revealInitial = isMobile
+    ? { opacity: 0 }
+    : { opacity: 0, x: isEven ? 60 : -60, filter: "blur(6px)" };
+  const revealInView = isMobile
+    ? { opacity: 1 }
+    : { opacity: 1, x: 0, filter: "blur(0px)" };
 
   return (
     <div className="relative mb-12 md:mb-24 flex items-center justify-center w-full">
@@ -68,30 +104,31 @@ const TimelineItem = ({
 
         {/* Card Side */}
         <div className={`flex-1 pl-12 md:pl-0 ${isEven ? 'md:pl-12' : 'md:pr-12'}`}>
-          <motion.div
-            style={{ skewY: velocity.skewY, scaleY: velocity.scaleY }}
-            className="will-change-transform"
-          >
+          <motion.div style={isMobile ? undefined : { skewY: velocity.skewY, scaleY: velocity.scaleY }} className="will-change-transform">
             <motion.a
               href={career.website}
               target="_blank"
               rel="noopener noreferrer"
-              initial={{ opacity: 0, x: isEven ? 60 : -60, filter: "blur(6px)" }}
-              whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+              initial={revealInitial}
+              whileInView={revealInView}
               viewport={{ once: true, amount: 0.35 }}
-              transition={{ type: "spring", stiffness: 140, damping: 20 }}
-              whileHover={{ y: -5 }}
-              className={`group block relative w-full overflow-hidden rounded-3xl p-6 border border-white/30 bg-white/20 backdrop-blur-xl dark:border-white/10 dark:bg-white/5 shadow-lg shadow-black/5 transition-colors duration-300 hover:bg-white/30 dark:hover:bg-white/10 hover:border-white-500/30`}
+              transition={isMobile ? { duration: 0.4 } : { type: "spring", stiffness: 140, damping: 20 }}
+              whileHover={isMobile ? undefined : { y: -5 }}
+              className={cardClassName}
             >
-              {/* Ambient logo glow: blurred, blends into glass */}
-              <div className="pointer-events-none absolute -left-10 -top-10 h-48 w-48 opacity-40 blur-3xl saturate-150 dark:opacity-30">
-                <img src={career.companyImage} alt="" aria-hidden loading="lazy" decoding="async" className="h-full w-full object-contain" />
-              </div>
+              {/* Ambient logo glow: blurred, blends into glass.
+                  Skipped on mobile — `blur-3xl` on a 12rem image is a costly
+                  extra layer per card with little visual payoff on small screens. */}
+              {!isMobile && (
+                <div className="pointer-events-none absolute -left-10 -top-10 h-48 w-48 opacity-40 blur-3xl saturate-150 dark:opacity-30">
+                  <img src={career.companyImage} alt="" aria-hidden loading="lazy" decoding="async" className="h-full w-full object-contain" />
+                </div>
+              )}
 
               <div className="relative z-10 flex flex-col gap-4">
                 {/* Logo + Content */}
                 <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
-                  <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl border border-white/40 bg-white/70 p-2.5 shadow-sm backdrop-blur-md transition-transform duration-500 group-hover:scale-105 dark:border-white/10 dark:bg-white/10">
+                  <div className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl border border-white/40 bg-white/70 p-2.5 shadow-sm transition-transform duration-500 group-hover:scale-105 dark:border-white/10 dark:bg-white/10${isMobile ? "" : " backdrop-blur-md"}`}>
                     <img
                       src={career.companyImage}
                       alt={career.companyName}

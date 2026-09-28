@@ -165,12 +165,28 @@ export default function LineWaves({
   useEffect(() => {
     if (!containerRef.current) return;
     const container = containerRef.current;
+
+    // Mobile / low-power quality mode. A full-screen fragment shader runs a
+    // per-pixel cost on every frame, so on phones we cut the pixel budget
+    // (1x DPR), the frame rate (~20fps) and disable pointer interaction, which
+    // keeps the same look at a fraction of the GPU work. Detected here (not via
+    // props) so every caller gets the safe defaults automatically, and we
+    // re-evaluate on resize so rotating/entering a phone layout degrades live.
+    const computeLowPower = () =>
+      window.matchMedia("(max-width: 767px)").matches ||
+      window.matchMedia("(pointer: coarse)").matches ||
+      (typeof navigator !== "undefined" &&
+        (navigator.hardwareConcurrency || 8) <= 4);
+
+    let lowPower = computeLowPower();
+
     const renderer = new Renderer({
       alpha: true,
       premultipliedAlpha: false,
       // Cap DPR: this is a soft, low-contrast background. Rendering at 1.5x
       // looks the same but paints far fewer pixels (big win on mobile/retina).
-      dpr: Math.min(window.devicePixelRatio || 1, 1.5),
+      // Low-power mode drops to 1x for an even smaller pixel budget.
+      dpr: lowPower ? 1 : Math.min(window.devicePixelRatio || 1, 1.5),
     });
     const gl = renderer.gl;
     gl.clearColor(0, 0, 0, 0);
@@ -215,6 +231,14 @@ export default function LineWaves({
 
     const geometry = new Triangle(gl);
     const rotationRad = (rotation * Math.PI) / 180;
+
+    // On mobile we render fewer lines/tiles — the pre-pixel loop work drops a
+    // little and the pattern reads the same at phone sizes.
+    const effectiveInner = lowPower ? Math.min(innerLineCount, 10) : innerLineCount;
+    const effectiveOuter = lowPower ? Math.min(outerLineCount, 12) : outerLineCount;
+    // Pointer interaction is pointless (and costly) on touch devices.
+    const useMouse = enableMouseInteraction && !lowPower;
+
     program = new Program(gl, {
       vertex: vertexShader,
       fragment: fragmentShader,
@@ -222,8 +246,8 @@ export default function LineWaves({
         uTime: { value: 0 },
         uResolution: { value: [gl.canvas.width, gl.canvas.height, gl.canvas.width / gl.canvas.height] },
         uSpeed: { value: speed },
-        uInnerLines: { value: innerLineCount },
-        uOuterLines: { value: outerLineCount },
+        uInnerLines: { value: effectiveInner },
+        uOuterLines: { value: effectiveOuter },
         uWarpIntensity: { value: warpIntensity },
         uRotation: { value: rotationRad },
         uEdgeFadeWidth: { value: edgeFadeWidth },
@@ -234,7 +258,7 @@ export default function LineWaves({
         uColor3: { value: hexToVec3(color3) },
         uMouse: { value: new Float32Array([0.5, 0.5]) },
         uMouseInfluence: { value: mouseInfluence },
-        uEnableMouse: { value: enableMouseInteraction }
+        uEnableMouse: { value: useMouse }
       }
     });
 
@@ -246,7 +270,7 @@ export default function LineWaves({
     gl.canvas.style.opacity = "0";
     gl.canvas.style.transition = "opacity 0.8s ease-out";
 
-    if (enableMouseInteraction) {
+    if (useMouse) {
       gl.canvas.addEventListener('mousemove', handleMouseMove);
       gl.canvas.addEventListener('mouseleave', handleMouseLeave);
     }
@@ -255,13 +279,14 @@ export default function LineWaves({
     let visible = true;
     let lastRender = 0;
     let fadedIn = false;
-    const FRAME_INTERVAL = 1000 / 30; // ~30fps is plenty for a slow wave field
+    // ~30fps is plenty for a slow wave field; low-power mode halves that again.
+    const frameInterval = () => (lowPower ? 1000 / 20 : 1000 / 30);
 
     function update(time: number) {
       animationFrameId = requestAnimationFrame(update);
 
-      // Throttle to ~30fps.
-      if (time - lastRender < FRAME_INTERVAL) return;
+      // Throttle to the target frame rate.
+      if (time - lastRender < frameInterval()) return;
       lastRender = time;
 
       // Pause rendering when off-screen (but still allow the initial paint).
@@ -269,7 +294,7 @@ export default function LineWaves({
 
       program.uniforms.uTime.value = time * 0.001;
 
-      if (enableMouseInteraction) {
+      if (useMouse) {
         currentMouse[0] += 0.05 * (targetMouse[0] - currentMouse[0]);
         currentMouse[1] += 0.05 * (targetMouse[1] - currentMouse[1]);
         program.uniforms.uMouse.value[0] = currentMouse[0];
@@ -288,6 +313,17 @@ export default function LineWaves({
     }
     animationFrameId = requestAnimationFrame(update);
 
+    // Re-evaluate quality on viewport changes (e.g. rotate / resize into a
+    // phone layout) so the DPR / frame budget adapt without a full remount.
+    const onResizeQuality = () => {
+      const next = computeLowPower();
+      if (next === lowPower) return;
+      lowPower = next;
+      renderer.dpr = lowPower ? 1 : Math.min(window.devicePixelRatio || 1, 1.5);
+      resize();
+    };
+    window.addEventListener("resize", onResizeQuality);
+
     // Pause when scrolled out of view or tab hidden — no point burning GPU.
     let io: IntersectionObserver | undefined;
     if (typeof IntersectionObserver !== "undefined") {
@@ -305,10 +341,11 @@ export default function LineWaves({
     return () => {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize', resize);
+      window.removeEventListener('resize', onResizeQuality);
       resizeObserver.disconnect();
       io?.disconnect();
       document.removeEventListener("visibilitychange", onVisibility);
-      if (enableMouseInteraction) {
+      if (useMouse) {
         gl.canvas.removeEventListener('mousemove', handleMouseMove);
         gl.canvas.removeEventListener('mouseleave', handleMouseLeave);
       }

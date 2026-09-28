@@ -18,7 +18,7 @@ const Footer = () => {
         rel="noopener noreferrer"
         className="font-medium text-neutral-600 dark:text-neutral-400 underline underline-offset-4 decoration-neutral-300 dark:decoration-neutral-600 transition-colors hover:text-neutral-900 dark:hover:text-white"
       >
-        Portfolio template
+        GitHub Repository
       </a>
     </footer>
   );

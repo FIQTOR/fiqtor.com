@@ -326,13 +326,12 @@ function AppShell() {
 
   // Warm the WebGL background chunk during the welcome screen so it's ready
   // before Home mounts (otherwise it lazily pops in after the hero animation).
-  // Skipped on mobile, where LineWaves is never rendered. The wrapper module is
-  // tiny, so importing it eagerly is fine — it only pulls the heavy GL chunk
-  // when preloadLineWaves() runs.
+  // Now warmed on every viewport since LineWaves renders on mobile too (in its
+  // auto-detected low-power mode). The wrapper module is tiny, so importing it
+  // eagerly is fine — it only pulls the heavy GL chunk when preloadLineWaves()
+  // runs.
   useEffect(() => {
-    if (window.innerWidth >= 768) {
-      preloadLineWaves();
-    }
+    preloadLineWaves();
   }, []);
 
   return (
