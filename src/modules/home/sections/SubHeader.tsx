@@ -23,6 +23,11 @@ const SubHeader = () => {
   const [instagram, setInstagram] = useState({ followers: 0, following: 0 });
 
   useEffect(() => {
+    // Abort in-flight requests on unmount so we never setState after the
+    // component is gone (e.g. fast route changes).
+    const controller = new AbortController();
+    const { signal } = controller;
+
     const fetchData = async () => {
       try {
         // Our backend fetches the follower counts REALTIME (public profile
@@ -30,9 +35,10 @@ const SubHeader = () => {
         // request always returns a usable payload. We only need a local
         // fallback for the case where the backend itself is unreachable.
         const response = await axios.get(
-          `${import.meta.env.VITE_API_BASE_URL}/v1/social/stats`
+          `${import.meta.env.VITE_API_BASE_URL}/v1/social/stats`,
+          { signal }
         );
-        const { tiktok, instagram } = response.data.data;
+        const { tiktok, instagram } = response.data?.data ?? {};
 
         setTiktok({
           followers: tiktok?.followers ?? 0,
@@ -44,6 +50,7 @@ const SubHeader = () => {
           following: instagram?.following ?? 0
         });
       } catch {
+        if (signal.aborted) return;
         console.log("Failed to fetch stats, using fallback data.");
         // Fallback data when the backend itself is unavailable.
         setTiktok({ followers: 2006, following: 49 });
@@ -51,14 +58,24 @@ const SubHeader = () => {
       }
 
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/v1/wakatime`);
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_BASE_URL}/v1/wakatime`,
+          { signal }
+        );
+        const data = response.data?.data;
+        // Guard against a partial payload: a missing `text` must not throw and
+        // wrongly drop us into the "Maintenance" branch. `replace` is applied
+        // globally so multi-unit strings ("2 hrs 3 mins") are fully expanded.
+        const text =
+          typeof data?.text === "string"
+            ? data.text.replace(/hrs/g, "hours").replace(/mins/g, "minutes")
+            : "";
         setWakatime({
-          coding_lifetime: response.data.data.text.replace("hrs", "hours")
-            .replace("mins", "minutes"),
-          since: response.data.data.range.start_text
+          coding_lifetime: text,
+          since: data?.range?.start_text ?? ""
         });
       } catch {
-        // console.log(err);
+        if (signal.aborted) return;
         setWakatime({
           coding_lifetime: '',
           since: '(Maintenance)'
@@ -67,6 +84,8 @@ const SubHeader = () => {
     };
 
     fetchData();
+
+    return () => controller.abort();
   }, []);
 
   useEffect(() => {
@@ -168,12 +187,15 @@ const SubHeader = () => {
       >
         {/*
           Positioning layer for the three cards.
-          - Desktop: absolutely fills the pinned container; cards stack dead-center.
+          - Desktop: pinned container fills the viewport while pinned, so this
+            layer is exactly one viewport tall and top-anchored; `top-1/2` on the
+            cards then centres them in the *visible* area. (Using the container's
+            full 200vh height here pushed the cards ~100vh down, i.e. off-screen.)
           - Mobile: `sticky` full-viewport layer so the cards stay centred while the
             tall container scrolls past — the section "follows" the scroll like
             desktop, without ScrollTrigger's pin hijacking the touch scroller.
         */}
-        <div className="sticky top-0 z-10 flex h-[100svh] w-full items-center justify-center md:absolute md:inset-0 md:h-full">
+        <div className="sticky top-0 z-10 flex h-[100svh] w-full items-center justify-center md:absolute md:left-0 md:top-0 md:h-screen">
         <div
           ref={wakatimeRef}
           className="flex flex-col items-center justify-center space-y-4 absolute left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2"
@@ -206,7 +228,7 @@ const SubHeader = () => {
               </>}
           </div>
           <a
-            href={`https://www.wakatime.com/${WakatimeConfig.username}`}
+            href={`https://wakatime.com/@${WakatimeConfig.username}`}
             target="_blank"
             rel="noopener noreferrer"
             className="px-8 py-3 bg-white rounded-full text-xl hover:bg-white/90 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/50 text-black"
