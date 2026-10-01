@@ -121,8 +121,13 @@ const SubHeader = () => {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: containerEl,
-          start: isDesktop ? "top center" : "top 70%",
-          end: isDesktop ? "bottom center" : "bottom 60%",
+          // Pin the container so its TOP sits at the viewport top. The cards are
+          // centred with `top-1/2` inside a one-viewport-tall layer, so anchoring
+          // the container at the viewport top lands them at the true vertical
+          // centre. (With "top center" the pinned container's top stayed on the
+          // viewport centre line, pushing the cards half a screen too low.)
+          start: isDesktop ? "top top" : "top 70%",
+          end: isDesktop ? "bottom bottom" : "bottom 60%",
           pin: isDesktop,
           scrub: isDesktop ? 1 : 0.5,
           anticipatePin: isDesktop ? 1 : 0,
