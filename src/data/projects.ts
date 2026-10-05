@@ -85,7 +85,7 @@ export const Projects: Array<Project> = [
     title: "IARTY Ecosystem - Business Core",
     category: "Business System",
     description:
-      "Discover a seamless digital experience with Iarty, an innovative tech powerhouse. We bridge the gap between complex technology and practical solutions by providing specialized Education, AI-driven Investment tools, and a curated Marketplace. Beyond products, we empower B2B and B2C sectors through custom Web and Mobile application development, seamless AI integration, and strategic growth consulting to scale client businesses to the next level.",
+      "Imagine having one place that takes care of almost everything your business needs — online courses, smart AI-powered investment tools, and a digital store, all under one roof. That's Iarty. No more juggling a dozen different apps that don't talk to each other. We also build custom applications tailored to how your business actually works, so you can serve customers faster, save time, and grow your business — without ever needing to understand the technology behind it.",
     urlDirect: "https://iarty.biz.id",
     srcImage: "img/projects/iarty.webp",
     tags: ["Ecosystem", "AI Integration", "Business Growth", "EdTech"],
@@ -133,7 +133,7 @@ export const Projects: Array<Project> = [
     title: "Enterprise Suite - Full ERP Platform",
     category: "Business System",
     description:
-      "A modern, full-featured Enterprise Resource Planning (ERP) platform built as a monorepo with an Express.js + Sequelize backend and a React 19 + TypeScript frontend. It unifies day-to-day operations into a single workspace: an executive dashboard with real-time KPIs and priority action queues, Sales Orders, Purchasing, multi-warehouse Inventory with moving-average costing, CRM, universal double-entry Accounting (Chart of Accounts, Trial Balance, Profit & Loss, Balance Sheet), multi-currency & tax engine, HR/Payroll with configurable salary components and work calendar, data-driven approval workflows, audit logs, API keys, webhooks, and export to Excel/PDF. Supports both single (on-premise) and multi-tenant (SaaS) modes from one codebase, with automatic per-tenant data isolation.",
+      "Does running your business feel messy because your sales, stock, money, and staff records are scattered across notebooks and dozens of spreadsheets? Enterprise Suite brings everything into one simple screen. Instantly see today's sales, warehouse stock, who owes you money, employee salaries, and your real profit — all updated automatically in real time. No more manual counting, no more fear of costly mistakes. Just open the app and the entire health of your business is laid out clearly at a glance.",
     srcImage: "/img/projects/erp-dashboard.webp",
     images: [
       "/img/projects/erp-dashboard.webp",
@@ -203,7 +203,7 @@ export const Projects: Array<Project> = [
     title: "CRM Panel - Auth, RBAC & Sales CRM Suite",
     category: "Business System",
     description:
-      "A production-ready, full-stack Customer Relationship Management panel built with Express.js (Sequelize ORM) on a React 19 + TypeScript + Vite frontend. It ships with enterprise-grade authentication (local email/password, JWT access & refresh token rotation, and TOTP two-factor auth) and granular role-based access control, where sidebar navigation and panel links are filtered in real time by the current user's permissions. The CRM suite covers Leads, Customers, Contacts, Accounts (companies) and a drag-and-drop Kanban Opportunities pipeline (Prospecting → Qualification → Proposal → Won/Lost), plus colour-coded tags, automatic rule-based lead scoring (0–100, hot/warm filters), per-record customer timelines, assignable tasks & reminders with an overdue view, saved views, a Ctrl/Cmd+K global command palette, workflow automation rules, HMAC-signed outbound webhooks, public REST API keys and an exportable audit log. A live dashboard and analytics panel surface lead conversion funnels, weighted pipeline forecasts, per-rep leaderboards and win/loss insights, all on an organization-scoped multi-tenant data model with a modern futuristic UI (neural-network canvas background, bilingual EN/ID interface).",
+      "Is your sales team constantly losing track of potential buyers? CRM Panel keeps every customer and prospect in one place, so no lead ever slips through the cracks. See who is most likely to buy, get reminders to follow up on time, and track which salesperson is performing best this month — all without complicated charts. It's protected with layers of security, so only the right people can see sensitive information, wrapped in a clean, modern design that's genuinely pleasant to use every day. Perfect for businesses that want sales that are organized, predictable, and easy to measure.",
     srcImage: "img/projects/crm-dashboard.webp",
     images: [
       "img/projects/crm-dashboard.webp",
@@ -274,7 +274,7 @@ export const Projects: Array<Project> = [
     title: "HRIS - Universal Human Resource System",
     category: "Business System",
     description:
-      "A complete, production-ready and truly universal Human Resource Information System that works for any industry — manufacturing, services, IT, retail, healthcare, education, NGO or government — because everything (currency, pay cycle, work week, leave types, salary components, org units) is configurable per company rather than hard-coded. Built on an Express.js + Sequelize backend with a React 19 + TypeScript + Vite frontend, it extends a hardened JWT auth & RBAC foundation (roles with granular permissions, all_access wildcard, session tracking, activity log) with a full HR suite: Organization (multi-tenant companies, hierarchical departments, positions, job grades/salary bands, locations, shifts, holidays, leave types, salary components), People (rich employee records, contracts, documents, education, experience, emergency contacts, status transitions), Attendance (clock in/out, shift-aware late & overtime computation, corrections workflow, overtime approval, daily board), Leave (configurable types, approval workflow, entitled/used/pending/carry-over balances), Payroll (pay periods draft → processing → approved → paid → closed, a payslip generation engine supporting fixed + percentage + formula components), Recruitment (job openings, candidate pipeline, interviews, offers, hire → create employee), Performance, Training, Assets, Expenses, Announcements and a complete Employee Self-Service portal. An HR analytics dashboard surfaces headcount, attrition, attendance rate, payroll cost, recruitment pipeline and birthdays/anniversaries, complemented by a ⌘K command palette and a permission-aware in-app guide with PDF/Word export.",
+      "Managing people — attendance, leave, salaries, contracts, and hiring — can be a nightmare when it's all done by hand. HRIS solves it in a single app that fits any type of business: factories, hospitals, schools, and service companies alike. Employees can clock in from their phone, request leave themselves, and view their payslips without lining up at HR. Owners can see payroll, attendance, and headcount reports in seconds. The result: HR work that's dramatically faster, accurate, and free from the drama of payroll mistakes.",
     srcImage: "img/projects/hris-dashboard.webp",
     images: [
       "img/projects/hris-dashboard.webp",
@@ -348,7 +348,7 @@ export const Projects: Array<Project> = [
     title: "IHS E-School - School Management & LMS",
     category: "Business System",
     description:
-      "A production-ready, full-stack Senior High School (SMA) management system paired with a dedicated Learning Management System, all sharing one Express.js + Sequelize backend and React 19 + TypeScript + Vite frontends. It runs a public, mobile-friendly school website (hero, flagship programs, newsroom, alumni, PPDB admissions with public status lookup) alongside an invite-only staff portal, a student & parent self-service portal, and a separate LMS app. The RBAC core supports Google OAuth, JWT access + refresh-cookie rotation, rate limiting, hardened headers and 11 school roles (principal, teacher, staff, counselor, librarian, finance, admissions, student, parent, alumni, canteen vendor). Core modules cover Admissions/PPDB (accepting an applicant auto-provisions the student, parent and their login accounts), People (students, teachers/staff, parents), News & Announcements, School Profile & Structure, and Attendance via manual input, QR scan or RFID tap. A DB-backed feature-flag system toggles ~15 modular modules live from the panel (E-Raport & Gradebook, Elective Subject Selection, LMS, CBT online exams, Academic Calendar & Timetable, Extracurriculars, Discipline & Merit Points, Counseling, Scholarships, Alumni Tracer, Online Payments, Digital Library, Facility Booking, Cashless Canteen, and Parent Portal with WhatsApp/SMS/Email alerts). The LMS delivers courses, materials, assignments, submissions & grading, CBT exams with auto-grading, a student 'My Assignments' view and an academic calendar. An analytics dashboard surfaces attendance, collection rate, pending admissions, outstanding fees and user metrics, with light/dark mode and a bilingual ID/EN interface.",
+      "Running a school by hand — new student admissions, attendance, grades, tuition fees, and announcements to parents — is exhausting. IHS E-School brings it all into one connected platform. New students can apply online, teachers record attendance and grades in seconds, parents can follow their child's progress right from their phone, and the school manages payments and announcements automatically. It even includes an online classroom for students. In short: school administration becomes tidy, transparent, and time-saving for teachers, students, and parents alike.",
     srcImage: "/img/projects/eschool-website-hero.webp",
     images: [
       "/img/projects/eschool-website-hero.webp",
@@ -421,7 +421,7 @@ export const Projects: Array<Project> = [
     title: "Golden Dragon - Restaurant QR Ordering App",
     category: "Business System",
     description:
-      "A production-ready, full-stack restaurant self-ordering platform with a QR code menu and a complete admin dashboard. Diners scan the table QR to resolve their seat, sign in with a WhatsApp number (one-time code auto-verified via whatsapp-web.js, then set a password), browse the searchable menu, add items to a locally-persisted cart, and check out — paying online through Midtrans Snap (QRIS, bank transfer, e-wallet, card) or at the cashier. Order status updates live via Server-Sent Events, with a manual payment-status refresh and a printable receipt, plus full order history. Behind the scenes a full staff dashboard covers Menu & Category CRUD with image upload, Tables & QR management (generate, download and print a stable QR token per table), realtime order monitoring with status filters, revenue and best-seller analytics, and WhatsApp device linking. Built on an Express.js + Sequelize backend with a React 19 + TypeScript + Vite frontend, it ships enterprise JWT auth & RBAC (roles: admin, cashier, kitchen), Google OAuth, a bilingual (ID/EN) mobile-first UI, idempotent order creation, IDOR-safe access, and Midtrans signature + amount verification.",
+      "Tired of waiters running back and forth and customers waiting forever to order? Golden Dragon lets your diners simply scan a QR code on the table, browse your full menu, and order and pay right from their own phone. Orders appear instantly on your kitchen and cashier screens, so nothing gets lost and nobody has to shout across the room. Customers can pay online through QRIS, bank transfer, e-wallet, or card — or settle at the cashier. Behind the scenes, you get a full dashboard to manage your menu, generate table QR codes, watch live orders, and track your best-selling dishes. Fewer mistakes, faster service, happier customers.",
     srcImage: "img/projects/resto-landing.webp",
     images: [
       "img/projects/resto-landing.webp",
@@ -490,7 +490,7 @@ export const Projects: Array<Project> = [
     title: "WhatsApp Automation - AI Chatbot",
     category: "AI & Automation",
     description:
-      "WhatsApp Automation AI is a smart solution designed to help businesses automatically respond to customer messages, effectively replacing manual WhatsApp admins. With seamless integration into any business process, it enables 24/7 support, faster response times, improved customer satisfaction, and optimized operations.",
+      "What if your business could reply to every customer on WhatsApp — instantly, day or night — without hiring anyone? This AI assistant answers questions, shares product info, takes orders, and guides customers automatically, so you never miss a sale because you were too busy or asleep. It plugs into the way your business already works, giving you 24/7 support, lightning-fast replies, and customers who feel cared for. Think of it as a tireless team member who never takes a day off.",
     srcImage: "img/projects/whatsapp-automation.webp",
     tags: ["AI Chatbot", "Customer Support", "Business Automation"],
     icons: [
@@ -520,7 +520,7 @@ export const Projects: Array<Project> = [
     title: "IARTY AI (Third Party) - Multiple AI Models",
     category: "AI & Automation",
     description:
-      "IARTY AI is a portable AI chat platform designed for maximum flexibility and efficiency, allowing users to seamlessly import and export conversations while switching between multiple models—including GPT, DeepSeek AI, and over 50+ supported models—within a single chat session. Users can bring their own API keys to utilize custom models or access integrated IARTY AI models for free using built-in credits. Engineered with an advanced feature suite, it supports long and short context processing, a specialized PRD builder, Thinking Mode, Caveman mode, and tailored AI roles. Additionally, IARTY AI provides powerful AI-driven analytics for US stock and crypto markets, delivering a comprehensive toolset for power users and market analysts alike.",
+      "Meet your all-in-one AI assistant. Instead of juggling several subscriptions, IARTY AI lets you chat with 50+ different AI brains — including GPT and DeepSeek — inside one single conversation, and even switch between them mid-chat. Bring your own key or use the built-in free credits. Whether you need help writing, planning a project, thinking through a tricky problem, or analyzing the US stock and crypto markets, it's all here in one powerful, portable tool. Your conversations can even be exported and moved anywhere, so your ideas are never locked in.",
     urlDirect: "https://ai.iarty.biz.id",
     srcImage: "img/projects/iarty-ai.webp",
     tags: ["AI Chat", "Multi-AI", "Productivity Tool"],
@@ -559,7 +559,7 @@ export const Projects: Array<Project> = [
     title: "AI Marketplace - Find the best prompts for your project",
     category: "E-Commerce",
     description:
-      "A marketplace for AI-powered tools and services. Built with modern technologies for maximum flexibility and efficiency.",
+      "Why start from scratch when the perfect ready-made solution already exists? This marketplace is a one-stop shop for AI-powered tools and templates that save you time and money. Browse, pick, and instantly put them to work for your project — whether you're running a business, creating content, or building something new. No technical know-how required.",
     urlDirect: "https://marketplace.iarty.biz.id",
     srcImage: "img/projects/iarty-ai-marketplace.webp",
     tags: ["AI Marketplace", "Business", "AI Tools"],
@@ -594,7 +594,7 @@ export const Projects: Array<Project> = [
     title: "Zantova App - UI Marketplace",
     category: "E-Commerce",
     description:
-      "Zantova App is an Website UI Marketplace where find the best UI or component for your project.",
+      "Building a good-looking website usually costs a fortune and takes months. Zantova changes that. It's a marketplace where you can grab beautiful, ready-to-use website designs and building blocks, then plug them straight into your project. Whether you're a business owner wanting a polished site or a creator assembling something special, you get a professional result in a fraction of the time and cost — no design team required.",
     urlDirect: "https://zantova.my.id",
     srcImage: "img/projects/zantova.webp",
     tags: ["Webstie", "UI Design", "Marketplace"],
@@ -629,7 +629,7 @@ export const Projects: Array<Project> = [
     title: "Particle Handtracker - Powered by OpenCV",
     category: "Creative",
     description:
-      "A cutting-edge hand tracking solution using particle systems for real-time gesture recognition and interaction.",
+      "Imagine controlling a colorful world of floating particles just by moving your hands in front of your camera — no mouse, no controller. This playful experiment tracks your hand movements in real time and turns them into dazzling visual effects. It's a fun, hands-on glimpse of how computers can understand people without any special equipment, and a taste of the interactive experiences technology can create.",
     srcImage: "img/projects/particle-handtracker.webp",
     urlDirect: "https://particle-handtracker.vercel.app/",
     tags: ["Gesture Recognition", "Real-Time Interaction", "Particle Systems"],
@@ -648,7 +648,7 @@ export const Projects: Array<Project> = [
     title: "Djoyo Florist - Selling Sign With Flowers",
     category: "Landing Page",
     description:
-      "The official website of Djoyo Florist, which provides services for ordering flower arrangements, bouquets, flower boards, and event decorations in Indonesia. It features a product catalog, service information for weddings, graduations, birthdays, and condolences, as well as direct contact for quick orders.",
+      "Whether it's a wedding, a graduation, a birthday, or a moment of condolence, the right flowers say what words cannot. Djoyo Florist's website makes ordering beautiful bouquets, flower boards, and event decorations effortless. Browse the full catalog of arrangements, see exactly what's available for every occasion, and reach out directly to place an order in seconds. It's the friendly online face of a trusted florist — helping customers find the perfect gift without a single phone call or store visit.",
     srcImage: "img/projects/djoyo-florist.webp",
     urlDirect: "https://djoyoflorist.com/",
     tags: ["Customer Helper", "Wedding Decoration"],
@@ -675,7 +675,7 @@ export const Projects: Array<Project> = [
     title: "IARTY Analytics for IG & TikTok",
     category: "Web App",
     description:
-      "IARTY Analytics is a social media analytics tool focused on Instagram/Tiktok. In its current development stage, it allows users to easily identify accounts that don't follow them back and accounts they don't follow back. Designed to offer clarity and control over your Instagram/Tiktok connections.",
+      "Ever wondered who's actually following you back on Instagram or TikTok — and how many aren't? IARTY Analytics tells you in seconds. Simply connect your account and instantly see exactly which accounts don't follow you back and which ones you've stopped following. No guessing, no scrolling through endless lists by hand. It gives you clear, honest insight into your social connections, so you can decide what to do next with total confidence.",
     urlDirect: "https://analytics.iarty.biz.id",
     srcImage: "img/projects/iarty-analytics.webp",
     tags: ["Analytics", "Social Media", "Web App"],
@@ -702,7 +702,7 @@ export const Projects: Array<Project> = [
     title: "IARTY Education - Open courses for upskilling",
     category: "Web App",
     description:
-      "A comprehensive EdTech platform designed to provide a high-quality learning experience. Featuring structured course materials and high-definition video lessons, it empowers users to master new skills through an intuitive, modern interface built for seamless educational delivery.",
+      "Want to learn a new skill but don't know where to start? IARTY Education is an online learning platform built to make education feel simple and enjoyable. Well-organized lessons and crystal-clear HD video courses let you master new abilities at your own pace, from anywhere. The clean, modern interface makes studying painless — no confusing menus, no wasted time. Just log in, pick a course, and start leveling up.",
     urlDirect: "https://education.iarty.biz.id",
     srcImage: "img/projects/iarty-education.webp",
     tags: ["E-Learning", "Video Course", "Education"],
@@ -749,7 +749,7 @@ export const Projects: Array<Project> = [
     title: "Sigma Teknik - Air Conditioner Service",
     category: "Landing Page",
     description:
-      "A website for a service company that handles air conditioner, refrigerator, and other cooling equipment repairs. It includes a full list of services, work documentation with photos, project records, company information, office location, and a direct WhatsApp contact button for quick communication.",
+      "When your AC breaks in the middle of a heatwave, you don't want to hunt for a number — you want help fast. Sigma Teknik's website makes it easy to find a trusted cooling technician. See the full range of services (air conditioners, refrigerators, and more), browse real photos of completed jobs, check the company's credentials and location, and tap one button to chat on WhatsApp. It's a professional, reassuring online presence that turns a stressful repair into a simple message.",
     srcImage: "img/projects/sigma-teknik-ac.webp",
     urlDirect: "https://www.mojokertoac.com/",
     tags: ["Customer Helper", "Air Conditioner Service"],
@@ -780,7 +780,7 @@ export const Projects: Array<Project> = [
     title: "Template Coffee Shop Surabaya",
     category: "Template",
     description:
-      "Cafe website template that features a complete menu, product photos, location information, and a direct contact button to WhatsApp. Suitable for coffee businesses that want to appear neat and professional. Only Rp300.000",
+      "Give your coffee shop a website as welcoming as your café. This ready-made template shows off your complete menu with tempting product photos, tells customers where to find you, and lets them message you on WhatsApp with a single tap. Ideal for coffee businesses that want to look neat, credible, and professional — without spending a fortune or waiting weeks. Only Rp300,000.",
     srcImage: "img/projects/cshop-surabaya.webp",
     urlDirect: "https://template-cshop-surabaya.vercel.app/",
     tags: ["Coffee Shop", "Customer Helper"],
@@ -811,7 +811,7 @@ export const Projects: Array<Project> = [
     title: "Template Coffee Shop Space",
     category: "Template",
     description:
-      "A modern-themed template with a menu showcase, price details, product photos, cafe location, and WhatsApp contact feature. Suitable for cafes that want to give a futuristic impression while still being easily accessible to customers. Only Rp300.000",
+      "Make your café feel ahead of its time. This modern template displays your menu and prices, showcases your drinks and food with attractive photos, shares your location, and lets customers reach you instantly on WhatsApp. Perfect for coffee shops that want a fresh, futuristic vibe that still feels friendly and easy to use. Only Rp300,000.",
     srcImage: "img/projects/cshop-space.webp",
     urlDirect: "https://template-cshop-space.vercel.app/",
     tags: ["Coffee Shop", "Customer Helper"],
@@ -842,7 +842,7 @@ export const Projects: Array<Project> = [
     title: "Template Coffee Shop Retro",
     category: "Template",
     description:
-      "Retro-style template with menu pages, lists of drinks and food, cafe location, and a WhatsApp button for orders or reservations. Perfect for cafes that want to look unique and nostalgic. Only Rp300,000",
+      "Stand out with a café website that feels warm, unique, and full of character. This retro-style template presents your menu of drinks and food, shows customers where to find you, and includes a WhatsApp button for orders or reservations. Ideal for cafés that want a memorable, nostalgic look that guests instantly love. Only Rp300,000.",
     srcImage: "img/projects/cshop-retro.webp",
     urlDirect: "https://template-cshop-retro.vercel.app/",
     tags: ["Coffee Shop", "Customer Helper"],
@@ -873,7 +873,7 @@ export const Projects: Array<Project> = [
     title: "Store Management System - IARTY MODULeF",
     category: "Business System",
     description:
-      "This project provides a comprehensive solution for managing a grocery store, including stock management (in and out), expenditure tracking, income tracking, and cashier transactions. The system also includes analytics for better business insights and operational efficiency.",
+      "Running a grocery store means keeping track of a hundred things at once — and losing count costs real money. This system handles it all for you: what comes in, what goes out, daily spending, daily income, and cashier transactions, all recorded in one place. It even shows you simple analytics so you can spot what's selling and what's not. The result is a store that runs smoothly, with clear numbers and confident decisions — no more messy notebooks.",
     srcImage: "img/projects/iarty-modulef-store_management_system.webp",
     tags: [
       "Store Management",
@@ -920,7 +920,7 @@ export const Projects: Array<Project> = [
     title: "Savoria Online Order Restaurant - IARTY MODULeF",
     category: "Business System",
     description:
-      "Savoria ModuleF offers a seamless online ordering experience for restaurants. Customers can scan a QR code at the table, choose their desired menu items, and pay using various payment methods such as bank transfer, e-wallet, or cash. The system also includes branch management, revenue analytics, and more, making the entire ordering process more efficient.",
+      "Let your customers order without waiting for a waiter. With Savoria, diners scan a QR code at the table, pick what they want from your menu, and pay however is easiest — bank transfer, e-wallet, or cash. Orders flow straight to your staff, and your dashboard tracks revenue, manages multiple branches, and shows you what's working. It's a smoother, faster experience for guests and far less chaos for your team.",
     srcImage: "img/projects/iarty-modulef-savoria_online_order_restaurant.webp",
     tags: [
       "Restaurant Management",
@@ -969,7 +969,7 @@ export const Projects: Array<Project> = [
     title: "Word Love Code - Gift Website",
     category: "Creative",
     description:
-      "Word Love Code is a creative platform designed to help users create personalized gifts for their loved ones. Using a combination of HTML, CSS, and JavaScript, users can design unique messages, poems, and quotes that can be shared as meaningful gifts. Whether for special occasions or just because, Word Love Code brings words to life.",
+      "Sometimes the best gift isn't something you buy — it's something you say. Word Love Code lets you turn heartfelt messages, poems, and quotes into beautiful, personalized digital gifts for the people you love. Craft it in minutes, share it with a link, and watch it come to life. Perfect for anniversaries, birthdays, or just to make someone's day brighter.",
     urlDirect: "https://word-love-code.vercel.app/",
     srcImage: "img/projects/world-love-code.webp",
     tags: ["Gift", "Love", "Personalized", "Web Development"],
@@ -992,7 +992,7 @@ export const Projects: Array<Project> = [
     title: "Online Store - IARTY ModuleF",
     category: "E-Commerce",
     description:
-      "Discover a seamless shopping experience with ModuleF, an innovative online store module. Users can add products, and clicking on a product card redirects to the respective marketplace.",
+      "Showcase your products online without the hassle of a full storefront. On this online store, you add your products, and when a customer taps one, they're sent straight to where they can buy it — your marketplace listing. It's a clean, simple way to put your catalog in front of people and turn interest into sales, in just a few clicks.",
     srcImage: "img/projects/online-store-modulef.webp",
     tags: ["Online Store", "E-Commerce"],
     icons: [
@@ -1034,7 +1034,7 @@ export const Projects: Array<Project> = [
     title: "QR Code Generator - Open Source",
     category: "Web App",
     description:
-      "Create your own QR codes with ease using QR Code Generator, a powerful web application. Generate custom QR codes for any occasion and share them instantly. Built with modern web technologies for a seamless experience.",
+      "Need a QR code for your menu, business card, event, or promotion? This free tool creates custom QR codes in seconds — no sign-up, no cost, no fuss. Generate one for any link or occasion and share it instantly. Clean, fast, and completely open source, so anyone can use it.",
     urlDirect: "https://qrcode.fiqtor.com",
     srcImage: "img/projects/qrcode-generator.webp",
     tags: ["Web Application", "QR Code", "ReactJS", "TailwindCSS"],
@@ -1053,7 +1053,7 @@ export const Projects: Array<Project> = [
     title: "Merry Christmas Tree - Gift Website",
     category: "Creative",
     description:
-      "Celebrate the festive season with Merry Christmas Tree, your go-to website for all things Christmas. Discover beautifully decorated Christmas trees, festive ornaments, and holiday cheer that will brighten your celebrations.",
+      "Send a little holiday magic. This delightful website is a festive Christmas experience you can share with anyone — a beautifully decorated tree, twinkling ornaments, and a warm dose of seasonal cheer. It's a charming digital greeting that sparks a smile and brightens the season for friends, family, and customers.",
     urlDirect: "https://fiqtor.github.io/christmas-tree",
     srcImage: "img/projects/merry-christmas-tree.webp",
     tags: ["Holiday Website", "Festive Decorations", "Seasonal Joy"],
@@ -1075,7 +1075,7 @@ export const Projects: Array<Project> = [
   {
     title: "Flowers For Someone - Gift Website (Popular)",
     category: "Creative",
-    description: `Flowers for Someone is your ultimate destination for heartfelt floral gifting. Whether it's a special occasion or just to brighten someone's day, our website offers a delightful of flower arrangements, bouquets, and personalized messages.`,
+    description: `Love is best when it's shared in a way that's truly personal. Flowers for Someone lets you create a beautiful digital bouquet — complete with flowers, colors, and a heartfelt message — and send it to someone special in seconds. Whether it's a special occasion or simply "thinking of you," it's a quick, touching gift that always hits the heart. No delivery fees, no waiting, just instant warmth.`,
     urlDirect: "https://fiqtor.github.io/flowers-for-someone",
     srcImage: "/img/projects/flowers-for-someone.webp",
     tags: ["Gift Website"],
@@ -1097,7 +1097,7 @@ export const Projects: Array<Project> = [
   {
     title: "Coffee Shop - QR Code & Web2.0",
     category: "Business System",
-    description: `Enhance your café's efficiency and make ordering easier for your customers with our user-friendly website application.`,
+    description: `Want to serve more customers without adding more staff? This café app makes ordering effortless. Customers scan a QR code right from their table, pick their drinks and food, and orders reach your team instantly — cutting out queues, misheard orders, and lost time. Your staff works smoother, your guests are served faster, and your café simply runs better.`,
     srcImage: "/img/projects/coffee-shop.webp",
     tags: ["QR Code", "Web2.0", "AJAX"],
     icons: [
@@ -1122,7 +1122,7 @@ export const Projects: Array<Project> = [
   {
     title: "Padepokan App - LMS Website",
     category: "Web App",
-    description: `Streamline attendance monitoring in your educational institution with our advanced QR Code technology integrated into a user-friendly website application.`,
+    description: `Taking attendance at a school doesn't have to mean calling out names for ten minutes. Padepokan lets students check in simply by scanning a QR code, instantly recording who's present — no paperwork, no wasting class time. Teachers and administrators get a clear, real-time view of attendance, so tracking who showed up becomes effortless and accurate.`,
     urlDirect: "https://padepokan.gaeni.org",
     srcImage: "/img/projects/padepokan-app.webp",
     tags: ["EducationApp", "QR Code"],
@@ -1148,7 +1148,7 @@ export const Projects: Array<Project> = [
   {
     title: "Presence App - LMS Website",
     category: "Web App",
-    description: `Simplify attendance tracking in your company with our intuitive and efficient website application.`,
+    description: `Wondering who's actually in the office today? Presence makes company attendance dead simple. Employees clock in from their phone, and managers instantly see who's present, late, or away — without chasing paperwork or dealing with messy sign-in sheets. It saves time, removes guesswork, and keeps your team's working hours clear and organized.`,
     urlDirect: "https://presence.gaeni.org",
     srcImage: "/img/projects/presence-app.webp",
     tags: ["RestAPI", "Performance", "EducationApp"],
@@ -1186,7 +1186,7 @@ export const Projects: Array<Project> = [
   {
     title: "BBY Interior - Architechture Design Service",
     category: "Landing Page",
-    description: `Showcase your skills and work in style with our beautifully designed and user-friendly portfolio website, tailored to highlight your unique talents.`,
+    description: `Your talent deserves a first impression that wows. BBY Interior's portfolio website presents design work and skills with elegance, guiding visitors through beautiful visuals and a smooth, easy-to-navigate experience. Every detail is crafted to highlight what makes the work unique — so clients instantly see the quality and want to get in touch.`,
     urlDirect: "https://bby-interior.vercel.app",
     srcImage: "/img/projects/bby.interior.webp",
     tags: ["Portfolio", "Personal Branding", "Furniture"],
@@ -1212,7 +1212,7 @@ export const Projects: Array<Project> = [
   {
     title: "KORARIA - Restaurant Website",
     category: "Business System",
-    description: `Enhance your restaurant's online presence with our responsive web application, featuring a comprehensive menu display and product showcase, similar to solariaresto.co.id. Contact us for more information.`,
+    description: `Your restaurant deserves to be found online. KORARIA gives your business a polished, attractive website that shows your full menu and products in a way that makes mouths water. Whether customers are choosing where to eat or checking you out for the first time, a strong online presence turns hungry browsers into paying diners.`,
     srcImage: "/img/projects/koraria.webp",
     tags: ["Restaurant", "AJAX", "RestAPI", "QRCode"],
     icons: [
@@ -1237,7 +1237,7 @@ export const Projects: Array<Project> = [
   {
     title: "Personal Website (v1.4)",
     category: "Landing Page",
-    description: `Elevate your professional image with our feature-rich portfolio website, including contact information, skills, projects, responsiveness, and GitHub contributions. (outdated, now is v1.6.x)`,
+    description: `This portfolio website is where it all began — a clean, modern showcase of skills, projects, and achievements built to leave a strong professional impression. It presents who you are, what you've done, and how to reach you, all in an engaging, mobile-friendly design. (This is an older version; the current site is the one you're looking at now.)`,
     urlDirect: "https://fiqtor.com",
     srcImage: "/img/projects/personal-website.webp",
     tags: ["Portfolio", "Personal Branding", "UI/UX"],
@@ -1263,7 +1263,7 @@ export const Projects: Array<Project> = [
   {
     title: "Lunar UX - Company Profile",
     category: "Landing Page",
-    description: `Present your company profile with elegance and functionality using our responsive website application, complete with contact details, services, and more.`,
+    description: `Make a company that means business. Lunar UX gives your company a professional online profile that explains who you are, what you offer, and how to get in touch — all in a polished, easy-to-browse design. It's the modern, credible first impression that helps potential clients and partners take you seriously from the very first click.`,
     urlDirect: "https://lunar-ux.vercel.app",
     srcImage: "/img/projects/lunar-ux.webp",
     tags: ["Comapny Profile", "Landing page"],
@@ -1285,7 +1285,7 @@ export const Projects: Array<Project> = [
   {
     title: "Hardware Harmony - Shop Website",
     category: "E-Commerce",
-    description: `Boost your online sales with our responsive e-commerce website, designed to showcase your products effectively and engage your customers.`,
+    description: `Turn your shop into an online store that sells around the clock. Hardware Harmony showcases your products in an attractive, easy-to-browse layout designed to catch the eye and encourage purchases. Whether customers are on a phone or computer, they get a smooth shopping experience — so you reach more buyers and boost sales without opening a physical location.`,
     urlDirect: "https://hardware-harmony.vercel.app",
     srcImage: "/img/projects/hardware-harmony.webp",
     tags: ["Shop Web"],
