@@ -8,6 +8,7 @@ import {
   Express,
   Framer,
   Git,
+  Google,
   Html5,
   Javascript,
   JQuery,
@@ -340,6 +341,148 @@ export const Projects: Array<Project> = [
       {
         SvgIcon: Docker,
         title: "Docker",
+      },
+    ],
+  },
+  {
+    title: "IHS E-School - School Management & LMS",
+    category: "Business System",
+    description:
+      "A production-ready, full-stack Senior High School (SMA) management system paired with a dedicated Learning Management System, all sharing one Express.js + Sequelize backend and React 19 + TypeScript + Vite frontends. It runs a public, mobile-friendly school website (hero, flagship programs, newsroom, alumni, PPDB admissions with public status lookup) alongside an invite-only staff portal, a student & parent self-service portal, and a separate LMS app. The RBAC core supports Google OAuth, JWT access + refresh-cookie rotation, rate limiting, hardened headers and 11 school roles (principal, teacher, staff, counselor, librarian, finance, admissions, student, parent, alumni, canteen vendor). Core modules cover Admissions/PPDB (accepting an applicant auto-provisions the student, parent and their login accounts), People (students, teachers/staff, parents), News & Announcements, School Profile & Structure, and Attendance via manual input, QR scan or RFID tap. A DB-backed feature-flag system toggles ~15 modular modules live from the panel (E-Raport & Gradebook, Elective Subject Selection, LMS, CBT online exams, Academic Calendar & Timetable, Extracurriculars, Discipline & Merit Points, Counseling, Scholarships, Alumni Tracer, Online Payments, Digital Library, Facility Booking, Cashless Canteen, and Parent Portal with WhatsApp/SMS/Email alerts). The LMS delivers courses, materials, assignments, submissions & grading, CBT exams with auto-grading, a student 'My Assignments' view and an academic calendar. An analytics dashboard surfaces attendance, collection rate, pending admissions, outstanding fees and user metrics, with light/dark mode and a bilingual ID/EN interface.",
+    srcImage: "/img/projects/eschool-website-hero.webp",
+    images: [
+      "/img/projects/eschool-website-hero.webp",
+      "/img/projects/eschool-admissions.webp",
+      "/img/projects/eschool-dashboard.webp",
+      "/img/projects/eschool-dashboard-analytics.webp",
+      "/img/projects/eschool-ppdb-applications.webp",
+      "/img/projects/eschool-student-affairs.webp",
+      "/img/projects/eschool-feature-toggles.webp",
+      "/img/projects/eschool-finance-invoices.webp",
+      "/img/projects/eschool-lms-signin.webp",
+      "/img/projects/eschool-lms-dashboard.webp",
+      "/img/projects/eschool-lms-assignments.webp",
+    ],
+    tags: [
+      "School Management",
+      "LMS",
+      "Admissions (PPDB)",
+      "CBT Exams",
+      "Attendance",
+      "Finance & Billing",
+      "Feature Flags",
+      "Parent Portal",
+      "RBAC",
+    ],
+    icons: [
+      {
+        SvgIcon: ReactJS,
+        title: "React 19",
+      },
+      {
+        SvgIcon: Typescript,
+        title: "TypeScript",
+      },
+      {
+        SvgIcon: Tailwindcss,
+        title: "TailwindCSS v4",
+      },
+      {
+        SvgIcon: Redux,
+        title: "Redux Toolkit",
+      },
+      {
+        SvgIcon: Node,
+        title: "Node.js",
+      },
+      {
+        SvgIcon: Express,
+        title: "Express.js",
+      },
+      {
+        SvgIcon: Mysql,
+        title: "MySQL / MariaDB",
+      },
+      {
+        SvgIcon: Jsonwebtokens,
+        title: "JWT Auth",
+      },
+      {
+        SvgIcon: Google,
+        title: "Google OAuth",
+      },
+      {
+        SvgIcon: Axios,
+        title: "Axios",
+      },
+    ],
+  },
+  {
+    title: "Golden Dragon - Restaurant QR Ordering App",
+    category: "Business System",
+    description:
+      "A production-ready, full-stack restaurant self-ordering platform with a QR code menu and a complete admin dashboard. Diners scan the table QR to resolve their seat, sign in with a WhatsApp number (one-time code auto-verified via whatsapp-web.js, then set a password), browse the searchable menu, add items to a locally-persisted cart, and check out — paying online through Midtrans Snap (QRIS, bank transfer, e-wallet, card) or at the cashier. Order status updates live via Server-Sent Events, with a manual payment-status refresh and a printable receipt, plus full order history. Behind the scenes a full staff dashboard covers Menu & Category CRUD with image upload, Tables & QR management (generate, download and print a stable QR token per table), realtime order monitoring with status filters, revenue and best-seller analytics, and WhatsApp device linking. Built on an Express.js + Sequelize backend with a React 19 + TypeScript + Vite frontend, it ships enterprise JWT auth & RBAC (roles: admin, cashier, kitchen), Google OAuth, a bilingual (ID/EN) mobile-first UI, idempotent order creation, IDOR-safe access, and Midtrans signature + amount verification.",
+    srcImage: "img/projects/resto-landing.webp",
+    images: [
+      "img/projects/resto-landing.webp",
+      "img/projects/resto-customer-menu.webp",
+      "img/projects/resto-customer-cart.webp",
+      "img/projects/resto-customer-checkout.webp",
+      "img/projects/resto-dashboard.webp",
+      "img/projects/resto-orders.webp",
+      "img/projects/resto-menu-management.webp",
+      "img/projects/resto-tables-qr.webp",
+    ],
+    tags: [
+      "Restaurant",
+      "QR Menu",
+      "Self-Ordering",
+      "Midtrans Payment",
+      "WhatsApp Verification",
+      "Realtime SSE",
+      "Admin Dashboard",
+      "RBAC",
+    ],
+    icons: [
+      {
+        SvgIcon: ReactJS,
+        title: "React 19",
+      },
+      {
+        SvgIcon: Typescript,
+        title: "TypeScript",
+      },
+      {
+        SvgIcon: Tailwindcss,
+        title: "TailwindCSS v4",
+      },
+      {
+        SvgIcon: Redux,
+        title: "Redux Toolkit",
+      },
+      {
+        SvgIcon: Node,
+        title: "Node.js",
+      },
+      {
+        SvgIcon: Express,
+        title: "Express.js",
+      },
+      {
+        SvgIcon: Mysql,
+        title: "MySQL / MariaDB",
+      },
+      {
+        SvgIcon: Jsonwebtokens,
+        title: "JWT Auth",
+      },
+      {
+        SvgIcon: Google,
+        title: "Google OAuth",
+      },
+      {
+        SvgIcon: Axios,
+        title: "Axios",
       },
     ],
   },

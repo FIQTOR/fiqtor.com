@@ -158,7 +158,7 @@ export default function ProjectsComponents() {
                   <TbX className="h-6 w-6" />
                 </button>
 
-                <div className="relative w-full h-64 sm:h-80 overflow-hidden">
+                <div className="relative w-full h-64 sm:h-80 overflow-hidden shrink-0">
                   <img
                     src={selectedProject.srcImage}
                     alt={selectedProject.title}
@@ -166,10 +166,32 @@ export default function ProjectsComponents() {
                     decoding="async"
                     className="w-full h-full object-cover"
                   />
-                  <div className="absolute inset-0 bg-linear-to-t from-white dark:from-neutral-900 via-transparent" />
-                  <h2 className="absolute bottom-6 left-8 text-2xl sm:text-3xl font-bold text-neutral-900 dark:text-white">
-                    {selectedProject.title}
-                  </h2>
+                  <div className="absolute inset-0 bg-linear-to-t from-white via-white/80 to-transparent dark:from-neutral-900 dark:via-neutral-900/80 dark:to-transparent" />
+
+                  <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8 flex flex-col gap-2 pr-14 z-10">
+                    {selectedProject.category && (
+                      <div>
+                        <span className="inline-block rounded-full bg-blue-600 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-white">
+                          {selectedProject.category}
+                        </span>
+                      </div>
+                    )}
+                    <h2 className="text-xl sm:text-3xl font-bold text-neutral-900 dark:text-white leading-tight">
+                      {selectedProject.title}
+                    </h2>
+                    {selectedProject.tags && selectedProject.tags.length > 0 && (
+                      <div className="flex flex-wrap gap-1.5 pt-1">
+                        {selectedProject.tags.map((tag: string, i: number) => (
+                          <span
+                            key={i}
+                            className="rounded-full border border-neutral-300/60 dark:border-neutral-700/60 bg-neutral-100/90 dark:bg-neutral-800/90 px-2.5 py-0.5 text-xs font-medium text-neutral-700 dark:text-neutral-300 backdrop-blur-xs"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 <div className="p-6 sm:p-8">
