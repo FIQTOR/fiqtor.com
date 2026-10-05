@@ -48,7 +48,9 @@ export default function ProjectGallery({
       startX: event.clientX,
       startScrollLeft: el.scrollLeft,
     };
-    el.setPointerCapture(event.pointerId);
+    // NOTE: pointer capture is deliberately deferred until an actual drag
+    // is detected. Capturing on pointerdown retargets the native click to
+    // the strip and prevents the child thumbnail buttons from receiving it.
   };
 
   const handleStripPointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
@@ -56,8 +58,14 @@ export default function ProjectGallery({
     const state = dragState.current;
     if (!el || !state.isDown) return;
     const delta = event.clientX - state.startX;
-    if (Math.abs(delta) > 3) state.moved = true;
-    el.scrollLeft = state.startScrollLeft - delta;
+    if (!state.moved && Math.abs(delta) > 4) {
+      state.moved = true;
+      // Only now do we capture the pointer and start panning.
+      el.setPointerCapture(event.pointerId);
+    }
+    if (state.moved) {
+      el.scrollLeft = state.startScrollLeft - delta;
+    }
   };
 
   const endStripDrag = (event: React.PointerEvent<HTMLDivElement>) => {
