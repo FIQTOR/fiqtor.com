@@ -92,8 +92,8 @@ export const Projects: Array<Project> = [
     },
     category: "Business System",
     description: {
-      en: "Imagine having one place that takes care of almost everything your business needs — online courses, smart AI-powered investment tools, and a digital store, all under one roof. That's Iarty. No more juggling a dozen different apps that don't talk to each other. We also build custom applications tailored to how your business actually works, so you can serve customers faster, save time, and grow your business — without ever needing to understand the technology behind it.",
-      id: "Bayangkan punya satu tempat yang menangani hampir semua kebutuhan bisnis Anda — kursus online, alat investasi pintar bertenaga AI, dan toko digital, semuanya dalam satu atap. Itulah Iarty. Tak perlu lagi mencampur aduk belasan aplikasi yang tidak saling terhubung. Kami juga membuat aplikasi khusus sesuai cara kerja bisnis Anda, agar Anda bisa melayani pelanggan lebih cepat, menghemat waktu, dan menumbuhkan usaha — tanpa perlu memahami teknologi di baliknya.",
+      en: "A digital business ecosystem I built that combines online courses, an AI-powered investment tool, and a digital marketplace under one account system. It solves the problem of business owners having to subscribe to and switch between many separate tools that don't share data — I unified education, investment, and commerce into a single platform they can also extend with custom apps.",
+      id: "Ekosistem bisnis digital yang saya bangun dengan menggabungkan kursus online, alat investasi bertenaga AI, dan marketplace digital dalam satu sistem akun. Ini menyelesaikan masalah pemilik bisnis yang harus berlangganan dan berpindah-pindah banyak alat terpisah yang tidak berbagi data — saya menyatukan pendidikan, investasi, dan perdagangan ke dalam satu platform yang juga bisa diperluas dengan aplikasi khusus.",
     },
     urlDirect: "https://iarty.biz.id",
     srcImage: "img/projects/iarty.webp",
@@ -148,8 +148,8 @@ export const Projects: Array<Project> = [
     },
     category: "Business System",
     description: {
-      en: "Does running your business feel messy because your sales, stock, money, and staff records are scattered across notebooks and dozens of spreadsheets? Enterprise Suite brings everything into one simple screen. Instantly see today's sales, warehouse stock, who owes you money, employee salaries, and your real profit — all updated automatically in real time. No more manual counting, no more fear of costly mistakes. Just open the app and the entire health of your business is laid out clearly at a glance.",
-      id: "Apakah bisnis Anda terasa berantakan karena catatan penjualan, stok, uang, dan karyawan tersebar di buku catatan dan puluhan spreadsheet? Enterprise Suite menyatukan semuanya dalam satu layar sederhana. Lihat seketika penjualan hari ini, stok gudang, siapa yang berutang, gaji karyawan, dan laba riil Anda — semua diperbarui otomatis secara real-time. Tak perlu lagi menghitung manual, tak perlu takut salah yang mahal. Cukup buka aplikasi dan kesehatan bisnis Anda tersaji jelas dalam sekejap.",
+      en: "A full ERP platform I built that unifies sales, purchasing, multi-warehouse inventory, CRM, double-entry accounting, HR & payroll, approvals, and reports into one workspace. It solves the problem of business data being split across notebooks and spreadsheets: instead of reconciling multiple sources by hand, owners see live sales, stock, debts, salaries, and real profit on one dashboard.",
+      id: "Platform ERP lengkap yang saya bangun untuk menyatukan penjualan, pembelian, inventaris multi-gudang, CRM, akuntansi double-entry, HR & penggajian, persetujuan, dan laporan ke dalam satu ruang kerja. Ini menyelesaikan masalah data bisnis yang terpecah di buku catatan dan spreadsheet: alih-alih merekonsiliasi banyak sumber secara manual, pemilik melihat penjualan, stok, utang, gaji, dan laba riil secara langsung di satu dasbor.",
     },
     srcImage: "/img/projects/erp-dashboard.webp",
     images: [
@@ -218,8 +218,8 @@ export const Projects: Array<Project> = [
     },
     category: "Business System",
     description: {
-      en: "Is your sales team constantly losing track of potential buyers? CRM Panel keeps every customer and prospect in one place, so no lead ever slips through the cracks. See who is most likely to buy, get reminders to follow up on time, and track which salesperson is performing best this month — all without complicated charts. It's protected with layers of security, so only the right people can see sensitive information, wrapped in a clean, modern design that's genuinely pleasant to use every day. Perfect for businesses that want sales that are organized, predictable, and easy to measure.",
-      id: "Apakah tim penjualan Anda sering kehilangan jejak calon pembeli? CRM Panel menyimpan setiap pelanggan dan prospek di satu tempat, sehingga tidak ada peluang yang terlewat. Lihat siapa yang paling mungkin membeli, dapatkan pengingat untuk menindaklanjuti tepat waktu, dan pantau siapa penjual terbaik bulan ini — tanpa grafik yang rumit. Dilindungi berlapis keamanan, hanya orang yang tepat yang bisa melihat informasi sensitif, dibungkus desain modern yang nyaman dipakai setiap hari. Sempurna untuk bisnis yang ingin penjualan tertata, terprediksi, dan mudah diukur.",
+      en: "A sales CRM I built with secure login (including 2FA), role-based access control, a drag-and-drop deal pipeline, automatic lead scoring, tasks & reminders, and an analytics dashboard. It solves the problem of sales teams losing track of prospects and follow-ups: every lead, customer, and deal lives in one place, so nothing gets forgotten and performance is measurable.",
+      id: "CRM penjualan yang saya bangun dengan login aman (termasuk 2FA), kontrol akses berbasis peran, pipeline deal drag-and-drop, penilaian prospek otomatis, tugas & pengingat, serta dasbor analitik. Ini menyelesaikan masalah tim penjualan yang kehilangan jejak prospek dan tindak lanjut: setiap prospek, pelanggan, dan deal tersimpan di satu tempat, sehingga tak ada yang terlupa dan performa bisa diukur.",
     },
     srcImage: "img/projects/crm-dashboard.webp",
     images: [
@@ -288,8 +288,8 @@ export const Projects: Array<Project> = [
     },
     category: "Business System",
     description: {
-      en: "Managing people — attendance, leave, salaries, contracts, and hiring — can be a nightmare when it's all done by hand. HRIS solves it in a single app that fits any type of business: factories, hospitals, schools, and service companies alike. Employees can clock in from their phone, request leave themselves, and view their payslips without lining up at HR. Owners can see payroll, attendance, and headcount reports in seconds. The result: HR work that's dramatically faster, accurate, and free from the drama of payroll mistakes.",
-      id: "Mengelola orang — absensi, cuti, gaji, kontrak, dan rekrutmen — bisa jadi mimpi buruk jika dilakukan manual. HRIS menyelesaikannya dalam satu aplikasi yang cocok untuk berbagai jenis bisnis: pabrik, rumah sakit, sekolah, maupun perusahaan jasa. Karyawan bisa absen dari ponsel, mengajukan cuti sendiri, dan melihat slip gaji tanpa antre di HR. Pemilik bisa melihat laporan gaji, kehadiran, dan jumlah karyawan dalam hitungan detik. Hasilnya: pekerjaan HR jauh lebih cepat, akurat, dan bebas drama kesalahan penggajian.",
+      en: "A Human Resource Information System I built covering employee records, attendance, leave, payroll, recruitment, performance, and an employee self-service portal. It solves the problem of HR admin being slow and error-prone when done manually: employees clock in and request leave from their phone, and payroll, attendance, and headcount reports are generated automatically.",
+      id: "Sistem Informasi SDM yang saya bangun mencakup data karyawan, absensi, cuti, penggajian, rekrutmen, performa, dan portal swalayan karyawan. Ini menyelesaikan masalah administrasi HR yang lambat dan rawan salah saat dilakukan manual: karyawan absen dan mengajukan cuti dari ponsel, dan laporan gaji, kehadiran, serta jumlah karyawan dibuat otomatis.",
     },
     srcImage: "img/projects/hris-dashboard.webp",
     images: [
@@ -359,8 +359,8 @@ export const Projects: Array<Project> = [
     },
     category: "Business System",
     description: {
-      en: "Running a school by hand — new student admissions, attendance, grades, tuition fees, and announcements to parents — is exhausting. IHS E-School brings it all into one connected platform. New students can apply online, teachers record attendance and grades in seconds, parents can follow their child's progress right from their phone, and the school manages payments and announcements automatically. It even includes an online classroom for students. In short: school administration becomes tidy, transparent, and time-saving for teachers, students, and parents alike.",
-      id: "Mengelola sekolah secara manual — pendaftaran siswa baru, absensi, nilai, uang sekolah, dan pengumuman ke orang tua — sungguh melelahkan. IHS E-School menyatukan semuanya dalam satu platform terhubung. Siswa baru bisa mendaftar online, guru mencatat absensi dan nilai dalam hitungan detik, orang tua bisa mengikuti perkembangan anak langsung dari ponsel, dan sekolah mengelola pembayaran serta pengumuman secara otomatis. Bahkan ada ruang kelas online untuk siswa. Singkatnya: administrasi sekolah jadi rapi, transparan, dan hemat waktu bagi guru, siswa, maupun orang tua.",
+      en: "A school management system + learning platform I built with online admissions, attendance, gradebooks, CBT exams, tuition billing, a parent portal, and an LMS for materials and assignments. It solves the problem of schools running admissions, grades, fees, and parent updates on paper: everything moves into one connected platform so staff save time and parents can follow their child's progress.",
+      id: "Sistem manajemen sekolah + platform pembelajaran yang saya bangun dengan pendaftaran online, absensi, buku nilai, ujian CBT, tagihan SPP, portal orang tua, dan LMS untuk materi serta tugas. Ini menyelesaikan masalah sekolah yang menjalankan pendaftaran, nilai, biaya, dan info ke orang tua di atas kertas: semuanya pindah ke satu platform terhubung sehingga staf hemat waktu dan orang tua bisa memantau perkembangan anak.",
     },
     srcImage: "/img/projects/eschool-website-hero.webp",
     images: [
@@ -430,8 +430,8 @@ export const Projects: Array<Project> = [
     },
     category: "Business System",
     description: {
-      en: "Tired of waiters running back and forth and customers waiting forever to order? Golden Dragon lets your diners simply scan a QR code on the table, browse your full menu, and order and pay right from their own phone. Orders appear instantly on your kitchen and cashier screens, so nothing gets lost and nobody has to shout across the room. Customers can pay online through QRIS, bank transfer, e-wallet, or card — or settle at the cashier. Behind the scenes, you get a full dashboard to manage your menu, generate table QR codes, watch live orders, and track your best-selling dishes. Fewer mistakes, faster service, happier customers.",
-      id: "Lelah para pelayan mondar-mandir dan pelanggan menunggu lama untuk memesan? Golden Dragon membuat pelanggan cukup memindai kode QR di meja, menjelajahi menu lengkap, lalu memesan dan membayar langsung dari ponsel mereka. Pesanan muncul seketika di layar dapur dan kasir, sehingga tak ada yang terlewat dan tak perlu berteriak di ruangan. Pelanggan bisa membayar online lewat QRIS, transfer bank, e-wallet, atau kartu — atau bayar di kasir. Di balik layar, Anda mendapat dasbor lengkap untuk mengelola menu, membuat kode QR meja, memantau pesanan langsung, dan melacak menu terlaris. Lebih sedikit kesalahan, pelayanan lebih cepat, pelanggan lebih senang.",
+      en: "A restaurant self-ordering app I built: diners scan a table QR code, order and pay from their phone (QRIS, transfer, e-wallet, card), and orders appear live on kitchen and cashier screens, plus a staff dashboard for menu, table QR, orders, and sales. It solves the problem of waiters running back and forth, slow ordering, and lost orders — guests order themselves and payment is verified automatically.",
+      id: "Aplikasi pesan mandiri restoran yang saya bangun: pelanggan memindai kode QR di meja, memesan dan membayar dari ponsel (QRIS, transfer, e-wallet, kartu), dan pesanan muncul langsung di layar dapur dan kasir, plus dasbor staf untuk menu, QR meja, pesanan, dan penjualan. Ini menyelesaikan masalah pelayan yang mondar-mandir, pemesanan lambat, dan pesanan yang terlewat — tamu memesan sendiri dan pembayaran terverifikasi otomatis.",
     },
     srcImage: "img/projects/resto-landing.webp",
     images: [
@@ -498,8 +498,8 @@ export const Projects: Array<Project> = [
     },
     category: "AI & Automation",
     description: {
-      en: "What if your business could reply to every customer on WhatsApp — instantly, day or night — without hiring anyone? This AI assistant answers questions, shares product info, takes orders, and guides customers automatically, so you never miss a sale because you were too busy or asleep. It plugs into the way your business already works, giving you 24/7 support, lightning-fast replies, and customers who feel cared for. Think of it as a tireless team member who never takes a day off.",
-      id: "Bagaimana jika bisnis Anda bisa membalas setiap pelanggan di WhatsApp — seketika, siang maupun malam — tanpa menyewa siapa pun? Asisten AI ini menjawab pertanyaan, membagikan info produk, menerima pesanan, dan memandu pelanggan secara otomatis, sehingga Anda tak pernah kehilangan penjualan karena terlalu sibuk atau tertidur. Ia terhubung dengan cara kerja bisnis Anda, memberi dukungan 24/7, balasan super cepat, dan pelanggan yang merasa diperhatikan. Anggap saja sebagai anggota tim tak kenal lelah yang tak pernah libur.",
+      en: "An AI chatbot I built for WhatsApp that automatically answers customer questions, shares product info, and takes orders 24/7. It solves the problem of businesses losing sales because they can't reply to WhatsApp fast enough or outside working hours — the bot handles customer chats automatically without hiring extra admin staff.",
+      id: "Chatbot AI yang saya bangun untuk WhatsApp yang otomatis menjawab pertanyaan pelanggan, membagikan info produk, dan menerima pesanan 24/7. Ini menyelesaikan masalah bisnis yang kehilangan penjualan karena tidak bisa membalas WhatsApp dengan cepat atau di luar jam kerja — bot menangani obrolan pelanggan secara otomatis tanpa menambah staf admin.",
     },
     srcImage: "img/projects/whatsapp-automation.webp",
     tags: {
@@ -536,8 +536,8 @@ export const Projects: Array<Project> = [
     },
     category: "AI & Automation",
     description: {
-      en: "Meet your all-in-one AI assistant. Instead of juggling several subscriptions, IARTY AI lets you chat with 50+ different AI brains — including GPT and DeepSeek — inside one single conversation, and even switch between them mid-chat. Bring your own key or use the built-in free credits. Whether you need help writing, planning a project, thinking through a tricky problem, or analyzing the US stock and crypto markets, it's all here in one powerful, portable tool. Your conversations can even be exported and moved anywhere, so your ideas are never locked in.",
-      id: "Temui asisten AI serba bisa Anda. Alih-alih mengelola beberapa langganan, IARTY AI memungkinkan Anda mengobrol dengan 50+ otak AI berbeda — termasuk GPT dan DeepSeek — dalam satu percakapan, bahkan berpindah di tengah obrolan. Bawa kunci API Anda sendiri atau gunakan kredit gratis bawaan. Perlu bantuan menulis, merencanakan proyek, memikirkan masalah rumit, atau menganalisis pasar saham AS dan kripto, semuanya ada dalam satu alat portabel yang kuat. Percakapan Anda bahkan bisa diekspor dan dipindahkan ke mana saja, jadi ide Anda tak pernah terkunci.",
+      en: "An AI chat platform I built where you can talk to 50+ AI models (GPT, DeepSeek, and others) in one conversation and switch models mid-chat. It solves the problem of needing multiple AI subscriptions and juggling separate apps — one tool covers writing, planning, problem-solving, and stock/crypto analysis, and conversations can be exported.",
+      id: "Platform obrolan AI yang saya bangun di mana Anda bisa berbicara dengan 50+ model AI (GPT, DeepSeek, dan lainnya) dalam satu percakapan dan berpindah model di tengah obrolan. Ini menyelesaikan masalah kebutuhan banyak langganan AI dan repot berpindah aplikasi — satu alat mencakup menulis, merencanakan, memecahkan masalah, dan analisis saham/kripto, serta percakapan bisa diekspor.",
     },
     urlDirect: "https://ai.iarty.biz.id",
     srcImage: "img/projects/iarty-ai.webp",
@@ -583,8 +583,8 @@ export const Projects: Array<Project> = [
     },
     category: "E-Commerce",
     description: {
-      en: "Why start from scratch when the perfect ready-made solution already exists? This marketplace is a one-stop shop for AI-powered tools and templates that save you time and money. Browse, pick, and instantly put them to work for your project — whether you're running a business, creating content, or building something new. No technical know-how required.",
-      id: "Kenapa mulai dari nol jika solusi siap pakai yang sempurna sudah ada? Marketplace ini adalah pusat serba ada untuk alat dan template bertenaga AI yang menghemat waktu dan uang Anda. Telusuri, pilih, dan langsung pakai untuk proyek Anda — baik Anda menjalankan bisnis, membuat konten, atau membangun sesuatu yang baru. Tak perlu keahlian teknis.",
+      en: "An online marketplace I built where users browse and buy AI tools, prompts, and templates for their projects. It solves the problem of people building everything from scratch or searching everywhere for good AI resources — they can find and start using ready-made solutions in one place.",
+      id: "Marketplace online yang saya bangun tempat pengguna menjelajahi dan membeli alat, prompt, dan template AI untuk proyek mereka. Ini menyelesaikan masalah orang yang membangun segalanya dari nol atau mencari ke mana-mana untuk sumber AI yang bagus — mereka bisa menemukan dan langsung memakai solusi siap pakai di satu tempat.",
     },
     urlDirect: "https://marketplace.iarty.biz.id",
     srcImage: "img/projects/iarty-ai-marketplace.webp",
@@ -626,8 +626,8 @@ export const Projects: Array<Project> = [
     },
     category: "E-Commerce",
     description: {
-      en: "Building a good-looking website usually costs a fortune and takes months. Zantova changes that. It's a marketplace where you can grab beautiful, ready-to-use website designs and building blocks, then plug them straight into your project. Whether you're a business owner wanting a polished site or a creator assembling something special, you get a professional result in a fraction of the time and cost — no design team required.",
-      id: "Membangun situs yang enak dilihat biasanya mahal dan memakan waktu berbulan-bulan. Zantova mengubah itu. Ini marketplace tempat Anda bisa mengambil desain dan komponen situs yang indah dan siap pakai, lalu memasangnya langsung ke proyek Anda. Baik Anda pemilik bisnis yang ingin situs rapi maupun kreator yang merangkai sesuatu istimewa, Anda mendapat hasil profesional dalam sebagian kecil waktu dan biaya — tanpa perlu tim desain.",
+      en: "A UI marketplace I built where customers buy ready-to-use website designs and components. It solves the problem of businesses and creators spending months and a lot of money on custom design — they get professional, ready-made UI they can drop straight into their project for a fraction of the cost and time.",
+      id: "Marketplace UI yang saya bangun tempat pelanggan membeli desain dan komponen situs yang siap pakai. Ini menyelesaikan masalah bisnis dan kreator yang menghabiskan berbulan-bulan dan banyak biaya untuk desain kustom — mereka mendapat UI profesional siap pakai yang bisa langsung dipasang ke proyek dengan biaya dan waktu jauh lebih sedikit.",
     },
     urlDirect: "https://zantova.my.id",
     srcImage: "img/projects/zantova.webp",
@@ -669,8 +669,8 @@ export const Projects: Array<Project> = [
     },
     category: "Creative",
     description: {
-      en: "Imagine controlling a colorful world of floating particles just by moving your hands in front of your camera — no mouse, no controller. This playful experiment tracks your hand movements in real time and turns them into dazzling visual effects. It's a fun, hands-on glimpse of how computers can understand people without any special equipment, and a taste of the interactive experiences technology can create.",
-      id: "Bayangkan mengendalikan dunia partikel berwarna yang melayang hanya dengan menggerakkan tangan di depan kamera — tanpa mouse, tanpa kontroler. Eksperimen menyenangkan ini melacak gerakan tangan Anda secara real-time dan mengubahnya menjadi efek visual yang memukau. Ini sekilas pengalaman interaktif yang bisa diciptakan teknologi, dan bagaimana komputer dapat memahami manusia tanpa perangkat khusus.",
+      en: "An interactive web experiment I built that tracks hand movement through the camera and turns it into responsive particle visuals — no mouse or controller needed. It solves the problem of touchless, camera-only interaction for demos and interactive displays, showing how a plain webcam can control a screen.",
+      id: "Eksperimen web interaktif yang saya bangun yang melacak gerakan tangan lewat kamera dan mengubahnya menjadi visual partikel yang responsif — tanpa mouse atau kontroler. Ini menyelesaikan masalah interaksi tanpa sentuh yang hanya mengandalkan kamera untuk demo dan display interaktif, menunjukkan bagaimana webcam biasa bisa mengendalikan layar.",
     },
     srcImage: "img/projects/particle-handtracker.webp",
     urlDirect: "https://particle-handtracker.vercel.app/",
@@ -696,8 +696,8 @@ export const Projects: Array<Project> = [
     },
     category: "Landing Page",
     description: {
-      en: "Whether it's a wedding, a graduation, a birthday, or a moment of condolence, the right flowers say what words cannot. Djoyo Florist's website makes ordering beautiful bouquets, flower boards, and event decorations effortless. Browse the full catalog of arrangements, see exactly what's available for every occasion, and reach out directly to place an order in seconds. It's the friendly online face of a trusted florist — helping customers find the perfect gift without a single phone call or store visit.",
-      id: "Entah itu pernikahan, kelulusan, ulang tahun, atau momen belasungkawa, bunga yang tepat menyampaikan apa yang tak terucap. Situs Djoyo Florist memudahkan pemesanan buket, papan bunga, dan dekorasi acara. Telusuri katalog rangkaian lengkap, lihat apa saja yang tersedia untuk setiap kesempatan, dan hubungi langsung untuk memesan dalam hitungan detik. Ini wajah online yang ramah dari florist terpercaya — membantu pelanggan menemukan hadiah sempurna tanpa perlu menelepon atau datang ke toko.",
+      en: "An official website I built for Djoyo Florist with a product catalog (bouquets, flower boards, event decorations), occasion-based service info, and a direct order contact. It solves the problem of a florist relying only on social media and word of mouth — customers can browse the full catalog and place an order in seconds from one clear website.",
+      id: "Situs resmi yang saya bangun untuk Djoyo Florist dengan katalog produk (buket, papan bunga, dekorasi acara), info layanan per acara, dan kontak pesanan langsung. Ini menyelesaikan masalah florist yang hanya mengandalkan media sosial dan mulut ke mulut — pelanggan bisa menjelajahi katalog lengkap dan memesan dalam hitungan detik dari satu situs yang jelas.",
     },
     srcImage: "img/projects/djoyo-florist.webp",
     urlDirect: "https://djoyoflorist.com/",
@@ -731,8 +731,8 @@ export const Projects: Array<Project> = [
     },
     category: "Web App",
     description: {
-      en: "Ever wondered who's actually following you back on Instagram or TikTok — and how many aren't? IARTY Analytics tells you in seconds. Simply connect your account and instantly see exactly which accounts don't follow you back and which ones you've stopped following. No guessing, no scrolling through endless lists by hand. It gives you clear, honest insight into your social connections, so you can decide what to do next with total confidence.",
-      id: "Pernah penasaran siapa yang benar-benar mengikuti balik Anda di Instagram atau TikTok — dan berapa yang tidak? IARTY Analytics memberitahu Anda dalam hitungan detik. Cukup hubungkan akun Anda dan lihat langsung akun mana yang tidak mengikuti balik dan mana yang sudah berhenti Anda ikuti. Tak perlu menebak, tak perlu menggulir daftar panjang secara manual. Ini memberi Anda wawasan yang jernih dan jujur tentang koneksi sosial Anda, sehingga Anda bisa memutuskan langkah berikutnya dengan percaya diri.",
+      en: "A social media analytics tool I built for Instagram and TikTok that lists which accounts don't follow you back and which you don't follow back. It solves the problem of checking followers manually one by one — users connect their account and get the full list instantly.",
+      id: "Alat analitik media sosial yang saya bangun untuk Instagram dan TikTok yang menampilkan akun mana yang tidak mengikuti balik dan mana yang tidak Anda ikuti balik. Ini menyelesaikan masalah pengecekan pengikut satu per satu secara manual — pengguna menghubungkan akun dan mendapat daftar lengkap seketika.",
     },
     urlDirect: "https://analytics.iarty.biz.id",
     srcImage: "img/projects/iarty-analytics.webp",
@@ -766,8 +766,8 @@ export const Projects: Array<Project> = [
     },
     category: "Web App",
     description: {
-      en: "Want to learn a new skill but don't know where to start? IARTY Education is an online learning platform built to make education feel simple and enjoyable. Well-organized lessons and crystal-clear HD video courses let you master new abilities at your own pace, from anywhere. The clean, modern interface makes studying painless — no confusing menus, no wasted time. Just log in, pick a course, and start leveling up.",
-      id: "Ingin mempelajari keterampilan baru tapi bingung mulai dari mana? IARTY Education adalah platform pembelajaran online yang membuat pendidikan terasa sederhana dan menyenangkan. Pelajaran tersusun rapi dan video kursus HD yang jernih memungkinkan Anda menguasai kemampuan baru sesuai tempo Anda, dari mana saja. Antarmuka modern yang bersih membuat belajar tanpa beban — tanpa menu membingungkan, tanpa membuang waktu. Cukup masuk, pilih kursus, dan mulai tingkatkan diri.",
+      en: "An online learning platform I built with structured lessons, HD video courses, and progress tracking. It solves the problem of scattered, disorganized learning content — students get well-arranged courses they can follow at their own pace from anywhere in one clean interface.",
+      id: "Platform pembelajaran online yang saya bangun dengan pelajaran terstruktur, kursus video HD, dan pelacakan progres. Ini menyelesaikan masalah konten belajar yang tersebar dan tidak teratur — siswa mendapat kursus yang tertata rapi dan bisa diikuti sesuai tempo sendiri dari mana saja dalam satu antarmuka yang bersih.",
     },
     urlDirect: "https://education.iarty.biz.id",
     srcImage: "img/projects/iarty-education.webp",
@@ -821,8 +821,8 @@ export const Projects: Array<Project> = [
     },
     category: "Landing Page",
     description: {
-      en: "When your AC breaks in the middle of a heatwave, you don't want to hunt for a number — you want help fast. Sigma Teknik's website makes it easy to find a trusted cooling technician. See the full range of services (air conditioners, refrigerators, and more), browse real photos of completed jobs, check the company's credentials and location, and tap one button to chat on WhatsApp. It's a professional, reassuring online presence that turns a stressful repair into a simple message.",
-      id: "Saat AC Anda rusak di tengah cuaca panas, Anda tak ingin mencari-cari nomor — Anda ingin bantuan cepat. Situs Sigma Teknik memudahkan menemukan teknisi pendingin terpercaya. Lihat ragam layanan (AC, kulkas, dan lainnya), telusuri foto nyata hasil pekerjaan, cek kredibilitas dan lokasi perusahaan, dan ketuk satu tombol untuk mengobrol di WhatsApp. Ini kehadiran online yang profesional dan menenangkan yang mengubah perbaikan yang menegangkan menjadi pesan singkat.",
+      en: "A service company website I built for Sigma Teknik with a full service list (AC, refrigerators, cooling equipment), photo documentation of completed jobs, company info, location, and a one-tap WhatsApp button. It solves the problem of customers struggling to find and trust a technician — they can see proof of work and contact the company instantly.",
+      id: "Situs perusahaan jasa yang saya bangun untuk Sigma Teknik dengan daftar layanan lengkap (AC, kulkas, peralatan pendingin), dokumentasi foto pekerjaan selesai, info perusahaan, lokasi, dan tombol WhatsApp sekali ketuk. Ini menyelesaikan masalah pelanggan yang sulit menemukan dan mempercayai teknisi — mereka bisa melihat bukti pekerjaan dan menghubungi perusahaan seketika.",
     },
     srcImage: "img/projects/sigma-teknik-ac.webp",
     urlDirect: "https://www.mojokertoac.com/",
@@ -860,8 +860,8 @@ export const Projects: Array<Project> = [
     },
     category: "Template",
     description: {
-      en: "Give your coffee shop a website as welcoming as your café. This ready-made template shows off your complete menu with tempting product photos, tells customers where to find you, and lets them message you on WhatsApp with a single tap. Ideal for coffee businesses that want to look neat, credible, and professional — without spending a fortune or waiting weeks. Only Rp300,000.",
-      id: "Berikan kedai kopi Anda situs sehangat kafenya. Template siap pakai ini menampilkan menu lengkap dengan foto produk menggiurkan, memberi tahu pelanggan lokasi Anda, dan membuat mereka bisa mengirim pesan di WhatsApp dengan satu ketukan. Ideal untuk bisnis kopi yang ingin tampil rapi, kredibel, dan profesional — tanpa mengeluarkan banyak biaya atau menunggu berminggu-minggu. Hanya Rp300.000.",
+      en: "A ready-to-use website template I built for coffee shops, featuring a full menu, product photos, location info, and a WhatsApp contact button. It solves the problem of small cafés having no online presence or spending a lot on a website — they get a neat, professional site for Rp300,000.",
+      id: "Template situs siap pakai yang saya bangun untuk kedai kopi, dengan menu lengkap, foto produk, info lokasi, dan tombol kontak WhatsApp. Ini menyelesaikan masalah kafe kecil yang tidak punya kehadiran online atau harus mengeluarkan banyak biaya untuk membuat situs — mereka mendapat situs yang rapi dan profesional dengan Rp300.000.",
     },
     srcImage: "img/projects/cshop-surabaya.webp",
     urlDirect: "https://template-cshop-surabaya.vercel.app/",
@@ -899,8 +899,8 @@ export const Projects: Array<Project> = [
     },
     category: "Template",
     description: {
-      en: "Make your café feel ahead of its time. This modern template displays your menu and prices, showcases your drinks and food with attractive photos, shares your location, and lets customers reach you instantly on WhatsApp. Perfect for coffee shops that want a fresh, futuristic vibe that still feels friendly and easy to use. Only Rp300,000.",
-      id: "Buat kafe Anda terasa mendahului zamannya. Template modern ini menampilkan menu dan harga, memamerkan minuman dan makanan dengan foto menarik, membagikan lokasi Anda, dan membuat pelanggan menghubungi Anda seketika di WhatsApp. Sempurna untuk kedai kopi yang menginginkan nuansa segar dan futuristik yang tetap terasa ramah dan mudah digunakan. Hanya Rp300.000.",
+      en: "A modern-themed coffee shop website template I built with a menu showcase, prices, product photos, location, and WhatsApp contact. It solves the problem of cafés that want a distinctive, modern look without custom development cost or wait — a polished futuristic template ready in minutes for Rp300,000.",
+      id: "Template situs kedai kopi bertema modern yang saya bangun dengan tampilan menu, harga, foto produk, lokasi, dan kontak WhatsApp. Ini menyelesaikan masalah kafe yang ingin tampilan modern yang khas tanpa biaya atau waktu pengembangan kustom — template futuristik yang siap dalam beberapa menit dengan Rp300.000.",
     },
     srcImage: "img/projects/cshop-space.webp",
     urlDirect: "https://template-cshop-space.vercel.app/",
@@ -938,8 +938,8 @@ export const Projects: Array<Project> = [
     },
     category: "Template",
     description: {
-      en: "Stand out with a café website that feels warm, unique, and full of character. This retro-style template presents your menu of drinks and food, shows customers where to find you, and includes a WhatsApp button for orders or reservations. Ideal for cafés that want a memorable, nostalgic look that guests instantly love. Only Rp300,000.",
-      id: "Menonjollah dengan situs kafe yang terasa hangat, unik, dan penuh karakter. Template bergaya retro ini menyajikan menu minuman dan makanan, menunjukkan lokasi Anda, dan menyertakan tombol WhatsApp untuk pesanan atau reservasi. Ideal untuk kafe yang menginginkan tampilan nostalgik yang langsung disukai pengunjung. Hanya Rp300.000.",
+      en: "A retro-style coffee shop website template I built with menu pages, drink and food lists, location, and a WhatsApp button for orders or reservations. It solves the problem of cafés wanting a memorable, nostalgic look without hiring a designer — a characterful template available instantly for Rp300,000.",
+      id: "Template situs kedai kopi bergaya retro yang saya bangun dengan halaman menu, daftar minuman dan makanan, lokasi, dan tombol WhatsApp untuk pesanan atau reservasi. Ini menyelesaikan masalah kafe yang ingin tampilan nostalgik yang berkesan tanpa menyewa desainer — template penuh karakter yang langsung tersedia dengan Rp300.000.",
     },
     srcImage: "img/projects/cshop-retro.webp",
     urlDirect: "https://template-cshop-retro.vercel.app/",
@@ -977,8 +977,8 @@ export const Projects: Array<Project> = [
     },
     category: "Business System",
     description: {
-      en: "Running a grocery store means keeping track of a hundred things at once — and losing count costs real money. This system handles it all for you: what comes in, what goes out, daily spending, daily income, and cashier transactions, all recorded in one place. It even shows you simple analytics so you can spot what's selling and what's not. The result is a store that runs smoothly, with clear numbers and confident decisions — no more messy notebooks.",
-      id: "Mengelola toko kelontong berarti mengurus ratusan hal sekaligus — dan salah hitung berarti kerugian nyata. Sistem ini menangani semuanya untuk Anda: apa yang masuk, apa yang keluar, pengeluaran harian, pemasukan harian, dan transaksi kasir, semua tercatat di satu tempat. Ia bahkan menampilkan analitik sederhana agar Anda bisa melihat apa yang laku dan tidak. Hasilnya toko yang berjalan lancar, dengan angka jelas dan keputusan yang percaya diri — tak ada lagi buku catatan berantakan.",
+      en: "A store management system I built for grocery shops with stock in/out, expense and income tracking, cashier transactions, and simple analytics. It solves the problem of shop owners losing money through miscounts and messy records — every transaction and stock movement is recorded in one place with clear, automatic reports.",
+      id: "Sistem manajemen toko yang saya bangun untuk toko kelontong dengan stok masuk/keluar, pelacakan pengeluaran dan pemasukan, transaksi kasir, dan analitik sederhana. Ini menyelesaikan masalah pemilik toko yang rugi karena salah hitung dan catatan berantakan — setiap transaksi dan pergerakan stok tercatat di satu tempat dengan laporan otomatis yang jelas.",
     },
     srcImage: "img/projects/iarty-modulef-store_management_system.webp",
     tags: {
@@ -1027,8 +1027,8 @@ export const Projects: Array<Project> = [
     },
     category: "Business System",
     description: {
-      en: "Let your customers order without waiting for a waiter. With Savoria, diners scan a QR code at the table, pick what they want from your menu, and pay however is easiest — bank transfer, e-wallet, or cash. Orders flow straight to your staff, and your dashboard tracks revenue, manages multiple branches, and shows you what's working. It's a smoother, faster experience for guests and far less chaos for your team.",
-      id: "Biarkan pelanggan memesan tanpa menunggu pelayan. Dengan Savoria, pengunjung memindai kode QR di meja, memilih dari menu Anda, dan membayar dengan cara termudah — transfer bank, e-wallet, atau tunai. Pesanan langsung mengalir ke staf Anda, dan dasbor melacak pendapatan, mengelola banyak cabang, dan menunjukkan apa yang berhasil. Pengalaman yang lebih mulus dan cepat bagi tamu, dan jauh lebih sedikit kekacauan bagi tim Anda.",
+      en: "An online restaurant ordering system I built where guests scan a table QR code, order, and pay (bank transfer, e-wallet, or cash), with branch management and revenue analytics for owners. It solves the problem of slow table service and manual order-taking — orders go straight to staff and owners can track revenue across branches.",
+      id: "Sistem pesan online restoran yang saya bangun di mana tamu memindai kode QR di meja, memesan, dan membayar (transfer bank, e-wallet, atau tunai), dengan manajemen cabang dan analitik pendapatan untuk pemilik. Ini menyelesaikan masalah pelayanan meja yang lambat dan pencatatan pesanan manual — pesanan langsung ke staf dan pemilik bisa melacak pendapatan lintas cabang.",
     },
     srcImage: "img/projects/iarty-modulef-savoria_online_order_restaurant.webp",
     tags: {
@@ -1077,8 +1077,8 @@ export const Projects: Array<Project> = [
     },
     category: "Creative",
     description: {
-      en: "Sometimes the best gift isn't something you buy — it's something you say. Word Love Code lets you turn heartfelt messages, poems, and quotes into beautiful, personalized digital gifts for the people you love. Craft it in minutes, share it with a link, and watch it come to life. Perfect for anniversaries, birthdays, or just to make someone's day brighter.",
-      id: "Kadang hadiah terbaik bukanlah yang Anda beli — melainkan yang Anda ucapkan. Word Love Code memungkinkan Anda mengubah pesan tulus, puisi, dan kutipan menjadi hadiah digital yang indah dan personal untuk orang yang Anda cintai. Rakit dalam beberapa menit, bagikan lewat tautan, dan saksikan ia hidup. Sempurna untuk ulang tahun pernikahan, ulang tahun, atau sekadar membuat hari seseorang lebih cerah.",
+      en: "A creative web tool I built that turns custom messages, poems, and quotes into personalized digital gifts shared via a link. It solves the problem of finding a meaningful, personal gift — users craft a heartfelt message in minutes and send something more touching than a store-bought card.",
+      id: "Alat web kreatif yang saya bangun yang mengubah pesan, puisi, dan kutipan kustom menjadi hadiah digital personal yang dibagikan lewat tautan. Ini menyelesaikan masalah mencari hadiah yang bermakna dan personal — pengguna merangkai pesan tulus dalam beberapa menit dan mengirim sesuatu yang lebih menyentuh daripada kartu beli di toko.",
     },
     urlDirect: "https://word-love-code.vercel.app/",
     srcImage: "img/projects/world-love-code.webp",
@@ -1108,8 +1108,8 @@ export const Projects: Array<Project> = [
     },
     category: "E-Commerce",
     description: {
-      en: "Showcase your products online without the hassle of a full storefront. On this online store, you add your products, and when a customer taps one, they're sent straight to where they can buy it — your marketplace listing. It's a clean, simple way to put your catalog in front of people and turn interest into sales, in just a few clicks.",
-      id: "Pamerkan produk Anda secara online tanpa repot membuat toko penuh. Di toko online ini, Anda menambahkan produk, dan saat pelanggan mengetuknya, mereka langsung diarahkan ke tempat mereka bisa membelinya — listing marketplace Anda. Cara yang bersih dan sederhana untuk menampilkan katalog Anda dan mengubah minat menjadi penjualan, hanya dalam beberapa klik.",
+      en: "An online store module I built where sellers add products and customers are redirected to the product's marketplace listing when they tap a card. It solves the problem of displaying a product catalog online without running a full checkout — sellers showcase items and send buyers straight to where they can purchase.",
+      id: "Modul toko online yang saya bangun di mana penjual menambahkan produk dan pelanggan diarahkan ke listing marketplace produk saat mengetuk kartunya. Ini menyelesaikan masalah menampilkan katalog produk secara online tanpa harus menjalankan checkout penuh — penjual memamerkan barang dan mengarahkan pembeli langsung ke tempat pembelian.",
     },
     srcImage: "img/projects/online-store-modulef.webp",
     tags: {
@@ -1158,8 +1158,8 @@ export const Projects: Array<Project> = [
     },
     category: "Web App",
     description: {
-      en: "Need a QR code for your menu, business card, event, or promotion? This free tool creates custom QR codes in seconds — no sign-up, no cost, no fuss. Generate one for any link or occasion and share it instantly. Clean, fast, and completely open source, so anyone can use it.",
-      id: "Butuh kode QR untuk menu, kartu nama, acara, atau promosi? Alat gratis ini membuat kode QR kustom dalam hitungan detik — tanpa daftar, tanpa biaya, tanpa ribet. Buat untuk tautan atau kesempatan apa pun dan bagikan seketika. Bersih, cepat, dan sepenuhnya open source, jadi siapa saja bisa menggunakannya.",
+      en: "A free, open-source QR code generator I built that creates custom QR codes for any link, menu, or event in seconds. It solves the problem of needing quick QR codes without sign-ups, accounts, paywalls, or watermarks — anyone can generate and download one instantly.",
+      id: "Pembuat kode QR gratis dan open source yang saya bangun yang membuat kode QR kustom untuk tautan, menu, atau acara apa pun dalam hitungan detik. Ini menyelesaikan masalah kebutuhan kode QR cepat tanpa daftar, akun, paywall, atau watermark — siapa saja bisa membuat dan mengunduhnya seketika.",
     },
     urlDirect: "https://qrcode.fiqtor.com",
     srcImage: "img/projects/qrcode-generator.webp",
@@ -1185,8 +1185,8 @@ export const Projects: Array<Project> = [
     },
     category: "Creative",
     description: {
-      en: "Send a little holiday magic. This delightful website is a festive Christmas experience you can share with anyone — a beautifully decorated tree, twinkling ornaments, and a warm dose of seasonal cheer. It's a charming digital greeting that sparks a smile and brightens the season for friends, family, and customers.",
-      id: "Kirimkan sedikit keajaiban liburan. Situs menyenangkan ini adalah pengalaman Natal yang meriah untuk dibagikan kepada siapa saja — pohon berhias indah, ornamen berkelap-kelip, dan keceriaan musiman yang hangat. Ini sapaan digital yang menawan yang memancing senyum dan mencerahkan musim bagi teman, keluarga, dan pelanggan.",
+      en: "A festive interactive website I built as a shareable Christmas greeting with a decorated tree and animated ornaments. It solves the problem of sending a plain holiday message — it's a charming digital greeting anyone can share to brighten the season.",
+      id: "Situs interaktif meriah yang saya bangun sebagai ucapan Natal yang bisa dibagikan dengan pohon berhias dan ornamen beranimasi. Ini menyelesaikan masalah mengirim ucapan liburan yang biasa saja — ini sapaan digital yang menawan yang bisa dibagikan siapa saja untuk mencerahkan suasana musim.",
     },
     urlDirect: "https://fiqtor.github.io/christmas-tree",
     srcImage: "img/projects/merry-christmas-tree.webp",
@@ -1216,8 +1216,8 @@ export const Projects: Array<Project> = [
     },
     category: "Creative",
     description: {
-      en: "Love is best when it's shared in a way that's truly personal. Flowers for Someone lets you create a beautiful digital bouquet — complete with flowers, colors, and a heartfelt message — and send it to someone special in seconds. Whether it's a special occasion or simply \"thinking of you,\" it's a quick, touching gift that always hits the heart. No delivery fees, no waiting, just instant warmth.",
-      id: "Cinta paling indah saat dibagikan dengan cara yang benar-benar personal. Flowers for Someone memungkinkan Anda membuat buket digital yang cantik — lengkap dengan bunga, warna, dan pesan tulus — dan mengirimkannya ke orang istimewa dalam hitungan detik. Entah untuk kesempatan khusus atau sekadar \"aku sedang memikirkanmu\", ini hadiah cepat dan menyentuh yang selalu mengena di hati. Tanpa biaya kirim, tanpa menunggu, hanya kehangatan instan.",
+      en: "A popular gift website I built that lets users create and send a digital flower bouquet with a personalized message via a link. It solves the problem of sending flowers that cost money and take time to deliver — users send a touching, personalized digital bouquet instantly with no delivery fees.",
+      id: "Situs hadiah populer yang saya bangun yang memungkinkan pengguna membuat dan mengirim buket bunga digital dengan pesan personal lewat tautan. Ini menyelesaikan masalah mengirim bunga yang butuh biaya dan waktu pengiriman — pengguna mengirim buket digital yang menyentuh dan personal seketika tanpa biaya kirim.",
     },
     urlDirect: "https://fiqtor.github.io/flowers-for-someone",
     srcImage: "/img/projects/flowers-for-someone.webp",
@@ -1247,8 +1247,8 @@ export const Projects: Array<Project> = [
     },
     category: "Business System",
     description: {
-      en: "Want to serve more customers without adding more staff? This café app makes ordering effortless. Customers scan a QR code right from their table, pick their drinks and food, and orders reach your team instantly — cutting out queues, misheard orders, and lost time. Your staff works smoother, your guests are served faster, and your café simply runs better.",
-      id: "Ingin melayani lebih banyak pelanggan tanpa menambah staf? Aplikasi kafe ini membuat pemesanan tanpa repot. Pelanggan memindai kode QR langsung dari meja, memilih minuman dan makanan, dan pesanan langsung sampai ke tim Anda — memangkas antrean, pesanan salah dengar, dan waktu terbuang. Staf bekerja lebih lancar, tamu dilayani lebih cepat, dan kafe Anda berjalan lebih baik.",
+      en: "A café ordering web app I built where customers scan a QR code at their table to browse the menu and order, with orders reaching staff instantly. It solves the problem of long queues and misheard orders during busy hours — customers self-order and staff process orders faster without extra manpower.",
+      id: "Aplikasi web pesan kafe yang saya bangun di mana pelanggan memindai kode QR di meja untuk melihat menu dan memesan, dengan pesanan langsung sampai ke staf. Ini menyelesaikan masalah antrean panjang dan pesanan salah dengar saat jam sibuk — pelanggan memesan sendiri dan staf memproses pesanan lebih cepat tanpa tambahan tenaga.",
     },
     srcImage: "/img/projects/coffee-shop.webp",
     tags: {
@@ -1281,8 +1281,8 @@ export const Projects: Array<Project> = [
     },
     category: "Web App",
     description: {
-      en: "Taking attendance at a school doesn't have to mean calling out names for ten minutes. Padepokan lets students check in simply by scanning a QR code, instantly recording who's present — no paperwork, no wasting class time. Teachers and administrators get a clear, real-time view of attendance, so tracking who showed up becomes effortless and accurate.",
-      id: "Mencatat kehadiran di sekolah tak harus berarti memanggil nama selama sepuluh menit. Padepokan membuat siswa cukup memindai kode QR untuk absen, langsung merekam siapa yang hadir — tanpa kertas, tanpa membuang waktu kelas. Guru dan administrator mendapat tampilan kehadiran real-time yang jelas, sehingga melacak siapa yang hadir menjadi mudah dan akurat.",
+      en: "An attendance app I built for schools where students check in by scanning a QR code. It solves the problem of slow manual roll-calling and paper attendance sheets — attendance is recorded instantly and teachers get a clear real-time view of who's present.",
+      id: "Aplikasi absensi yang saya bangun untuk sekolah di mana siswa absen dengan memindai kode QR. Ini menyelesaikan masalah pemanggilan absen manual yang lambat dan lembar kertas — kehadiran tercatat seketika dan guru mendapat tampilan real-time yang jelas tentang siapa yang hadir.",
     },
     urlDirect: "https://padepokan.gaeni.org",
     srcImage: "/img/projects/padepokan-app.webp",
@@ -1316,8 +1316,8 @@ export const Projects: Array<Project> = [
     },
     category: "Web App",
     description: {
-      en: "Wondering who's actually in the office today? Presence makes company attendance dead simple. Employees clock in from their phone, and managers instantly see who's present, late, or away — without chasing paperwork or dealing with messy sign-in sheets. It saves time, removes guesswork, and keeps your team's working hours clear and organized.",
-      id: "Penasaran siapa yang benar-benar ada di kantor hari ini? Presence membuat absensi perusahaan sangat mudah. Karyawan absen dari ponsel, dan manajer langsung melihat siapa yang hadir, terlambat, atau tidak ada — tanpa mengejar kertas atau berurusan dengan daftar hadir berantakan. Ini menghemat waktu, menghilangkan dugaan, dan menjaga jam kerja tim Anda tetap jelas dan tertata.",
+      en: "A company attendance app I built where employees clock in from their phone and managers see who's present, late, or away in real time. It solves the problem of messy sign-in sheets and manual attendance tracking — attendance is automatic and the working-hours record is always clean and organized.",
+      id: "Aplikasi absensi perusahaan yang saya bangun di mana karyawan absen dari ponsel dan manajer melihat siapa yang hadir, terlambat, atau tidak ada secara real-time. Ini menyelesaikan masalah daftar hadir berantakan dan pelacakan manual — absensi otomatis dan catatan jam kerja selalu bersih dan tertata.",
     },
     urlDirect: "https://presence.gaeni.org",
     srcImage: "/img/projects/presence-app.webp",
@@ -1363,8 +1363,8 @@ export const Projects: Array<Project> = [
     },
     category: "Landing Page",
     description: {
-      en: "Your talent deserves a first impression that wows. BBY Interior's portfolio website presents design work and skills with elegance, guiding visitors through beautiful visuals and a smooth, easy-to-navigate experience. Every detail is crafted to highlight what makes the work unique — so clients instantly see the quality and want to get in touch.",
-      id: "Bakat Anda layak mendapat kesan pertama yang memukau. Situs portofolio BBY Interior menyajikan karya desain dan keahlian dengan elegan, memandu pengunjung melalui visual indah dan pengalaman yang mulus dan mudah dinavigasi. Setiap detail dirancang untuk menonjolkan keunikan karya — sehingga klien langsung melihat kualitasnya dan ingin menghubungi Anda.",
+      en: "A portfolio website I built for BBY Interior to present architectural and interior design work with elegant visuals and smooth navigation. It solves the problem of a design firm not having a professional online showcase — clients can quickly see the quality of past work and reach out.",
+      id: "Situs portofolio yang saya bangun untuk BBY Interior untuk menyajikan karya desain arsitektur dan interior dengan visual elegan dan navigasi yang mulus. Ini menyelesaikan masalah firma desain yang tidak punya etalase online profesional — klien bisa cepat melihat kualitas karya sebelumnya dan menghubungi.",
     },
     urlDirect: "https://bby-interior.vercel.app",
     srcImage: "/img/projects/bby.interior.webp",
@@ -1398,8 +1398,8 @@ export const Projects: Array<Project> = [
     },
     category: "Business System",
     description: {
-      en: "Your restaurant deserves to be found online. KORARIA gives your business a polished, attractive website that shows your full menu and products in a way that makes mouths water. Whether customers are choosing where to eat or checking you out for the first time, a strong online presence turns hungry browsers into paying diners.",
-      id: "Restoran Anda layak ditemukan secara online. KORARIA memberi bisnis Anda situs yang rapi dan menarik yang menampilkan menu dan produk lengkap dengan cara yang menggugah selera. Entah pelanggan sedang memilih tempat makan atau mengecek Anda pertama kali, kehadiran online yang kuat mengubah penjelajah yang lapar menjadi tamu yang membayar.",
+      en: "A restaurant website I built that displays a full menu and product showcase with a responsive layout. It solves the problem of restaurants being hard to find or looking unprofessional online — a strong web presence helps new customers discover the restaurant and decide to visit.",
+      id: "Situs restoran yang saya bangun yang menampilkan menu lengkap dan etalase produk dengan tata letak responsif. Ini menyelesaikan masalah restoran yang sulit ditemukan atau tampak tidak profesional secara online — kehadiran web yang kuat membantu pelanggan baru menemukan restoran dan memutuskan untuk datang.",
     },
     srcImage: "/img/projects/koraria.webp",
     tags: {
@@ -1432,8 +1432,8 @@ export const Projects: Array<Project> = [
     },
     category: "Landing Page",
     description: {
-      en: "This portfolio website is where it all began — a clean, modern showcase of skills, projects, and achievements built to leave a strong professional impression. It presents who you are, what you've done, and how to reach you, all in an engaging, mobile-friendly design. (This is an older version; the current site is the one you're looking at now.)",
-      id: "Situs portofolio inilah tempat semuanya bermula — etalase bersih dan modern untuk keterampilan, proyek, dan pencapaian yang dirancang meninggalkan kesan profesional yang kuat. Ini menyajikan siapa Anda, apa yang telah Anda kerjakan, dan bagaimana menghubungi Anda, semua dalam desain yang menarik dan ramah ponsel. (Ini versi lama; situs yang sedang Anda lihat sekarang adalah versi terbarunya.)",
+      en: "My personal portfolio website (an earlier version) that showcases skills, projects, achievements, and contact details in a responsive design. It solves the problem of presenting professional experience in one credible place — visitors immediately see who I am and what I've built. (The current site is the newer version you're viewing.)",
+      id: "Situs portofolio pribadi saya (versi lebih lama) yang menampilkan keterampilan, proyek, pencapaian, dan detail kontak dalam desain responsif. Ini menyelesaikan masalah menyajikan pengalaman profesional di satu tempat yang kredibel — pengunjung langsung melihat siapa saya dan apa yang telah saya bangun. (Situs saat ini adalah versi terbaru yang sedang Anda lihat.)",
     },
     urlDirect: "https://fiqtor.com",
     srcImage: "/img/projects/personal-website.webp",
@@ -1467,8 +1467,8 @@ export const Projects: Array<Project> = [
     },
     category: "Landing Page",
     description: {
-      en: "Make a company that means business. Lunar UX gives your company a professional online profile that explains who you are, what you offer, and how to get in touch — all in a polished, easy-to-browse design. It's the modern, credible first impression that helps potential clients and partners take you seriously from the very first click.",
-      id: "Buat perusahaan yang tampak serius. Lunar UX memberi perusahaan Anda profil online profesional yang menjelaskan siapa Anda, apa yang Anda tawarkan, dan bagaimana menghubungi Anda — semua dalam desain rapi yang mudah ditelusuri. Ini kesan pertama modern dan kredibel yang membantu calon klien dan mitra menanggapi Anda dengan serius sejak klik pertama.",
+      en: "A company profile website I built that presents who the company is, its services, and contact details in a clean, responsive layout. It solves the problem of a company lacking a credible online profile — potential clients and partners can understand the business and get in touch quickly.",
+      id: "Situs profil perusahaan yang saya bangun yang menyajikan identitas perusahaan, layanan, dan detail kontak dalam tata letak yang bersih dan responsif. Ini menyelesaikan masalah perusahaan yang tidak punya profil online yang kredibel — calon klien dan mitra bisa memahami bisnis dan menghubungi dengan cepat.",
     },
     urlDirect: "https://lunar-ux.vercel.app",
     srcImage: "/img/projects/lunar-ux.webp",
@@ -1498,8 +1498,8 @@ export const Projects: Array<Project> = [
     },
     category: "E-Commerce",
     description: {
-      en: "Turn your shop into an online store that sells around the clock. Hardware Harmony showcases your products in an attractive, easy-to-browse layout designed to catch the eye and encourage purchases. Whether customers are on a phone or computer, they get a smooth shopping experience — so you reach more buyers and boost sales without opening a physical location.",
-      id: "Ubah toko Anda menjadi toko online yang berjualan sepanjang waktu. Hardware Harmony memamerkan produk Anda dalam tata letak menarik yang mudah ditelusuri, dirancang untuk mencuri perhatian dan mendorong pembelian. Baik pelanggan membuka di ponsel atau komputer, mereka mendapat pengalaman belanja yang mulus — sehingga Anda menjangkau lebih banyak pembeli dan meningkatkan penjualan tanpa membuka lokasi fisik.",
+      en: "An e-commerce website I built to showcase shop products in an attractive, responsive layout optimized for browsing. It solves the problem of a shop having no online sales channel — products are presented clearly and customers can browse and buy from phone or computer.",
+      id: "Situs e-commerce yang saya bangun untuk memamerkan produk toko dalam tata letak menarik dan responsif yang dioptimalkan untuk penelusuran. Ini menyelesaikan masalah toko yang tidak punya kanal penjualan online — produk disajikan dengan jelas dan pelanggan bisa menelusuri serta membeli dari ponsel atau komputer.",
     },
     urlDirect: "https://hardware-harmony.vercel.app",
     srcImage: "/img/projects/hardware-harmony.webp",
