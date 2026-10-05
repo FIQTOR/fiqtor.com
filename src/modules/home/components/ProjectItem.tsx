@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { TbWorldShare, TbX } from "react-icons/tb";
 import gsap from "gsap";
+import ProjectGallery from "@/components/projects/ProjectGallery";
 
 export default function ProjectsComponents() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
@@ -175,6 +176,18 @@ export default function ProjectsComponents() {
                   <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
                     {selectedProject.description}
                   </p>
+
+                  {selectedProject.images && selectedProject.images.length > 0 && (
+                    <div className="mb-8">
+                      <h4 className="text-xs font-bold uppercase tracking-widest text-neutral-500 mb-4">
+                        Screenshots
+                      </h4>
+                      <ProjectGallery
+                        images={selectedProject.images}
+                        title={selectedProject.title}
+                      />
+                    </div>
+                  )}
 
                   <div className="mb-8">
                     <h4 className="text-xs font-bold uppercase tracking-widest text-neutral-500 mb-4">Tech Stack</h4>

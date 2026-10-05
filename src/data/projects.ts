@@ -4,6 +4,7 @@ import {
   Axios,
   Cpanel,
   Css3,
+  Docker,
   Express,
   Framer,
   Git,
@@ -19,6 +20,7 @@ import {
   Openai,
   Postgresql,
   ReactJS,
+  Redux,
   Swiper,
   Tailwindcss,
   Typescript,
@@ -60,7 +62,9 @@ export const ProjectCategories: Array<ProjectCategory> = [
 // category: Main category of the project
 // description: Brief explanation of the project
 // urlDirect: Optional live demo URL
-// srcImage: Path to project screenshot/image
+// srcImage: Path to project screenshot/image (used as the cover image)
+// images: Optional array of extra screenshots to render as a gallery in the modal
+//         (if omitted, only srcImage is shown)
 // tags: Optional array of project categories/keywords
 // icons: Array of technology icons used in the project
 export type Project = {
@@ -69,6 +73,7 @@ export type Project = {
   description: string;
   urlDirect?: string;
   srcImage: string;
+  images?: Array<string>;
   tags?: Array<string>;
   icons: Array<Icon>;
 };
@@ -123,6 +128,221 @@ export const Projects: Array<Project> = [
     ],
   },
 
+  {
+    title: "Enterprise Suite - Full ERP Platform",
+    category: "Business System",
+    description:
+      "A modern, full-featured Enterprise Resource Planning (ERP) platform built as a monorepo with an Express.js + Sequelize backend and a React 19 + TypeScript frontend. It unifies day-to-day operations into a single workspace: an executive dashboard with real-time KPIs and priority action queues, Sales Orders, Purchasing, multi-warehouse Inventory with moving-average costing, CRM, universal double-entry Accounting (Chart of Accounts, Trial Balance, Profit & Loss, Balance Sheet), multi-currency & tax engine, HR/Payroll with configurable salary components and work calendar, data-driven approval workflows, audit logs, API keys, webhooks, and export to Excel/PDF. Supports both single (on-premise) and multi-tenant (SaaS) modes from one codebase, with automatic per-tenant data isolation.",
+    srcImage: "/img/projects/erp-dashboard.webp",
+    images: [
+      "/img/projects/erp-dashboard.webp",
+      "/img/projects/erp-dashboard-analytics.webp",
+      "/img/projects/erp-dashboard-notifications.webp",
+      "/img/projects/erp-sales-orders.webp",
+      "/img/projects/erp-purchasing.webp",
+      "/img/projects/erp-inventory.webp",
+      "/img/projects/erp-crm-customers.webp",
+      "/img/projects/erp-finance-invoices.webp",
+      "/img/projects/erp-hr-payroll.webp",
+      "/img/projects/erp-reports.webp",
+    ],
+    tags: [
+      "ERP",
+      "Multi-Tenancy",
+      "Accounting",
+      "Inventory",
+      "HR & Payroll",
+      "CRM",
+      "Reporting",
+    ],
+    icons: [
+      {
+        SvgIcon: ReactJS,
+        title: "React 19",
+      },
+      {
+        SvgIcon: Typescript,
+        title: "TypeScript",
+      },
+      {
+        SvgIcon: Tailwindcss,
+        title: "TailwindCSS v4",
+      },
+      {
+        SvgIcon: Redux,
+        title: "Redux Toolkit",
+      },
+      {
+        SvgIcon: Node,
+        title: "Node.js",
+      },
+      {
+        SvgIcon: Express,
+        title: "Express.js",
+      },
+      {
+        SvgIcon: Mysql,
+        title: "MySQL / MariaDB",
+      },
+      {
+        SvgIcon: Jsonwebtokens,
+        title: "JWT Auth",
+      },
+      {
+        SvgIcon: Axios,
+        title: "Axios",
+      },
+      {
+        SvgIcon: Docker,
+        title: "Docker",
+      },
+    ],
+  },
+  {
+    title: "CRM Panel - Auth, RBAC & Sales CRM Suite",
+    category: "Business System",
+    description:
+      "A production-ready, full-stack Customer Relationship Management panel built with Express.js (Sequelize ORM) on a React 19 + TypeScript + Vite frontend. It ships with enterprise-grade authentication (local email/password, JWT access & refresh token rotation, and TOTP two-factor auth) and granular role-based access control, where sidebar navigation and panel links are filtered in real time by the current user's permissions. The CRM suite covers Leads, Customers, Contacts, Accounts (companies) and a drag-and-drop Kanban Opportunities pipeline (Prospecting → Qualification → Proposal → Won/Lost), plus colour-coded tags, automatic rule-based lead scoring (0–100, hot/warm filters), per-record customer timelines, assignable tasks & reminders with an overdue view, saved views, a Ctrl/Cmd+K global command palette, workflow automation rules, HMAC-signed outbound webhooks, public REST API keys and an exportable audit log. A live dashboard and analytics panel surface lead conversion funnels, weighted pipeline forecasts, per-rep leaderboards and win/loss insights, all on an organization-scoped multi-tenant data model with a modern futuristic UI (neural-network canvas background, bilingual EN/ID interface).",
+    srcImage: "img/projects/crm-dashboard.webp",
+    images: [
+      "img/projects/crm-dashboard.webp",
+      "img/projects/crm-dashboard-analytics.webp",
+      "img/projects/crm-dashboard-overview.webp",
+      "img/projects/crm-sales-pipeline.webp",
+      "img/projects/crm-leads.webp",
+      "img/projects/crm-customers.webp",
+      "img/projects/crm-accounts.webp",
+      "img/projects/crm-tasks.webp",
+      "img/projects/crm-analytics.webp",
+      "img/projects/crm-audit-log.webp",
+    ],
+    tags: [
+      "CRM",
+      "RBAC",
+      "Auth & 2FA",
+      "Sales Pipeline",
+      "Lead Scoring",
+      "Multi-Tenancy",
+      "Audit Log",
+      "Analytics",
+    ],
+    icons: [
+      {
+        SvgIcon: ReactJS,
+        title: "React 19",
+      },
+      {
+        SvgIcon: Typescript,
+        title: "TypeScript",
+      },
+      {
+        SvgIcon: Tailwindcss,
+        title: "TailwindCSS v4",
+      },
+      {
+        SvgIcon: Redux,
+        title: "Redux Toolkit",
+      },
+      {
+        SvgIcon: Node,
+        title: "Node.js",
+      },
+      {
+        SvgIcon: Express,
+        title: "Express.js",
+      },
+      {
+        SvgIcon: Mysql,
+        title: "MySQL / MariaDB",
+      },
+      {
+        SvgIcon: Jsonwebtokens,
+        title: "JWT Auth",
+      },
+      {
+        SvgIcon: Axios,
+        title: "Axios",
+      },
+      {
+        SvgIcon: Docker,
+        title: "Docker",
+      },
+    ],
+  },
+  {
+    title: "HRIS - Universal Human Resource System",
+    category: "Business System",
+    description:
+      "A complete, production-ready and truly universal Human Resource Information System that works for any industry — manufacturing, services, IT, retail, healthcare, education, NGO or government — because everything (currency, pay cycle, work week, leave types, salary components, org units) is configurable per company rather than hard-coded. Built on an Express.js + Sequelize backend with a React 19 + TypeScript + Vite frontend, it extends a hardened JWT auth & RBAC foundation (roles with granular permissions, all_access wildcard, session tracking, activity log) with a full HR suite: Organization (multi-tenant companies, hierarchical departments, positions, job grades/salary bands, locations, shifts, holidays, leave types, salary components), People (rich employee records, contracts, documents, education, experience, emergency contacts, status transitions), Attendance (clock in/out, shift-aware late & overtime computation, corrections workflow, overtime approval, daily board), Leave (configurable types, approval workflow, entitled/used/pending/carry-over balances), Payroll (pay periods draft → processing → approved → paid → closed, a payslip generation engine supporting fixed + percentage + formula components), Recruitment (job openings, candidate pipeline, interviews, offers, hire → create employee), Performance, Training, Assets, Expenses, Announcements and a complete Employee Self-Service portal. An HR analytics dashboard surfaces headcount, attrition, attendance rate, payroll cost, recruitment pipeline and birthdays/anniversaries, complemented by a ⌘K command palette and a permission-aware in-app guide with PDF/Word export.",
+    srcImage: "img/projects/hris-dashboard.webp",
+    images: [
+      "img/projects/hris-dashboard.webp",
+      "img/projects/hris-dashboard-analytics.webp",
+      "img/projects/hris-my-workspace.webp",
+      "img/projects/hris-employees.webp",
+      "img/projects/hris-attendance.webp",
+      "img/projects/hris-payroll.webp",
+      "img/projects/hris-recruitment.webp",
+      "img/projects/hris-performance-reviews.webp",
+      "img/projects/hris-training.webp",
+      "img/projects/hris-goals.webp",
+      "img/projects/hris-reports.webp",
+    ],
+    tags: [
+      "HRIS",
+      "Payroll",
+      "Attendance",
+      "Leave Management",
+      "Recruitment",
+      "Performance",
+      "Self-Service",
+      "Multi-Tenancy",
+      "RBAC",
+      "Analytics",
+    ],
+    icons: [
+      {
+        SvgIcon: ReactJS,
+        title: "React 19",
+      },
+      {
+        SvgIcon: Typescript,
+        title: "TypeScript",
+      },
+      {
+        SvgIcon: Tailwindcss,
+        title: "TailwindCSS v4",
+      },
+      {
+        SvgIcon: Redux,
+        title: "Redux Toolkit",
+      },
+      {
+        SvgIcon: Node,
+        title: "Node.js",
+      },
+      {
+        SvgIcon: Express,
+        title: "Express.js",
+      },
+      {
+        SvgIcon: Mysql,
+        title: "MySQL / MariaDB",
+      },
+      {
+        SvgIcon: Jsonwebtokens,
+        title: "JWT Auth",
+      },
+      {
+        SvgIcon: Axios,
+        title: "Axios",
+      },
+      {
+        SvgIcon: Docker,
+        title: "Docker",
+      },
+    ],
+  },
   {
     title: "WhatsApp Automation - AI Chatbot",
     category: "AI & Automation",

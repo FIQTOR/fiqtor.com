@@ -4,6 +4,7 @@ import { createPortal } from "react-dom";
 import { TbWorldShare, TbX } from "react-icons/tb";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
+import ProjectGallery from "@/components/projects/ProjectGallery";
 
 type SelectedProject = Project;
 
@@ -203,6 +204,18 @@ export default function ProjectsCard({ projects }: ProjectsGridProps) {
                   <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
                     {selectedProject.description}
                   </p>
+
+                  {selectedProject.images && selectedProject.images.length > 0 && (
+                    <div className="mb-8">
+                      <h4 className="text-sm font-semibold uppercase tracking-wider text-neutral-500 mb-4">
+                        Screenshots
+                      </h4>
+                      <ProjectGallery
+                        images={selectedProject.images}
+                        title={selectedProject.title}
+                      />
+                    </div>
+                  )}
 
                   {/* Tech Stack Icons */}
                   <div className="mb-8">
