@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { TbChevronLeft, TbChevronRight, TbMaximize } from "react-icons/tb";
 
@@ -30,6 +30,64 @@ export default function ProjectGallery({
   const [activeIndex, setActiveIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 
+  // Thumbnail strip: allow click, drag-to-scroll, and horizontal wheel/trackpad.
+  const stripRef = useRef<HTMLDivElement>(null);
+  const dragState = useRef({
+    isDown: false,
+    moved: false,
+    startX: 0,
+    startScrollLeft: 0,
+  });
+
+  const handleStripPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+    const el = stripRef.current;
+    if (!el || event.pointerType === "touch") return;
+    dragState.current = {
+      isDown: true,
+      moved: false,
+      startX: event.clientX,
+      startScrollLeft: el.scrollLeft,
+    };
+    el.setPointerCapture(event.pointerId);
+  };
+
+  const handleStripPointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    const el = stripRef.current;
+    const state = dragState.current;
+    if (!el || !state.isDown) return;
+    const delta = event.clientX - state.startX;
+    if (Math.abs(delta) > 3) state.moved = true;
+    el.scrollLeft = state.startScrollLeft - delta;
+  };
+
+  const endStripDrag = (event: React.PointerEvent<HTMLDivElement>) => {
+    const el = stripRef.current;
+    if (el && el.hasPointerCapture(event.pointerId)) {
+      el.releasePointerCapture(event.pointerId);
+    }
+    dragState.current.isDown = false;
+  };
+
+  // Translate vertical wheel into horizontal scroll so the strip is
+  // usable inside the vertically-scrolling project modal.
+  const handleStripWheel = (event: React.WheelEvent<HTMLDivElement>) => {
+    const el = stripRef.current;
+    if (!el) return;
+    if (Math.abs(event.deltaY) > Math.abs(event.deltaX)) {
+      el.scrollLeft += event.deltaY;
+      event.preventDefault();
+    }
+  };
+
+  const handleThumbClick = (index: number) => {
+    // Ignore the click that ends a drag gesture.
+    if (dragState.current.moved) {
+      dragState.current.moved = false;
+      return;
+    }
+    goTo(index);
+  };
+
   const total = gallery.length;
   const hasMultiple = total > 1;
 
@@ -57,6 +115,20 @@ export default function ProjectGallery({
   useEffect(() => {
     setActiveIndex(0);
   }, [images]);
+
+  // Keep the active thumbnail visible when navigating with arrows/keyboard.
+  useEffect(() => {
+    const el = stripRef.current;
+    if (!el) return;
+    const active = el.children[activeIndex] as HTMLElement | undefined;
+    if (active) {
+      active.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "nearest",
+      });
+    }
+  }, [activeIndex]);
 
   if (total === 0) return null;
 
@@ -120,12 +192,21 @@ export default function ProjectGallery({
 
       {/* Thumbnail strip */}
       {hasMultiple && (
-        <div className="scrollbar-hide flex gap-2 overflow-x-auto pb-1">
+        <div
+          ref={stripRef}
+          onPointerDown={handleStripPointerDown}
+          onPointerMove={handleStripPointerMove}
+          onPointerUp={endStripDrag}
+          onPointerCancel={endStripDrag}
+          onWheel={handleStripWheel}
+          className="scrollbar-hide flex cursor-grab touch-pan-x gap-2 overflow-x-auto overscroll-x-contain pb-1 select-none active:cursor-grabbing"
+          style={{ touchAction: "pan-x" }}
+        >
           {gallery.map((src, index) => (
             <button
               key={src}
               type="button"
-              onClick={() => goTo(index)}
+              onClick={() => handleThumbClick(index)}
               aria-label={`Show screenshot ${index + 1}`}
               aria-current={index === activeIndex}
               className={`relative h-14 w-24 shrink-0 cursor-pointer overflow-hidden rounded-lg border-2 transition ${
@@ -139,7 +220,8 @@ export default function ProjectGallery({
                 alt={`${title} thumbnail ${index + 1}`}
                 loading="lazy"
                 decoding="async"
-                className="h-full w-full object-cover"
+                draggable={false}
+                className="pointer-events-none h-full w-full object-cover"
               />
             </button>
           ))}
