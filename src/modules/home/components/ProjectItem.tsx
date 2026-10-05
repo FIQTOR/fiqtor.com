@@ -10,7 +10,7 @@ import { useTranslation } from "@/i18n";
 import { PROJECT_CATEGORY_KEY } from "@/lib/projectCategory";
 
 export default function ProjectsComponents() {
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -75,7 +75,7 @@ export default function ProjectsComponents() {
               <div className="relative w-full md:w-1/3 h-64 md:h-auto overflow-hidden shrink-0">
                 <img
                   src={project.srcImage}
-                  alt={project.title}
+                  alt={project.title[language]}
                   loading="lazy"
                   decoding="async"
                   className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
@@ -96,11 +96,11 @@ export default function ProjectsComponents() {
               {/* Text / Details Container (2/3 Width on Desktop) */}
               <div className="relative w-full md:w-2/3 flex flex-col justify-center p-6 sm:p-10 md:p-12 gap-4 z-10">
                 <h3 className="project-title-gsap text-2xl sm:text-4xl font-bold text-neutral-900 dark:text-neutral-100 group-hover:text-blue-500 transition-colors">
-                  {renderSplitText(project.title)}
+                  {renderSplitText(project.title[language])}
                 </h3>
 
                 <div className="flex flex-wrap gap-2">
-                  {project.tags?.map((tag: string, tagIndex: number) => (
+                  {project.tags?.[language]?.map((tag: string, tagIndex: number) => (
                     <span
                       key={tagIndex}
                       className="rounded-full border border-neutral-300/30 dark:border-neutral-700/40 bg-neutral-200/40 dark:bg-neutral-800/40 px-3 py-1 text-xs font-medium text-neutral-700 dark:text-neutral-300 backdrop-blur-md"
@@ -111,7 +111,7 @@ export default function ProjectsComponents() {
                 </div>
 
                 <p className="text-sm sm:text-base text-neutral-600 dark:text-neutral-400 leading-relaxed line-clamp-3">
-                  {project.description}
+                  {project.description[language]}
                 </p>
 
                 <div className="flex flex-wrap items-center gap-3 pt-2">
@@ -164,7 +164,7 @@ export default function ProjectsComponents() {
                 <div className="relative w-full h-64 sm:h-80 overflow-hidden shrink-0">
                   <img
                     src={selectedProject.srcImage}
-                    alt={selectedProject.title}
+                    alt={selectedProject.title[language]}
                     loading="lazy"
                     decoding="async"
                     className="w-full h-full object-cover"
@@ -180,11 +180,11 @@ export default function ProjectsComponents() {
                       </div>
                     )}
                     <h2 className="text-xl sm:text-3xl font-bold text-neutral-900 dark:text-white leading-tight">
-                      {selectedProject.title}
+                      {selectedProject.title[language]}
                     </h2>
-                    {selectedProject.tags && selectedProject.tags.length > 0 && (
+                    {selectedProject.tags?.[language] && selectedProject.tags[language].length > 0 && (
                       <div className="flex flex-wrap gap-1.5 pt-1">
-                        {selectedProject.tags.map((tag: string, i: number) => (
+                        {selectedProject.tags[language].map((tag: string, i: number) => (
                           <span
                             key={i}
                             className="rounded-full border border-neutral-300/60 dark:border-neutral-700/60 bg-neutral-100/90 dark:bg-neutral-800/90 px-2.5 py-0.5 text-xs font-medium text-neutral-700 dark:text-neutral-300 backdrop-blur-xs"
@@ -199,7 +199,7 @@ export default function ProjectsComponents() {
 
                 <div className="p-6 sm:p-8">
                   <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
-                    {selectedProject.description}
+                    {selectedProject.description[language]}
                   </p>
 
                   {selectedProject.images && selectedProject.images.length > 0 && (
@@ -209,7 +209,7 @@ export default function ProjectsComponents() {
                       </h4>
                       <ProjectGallery
                         images={selectedProject.images}
-                        title={selectedProject.title}
+                        title={selectedProject.title[language]}
                       />
                     </div>
                   )}

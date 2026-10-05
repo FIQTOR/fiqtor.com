@@ -63,10 +63,13 @@ const ProjectsPage = () => {
       if (!query) return matchesCategory;
 
       const matchesSearch =
-        project.title.toLowerCase().includes(query) ||
-        project.description.toLowerCase().includes(query) ||
+        project.title.en.toLowerCase().includes(query) ||
+        project.title.id.toLowerCase().includes(query) ||
+        project.description.en.toLowerCase().includes(query) ||
+        project.description.id.toLowerCase().includes(query) ||
         project.category.toLowerCase().includes(query) ||
-        project.tags?.some((tag) => tag.toLowerCase().includes(query)) ||
+        project.tags?.en.some((tag) => tag.toLowerCase().includes(query)) ||
+        project.tags?.id.some((tag) => tag.toLowerCase().includes(query)) ||
         project.icons.some((icon) => icon.title.toLowerCase().includes(query));
 
       return matchesCategory && matchesSearch;

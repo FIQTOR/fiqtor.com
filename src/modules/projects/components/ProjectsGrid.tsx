@@ -29,7 +29,7 @@ const PANEL_TRANSITION = {
 } as const;
 
 export default function ProjectsCard({ projects }: ProjectsGridProps) {
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
   const [selectedProject, setSelectedProject] = useState<SelectedProject | null>(null);
 
   useEffect(() => {
@@ -59,7 +59,7 @@ export default function ProjectsCard({ projects }: ProjectsGridProps) {
           {projects.map((project) => {
             return (
               <motion.div
-                key={project.title}
+                key={project.title.en}
                 layout
                 initial={{ opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -92,13 +92,13 @@ export default function ProjectsCard({ projects }: ProjectsGridProps) {
                   <div className="flex flex-col gap-2.5">
                     {/* Project Title */}
                     <h3 className="text-lg font-bold text-white leading-snug line-clamp-2 sm:text-xl">
-                      {project.title}
+                      {project.title[language]}
                     </h3>
 
                     {/* Tags */}
                     <div className="flex flex-wrap gap-1.5">
-                      {project.tags &&
-                        project.tags.slice(0, 4).map((tag, tagIndex) => (
+                      {project.tags?.[language] &&
+                        project.tags[language].slice(0, 4).map((tag, tagIndex) => (
                           <span
                             key={tagIndex}
                             className="rounded-full border border-white/10 bg-white/10 px-2.5 py-0.5 text-[10px] font-medium text-neutral-100 backdrop-blur-md"
@@ -110,7 +110,7 @@ export default function ProjectsCard({ projects }: ProjectsGridProps) {
 
                     {/* Project Description */}
                     <p className="text-sm text-neutral-300 leading-relaxed line-clamp-2">
-                      {project.description}
+                      {project.description[language]}
                     </p>
 
                     <div className="flex flex-wrap items-center gap-3">
@@ -159,7 +159,7 @@ export default function ProjectsCard({ projects }: ProjectsGridProps) {
               <div
                 role="dialog"
                 aria-modal="true"
-                aria-label={selectedProject.title}
+                aria-label={selectedProject.title[language]}
                 className="scrollbar-hide pointer-events-auto relative max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-3xl bg-white shadow-2xl dark:bg-neutral-900"
               >
                 {/* Close Button */}
@@ -175,7 +175,7 @@ export default function ProjectsCard({ projects }: ProjectsGridProps) {
                 <div className="relative w-full h-64 sm:h-80 overflow-hidden shrink-0">
                   <img
                     src={selectedProject.srcImage}
-                    alt={selectedProject.title}
+                    alt={selectedProject.title[language]}
                     loading="lazy"
                     decoding="async"
                     className="w-full h-full object-cover"
@@ -191,11 +191,11 @@ export default function ProjectsCard({ projects }: ProjectsGridProps) {
                       </div>
                     )}
                     <h2 className="text-xl sm:text-3xl font-bold text-neutral-900 dark:text-white leading-tight">
-                      {selectedProject.title}
+                      {selectedProject.title[language]}
                     </h2>
-                    {selectedProject.tags && selectedProject.tags.length > 0 && (
+                    {selectedProject.tags?.[language] && selectedProject.tags[language].length > 0 && (
                       <div className="flex flex-wrap gap-1.5 pt-1">
-                        {selectedProject.tags.map((tag: string, i: number) => (
+                        {selectedProject.tags[language].map((tag: string, i: number) => (
                           <span
                             key={i}
                             className="rounded-full border border-neutral-300/60 dark:border-neutral-700/60 bg-neutral-100/90 dark:bg-neutral-800/90 px-2.5 py-0.5 text-xs font-medium text-neutral-700 dark:text-neutral-300 backdrop-blur-xs"
@@ -210,7 +210,7 @@ export default function ProjectsCard({ projects }: ProjectsGridProps) {
 
                 <div className="p-6 sm:p-8">
                   <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
-                    {selectedProject.description}
+                    {selectedProject.description[language]}
                   </p>
 
                   {selectedProject.images && selectedProject.images.length > 0 && (
@@ -220,7 +220,7 @@ export default function ProjectsCard({ projects }: ProjectsGridProps) {
                       </h4>
                       <ProjectGallery
                         images={selectedProject.images}
-                        title={selectedProject.title}
+                        title={selectedProject.title[language]}
                       />
                     </div>
                   )}
