@@ -4,6 +4,7 @@
  */
 import { AnimatePresence, motion } from "framer-motion";
 import { useFocusTrap } from "@/hooks/useFocusTrap";
+import { useTranslation } from "@/i18n";
 
 interface ConfirmDialogProps {
   open: boolean;
@@ -19,13 +20,16 @@ const ConfirmDialog = ({
   open,
   title,
   message,
-  confirmLabel = "Confirm",
-  cancelLabel = "Cancel",
+  confirmLabel,
+  cancelLabel,
   onConfirm,
   onCancel,
 }: ConfirmDialogProps) => {
+  const { t } = useTranslation();
   // Trap focus + Escape-to-cancel + restore focus on close.
   const trapRef = useFocusTrap<HTMLDivElement>(open, onCancel);
+  const confirmText = confirmLabel ?? t("kanban.confirm.default");
+  const cancelText = cancelLabel ?? t("kanban.confirm.cancel");
 
   return (
     <AnimatePresence>
@@ -71,14 +75,14 @@ const ConfirmDialog = ({
                 onClick={onCancel}
                 className="cursor-pointer rounded-xl px-4 py-2 text-sm font-semibold text-neutral-600 transition-colors hover:bg-neutral-200/60 dark:text-neutral-300 dark:hover:bg-neutral-800"
               >
-                {cancelLabel}
+                {cancelText}
               </button>
               <button
                 type="button"
                 onClick={onConfirm}
                 className="cursor-pointer rounded-xl bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-md shadow-red-600/20 transition-all hover:bg-red-500 active:scale-95"
               >
-                {confirmLabel}
+                {confirmText}
               </button>
             </div>
           </motion.div>

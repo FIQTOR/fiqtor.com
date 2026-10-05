@@ -7,13 +7,7 @@ import { useSpeechDictation } from './ai/useSpeechDictation';
 import { useFileAttachment } from './ai/useFileAttachment';
 import AIMessageList from './ai/AIMessageList';
 import AIComposer from './ai/AIComposer';
-
-const SUGGESTED_QUESTIONS = [
-  `Who's ${BRAND_NAME}?`,
-  `Show ${BRAND_NAME} projects`,
-  `Go to ${BRAND_NAME} Instagram?`,
-  "Go to contact page?",
-];
+import { useTranslation } from "@/i18n";
 
 /**
  * Floating AI assistant panel. Orchestrates three focused hooks (chat, voice
@@ -21,6 +15,7 @@ const SUGGESTED_QUESTIONS = [
  * and composer).
  */
 const AIHelper: React.FC = () => {
+  const { t } = useTranslation();
   const [active, setActive] = useState(false);
   const [prompt, setPrompt] = useState('');
   // First-visit tooltip: derive from storage once via a lazy initializer
@@ -109,6 +104,13 @@ const AIHelper: React.FC = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  const suggestedQuestions = [
+    t("ai.q.who", { brand: BRAND_NAME }),
+    t("ai.q.projects", { brand: BRAND_NAME }),
+    t("ai.q.instagram", { brand: BRAND_NAME }),
+    t("ai.q.contact"),
+  ];
+
   const dismissTooltip = () => {
     setShowTooltip(false);
     localStorage.setItem('hasSeenAITooltip', 'true');
@@ -126,8 +128,8 @@ const AIHelper: React.FC = () => {
       {isDragging && (
         <div className="fixed inset-0 z-50 bg-blue-600/30 backdrop-blur-md flex flex-col items-center justify-center border-4 border-dashed border-blue-400 text-white rounded-3xl pointer-events-none">
           <TbUpload className="h-16 w-16 animate-bounce mb-3" />
-          <p className="text-xl font-bold">Drop your file here</p>
-          <span className="text-sm opacity-80">Maximum file size: 4.5MB</span>
+          <p className="text-xl font-bold">{t("ai.dropFile")}</p>
+          <span className="text-sm opacity-80">{t("ai.maxFile")}</span>
         </div>
       )}
 
@@ -152,15 +154,15 @@ const AIHelper: React.FC = () => {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
             </span>
-            <span className="text-[11px] font-medium">Ask AI ✨</span>
+            <span className="text-[11px] font-medium">{t("ai.askBtn")}</span>
             <button
               onClick={(e) => {
                 e.stopPropagation();
                 dismissTooltip();
               }}
               className="text-neutral-400 hover:text-white p-0.5 rounded-full hover:bg-white/10 transition-colors"
-              aria-label="Dismiss tip"
-              title="Dismiss"
+              aria-label={t("ai.dismiss")}
+              title={t("ai.dismiss")}
             >
               <TbX className="h-3 w-3" />
             </button>
@@ -178,7 +180,7 @@ const AIHelper: React.FC = () => {
           }`}
       >
         <span className="absolute -bottom-2 right-0 px-1 py-px rounded-full w-full whitespace-nowrap text-neutral-700 dark:text-neutral-400 text-xs font-black">
-          FIQ AI
+          {t("ai.title")}
         </span>
         <TbBrandGithubCopilot className="h-7 w-7 animate-pulse" />
       </button>
@@ -188,7 +190,7 @@ const AIHelper: React.FC = () => {
         ref={panelRef}
         role="dialog"
         aria-modal="true"
-        aria-label="FIQ AI assistant"
+        aria-label={`${t("ai.title")} assistant`}
         className={`absolute bottom-0 right-0 flex w-[min(92vw,26rem)] flex-col gap-3 transition-all duration-300 ease-out origin-bottom-right ${active
           ? 'opacity-100 translate-y-0 scale-100 pointer-events-auto'
           : 'opacity-0 translate-y-4 scale-90 pointer-events-none'
@@ -199,8 +201,8 @@ const AIHelper: React.FC = () => {
             narrow viewports. Ring + shadow tie it visually to the panel. */}
         <button
           onClick={() => setActive(false)}
-          aria-label="Close assistant"
-          title="Close"
+          aria-label={t("ai.close")}
+          title={t("ai.close")}
           className={`absolute -top-3 -right-3 z-20 flex h-9 w-9 items-center justify-center rounded-full bg-neutral-900/90 text-white shadow-xl ring-1 ring-white/15 backdrop-blur-md transition-all hover:bg-neutral-700 hover:scale-105 active:scale-95 ${active ? 'opacity-100 delay-150' : 'opacity-0'
             }`}
         >
@@ -244,10 +246,10 @@ const AIHelper: React.FC = () => {
         {chat.messages.length === 0 && (
           <div className="rounded-2xl bg-white/80 p-3 shadow-lg backdrop-blur-md dark:bg-neutral-800/80">
             <p className="mb-2 text-xs font-medium text-neutral-700 dark:text-neutral-300">
-              Suggested Questions:
+              {t("ai.suggested")}
             </p>
             <div className="space-y-1.5">
-              {SUGGESTED_QUESTIONS.map((question) => (
+              {suggestedQuestions.map((question) => (
                 <button
                   key={question}
                   onClick={() => {

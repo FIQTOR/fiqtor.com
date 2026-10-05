@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import { TbPencil, TbCopy, TbCheck, TbRefresh } from 'react-icons/tb';
 import type { Message } from './types';
+import { useTranslation } from '@/i18n';
 
 const MarkdownMessage = lazy(() => import('../MarkdownMessage'));
 
@@ -25,6 +26,7 @@ export default function AIMessageList({
   onCopy,
   onRegenerate,
 }: AIMessageListProps) {
+  const { t } = useTranslation();
   return (
     <div
       className="ai-scrollable max-h-[min(60vh,32rem)] overflow-y-auto overflow-x-hidden overscroll-contain rounded-2xl p-1"
@@ -44,7 +46,7 @@ export default function AIMessageList({
                 <div className="relative px-4 py-2 w-fit max-w-[85%] bg-neutral-600/30 backdrop-blur-md rounded-2xl shadow-xl text-right">
                   {message.fileName && (
                     <span className="text-[10px] text-blue-400 italic font-mono block mb-1">
-                      📎 Attached: {message.fileName}
+                      📎 {t("ai.attached")}: {message.fileName}
                     </span>
                   )}
                   <div className="whitespace-pre-wrap wrap-break-word font-extralight text-sm markdown-body">
@@ -57,8 +59,8 @@ export default function AIMessageList({
                 <button
                   onClick={() => onEdit(message.text)}
                   className="p-1 rounded-full hover:bg-neutral-800/40 text-neutral-400 hover:text-white transition-colors shrink-0"
-                  aria-label="Edit question"
-                      title="Edit question"
+                  aria-label={t("ai.editQuestion")}
+                      title={t("ai.editQuestion")}
                 >
                   <TbPencil className="h-3.5 w-3.5" />
                 </button>
@@ -80,7 +82,7 @@ export default function AIMessageList({
                     to={`${message.platform}`}
                     className="mt-2 inline-block px-2 py-px rounded-md bg-neutral-100 dark:text-black text-sm"
                   >
-                    Open Link
+                    {t("ai.openLink")}
                   </Link>
                 )}
               </div>
@@ -89,8 +91,8 @@ export default function AIMessageList({
                 <button
                   onClick={() => onCopy(message.text, index)}
                   className="p-1 rounded-full hover:bg-neutral-800/40 hover:text-white transition-colors"
-                  aria-label="Copy message"
-                  title="Copy message"
+                  aria-label={t("ai.copyMessage")}
+                  title={t("ai.copyMessage")}
                 >
                   {copiedIndex === index ? (
                     <TbCheck className="h-3.5 w-3.5 text-emerald-400" />
@@ -103,8 +105,8 @@ export default function AIMessageList({
                   <button
                     onClick={onRegenerate}
                     className="p-1 rounded-full hover:bg-neutral-800/40 hover:text-white transition-colors"
-                    aria-label="Regenerate response"
-                    title="Regenerate response"
+                    aria-label={t("ai.regenerate")}
+                    title={t("ai.regenerate")}
                   >
                     <TbRefresh className="h-3.5 w-3.5" />
                   </button>
@@ -117,7 +119,7 @@ export default function AIMessageList({
         {loading && (
           <div role="status" className="flex w-full justify-start items-center gap-2">
             <span className="loader scale-50"></span>
-            <span className="text-neutral-700 dark:text-neutral-300 text-sm">Thinking...</span>
+            <span className="text-neutral-700 dark:text-neutral-300 text-sm">{t("ai.thinking")}</span>
           </div>
         )}
         <div ref={messagesEndRef} />

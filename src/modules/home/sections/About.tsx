@@ -4,9 +4,11 @@ import CryptocurrencyPrice from "../components/CryptoPrice";
 import { motion } from "framer-motion";
 import { ContainerContext } from "@/context/container-context";
 import { BRAND_NAME, OWNER_NAME, PORTRAIT_IMAGE } from "@/config/Identity";
+import { useTranslation } from "@/i18n";
 
 export default function About() {
   const { isMobile } = useContext(ContainerContext);
+  const { t } = useTranslation();
   const centerpieceRef = useRef<HTMLDivElement>(null);
   const avatarRef = useRef<HTMLDivElement>(null);
   const badge1Ref = useRef<HTMLDivElement>(null);
@@ -63,10 +65,7 @@ export default function About() {
           className="flex flex-col items-center text-center gap-4 mb-16 md:mb-24"
         >
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-neutral-900 dark:text-white tracking-tight">
-            The Mind Behind <br className="hidden sm:block" />
-            <span className="bg-linear-to-r from-neutral-800 via-neutral-500 to-neutral-800 dark:from-white dark:via-neutral-400 dark:to-white bg-clip-text text-transparent">
-              The Code.
-            </span>
+            {t("home.about.title")}
           </h2>
         </motion.div>
 
@@ -127,7 +126,7 @@ export default function About() {
               transition={{ delay: 0.3 }}
               className="absolute -bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap px-6 py-3 rounded-full bg-white dark:bg-[#121212] shadow-xl border border-neutral-200 dark:border-neutral-800 font-medium text-neutral-800 dark:text-neutral-200 flex items-center gap-2"
             >
-              <span>Hello World</span>
+              <span>{t("home.about.hello")}</span>
               <span className="animate-bounce inline-block">🖐️</span>
             </motion.div>
           </motion.div>
@@ -151,8 +150,8 @@ export default function About() {
                 <TbSchool className="w-5 h-5" />
               </div>
               <div className="flex flex-col">
-                <span className="text-xs font-bold text-neutral-400 dark:text-neutral-500 uppercase tracking-wider">Expertise</span>
-                <span className="text-sm font-semibold text-neutral-800 dark:text-neutral-200">Software Architecture</span>
+                <span className="text-xs font-bold text-neutral-400 dark:text-neutral-500 uppercase tracking-wider">{t("home.about.expertiseLabel")}</span>
+                <span className="text-sm font-semibold text-neutral-800 dark:text-neutral-200">{t("home.about.expertiseValue")}</span>
               </div>
             </motion.div>
           </motion.div>
@@ -176,8 +175,8 @@ export default function About() {
                 <TbBriefcase className="w-5 h-5" />
               </div>
               <div className="flex flex-col">
-                <span className="text-xs font-bold text-neutral-400 dark:text-neutral-500 uppercase tracking-wider">Founder</span>
-                <span className="text-sm font-semibold text-neutral-800 dark:text-neutral-200">IARTY Group</span>
+                <span className="text-xs font-bold text-neutral-400 dark:text-neutral-500 uppercase tracking-wider">{t("home.about.founderLabel")}</span>
+                <span className="text-sm font-semibold text-neutral-800 dark:text-neutral-200">{t("home.about.founderValue")}</span>
               </div>
             </motion.div>
           </motion.div>
@@ -201,8 +200,8 @@ export default function About() {
                 <TbCode className="w-5 h-5" />
               </div>
               <div className="flex flex-col">
-                <span className="text-xs font-bold text-neutral-400 dark:text-neutral-500 uppercase tracking-wider">Exploring</span>
-                <span className="text-sm font-semibold text-neutral-800 dark:text-neutral-200">AI Integration Specialist</span>
+                <span className="text-xs font-bold text-neutral-400 dark:text-neutral-500 uppercase tracking-wider">{t("home.about.exploringLabel")}</span>
+                <span className="text-sm font-semibold text-neutral-800 dark:text-neutral-200">{t("home.about.exploringValue")}</span>
               </div>
             </motion.div>
           </motion.div>
@@ -222,12 +221,10 @@ export default function About() {
           >
             <div className="flex items-center gap-3 mb-4">
               <TbRocket className="w-6 h-6 text-neutral-800 dark:text-neutral-200" />
-              <h3 className="text-xl font-bold text-neutral-900 dark:text-white">Who I Am</h3>
+              <h3 className="text-xl font-bold text-neutral-900 dark:text-white">{t("home.about.whoTitle")}</h3>
             </div>
             <p className="text-lg leading-relaxed text-neutral-600 dark:text-neutral-400">
-              Hi, I'm <span className="font-semibold text-neutral-900 dark:text-neutral-200">{OWNER_NAME}</span>, also known as <span className="font-semibold text-neutral-900 dark:text-neutral-200">{BRAND_NAME}</span>.
-              I am a Software Engineering enthusiast with hands-on coding experience since 2021.
-              Passionate about solving complex problems and turning abstract ideas into highly functional digital solutions.
+              {t("home.about.whoBody", { name: OWNER_NAME, brand: BRAND_NAME })}
             </p>
           </motion.div>
 
@@ -241,7 +238,7 @@ export default function About() {
             className="col-span-1 bg-white dark:bg-[#121212] border border-neutral-200 dark:border-neutral-800/80 rounded-3xl p-6 flex flex-col justify-center items-center hover:border-neutral-400 dark:hover:border-neutral-600 transition-colors shadow-sm cursor-default"
           >
             <div className="w-full h-full flex flex-col justify-center">
-              <span className="text-sm font-bold text-neutral-400 dark:text-neutral-500 uppercase tracking-widest mb-4 text-center">Market Watch</span>
+              <span className="text-sm font-bold text-neutral-400 dark:text-neutral-500 uppercase tracking-widest mb-4 text-center">{t("home.about.marketTitle")}</span>
               <CryptocurrencyPrice />
             </div>
           </motion.div>
@@ -257,10 +254,10 @@ export default function About() {
           >
             <div className="flex items-center gap-3 mb-4">
               <TbBriefcase className="w-6 h-6 text-neutral-800 dark:text-neutral-200" />
-              <h3 className="text-xl font-bold text-neutral-900 dark:text-white">Experience</h3>
+              <h3 className="text-xl font-bold text-neutral-900 dark:text-white">{t("home.about.experienceTitle")}</h3>
             </div>
             <p className="text-base leading-relaxed text-neutral-600 dark:text-neutral-400">
-              Worked on real projects during internships, helping businesses grow through digital transformation. I actively contribute to improving workflow efficiency and increasing digital sales presence.
+              {t("home.about.experienceBody")}
             </p>
           </motion.div>
 
@@ -275,10 +272,10 @@ export default function About() {
           >
             <div className="flex items-center gap-3 mb-4">
               <TbBulb className="w-6 h-6 text-amber-600 dark:text-amber-400" />
-              <h3 className="text-xl font-bold text-neutral-900 dark:text-white">Vision & Growth</h3>
+              <h3 className="text-xl font-bold text-neutral-900 dark:text-white">{t("home.about.visionTitle")}</h3>
             </div>
             <p className="text-base leading-relaxed text-neutral-600 dark:text-neutral-400">
-              I am incredibly excited about the power of AI to accelerate development and create smarter, self-reliant systems. This ongoing journey constantly sharpens my technical skills and strengthens my overall love for pushing the boundaries of tech.
+              {t("home.about.visionBody")}
             </p>
           </motion.div>
 

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useTranslation } from '@/i18n';
 
 /**
  * Voice dictation via the Web Speech API. Appends recognized speech to the
@@ -16,6 +17,7 @@ export function useSpeechDictation(
   setError: (message: string) => void,
   active: boolean
 ) {
+  const { t } = useTranslation();
   const [isRecording, setIsRecording] = useState(false);
   const recognitionRef = useRef<SpeechRecognition | null>(null);
   const basePromptRef = useRef<string>('');
@@ -48,7 +50,7 @@ export function useSpeechDictation(
       window.SpeechRecognition || window.webkitSpeechRecognition;
 
     if (!SpeechRecognitionImpl) {
-      setError('Voice input is not supported on this browser.');
+      setError(t("ai.err.voiceUnsupported"));
       return;
     }
 
@@ -78,9 +80,9 @@ export function useSpeechDictation(
 
     recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
       if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
-        setError('Microphone access was denied.');
+        setError(t("ai.err.micDenied"));
       } else if (event.error !== 'no-speech' && event.error !== 'aborted') {
-        setError('Voice input error. Please try again.');
+        setError(t("ai.err.voiceError"));
       }
       setIsRecording(false);
     };
@@ -95,10 +97,10 @@ export function useSpeechDictation(
       recognition.start();
       setIsRecording(true);
     } catch {
-      setError('Voice input error. Please try again.');
+      setError(t("ai.err.voiceError"));
       setIsRecording(false);
     }
-  }, [prompt, setPrompt, setError]);
+  }, [prompt, setPrompt, setError, t]);
 
   const toggleRecording = useCallback(() => {
     if (isRecording) stopRecording();

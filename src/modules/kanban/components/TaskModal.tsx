@@ -16,6 +16,7 @@ import {
 import { progressPercent } from "@/modules/kanban/kanban.utils";
 import { useFocusTrap } from "@/hooks/useFocusTrap";
 import type { Task, TaskDraft } from "@/types/kanban";
+import { useTranslation } from "@/i18n";
 
 interface TaskModalProps {
   open: boolean;
@@ -67,6 +68,7 @@ const TaskModalForm = ({
   onClose: () => void;
   onSubmit: (draft: TaskDraft) => void;
 }) => {
+  const { t, language } = useTranslation();
   const [draft, setDraft] = useState<TaskDraft>(() =>
     seedDraft(mode, initialStatus, task)
   );
@@ -113,12 +115,12 @@ const TaskModalForm = ({
           id="task-modal-title"
           className="text-lg font-bold text-neutral-800 dark:text-neutral-100"
         >
-          {mode === "edit" ? "Edit Task" : "New Task"}
+          {mode === "edit" ? t("kanban.modal.editTitle") : t("kanban.modal.newTitle")}
         </h2>
         <button
           type="button"
           onClick={onClose}
-          aria-label="Close"
+          aria-label={t("kanban.modal.close")}
           className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full text-neutral-500 transition-colors hover:bg-neutral-200/70 dark:hover:bg-neutral-800"
         >
           <TbX className="h-5 w-5" />
@@ -129,7 +131,7 @@ const TaskModalForm = ({
         {/* Title */}
         <div>
           <label htmlFor="task-title" className={labelClass}>
-            Title
+{t("kanban.modal.titleLabel")}
           </label>
           <input
             id="task-title"
@@ -139,20 +141,20 @@ const TaskModalForm = ({
               setDraft((d) => ({ ...d, title: e.target.value }));
               if (titleError) setTitleError(false);
             }}
-            placeholder="e.g. Outreach: message 46 cafés"
+            placeholder={t("kanban.modal.titlePlaceholder")}
             className={`${inputClass} ${
               titleError ? "border-red-500/70 ring-2 ring-red-500/20" : ""
             }`}
           />
           {titleError && (
-            <p className="mt-1 text-xs text-red-500">Title is required.</p>
+            <p className="mt-1 text-xs text-red-500">{t("kanban.modal.titleRequired")}</p>
           )}
         </div>
 
         {/* Description */}
         <div>
           <label htmlFor="task-desc" className={labelClass}>
-            Description
+{t("kanban.modal.descLabel")}
           </label>
           <textarea
             id="task-desc"
@@ -161,7 +163,7 @@ const TaskModalForm = ({
             onChange={(e) =>
               setDraft((d) => ({ ...d, description: e.target.value }))
             }
-            placeholder="Add context, links, or acceptance criteria…"
+            placeholder={t("kanban.modal.descPlaceholder")}
             className={`${inputClass} resize-none`}
           />
         </div>
@@ -170,7 +172,7 @@ const TaskModalForm = ({
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <label htmlFor="task-status" className={labelClass}>
-              Column
+{t("kanban.modal.columnLabel")}
             </label>
             <select
               id="task-status"
@@ -185,14 +187,14 @@ const TaskModalForm = ({
             >
               {KANBAN_COLUMNS.map((col) => (
                 <option key={col.id} value={col.id}>
-                  {col.label}
+                  {col.label[language]}
                 </option>
               ))}
             </select>
           </div>
 
           <div>
-            <span className={labelClass}>Priority</span>
+            <span className={labelClass}>{t("kanban.modal.priorityLabel")}</span>
             <div className="flex gap-1.5">
               {KANBAN_PRIORITIES.map((p) => {
                 const active = draft.priority === p.id;
@@ -208,7 +210,7 @@ const TaskModalForm = ({
                     }`}
                   >
                     <span className={`h-2 w-2 rounded-full ${p.dotClass}`} />
-                    {p.label}
+                    {p.label[language]}
                   </button>
                 );
               })}
@@ -235,12 +237,12 @@ const TaskModalForm = ({
         {/* Progress tracker */}
         <fieldset className="rounded-xl border border-neutral-200/70 p-3 dark:border-neutral-800/70">
           <legend className="px-1 text-xs font-semibold uppercase tracking-wide text-neutral-500 dark:text-neutral-400">
-            Progress tracker
+{t("kanban.modal.progressLabel")}
           </legend>
           <div className="grid grid-cols-3 gap-2">
             <div>
               <label htmlFor="task-current" className={labelClass}>
-                Current
+{t("kanban.modal.current")}
               </label>
               <input
                 id="task-current"
@@ -255,7 +257,7 @@ const TaskModalForm = ({
             </div>
             <div>
               <label htmlFor="task-target" className={labelClass}>
-                Target
+{t("kanban.modal.target")}
               </label>
               <input
                 id="task-target"
@@ -270,14 +272,14 @@ const TaskModalForm = ({
             </div>
             <div>
               <label htmlFor="task-unit" className={labelClass}>
-                Unit
+{t("kanban.modal.unit")}
               </label>
               <input
                 id="task-unit"
                 type="text"
                 value={draft.progress.unit}
                 onChange={(e) => setProgress({ unit: e.target.value })}
-                placeholder="Cafés"
+                placeholder={t("kanban.modal.unitPlaceholder")}
                 className={inputClass}
               />
             </div>
@@ -298,13 +300,13 @@ const TaskModalForm = ({
             onClick={onClose}
             className="cursor-pointer rounded-xl px-4 py-2 text-sm font-semibold text-neutral-600 transition-colors hover:bg-neutral-200/60 dark:text-neutral-300 dark:hover:bg-neutral-800"
           >
-            Cancel
+{t("kanban.modal.cancel")}
           </button>
           <button
             type="submit"
             className="cursor-pointer rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-md shadow-blue-600/20 transition-all hover:bg-blue-500 active:scale-95"
           >
-            {mode === "edit" ? "Save changes" : "Create task"}
+            {mode === "edit" ? t("kanban.modal.save") : t("kanban.modal.create")}
           </button>
         </div>
       </form>

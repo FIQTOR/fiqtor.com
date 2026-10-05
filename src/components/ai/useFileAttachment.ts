@@ -1,6 +1,7 @@
 import { useCallback, useRef, useState } from 'react';
 import { MAX_FILE_SIZE } from './types';
 import type { AttachedFile } from './types';
+import { useTranslation } from '@/i18n';
 
 /**
  * Manages the composer's file attachment: drag-and-drop, the native picker
@@ -9,6 +10,7 @@ import type { AttachedFile } from './types';
  * @param onError - surfaces a user-facing error message
  */
 export function useFileAttachment(onError: (message: string) => void) {
+  const { t } = useTranslation();
   const [attachedFile, setAttachedFile] = useState<AttachedFile | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [showAttachMenu, setShowAttachMenu] = useState(false);
@@ -18,7 +20,7 @@ export function useFileAttachment(onError: (message: string) => void) {
     (selectedFile: File) => {
       onError('');
       if (selectedFile.size > MAX_FILE_SIZE) {
-        onError('File exceeds max limit of 4.5MB');
+        onError(t("ai.err.fileTooLarge"));
         if (fileInputRef.current) fileInputRef.current.value = '';
         return;
       }
@@ -34,7 +36,7 @@ export function useFileAttachment(onError: (message: string) => void) {
       };
       reader.readAsDataURL(selectedFile);
     },
-    [onError]
+    [onError, t]
   );
 
   const handleFileChange = useCallback(

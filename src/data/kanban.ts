@@ -10,6 +10,9 @@ import type {
   KanbanState,
   Task,
 } from "@/types/kanban";
+import type { Language } from "@/i18n/translations";
+
+type LocalizedText = Record<Language, string>;
 
 /** localStorage key holding the persisted board. */
 export const KANBAN_STORAGE_KEY = "fiqtor.kanban.v1";
@@ -20,7 +23,7 @@ export const KANBAN_SCHEMA_VERSION = 1;
 /** A single workflow column definition. */
 export interface KanbanColumnDef {
   id: KanbanStatus;
-  label: string;
+  label: LocalizedText;
   /** Tailwind classes for the column accent (header dot + top border). */
   accentClass: string;
 }
@@ -29,27 +32,27 @@ export interface KanbanColumnDef {
 export const KANBAN_COLUMNS: readonly KanbanColumnDef[] = [
   {
     id: "backlog",
-    label: "Backlog",
+    label: { en: "Backlog", id: "Backlog" },
     accentClass: "bg-neutral-400 dark:bg-neutral-500",
   },
   {
     id: "todo",
-    label: "To Do",
+    label: { en: "To Do", id: "Akan Dikerjakan" },
     accentClass: "bg-sky-500",
   },
   {
     id: "in-progress",
-    label: "In Progress",
+    label: { en: "In Progress", id: "Sedang Berjalan" },
     accentClass: "bg-blue-500",
   },
   {
     id: "on-hold",
-    label: "On Hold / Waiting",
+    label: { en: "On Hold / Waiting", id: "Ditahan / Menunggu" },
     accentClass: "bg-amber-500",
   },
   {
     id: "done",
-    label: "Done",
+    label: { en: "Done", id: "Selesai" },
     accentClass: "bg-emerald-500",
   },
 ] as const;
@@ -57,7 +60,7 @@ export const KANBAN_COLUMNS: readonly KanbanColumnDef[] = [
 /** Priority presentation metadata. */
 export interface KanbanPriorityDef {
   id: KanbanPriority;
-  label: string;
+  label: LocalizedText;
   /** Badge classes (text + bg + border), theme-aware. */
   badgeClass: string;
   /** Solid dot/left-bar color classes. */
@@ -69,7 +72,7 @@ export interface KanbanPriorityDef {
 export const KANBAN_PRIORITIES: readonly KanbanPriorityDef[] = [
   {
     id: "high",
-    label: "High",
+    label: { en: "High", id: "Tinggi" },
     badgeClass:
       "bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/20",
     dotClass: "bg-red-500",
@@ -77,7 +80,7 @@ export const KANBAN_PRIORITIES: readonly KanbanPriorityDef[] = [
   },
   {
     id: "medium",
-    label: "Medium",
+    label: { en: "Medium", id: "Sedang" },
     badgeClass:
       "bg-yellow-500/10 text-yellow-700 dark:text-yellow-400 border-yellow-500/20",
     dotClass: "bg-yellow-500",
@@ -85,7 +88,7 @@ export const KANBAN_PRIORITIES: readonly KanbanPriorityDef[] = [
   },
   {
     id: "low",
-    label: "Low",
+    label: { en: "Low", id: "Rendah" },
     badgeClass:
       "bg-neutral-500/10 text-neutral-600 dark:text-neutral-400 border-neutral-500/20",
     dotClass: "bg-neutral-400 dark:bg-neutral-500",
@@ -130,68 +133,104 @@ const isoOffset = (days: number): string =>
  * ("Load samples"). The board is empty by default so a first-time visitor
  * starts with a clean slate.
  */
-export const createSampleTasks = (): Task[] => {
+export const createSampleTasks = (lang: Language = "en"): Task[] => {
   const now = Date.now();
   const stamp = (offsetMs: number) => new Date(now - offsetMs).toISOString();
 
-  return [
+  const samples: Array<{
+    title: LocalizedText;
+    description: LocalizedText;
+    status: KanbanStatus;
+    priority: KanbanPriority;
+    progress: { current: number; target: number; unit: LocalizedText };
+    dueOffset: number;
+  }> = [
     {
-      id: createTaskId(),
-      title: "Outreach: message 46 cafés",
-      description:
-        "Send a WhatsApp message to the target café list proposing a partnership.",
+      title: {
+        en: "Outreach: message 46 cafés",
+        id: "Penjangkauan: kirim pesan ke 46 kafe",
+      },
+      description: {
+        en: "Send a WhatsApp message to the target café list proposing a partnership.",
+        id: "Kirim pesan WhatsApp ke daftar kafe target untuk menawarkan kemitraan.",
+      },
       status: "in-progress",
       priority: "high",
-      progress: { current: 10, target: 46, unit: "Cafés" },
-      dueDate: isoOffset(7),
-      createdAt: stamp(86400000 * 3),
-      updatedAt: stamp(3600000),
+      progress: { current: 10, target: 46, unit: { en: "Cafés", id: "Kafe" } },
+      dueOffset: 7,
     },
     {
-      id: createTaskId(),
-      title: "Redesign the Portfolio page",
-      description: "Fix the grid layout, add category filters, and optimize images.",
+      title: {
+        en: "Redesign the Portfolio page",
+        id: "Desain ulang halaman Portofolio",
+      },
+      description: {
+        en: "Fix the grid layout, add category filters, and optimize images.",
+        id: "Perbaiki tata letak grid, tambahkan filter kategori, dan optimalkan gambar.",
+      },
       status: "todo",
       priority: "medium",
-      progress: { current: 0, target: 0, unit: "" },
-      dueDate: isoOffset(14),
-      createdAt: stamp(86400000 * 2),
-      updatedAt: stamp(86400000),
+      progress: { current: 0, target: 0, unit: { en: "", id: "" } },
+      dueOffset: 14,
     },
     {
-      id: createTaskId(),
-      title: "Set up CI/CD on Vercel + preview deploys",
-      description: "Make sure every PR gets an automatic preview deployment.",
+      title: {
+        en: "Set up CI/CD on Vercel + preview deploys",
+        id: "Siapkan CI/CD di Vercel + deploy pratinjau",
+      },
+      description: {
+        en: "Make sure every PR gets an automatic preview deployment.",
+        id: "Pastikan setiap PR mendapat deploy pratinjau otomatis.",
+      },
       status: "done",
       priority: "low",
-      progress: { current: 0, target: 0, unit: "" },
-      dueDate: "",
-      createdAt: stamp(86400000 * 5),
-      updatedAt: stamp(86400000 * 2),
+      progress: { current: 0, target: 0, unit: { en: "", id: "" } },
+      dueOffset: 0,
     },
     {
-      id: createTaskId(),
-      title: "Awaiting client contract review",
-      description: "The client is reviewing the contract draft; follow up next week.",
+      title: {
+        en: "Awaiting client contract review",
+        id: "Menunggu tinjauan kontrak klien",
+      },
+      description: {
+        en: "The client is reviewing the contract draft; follow up next week.",
+        id: "Klien sedang meninjau draf kontrak; tindak lanjuti minggu depan.",
+      },
       status: "on-hold",
       priority: "medium",
-      progress: { current: 0, target: 0, unit: "" },
-      dueDate: isoOffset(3),
-      createdAt: stamp(86400000 * 4),
-      updatedAt: stamp(86400000),
+      progress: { current: 0, target: 0, unit: { en: "", id: "" } },
+      dueOffset: 3,
     },
     {
-      id: createTaskId(),
-      title: "Research competitor booking features",
-      description: "Compare 5 café booking apps as a feature reference.",
+      title: {
+        en: "Research competitor booking features",
+        id: "Riset fitur pemesanan kompetitor",
+      },
+      description: {
+        en: "Compare 5 café booking apps as a feature reference.",
+        id: "Bandingkan 5 aplikasi pemesanan kafe sebagai referensi fitur.",
+      },
       status: "backlog",
       priority: "low",
-      progress: { current: 2, target: 5, unit: "Apps" },
-      dueDate: "",
-      createdAt: stamp(86400000),
-      updatedAt: stamp(3600000 * 5),
+      progress: { current: 2, target: 5, unit: { en: "Apps", id: "Aplikasi" } },
+      dueOffset: 0,
     },
   ];
+
+  const createdOffsets = [86400000 * 3, 86400000 * 2, 86400000 * 5, 86400000 * 4, 86400000];
+  const updatedOffsets = [3600000, 86400000, 86400000 * 2, 86400000, 3600000 * 5];
+
+  return samples.map((s, i) => ({
+    id: createTaskId(),
+    title: s.title[lang],
+    description: s.description[lang],
+    status: s.status,
+    priority: s.priority,
+    progress: { current: s.progress.current, target: s.progress.target, unit: s.progress.unit[lang] },
+    dueDate: s.dueOffset ? isoOffset(s.dueOffset) : "",
+    createdAt: stamp(createdOffsets[i]),
+    updatedAt: stamp(updatedOffsets[i]),
+  }));
 };
 
 /** Build a brand-new, EMPTY board state (the default first-run state). */
@@ -202,8 +241,8 @@ export const createEmptyState = (): KanbanState => ({
 });
 
 /** Build a board state pre-filled with the optional sample tasks. */
-export const createSampleState = (): KanbanState => ({
+export const createSampleState = (lang: Language = "en"): KanbanState => ({
   version: KANBAN_SCHEMA_VERSION,
-  tasks: createSampleTasks(),
+  tasks: createSampleTasks(lang),
   savedAt: Date.now(),
 });

@@ -1,5 +1,6 @@
 import { TbPaperclip, TbMicrophone, TbPlayerStop, TbSend, TbPhoto, TbVideo, TbFileText } from 'react-icons/tb';
 import type { AttachedFile } from './types';
+import { useTranslation } from '@/i18n';
 
 interface AIComposerProps {
   prompt: string;
@@ -35,6 +36,7 @@ export default function AIComposer({
   onToggleRecording,
   onSubmit,
 }: AIComposerProps) {
+  const { t } = useTranslation();
   return (
     <>
       <input
@@ -57,7 +59,7 @@ export default function AIComposer({
               onSubmit();
             }
           }}
-          placeholder="Ask me anything…  (Shift + Enter for new line)"
+          placeholder={t("ai.composerPlaceholder")}
           className="max-h-52 min-h-[3rem] w-full resize-none rounded-t-3xl bg-transparent px-5 pt-4 pb-2 text-sm leading-relaxed text-neutral-800 placeholder:text-neutral-400 focus:outline-none dark:text-neutral-100 dark:placeholder:text-neutral-500"
           disabled={loading}
         />
@@ -69,8 +71,8 @@ export default function AIComposer({
               type="button"
               onClick={() => setShowAttachMenu((v) => !v)}
               disabled={loading}
-              aria-label="Attach file (max 4.5MB)"
-              title="Attach file (Max 4.5MB)"
+              aria-label={t("ai.attach")}
+              title={t("ai.attach")}
               className={`flex h-9 w-9 items-center justify-center rounded-full transition-colors hover:bg-neutral-200/70 hover:text-blue-500 dark:hover:bg-neutral-700/60 ${showAttachMenu ? 'bg-neutral-200/70 text-blue-500 dark:bg-neutral-700/60' : ''
                 }`}
             >
@@ -78,7 +80,7 @@ export default function AIComposer({
             </button>
 
             <span className="text-[10px] font-medium text-neutral-400 dark:text-neutral-500 select-none">
-              Max 4.5MB
+              {t("ai.attachMax")}
             </span>
 
             {showAttachMenu && (
@@ -92,7 +94,7 @@ export default function AIComposer({
                   className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left text-sm text-neutral-700 transition-colors hover:bg-neutral-100 dark:text-neutral-200 dark:hover:bg-neutral-800"
                 >
                   <TbPhoto className="h-4 w-4 text-blue-500" />
-                  Image
+                  {t("ai.attachImage")}
                 </button>
                 <button
                   type="button"
@@ -100,7 +102,7 @@ export default function AIComposer({
                   className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left text-sm text-neutral-700 transition-colors hover:bg-neutral-100 dark:text-neutral-200 dark:hover:bg-neutral-800"
                 >
                   <TbVideo className="h-4 w-4 text-emerald-500" />
-                  Video
+                  {t("ai.attachVideo")}
                 </button>
                 <button
                   type="button"
@@ -108,7 +110,7 @@ export default function AIComposer({
                   className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left text-sm text-neutral-700 transition-colors hover:bg-neutral-100 dark:text-neutral-200 dark:hover:bg-neutral-800"
                 >
                   <TbFileText className="h-4 w-4 text-amber-500" />
-                  Document
+                  {t("ai.attachDocument")}
                 </button>
               </div>
             )}
@@ -117,7 +119,7 @@ export default function AIComposer({
           {/* Mic / recording bars / Send */}
           <div className="flex items-center gap-1.5">
             {isRecording && (
-              <div className="recording-bars" role="img" aria-label="Recording in progress" title="Recording…">
+              <div className="recording-bars" role="img" aria-label={t("ai.recording")} title={t("ai.recording")}>
                 <span />
                 <span />
                 <span />
@@ -129,8 +131,8 @@ export default function AIComposer({
               type="button"
               onClick={onToggleRecording}
               disabled={loading}
-              aria-label={isRecording ? "Stop dictation" : "Start voice dictation"}
-              title={isRecording ? "Stop dictation" : "Dictate with your voice"}
+              aria-label={isRecording ? t("ai.stopDictation") : t("ai.startDictation")}
+              title={isRecording ? t("ai.stopDictation") : t("ai.dictateWithVoice")}
               className={`flex h-10 w-10 items-center justify-center rounded-full transition-colors disabled:cursor-not-allowed disabled:opacity-40 ${isRecording
                 ? 'bg-red-500/15 text-red-500 hover:bg-red-500/25'
                 : 'text-neutral-500 hover:bg-neutral-200/70 hover:text-blue-500 dark:text-neutral-400 dark:hover:bg-neutral-700/60'
@@ -147,8 +149,8 @@ export default function AIComposer({
               type="button"
               onClick={onSubmit}
               disabled={loading || (!prompt.trim() && !attachedFile)}
-              aria-label="Send message"
-              title="Send message"
+              aria-label={t("ai.send")}
+              title={t("ai.send")}
               className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 text-white shadow-lg transition-all hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-40"
             >
               <TbSend className="h-5 w-5" />

@@ -13,6 +13,7 @@ import { ContainerContext } from "@/context/container-context";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { COMPANY } from "@/config/Identity";
+import { useTranslation } from "@/i18n";
 
 const Image = (p: React.ImgHTMLAttributes<HTMLImageElement>) => <img {...p} />;
 
@@ -114,6 +115,7 @@ const servicePositions = [
 
 const ServicesSection = () => {
   const { isMobile } = useContext(ContainerContext);
+  const { t, language } = useTranslation();
   const containerRef = useRef<HTMLDivElement>(null);
   const hubRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -168,7 +170,7 @@ const ServicesSection = () => {
               />
             </h2>
             <p className="text-xl text-neutral-800 dark:text-neutral-300 md:text-2xl max-w-2xl mx-auto">
-              Professional Solutions for Your Business Needs
+              {t("home.services.title")}
             </p>
 
             {/* Tautan utama IARTY */}
@@ -282,7 +284,7 @@ const ServicesSection = () => {
                   <FloatingBadge
                     to={COMPANY.url}
                     icon={<TbWorld className="w-5 h-5" />}
-                    title="Visit Website"
+                    title={t("home.services.visitWebsite")}
                     subtitle={COMPANY.url.replace(/^https?:\/\//, "")}
                     badgeRef={(el) => {
                       itemRefs.current[Services.length] = el;
@@ -325,7 +327,7 @@ const ServicesSection = () => {
                   <FloatingBadge
                     to={COMPANY.educationUrl}
                     icon={<TbCode className="w-5 h-5" />}
-                    title="Learn Coding"
+                    title={t("home.services.learnCoding")}
                     subtitle={COMPANY.educationUrl.replace(/^https?:\/\//, "")}
                     badgeRef={(el) => {
                       itemRefs.current[Services.length + 1] = el;
@@ -368,7 +370,7 @@ const ServicesSection = () => {
                   <FloatingBadge
                     to={COMPANY.aiUrl}
                     icon={<TbRobot className="w-5 h-5" />}
-                    title="AI for Business"
+                    title={t("home.services.aiForBusiness")}
                     subtitle={COMPANY.aiUrl.replace(/^https?:\/\//, "")}
                     badgeRef={(el) => {
                       itemRefs.current[Services.length + 2] = el;
@@ -411,7 +413,7 @@ const ServicesSection = () => {
                   <FloatingBadge
                     to={COMPANY.marketplaceUrl}
                     icon={<TbShoppingCart className="w-5 h-5" />}
-                    title="AI Marketplace"
+                    title={t("home.services.aiMarketplace")}
                     subtitle={COMPANY.marketplaceUrl.replace(/^https?:\/\//, "")}
                     badgeRef={(el) => {
                       itemRefs.current[Services.length + 3] = el;
@@ -472,7 +474,11 @@ const ServicesSection = () => {
                       onUpdate={updateLines}
                     >
                       <Service
-                        service={service}
+                        service={{
+                          SvgIcon: service.SvgIcon,
+                          title: service.title[language],
+                          description: service.description[language],
+                        }}
                         variant="minimal"
                         iconRef={(el) => {
                           itemRefs.current[index] = el;

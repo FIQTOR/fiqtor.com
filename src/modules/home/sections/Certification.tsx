@@ -5,6 +5,7 @@ import { Certificates } from "@/data/certificate";
 import { CertificateCard } from "@/components/certificate/CertificateCard";
 import type { Certificate } from "@/components/certificate/CertificateCard";
 import { motion, useInView } from "framer-motion";
+import { useTranslation } from "@/i18n";
 
 /** A carousel slot: either a real certificate or the "view all" marker card. */
 type CarouselCard =
@@ -12,6 +13,7 @@ type CarouselCard =
   | { uniqueId: string; isViewAll: true; originalIndex: number };
 
 export default function Certification() {
+  const { t } = useTranslation();
   const sectionRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { once: false, amount: 0.1 });
 
@@ -78,10 +80,10 @@ export default function Certification() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="flex flex-col text-4xl md:text-6xl lg:text-[4.5rem] tracking-tighter leading-[1.05] text-neutral-900 dark:text-white"
           >
-            <span className="font-extrabold">Certifications</span>
+            <span className="font-extrabold">{t("home.cert.titleA")}</span>
             <span className="flex items-center gap-2 lg:gap-4 mt-2">
               <span className="font-light italic text-neutral-400 dark:text-neutral-500 text-3xl lg:text-6xl">&</span>
-              <span className="font-extrabold pb-2">Awards.</span>
+              <span className="font-extrabold pb-2">{t("home.cert.titleB")}</span>
             </span>
           </motion.h2>
 
@@ -91,7 +93,7 @@ export default function Certification() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-base md:text-xl text-neutral-600 dark:text-neutral-400 leading-relaxed font-light border-l-2 border-blue-500/40 pl-4 md:pl-5 ml-1"
           >
-            A curated showcase of professional growth and academic excellence, validated by industry standards and competitive achievements.
+            {t("home.cert.subtitle")}
           </motion.p>
 
           <motion.div
@@ -101,9 +103,9 @@ export default function Certification() {
             className="flex flex-wrap items-center gap-6 md:gap-12 py-6 border-y border-neutral-200 dark:border-neutral-800/60 mt-2"
           >
             {[
-              { label: "Total Items", value: Certificates.length },
-              { label: "Academic", value: academicCount },
-              { label: "Professional", value: professionalCount },
+              { label: t("home.cert.totalItems"), value: Certificates.length },
+              { label: t("home.cert.academic"), value: academicCount },
+              { label: t("home.cert.professional"), value: professionalCount },
             ].map((stat, idx) => (
               <div key={stat.label} className="flex flex-col gap-1 relative w-[45%] md:w-auto">
                 {idx !== 0 && (
@@ -181,10 +183,10 @@ export default function Certification() {
                       </div>
                       <div className="text-center px-4 md:px-6">
                         <p className="text-xl md:text-2xl font-bold text-neutral-800 dark:text-neutral-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                          Explore Full Library
+                          {t("home.cert.exploreAll")}
                         </p>
                         <p className="text-xs md:text-sm font-medium text-neutral-500 mt-2">
-                          View all {Certificates.length} certificates
+                          {t("home.cert.viewAll", { count: Certificates.length })}
                         </p>
                       </div>
                     </Link>
@@ -218,10 +220,10 @@ export default function Certification() {
                             >
                               <span className="absolute left-0.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 rounded-full bg-gradient-to-br from-blue-400 to-cyan-300 shadow-[0_0_14px_rgba(56,189,248,0.9)]" />
                             </motion.span>
-                            <span className="sr-only">Swipe indicator</span>
+                            <span className="sr-only">{t("home.cert.swipeHint")}</span>
                           </span>
                           <span className="text-[10px] font-bold uppercase tracking-[0.28em] text-white/90">
-                            Swipe
+                            {t("home.cert.swipe")}
                           </span>
                         </span>
 

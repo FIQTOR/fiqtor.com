@@ -4,6 +4,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import axios from "axios";
 import { SOCIAL_LINKS } from "@/config/Identity";
 import WakatimeConfig from "@/config/Wakatime";
+import { useTranslation } from "@/i18n";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -14,6 +15,7 @@ gsap.registerPlugin(ScrollTrigger);
 ScrollTrigger.config({ ignoreMobileResize: true });
 
 const SubHeader = () => {
+  const { t } = useTranslation();
   const containerRef = useRef<HTMLDivElement>(null);
   const wakatimeRef = useRef<HTMLDivElement>(null);
   const tiktokRef = useRef<HTMLDivElement>(null);
@@ -206,12 +208,12 @@ const SubHeader = () => {
           className="flex flex-col items-center justify-center space-y-4 absolute left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2"
         >
           <div className="relative w-full px-4 md:px-0">
-            <h3 className="sr-only">Coding Lifetime</h3>
+            <h3 className="sr-only">{t("home.sub.codingLifetime")}</h3>
             <div
               aria-hidden="true"
               className="flex items-center justify-center flex-wrap gap-2 md:gap-3 max-w-[90vw] md:max-w-none mx-auto"
             >
-              {"Coding Lifetime".split(" ").map((word, i) => (
+              {t("home.sub.codingLifetime").split(" ").map((word: string, i: number) => (
                 <div key={i} className="flex items-center justify-center">
                   {word.split("").map((char, charIndex) => (
                     <span
@@ -226,10 +228,10 @@ const SubHeader = () => {
             </div>
           </div>
           <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-12 text-2xl md:text-3xl">
-            {wakatime.coding_lifetime === '' ? <p className="font-semibold">Maintenance</p> :
+            {wakatime.coding_lifetime === '' ? <p className="font-semibold">{t("home.sub.maintenance")}</p> :
               <>
                 <p className="text-gray-600 dark:text-gray-400">{wakatime.coding_lifetime}</p>
-                <p className="font-semibold">Since {wakatime.since}</p>
+                <p className="font-semibold">{t("home.sub.since")} {wakatime.since}</p>
               </>}
           </div>
           <a
@@ -238,7 +240,7 @@ const SubHeader = () => {
             rel="noopener noreferrer"
             className="px-8 py-3 bg-white rounded-full text-xl hover:bg-white/90 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/50 text-black"
           >
-            Visit Wakatime Profile
+            {t("home.sub.visitWakatime")}
           </a>
         </div>
 
@@ -248,12 +250,12 @@ const SubHeader = () => {
           className="flex flex-col items-center justify-center space-y-4 absolute left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2"
         >
           <div className="relative w-full px-4 md:px-0">
-            <h3 className="sr-only">Follow my Tiktok</h3>
+            <h3 className="sr-only">{t("home.sub.followTiktok")}</h3>
             <div
               aria-hidden="true"
               className="flex items-center justify-center flex-wrap gap-2 md:gap-3 max-w-[90vw] md:max-w-none mx-auto"
             >
-              {"Follow My Tiktok".split(" ").map((word, i) => (
+              {t("home.sub.followTiktok").split(" ").map((word: string, i: number) => (
                 <div key={i} className="flex items-center justify-center">
                   {word.split("").map((char, charIndex) => (
                     <span
@@ -268,8 +270,8 @@ const SubHeader = () => {
             </div>
           </div>
           <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-12 text-2xl md:text-3xl">
-            <p className="font-semibold">{tiktok.followers} followers</p>
-            <p className="text-gray-600 dark:text-gray-400">{tiktok.following} following</p>
+            <p className="font-semibold">{tiktok.followers} {t("home.sub.followers")}</p>
+            <p className="text-gray-600 dark:text-gray-400">{tiktok.following} {t("home.sub.following")}</p>
           </div>
           <a
             href={SOCIAL_LINKS.tiktok}
@@ -277,7 +279,7 @@ const SubHeader = () => {
             rel="noopener noreferrer"
             className="px-8 py-3 bg-white rounded-full text-xl hover:bg-white/90 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/50 text-black"
           >
-            Visit TikTok Profile
+            {t("home.sub.visitTiktok")}
           </a>
         </div>
 
@@ -286,12 +288,12 @@ const SubHeader = () => {
           className="flex flex-col items-center justify-center space-y-4 absolute left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2"
         >
           <div className="relative w-full px-4 md:px-0">
-            <h3 className="sr-only">Connect my Instagram</h3>
+            <h3 className="sr-only">{t("home.sub.connectInstagram")}</h3>
             <div
               aria-hidden="true"
               className="flex items-center justify-center flex-wrap gap-2 md:gap-3 max-w-[90vw] md:max-w-none mx-auto"
             >
-              {"Follow My Instagram".split(" ").map((word, i) => (
+              {t("home.sub.connectInstagram").split(" ").map((word: string, i: number) => (
                 <div key={i} className="flex items-center justify-center">
                   {word.split("").map((char, charIndex) => (
                     <span
@@ -306,8 +308,8 @@ const SubHeader = () => {
             </div>
           </div>
           <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-12 text-2xl md:text-3xl">
-            <p className="font-semibold">{instagram.followers} followers</p>
-            <p className="text-gray-600 dark:text-gray-400">{instagram.following} following</p>
+            <p className="font-semibold">{instagram.followers} {t("home.sub.followers")}</p>
+            <p className="text-gray-600 dark:text-gray-400">{instagram.following} {t("home.sub.following")}</p>
           </div>
           <a
             href={SOCIAL_LINKS.instagram}
@@ -315,7 +317,7 @@ const SubHeader = () => {
             rel="noopener noreferrer"
             className="px-8 py-3 bg-white rounded-full text-xl hover:bg-white/90 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/50 text-black"
           >
-            Visit Instagram Profile
+            {t("home.sub.visitInstagram")}
           </a>
         </div>
         </div>

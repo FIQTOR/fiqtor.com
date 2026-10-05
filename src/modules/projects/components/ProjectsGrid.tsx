@@ -5,6 +5,8 @@ import { TbWorldShare, TbX } from "react-icons/tb";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import ProjectGallery from "@/components/projects/ProjectGallery";
+import { useTranslation } from "@/i18n";
+import { PROJECT_CATEGORY_KEY } from "@/lib/projectCategory";
 
 type SelectedProject = Project;
 
@@ -27,6 +29,7 @@ const PANEL_TRANSITION = {
 } as const;
 
 export default function ProjectsCard({ projects }: ProjectsGridProps) {
+  const { t } = useTranslation();
   const [selectedProject, setSelectedProject] = useState<SelectedProject | null>(null);
 
   useEffect(() => {
@@ -82,7 +85,7 @@ export default function ProjectsCard({ projects }: ProjectsGridProps) {
                 <div className="relative flex h-full w-full flex-col justify-between gap-4 p-5 sm:p-6">
                   <div className="flex items-start justify-end gap-3">
                     <span className="rounded-full border border-blue-400/30 bg-blue-500/20 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-blue-100 backdrop-blur-md">
-                      {project.category}
+                      {t(PROJECT_CATEGORY_KEY[project.category])}
                     </span>
                   </div>
 
@@ -162,7 +165,7 @@ export default function ProjectsCard({ projects }: ProjectsGridProps) {
                 {/* Close Button */}
                 <button
                   onClick={() => setSelectedProject(null)}
-                  aria-label="Close project detail"
+                  aria-label={t("common.cancel")}
                   className="absolute cursor-pointer top-4 right-4 z-10 p-2 rounded-full bg-black/20 hover:bg-black/40 text-white transition-colors"
                 >
                   <TbX className="h-6 w-6" />
@@ -183,7 +186,7 @@ export default function ProjectsCard({ projects }: ProjectsGridProps) {
                     {selectedProject.category && (
                       <div>
                         <span className="inline-block rounded-full bg-blue-600 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-white">
-                          {selectedProject.category}
+                          {t(PROJECT_CATEGORY_KEY[selectedProject.category])}
                         </span>
                       </div>
                     )}
@@ -213,7 +216,7 @@ export default function ProjectsCard({ projects }: ProjectsGridProps) {
                   {selectedProject.images && selectedProject.images.length > 0 && (
                     <div className="mb-8">
                       <h4 className="text-sm font-semibold uppercase tracking-wider text-neutral-500 mb-4">
-                        Screenshots
+                        {t("project.screenshots")}
                       </h4>
                       <ProjectGallery
                         images={selectedProject.images}
@@ -224,7 +227,7 @@ export default function ProjectsCard({ projects }: ProjectsGridProps) {
 
                   {/* Tech Stack Icons */}
                   <div className="mb-8">
-                    <h4 className="text-sm font-semibold uppercase tracking-wider text-neutral-500 mb-4">Tech Stack</h4>
+                    <h4 className="text-sm font-semibold uppercase tracking-wider text-neutral-500 mb-4">{t("project.techStack")}</h4>
                     <div className="flex flex-wrap gap-4">
                       {selectedProject.icons?.map((icon, i) => (
                         <div key={i} className="group relative flex flex-col items-center">
@@ -247,7 +250,7 @@ export default function ProjectsCard({ projects }: ProjectsGridProps) {
                         className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 py-3 text-white font-semibold transition-all hover:bg-blue-700 active:scale-95 shadow-lg shadow-blue-500/20"
                       >
                         <TbWorldShare className="h-5 w-5" />
-                        Preview Project
+                        {t("project.preview")}
                       </a>
                     ) : (
                       <Link
@@ -255,7 +258,7 @@ export default function ProjectsCard({ projects }: ProjectsGridProps) {
                         onClick={() => setSelectedProject(null)}
                         className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-neutral-800 dark:bg-white dark:text-black px-6 py-3 text-white font-semibold transition-all hover:opacity-90 active:scale-95"
                       >
-                        Contact Dev
+                        {t("project.contactShort")}
                       </Link>
                     )}
                   </div>

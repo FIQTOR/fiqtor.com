@@ -9,6 +9,7 @@ import MetadataConfig, {
 } from "@/config/Metadata";
 import type { PageKey } from "@/config/Metadata";
 import { BRAND_NAME } from "@/config/Identity";
+import { useTranslation } from "@/i18n";
 
 interface HelmetContainerProps {
   /** Explicit registry key. Omit to resolve from the current route. */
@@ -33,6 +34,7 @@ export default function HelmetContainer({
   noindex,
 }: HelmetContainerProps) {
   const { pathname } = useLocation();
+  const { language } = useTranslation();
 
   const meta =
     (page ? PageMetadata[page] : getPageMetaByPath(pathname)) ??
@@ -55,7 +57,7 @@ export default function HelmetContainer({
   return (
     <Helmet prioritizeSeoTags>
       {/* Basic HTML Meta Tags */}
-      <html lang="en" />
+      <html lang={language} />
       <title>{pageTitle}</title>
       <meta name="title" content={pageTitle} />
       <meta name="description" content={pageDescription} />
@@ -82,7 +84,7 @@ export default function HelmetContainer({
       <meta property="og:image:width" content={String(SITE_IMAGE.width)} />
       <meta property="og:image:height" content={String(SITE_IMAGE.height)} />
       <meta property="og:image:alt" content={SITE_IMAGE.alt} />
-      <meta property="og:locale" content={MetadataConfig.openGraph.locale} />
+      <meta property="og:locale" content={language === "id" ? "id_ID" : "en_US"} />
       {MetadataConfig.openGraph.alternateLocale.map((locale) => (
         <meta key={locale} property="og:locale:alternate" content={locale} />
       ))}

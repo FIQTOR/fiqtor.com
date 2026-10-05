@@ -21,6 +21,7 @@ import ProgressBar from "@/modules/kanban/components/ProgressBar";
 import { KANBAN_COLUMNS, KANBAN_PRIORITY_MAP } from "@/data/kanban";
 import { dueDateMeta } from "@/modules/kanban/kanban.utils";
 import type { KanbanStatus, Task } from "@/types/kanban";
+import { useTranslation } from "@/i18n";
 
 interface TaskCardProps {
   task: Task;
@@ -49,6 +50,7 @@ const TaskCard = memo(function TaskCard({
   onMove,
   dragHandlers,
 }: TaskCardProps) {
+  const { t, language } = useTranslation();
   const due = dueDateMeta(task.dueDate);
   const accent = KANBAN_PRIORITY_MAP[task.priority].dotClass;
   const [menuOpen, setMenuOpen] = useState(false);
@@ -71,7 +73,7 @@ const TaskCard = memo(function TaskCard({
   return (
     <article
       {...dragHandlers}
-      aria-label={`Task: ${task.title || "Untitled"}`}
+      aria-label={`${task.title || t("kanban.task.untitledShort")}`}
       className={`group relative cursor-grab overflow-hidden rounded-xl border border-neutral-200/70 bg-white/80 p-3 text-left shadow-sm backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-neutral-300 hover:shadow-md active:cursor-grabbing dark:border-neutral-800/70 dark:bg-neutral-900/70 dark:hover:border-neutral-700 ${
         isDragging ? "opacity-40 ring-2 ring-blue-500/40" : ""
       }`}
@@ -86,7 +88,7 @@ const TaskCard = memo(function TaskCard({
         {/* Header: title + priority */}
         <div className="flex items-start justify-between gap-2">
           <h4 className="text-sm font-semibold leading-snug text-neutral-800 dark:text-neutral-100">
-            {task.title || "Untitled task"}
+            {task.title || t("kanban.task.untitled")}
           </h4>
           <PriorityBadge priority={task.priority} withDot={false} />
         </div>
@@ -107,7 +109,7 @@ const TaskCard = memo(function TaskCard({
             {due && (
               <span
                 className={`inline-flex items-center gap-1 font-medium ${DUE_TONE_CLASS[due.tone]}`}
-                title={`Due ${due.label}`}
+                title={t("kanban.task.due", { date: due.label })}
               >
                 <TbCalendarDue className="h-3.5 w-3.5" />
                 {due.label}
@@ -115,7 +117,7 @@ const TaskCard = memo(function TaskCard({
             )}
             <span className="inline-flex items-center gap-1">
               <TbClockHour4 className="h-3.5 w-3.5" />
-              {new Date(task.updatedAt).toLocaleDateString("en-GB", {
+              {new Date(task.updatedAt).toLocaleDateString(language === "id" ? "id-ID" : "en-GB", {
                 day: "numeric",
                 month: "short",
               })}
@@ -128,7 +130,7 @@ const TaskCard = memo(function TaskCard({
               <button
                 type="button"
                 onClick={() => setMenuOpen((v) => !v)}
-                aria-label={`Move ${task.title}`}
+                aria-label={t("kanban.task.move", { title: task.title })}
                 aria-haspopup="menu"
                 aria-expanded={menuOpen}
                 className="flex h-7 w-7 cursor-pointer items-center justify-center rounded-md text-neutral-500 transition-colors hover:bg-neutral-200/70 hover:text-blue-600 dark:hover:bg-neutral-800 dark:hover:text-blue-400 lg:h-6 lg:w-6"
@@ -156,7 +158,7 @@ const TaskCard = memo(function TaskCard({
                       className="flex w-full cursor-pointer items-center gap-2 rounded-lg px-2.5 py-1.5 text-left text-xs font-medium text-neutral-700 transition-colors hover:bg-neutral-100 dark:text-neutral-200 dark:hover:bg-neutral-800"
                     >
                       <span className={`h-2 w-2 rounded-full ${col.accentClass}`} />
-                      {col.label}
+                      {col.label[language]}
                     </button>
                   ))}
                 </div>
@@ -166,7 +168,7 @@ const TaskCard = memo(function TaskCard({
             <button
               type="button"
               onClick={() => onEdit(task)}
-              aria-label={`Edit ${task.title}`}
+              aria-label={t("kanban.task.edit", { title: task.title })}
               className="flex h-7 w-7 cursor-pointer items-center justify-center rounded-md text-neutral-500 transition-colors hover:bg-neutral-200/70 hover:text-blue-600 dark:hover:bg-neutral-800 dark:hover:text-blue-400 lg:h-6 lg:w-6"
             >
               <TbPencil className="h-3.5 w-3.5" />
@@ -174,7 +176,7 @@ const TaskCard = memo(function TaskCard({
             <button
               type="button"
               onClick={() => onDelete(task)}
-              aria-label={`Delete ${task.title}`}
+              aria-label={t("kanban.task.delete", { title: task.title })}
               className="flex h-7 w-7 cursor-pointer items-center justify-center rounded-md text-neutral-500 transition-colors hover:bg-red-500/10 hover:text-red-600 dark:hover:text-red-400 lg:h-6 lg:w-6"
             >
               <TbTrash className="h-3.5 w-3.5" />

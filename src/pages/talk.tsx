@@ -24,6 +24,8 @@ import {
   TbChevronRight,
   TbArrowUpRight,
 } from "react-icons/tb";
+import { useTranslation } from "@/i18n";
+import type { TranslationKey } from "@/i18n";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -41,19 +43,19 @@ const initialValues: ContactValues = {
   message: "",
 };
 
-/** Validate a single field; returns an error string ("" when valid). */
+/** Validate a single field; returns a translation key ("" when valid). */
 const validateField = (
   field: keyof ContactValues,
   values: ContactValues
-): string => {
+): TranslationKey | "" => {
   switch (field) {
     case "name":
-      return values.name.trim() ? "" : "Name is required.";
+      return values.name.trim() ? "" : "talk.err.nameRequired";
     case "email":
-      if (!values.email.trim()) return "Email is required.";
-      return EMAIL_RE.test(values.email.trim()) ? "" : "Enter a valid email address.";
+      if (!values.email.trim()) return "talk.err.emailRequired";
+      return EMAIL_RE.test(values.email.trim()) ? "" : "talk.err.emailInvalid";
     case "message":
-      return values.message.trim() ? "" : "Message is required.";
+      return values.message.trim() ? "" : "talk.err.messageRequired";
     case "type":
       return "";
     default:
@@ -62,6 +64,7 @@ const validateField = (
 };
 
 export default function ContactPage() {
+  const { t } = useTranslation();
   const [values, setValues] = useState<ContactValues>(initialValues);
   const [errors, setErrors] = useState<ContactErrors>(initialErrors);
   const [captcha, setCaptcha] = useState(false);
@@ -80,21 +83,25 @@ export default function ContactPage() {
   const onFieldBlur = useCallback(
     (field: keyof ContactValues) => {
       if (field === "type") return;
-      const message = validateField(field, values);
-      const key = `t${field}` as keyof ContactErrors;
-      setErrors((prev) => ({ ...prev, [key]: message }));
+      const key = validateField(field, values);
+      const message = key ? t(key) : "";
+      const errorKey = `t${field}` as keyof ContactErrors;
+      setErrors((prev) => ({ ...prev, [errorKey]: message }));
     },
-    [values]
+    [values, t]
   );
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    const nameKey = validateField("name", values);
+    const emailKey = validateField("email", values);
+    const messageKey = validateField("message", values);
     const nextErrors: ContactErrors = {
-      tname: validateField("name", values),
-      temail: validateField("email", values),
-      tmessage: validateField("message", values),
-      tcaptcha: captcha ? "" : "Please complete the captcha.",
+      tname: nameKey ? t(nameKey) : "",
+      temail: emailKey ? t(emailKey) : "",
+      tmessage: messageKey ? t(messageKey) : "",
+      tcaptcha: captcha ? "" : t("talk.err.captcha"),
     };
     setErrors(nextErrors);
 
@@ -167,7 +174,7 @@ export default function ContactPage() {
                     className="text-4xl md:text-6xl font-bold tracking-tight mb-5"
                   >
                     <span className="bg-linear-to-r from-neutral-900 via-neutral-600 to-neutral-900 dark:from-white dark:via-neutral-300 dark:to-white bg-clip-text text-transparent">
-                      Contact {BRAND_NAME}
+                      {t("talk.title", { brand: BRAND_NAME })}
                     </span>
                   </motion.h1>
 
@@ -177,8 +184,7 @@ export default function ContactPage() {
                     transition={{ delay: 0.2 }}
                     className="max-w-2xl text-lg md:text-xl text-neutral-500 dark:text-neutral-400 leading-relaxed"
                   >
-                    Send a project brief by form, WhatsApp, or email. Replies land
-                    within 24 hours, GMT+7 (WIB), in English or Bahasa Indonesia.
+                    {t("talk.subtitle")}
                   </motion.p>
                 </div>
               </header>
@@ -214,30 +220,30 @@ export default function ContactPage() {
                     {/* Direct Contact Card */}
                     <div className="rounded-3xl border border-neutral-300/30 bg-white/40 p-8 backdrop-blur-md dark:border-neutral-800/40 dark:bg-neutral-900/40">
                       <div className="mb-6 flex items-center gap-2">
-                        <h3 className="text-lg font-bold">Direct Contact</h3>
+                        <h3 className="text-lg font-bold">{t("talk.directContact")}</h3>
                         <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
                       </div>
                       <div className="flex flex-col gap-3">
                         {[
                           {
                             icon: TbBrandWhatsapp,
-                            label: "WhatsApp",
-                            sub: "Fastest response",
+                            label: t("talk.whatsapp"),
+                            sub: t("talk.fastest"),
                             href: whatsappUrl(),
                             color: "bg-green-500/10 text-green-600 dark:text-green-400",
                             iconBg: "bg-green-500/15 dark:bg-green-500/20",
                           },
                           {
                             icon: TbBrandGmail,
-                            label: "Email",
-                            sub: "For detailed inquiries",
+                            label: t("talk.email"),
+                            sub: t("talk.detailed"),
                             href: mailtoUrl(CONTACT_EMAIL),
                             color: "text-red-500 dark:text-red-400",
                             iconBg: "bg-red-500/15 dark:bg-red-500/20",
                           },
                           {
                             icon: TbBrandInstagram,
-                            label: "Instagram",
+                            label: t("talk.instagram"),
                             sub: `@${OWNER_ALIAS}`,
                             href: SOCIAL_LINKS.instagram,
                             color: "text-pink-500 dark:text-pink-400",
@@ -272,23 +278,23 @@ export default function ContactPage() {
 
                     {/* Availability Card */}
                     <div className="rounded-3xl border border-neutral-300/30 bg-white/40 p-8 backdrop-blur-md dark:border-neutral-800/40 dark:bg-neutral-900/40">
-                      <h3 className="mb-6 text-lg font-bold">Availability</h3>
+                      <h3 className="mb-6 text-lg font-bold">{t("talk.availability")}</h3>
                       <div className="flex flex-col gap-4">
                         {[
                           {
                             icon: TbClock,
-                            label: "Response Time",
-                            value: "Within 24 hours",
+                            label: t("talk.responseTime"),
+                            value: t("talk.within24"),
                           },
                           {
                             icon: TbGlobe,
-                            label: "Timezone",
+                            label: t("talk.timezone"),
                             value: "GMT+7 (WIB)",
                           },
                           {
                             icon: TbLanguage,
-                            label: "Languages",
-                            value: "English & Bahasa Indonesia",
+                            label: t("talk.languages"),
+                            value: t("talk.languagesValue"),
                           },
                         ].map((row) => (
                           <div key={row.label} className="flex items-start gap-4">
@@ -318,9 +324,9 @@ export default function ContactPage() {
                       <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-emerald-500/20 blur-3xl transition-all duration-500 group-hover:bg-emerald-500/40" />
                       <div>
                         <p className="text-sm font-bold uppercase tracking-widest opacity-70">
-                          Prefer to chat?
+                          {t("talk.preferChat")}
                         </p>
-                        <p className="mt-1 text-2xl font-bold">Message me now</p>
+                        <p className="mt-1 text-2xl font-bold">{t("talk.messageNow")}</p>
                       </div>
                       <TbArrowUpRight className="h-8 w-8 transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1" />
                     </a>

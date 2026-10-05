@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { TbChevronLeft, TbChevronRight, TbMaximize } from "react-icons/tb";
+import { useTranslation } from "@/i18n";
 
 interface ProjectGalleryProps {
   /** All screenshots to display. The first item is treated as the cover. */
@@ -23,6 +24,7 @@ export default function ProjectGallery({
   title,
   className = "",
 }: ProjectGalleryProps) {
+  const { t } = useTranslation();
   const gallery = useMemo(
     () => images.filter((src) => Boolean(src)),
     [images]
@@ -148,7 +150,7 @@ export default function ProjectGallery({
           <motion.img
             key={gallery[activeIndex]}
             src={gallery[activeIndex]}
-            alt={`${title} screenshot ${activeIndex + 1}`}
+            alt={t("gallery.screenshotAlt", { title, n: activeIndex + 1 })}
             loading="lazy"
             decoding="async"
             initial={{ opacity: 0 }}
@@ -178,7 +180,7 @@ export default function ProjectGallery({
                 e.stopPropagation();
                 prev();
               }}
-              aria-label="Previous screenshot"
+              aria-label={t("gallery.prev")}
               className="absolute left-2 top-1/2 -translate-y-1/2 cursor-pointer rounded-full bg-black/40 p-2 text-white opacity-0 backdrop-blur-sm transition hover:bg-black/60 group-hover/gallery:opacity-100"
             >
               <TbChevronLeft className="h-5 w-5" />
@@ -189,7 +191,7 @@ export default function ProjectGallery({
                 e.stopPropagation();
                 next();
               }}
-              aria-label="Next screenshot"
+              aria-label={t("gallery.next")}
               className="absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer rounded-full bg-black/40 p-2 text-white opacity-0 backdrop-blur-sm transition hover:bg-black/60 group-hover/gallery:opacity-100"
             >
               <TbChevronRight className="h-5 w-5" />
@@ -215,7 +217,7 @@ export default function ProjectGallery({
               key={src}
               type="button"
               onClick={() => handleThumbClick(index)}
-              aria-label={`Show screenshot ${index + 1}`}
+              aria-label={t("gallery.showScreenshot", { n: index + 1 })}
               aria-current={index === activeIndex}
               className={`relative h-14 w-24 shrink-0 cursor-pointer overflow-hidden rounded-lg border-2 transition ${
                 index === activeIndex
@@ -225,7 +227,7 @@ export default function ProjectGallery({
             >
               <img
                 src={src}
-                alt={`${title} thumbnail ${index + 1}`}
+                alt={t("gallery.thumbnailAlt", { title, n: index + 1 })}
                 loading="lazy"
                 decoding="async"
                 draggable={false}
@@ -249,7 +251,7 @@ export default function ProjectGallery({
             <motion.img
               key={gallery[activeIndex]}
               src={gallery[activeIndex]}
-              alt={`${title} fullscreen ${activeIndex + 1}`}
+              alt={t("gallery.fullscreenAlt", { title, n: activeIndex + 1 })}
               initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.96 }}
@@ -270,7 +272,7 @@ export default function ProjectGallery({
                     e.stopPropagation();
                     prev();
                   }}
-                  aria-label="Previous screenshot"
+                  aria-label={t("gallery.prev")}
                   className="absolute left-4 top-1/2 -translate-y-1/2 cursor-pointer rounded-full bg-white/10 p-3 text-white backdrop-blur-sm transition hover:bg-white/20"
                 >
                   <TbChevronLeft className="h-6 w-6" />
@@ -281,7 +283,7 @@ export default function ProjectGallery({
                     e.stopPropagation();
                     next();
                   }}
-                  aria-label="Next screenshot"
+                  aria-label={t("gallery.next")}
                   className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer rounded-full bg-white/10 p-3 text-white backdrop-blur-sm transition hover:bg-white/20"
                 >
                   <TbChevronRight className="h-6 w-6" />

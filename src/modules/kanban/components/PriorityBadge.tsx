@@ -5,6 +5,7 @@
  */
 import type { KanbanPriority } from "@/types/kanban";
 import { KANBAN_PRIORITY_MAP } from "@/data/kanban";
+import { useTranslation } from "@/i18n";
 
 interface PriorityBadgeProps {
   priority: KanbanPriority;
@@ -17,6 +18,7 @@ const PriorityBadge = ({
   className = "",
   withDot = true,
 }: PriorityBadgeProps) => {
+  const { language } = useTranslation();
   const def = KANBAN_PRIORITY_MAP[priority];
 
   return (
@@ -26,7 +28,7 @@ const PriorityBadge = ({
       {withDot && (
         <span className={`h-1.5 w-1.5 rounded-full ${def.dotClass}`} />
       )}
-      {def.label}
+      {def.label[language]}
     </span>
   );
 };

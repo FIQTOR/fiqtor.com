@@ -23,6 +23,7 @@ import type {
   Task,
   TaskDraft,
 } from "@/types/kanban";
+import type { Language } from "@/i18n/translations";
 
 /** localStorage may throw (Safari private mode, quota) — never crash the app. */
 const safeGet = (key: string): string | null => {
@@ -106,7 +107,7 @@ export interface KanbanStore {
   /** Serialize the current board to a pretty JSON string. */
   exportJson: () => string;
   /** Replace the board with the optional sample tasks (wipes current tasks). */
-  loadSamples: () => void;
+  loadSamples: (lang?: Language) => void;
   /** Delete every task, leaving an empty board. */
   clearBoard: () => void;
 }
@@ -239,8 +240,8 @@ export function useKanbanStore(): KanbanStore {
     [state]
   );
 
-  const loadSamples = useCallback(() => {
-    commit(() => createSampleState());
+  const loadSamples = useCallback((lang: Language = "en") => {
+    commit(() => createSampleState(lang));
   }, [commit]);
 
   const clearBoard = useCallback(() => {

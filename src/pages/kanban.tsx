@@ -3,8 +3,11 @@ import { TbLayoutKanban } from "react-icons/tb";
 import HelmetContainer from "@/components/HelmetContainer";
 import { BackgroundBlobs } from "@/components/BackgroundBlobs";
 import KanbanBoard from "@/modules/kanban/components/KanbanBoard";
+import { useTranslation } from "@/i18n";
 
-const KanbanPage = () => (
+const KanbanPage = () => {
+  const { t } = useTranslation();
+  return (
   <>
     <HelmetContainer page="kanban" />
     <section
@@ -36,7 +39,7 @@ const KanbanPage = () => (
           className="mb-4 text-center text-3xl font-bold tracking-tight sm:text-4xl md:text-6xl"
         >
           <span className="bg-linear-to-r from-neutral-800 via-neutral-600 to-neutral-800 bg-clip-text text-transparent dark:from-neutral-100 dark:via-neutral-300 dark:to-neutral-100">
-            Kanban Board
+            {t("kanban.title")}
           </span>
         </motion.h1>
 
@@ -46,8 +49,7 @@ const KanbanPage = () => (
           transition={{ delay: 0.3, duration: 0.6 }}
           className="max-w-2xl text-center text-base leading-relaxed text-neutral-600 dark:text-neutral-400 md:text-lg"
         >
-          Manage tasks across a five-stage workflow. Drag cards between columns,
-          track progressive outreach counters, and export or import your board.
+          {t("kanban.subtitle")}
         </motion.p>
       </div>
 
@@ -57,6 +59,7 @@ const KanbanPage = () => (
       </div>
     </section>
   </>
-);
+  );
+};
 
 export default KanbanPage;

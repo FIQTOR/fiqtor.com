@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import GithubConfig from "@/config/Github";
 import { ContainerContext } from "@/context/container-context";
 import axios from "axios";
+import { useTranslation } from "@/i18n";
 
 // --- Types ---
 interface ContributionDay {
@@ -66,14 +67,15 @@ const getContributionColor = (count: number): string => {
 
 // --- Sub-components ---
 const DefinitionGithub = () => {
+  const { t } = useTranslation();
   const [showMore, setShowMore] = useState(false);
   return (
     <p className="text-neutral-600 dark:text-neutral-400">
-      GitHub contributions refer to the activity and participation of developers in repositories
+      {t("gh.definitionShort")}
       {!showMore ? (
-        <button onClick={() => setShowMore(true)} className="text-blue-400 hover:opacity-70 ml-1">...learn more</button>
+        <button onClick={() => setShowMore(true)} className="text-blue-400 hover:opacity-70 ml-1">{t("gh.definitionMore")}</button>
       ) : (
-        " hosted on GitHub. Contributions include commits, pull requests, issue tracking, code reviews, and discussions within projects. Developers can contribute to open-source projects or collaborate within private repositories by adding new features, fixing bugs, improving documentation, and reviewing code. GitHub tracks these contributions and visualizes them on a developer's profile, showcasing their activity and involvement in the community. Contributing to GitHub projects helps developers improve their coding skills, collaborate with others, and build a strong professional portfolio."
+        t("gh.definitionLong")
       )}
     </p>
   );
@@ -110,6 +112,7 @@ const Square = ({ color }: { color: string }) => {
 
 // --- Main Component ---
 function ContributionsGithub() {
+  const { t } = useTranslation();
   const [data, setData] = useState<GithubData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -120,14 +123,14 @@ function ContributionsGithub() {
         const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/v1/github/contributions`);
         setData(response.data);
       } catch (error) {
-        setError(error instanceof Error ? error.message : "Failed to load contributions.");
+        setError(error instanceof Error ? error.message : t("gh.failed"));
         console.log(error);
       } finally {
         setLoading(false);
       }
     };
     fetchGithubContributions();
-  }, []);
+  }, [t]);
 
   if (loading) {
     return (
@@ -143,7 +146,7 @@ function ContributionsGithub() {
   if (error || !data) {
     return (
       <div className="mt-12 px-7 md:px-24 text-red-500">
-        <p>Error: {error || "Invalid GitHub Token!"}</p>
+        <p>Error: {error || t("gh.invalidToken")}</p>
       </div>
     );
   }
@@ -154,7 +157,7 @@ function ContributionsGithub() {
   if (!calendar) {
     return (
       <div className="mt-12 px-7 md:px-24 text-red-500">
-        <p>Error: Could not retrieve GitHub contribution data for this user.</p>
+        <p>Error: {t("gh.couldNot")}</p>
       </div>
     );
   }
@@ -163,31 +166,31 @@ function ContributionsGithub() {
     <div className="mt-12 px-7 font-light text-neutral-700 dark:text-neutral-300 md:px-24 z-0">
       <div className="flex items-center gap-3">
         <TbBrandGithub className="h-7 w-7" />
-        <h2 className="text-2xl text-neutral-700 dark:text-neutral-400">Contributions</h2>
+        <h2 className="text-2xl text-neutral-700 dark:text-neutral-400">{t("gh.contributions")}</h2>
       </div>
 
       <a
         href={`https://github.com/${GithubConfig.username}`}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="View On Github"
+        aria-label={t("gh.viewOnGithub")}
         className="flex w-fit items-center gap-1 text-blue-600 duration-100 hover:opacity-70 dark:text-neutral-600 mb-2"
       >
-        Visit On Github
+        {t("gh.visitOnGithub")}
         <TbGitFork className="h-full w-6" />
       </a>
 
       <DefinitionGithub />
 
       <p className="font-normal text-neutral-600 dark:text-neutral-400 mt-4">
-        My contributions from last year on github:
+        {t("gh.lastYear")}
       </p>
 
       <div className="my-3 grid grid-cols-1 gap-3 md:grid-cols-3">
         {[
-          { label: "Past Year", value: contributionsData.total },
-          { label: "This Month", value: contributionsData.thisMonth },
-          { label: "This Week", value: contributionsData.thisWeek },
+          { label: t("gh.pastYear"), value: contributionsData.total },
+          { label: t("gh.thisMonth"), value: contributionsData.thisMonth },
+          { label: t("gh.thisWeek"), value: contributionsData.thisWeek },
         ].map((stat, index) => (
           <div
             key={index}
@@ -220,13 +223,13 @@ function ContributionsGithub() {
           </div>
 
           <div className="flex items-center gap-4 pt-6 font-medium text-sm">
-            <span className="opacity-60 text-xs text-left">Less</span>
+            <span className="opacity-60 text-xs text-left">{t("gh.less")}</span>
             <div className="flex gap-1">
               {["bg-neutral-300 dark:bg-neutral-700", "bg-blue-100", "bg-blue-200", "bg-blue-400", "bg-blue-600"].map((bgColor, index) => (
                 <div key={index} className={`h-4 w-4 rounded-full ${bgColor}`} />
               ))}
             </div>
-            <span className="opacity-60 text-xs">More</span>
+            <span className="opacity-60 text-xs">{t("gh.more")}</span>
           </div>
         </div>
       </div>

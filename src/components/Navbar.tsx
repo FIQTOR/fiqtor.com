@@ -1,18 +1,15 @@
 import { useTheme } from "next-themes";
 import { Link as Link } from "react-router-dom";
 import { useContext, useEffect, useMemo, memo, useCallback, useState, useRef, useSyncExternalStore } from "react";
-import { TbMoon, TbSun, TbMessage } from "react-icons/tb";
+import { TbMoon, TbSun, TbMessage, TbWorld, TbCheck } from "react-icons/tb";
 import { Menu } from "../data/menu";
 import type { Project as MenuItem } from "../data/menu";
 import { ContainerContext } from "@/context/container-context";
+import { useTranslation } from "@/i18n";
+import type { Language } from "@/i18n";
 
 const THEME_CYCLE = ["light", "dark"] as const;
 type ThemeMode = (typeof THEME_CYCLE)[number];
-
-const THEME_META: Record<ThemeMode, { label: string; Icon: typeof TbSun }> = {
-  light: { label: "Light Mode", Icon: TbSun },
-  dark: { label: "Dark Mode", Icon: TbMoon },
-};
 
 const NavLink = memo(function NavLink({
   menu,
@@ -23,13 +20,15 @@ const NavLink = memo(function NavLink({
   fullPathName: string;
   registerRef: (el: HTMLAnchorElement | null) => void;
 }) {
+  const { t } = useTranslation();
   const isActive = fullPathName === menu.pathName;
+  const label = t(menu.labelKey);
 
   return (
     <Link
       ref={registerRef}
       to={menu.pathName}
-      aria-label={menu.label}
+      aria-label={label}
       aria-current={isActive ? "page" : undefined}
       className={`group relative z-10 flex items-center justify-center p-3 transition-colors duration-300 rounded-full ${isActive
         ? "text-blue-500"
@@ -49,7 +48,7 @@ const NavLink = memo(function NavLink({
       {/* Tooltip - Animated scale & opacity */}
       <div className="absolute bottom-full mb-3 flex flex-col items-center opacity-0 scale-75 translate-y-1 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-focus-within:opacity-100 group-focus-within:scale-100 group-focus-within:translate-y-0 transition-all duration-200 ease-out origin-bottom">
         <span className="relative z-10 whitespace-nowrap rounded-md bg-neutral-900 px-3 py-1.5 text-xs font-medium text-white shadow-xl dark:bg-neutral-100 dark:text-neutral-900">
-          {menu.label}
+          {label}
         </span>
         {/* Tooltip Arrow */}
         <div className="-mt-1 h-2 w-2 rotate-45 bg-neutral-900 dark:bg-neutral-100"></div>
@@ -58,9 +57,96 @@ const NavLink = memo(function NavLink({
   );
 });
 
+const LANGUAGES: Array<{ code: Language; labelKey: "nav.language.english" | "nav.language.indonesian"; short: string }> = [
+  { code: "en", labelKey: "nav.language.english", short: "EN" },
+  { code: "id", labelKey: "nav.language.indonesian", short: "ID" },
+];
+
+/**
+ * Language picker. Renders as a compact pill button that opens a dropdown.
+ * Works on both mobile and desktop (the dropdown is anchored above the button). */
+function LanguageSwitcher() {
+  const { language, setLanguage, t } = useTranslation();
+  const [open, setOpen] = useState(false);
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
+
+  // Close on outside click / Escape.
+  useEffect(() => {
+    if (!open) return;
+    const onPointerDown = (e: MouseEvent | TouchEvent) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("mousedown", onPointerDown);
+    document.addEventListener("touchstart", onPointerDown);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onPointerDown);
+      document.removeEventListener("touchstart", onPointerDown);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+
+  return (
+    <div ref={wrapperRef} className="relative">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        aria-label={t("nav.language.label")}
+        className="flex cursor-pointer h-10 items-center gap-1.5 rounded-full px-2.5 text-neutral-600 transition-colors hover:bg-neutral-200/50 dark:text-neutral-400 dark:hover:bg-neutral-800/50"
+      >
+        <TbWorld className="h-5 w-5" strokeWidth="1.5" />
+        <span className="text-xs font-bold tracking-wide">{language === "id" ? "ID" : "EN"}</span>
+      </button>
+
+      {open && (
+        <div
+          role="listbox"
+          aria-label={t("nav.language.label")}
+          className="absolute bottom-full right-0 z-50 mb-3 w-44 overflow-hidden rounded-2xl border border-neutral-200/70 bg-white/95 p-1.5 shadow-2xl backdrop-blur-xl dark:border-neutral-700/70 dark:bg-neutral-900/95"
+        >
+          {LANGUAGES.map((lang) => {
+            const active = language === lang.code;
+            return (
+              <button
+                key={lang.code}
+                type="button"
+                role="option"
+                aria-selected={active}
+                onClick={() => {
+                  setLanguage(lang.code);
+                  setOpen(false);
+                }}
+                className={`flex w-full cursor-pointer items-center justify-between gap-2 rounded-xl px-3 py-2 text-left text-sm font-medium transition-colors ${
+                  active
+                    ? "bg-blue-500/10 text-blue-600 dark:text-blue-400"
+                    : "text-neutral-700 hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-800"
+                }`}
+              >
+                <span className="flex items-center gap-2">
+                  <span className="text-[10px] font-bold tracking-wider text-neutral-400">{lang.short}</span>
+                  {t(lang.labelKey)}
+                </span>
+                {active && <TbCheck className="h-4 w-4" />}
+              </button>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function Navbar() {
   const { fullPathName } = useContext(ContainerContext);
   const { theme, setTheme } = useTheme();
+  const { t } = useTranslation();
   // Client-only flag without a state-setting effect (hydration-safe).
   const mounted = useSyncExternalStore(
     () => () => {},
@@ -111,7 +197,8 @@ export default function Navbar() {
   }, [updateIndicator, mounted]);
 
   const currentMode: ThemeMode = theme === "light" ? "light" : "dark";
-  const ThemeIcon = THEME_META[currentMode].Icon;
+  const ThemeIcon = currentMode === "light" ? TbSun : TbMoon;
+  const themeLabel = t(currentMode === "light" ? "nav.theme.light" : "nav.theme.dark");
 
   const cycleTheme = useCallback(
     (e?: React.MouseEvent<HTMLButtonElement>) => {
@@ -159,12 +246,13 @@ export default function Navbar() {
       {/* Mobile-only Top Right Let's Talk */}
       <div className="fixed right-5 top-5 z-40 md:hidden">
         <Link
-          to="/talk"
+          to="/talk"
+
           className="cta relative flex items-center gap-2 overflow-hidden rounded-full bg-neutral-900 px-4 py-2 text-xs font-semibold text-white shadow-lg shadow-black/10 transition-all duration-300 active:scale-90 dark:bg-white dark:text-neutral-900 dark:shadow-white/10"
         >
           <span aria-hidden className="cta-shine pointer-events-none absolute inset-0 rounded-full" />
           <TbMessage className="cta-icon h-4 w-4" />
-          <span>Let's Talk</span>
+          <span>{t("nav.letsTalk")}</span>
         </Link>
       </div>
 
@@ -193,7 +281,8 @@ export default function Navbar() {
 
           {/* Desktop-only Let's Talk Button inside center navbar */}
           <Link
-            to="/talk"
+            to="/talk"
+
             className={`cta group relative hidden items-center gap-2 overflow-hidden rounded-full px-4 py-2 text-sm font-semibold transition-all duration-300 md:flex active:scale-95 ${
               fullPathName === "/talk"
                 ? "bg-blue-600 text-white shadow-md shadow-blue-600/30"
@@ -204,29 +293,33 @@ export default function Navbar() {
               <span aria-hidden className="cta-shine pointer-events-none absolute inset-0 rounded-full" />
             )}
             <TbMessage className="cta-icon h-5 w-5" />
-            <span className="whitespace-nowrap">Let's Talk</span>
+            <span className="whitespace-nowrap">{t("nav.letsTalk")}</span>
           </Link>
 
-          {/* Theme Toggle Button */}
-          <div className="group relative border-l border-neutral-300 dark:border-neutral-700 pl-1 md:pl-2">
-            <button
-              onClick={(e) => cycleTheme(e)}
-              aria-label={THEME_META[currentMode].label}
-              className="flex cursor-pointer h-10 w-10 items-center justify-center rounded-full text-neutral-600 transition-colors hover:bg-neutral-200/50 dark:text-neutral-400 dark:hover:bg-neutral-800/50"
-            >
-              {!mounted ? (
-                <div className="h-6 w-6 animate-pulse rounded-full bg-neutral-300 dark:bg-neutral-700" />
-              ) : (
-                <ThemeIcon className="h-6 w-6" />
-              )}
-            </button>
+          {/* Language Switcher + Theme Toggle */}
+          <div className="flex items-center gap-0.5 border-l border-neutral-300 pl-1 md:gap-1 md:pl-2 dark:border-neutral-700">
+            <LanguageSwitcher />
 
-            {/* Theme Tooltip */}
-            <div className="absolute bottom-full -translate-x-1/2 left-1/2 mb-3 flex flex-col items-center opacity-0 scale-75 translate-y-1 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 transition-all duration-200 ease-out origin-bottom">
-              <span className="relative z-10 whitespace-nowrap rounded-md bg-neutral-900 px-3 py-1.5 text-xs font-medium text-white shadow-xl dark:bg-neutral-100 dark:text-neutral-900">
-                {mounted ? THEME_META[currentMode].label : "Theme"}
-              </span>
-              <div className="-mt-1 h-2 w-2 rotate-45 bg-neutral-900 dark:bg-neutral-100"></div>
+            <div className="group relative">
+              <button
+                onClick={(e) => cycleTheme(e)}
+                aria-label={themeLabel}
+                className="flex cursor-pointer h-10 w-10 items-center justify-center rounded-full text-neutral-600 transition-colors hover:bg-neutral-200/50 dark:text-neutral-400 dark:hover:bg-neutral-800/50"
+              >
+                {!mounted ? (
+                  <div className="h-6 w-6 animate-pulse rounded-full bg-neutral-300 dark:bg-neutral-700" />
+                ) : (
+                  <ThemeIcon className="h-6 w-6" />
+                )}
+              </button>
+
+              {/* Theme Tooltip */}
+              <div className="absolute bottom-full -translate-x-1/2 left-1/2 mb-3 flex flex-col items-center opacity-0 scale-75 translate-y-1 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 transition-all duration-200 ease-out origin-bottom">
+                <span className="relative z-10 whitespace-nowrap rounded-md bg-neutral-900 px-3 py-1.5 text-xs font-medium text-white shadow-xl dark:bg-neutral-100 dark:text-neutral-900">
+                  {mounted ? themeLabel : t("nav.theme.label")}
+                </span>
+                <div className="-mt-1 h-2 w-2 rotate-45 bg-neutral-900 dark:bg-neutral-100"></div>
+              </div>
             </div>
           </div>
         </nav>

@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import React, { useRef, useEffect } from "react";
 import { TbCheck, TbX, TbHome, TbRefresh } from "react-icons/tb";
 import { motion } from "framer-motion";
+import { useTranslation } from "@/i18n";
 
 interface ResponseProps {
   status: string;
@@ -86,6 +87,7 @@ function NeuralNetworkCanvas() {
 }
 
 const ResponseMessage = ({ status }: ResponseProps) => {
+  const { t } = useTranslation();
   const isSuccess = status === "success";
 
   return (
@@ -125,7 +127,7 @@ const ResponseMessage = ({ status }: ResponseProps) => {
             isSuccess ? "text-green-500" : "text-red-500"
           }`}
         >
-          {isSuccess ? "Message Sent!" : "Something Went Wrong"}
+          {isSuccess ? t("contact.ok.title") : t("contact.fail.title")}
         </motion.h1>
 
         {/* Description */}
@@ -135,9 +137,7 @@ const ResponseMessage = ({ status }: ResponseProps) => {
           transition={{ delay: 0.4 }}
           className="text-lg text-neutral-500 dark:text-neutral-400 leading-relaxed"
         >
-          {isSuccess
-            ? "Thank you for reaching out! I'll get back to you within 24 hours."
-            : "There was an issue sending your message. Please try again or reach out directly."}
+          {isSuccess ? t("contact.ok.body") : t("contact.fail.body")}
         </motion.p>
 
         {/* Action Button */}
@@ -152,7 +152,7 @@ const ResponseMessage = ({ status }: ResponseProps) => {
               className="group flex items-center gap-3 rounded-2xl bg-linear-to-r from-green-500 to-emerald-600 px-8 py-4 text-white font-bold shadow-lg shadow-green-500/20 transition-all duration-300 hover:shadow-xl hover:scale-105"
             >
               <TbHome className="h-5 w-5" />
-              Back to Home
+              {t("common.backHome")}
             </Link>
           ) : (
             <Link
@@ -161,7 +161,7 @@ const ResponseMessage = ({ status }: ResponseProps) => {
               className="group flex items-center gap-3 rounded-2xl bg-linear-to-r from-red-500 to-rose-600 px-8 py-4 text-white font-bold shadow-lg shadow-red-500/20 transition-all duration-300 hover:shadow-xl hover:scale-105"
             >
               <TbRefresh className="h-5 w-5" />
-              Try Again
+              {t("contact.tryAgain")}
             </Link>
           )}
         </motion.div>

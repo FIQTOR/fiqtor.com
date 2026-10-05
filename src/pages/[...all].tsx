@@ -3,8 +3,10 @@ import { motion } from 'framer-motion';
 import { gsap } from 'gsap';
 import { Link } from 'react-router-dom';
 import HelmetContainer from '@/components/HelmetContainer';
+import { useTranslation } from '@/i18n';
 
 const NotFound = () => {
+    const { t } = useTranslation();
     const containerRef = useRef(null);
     const titleRef = useRef(null);
 
@@ -56,11 +58,10 @@ const NotFound = () => {
                     className="text-center"
                 >
                     <h2 className="text-3xl font-bold text-slate-800 dark:text-slate-200 mt-4">
-                        Lost in the digital void?
+                        {t("notFound.title")}
                     </h2>
                     <p className="text-slate-500 dark:text-slate-400 mt-2 max-w-md">
-                        The page you're looking for doesn't exist.
-                        Try playing with the bubbles while you're here.
+                        {t("notFound.body")}
                     </p>
 
                     <div className="mt-12 flex gap-6 justify-center">
@@ -71,7 +72,7 @@ const NotFound = () => {
                             whileTap={{ scale: 0.98 }}
                             className="group relative px-10 py-4 bg-blue-600 rounded-full font-bold text-white shadow-[0_20px_50px_rgba(37,_99,_235,_0.3)] hover:shadow-blue-500/50 transition-all"
                         >
-                            Back to Earth
+                            {t("notFound.back")}
                         </motion.a>
 
                         <Link to='/talk'>
@@ -79,7 +80,7 @@ const NotFound = () => {
                                 whileHover={{ y: -5 }}
                                 className="px-10 py-4 border-2 border-slate-200 dark:border-slate-800 rounded-full font-bold text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors"
                             >
-                                Report Issue
+                                {t("notFound.report")}
                             </motion.button>
                         </Link>
                     </div>

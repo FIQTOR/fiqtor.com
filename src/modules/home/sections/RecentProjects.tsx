@@ -5,9 +5,11 @@ import { ContainerContext } from "@/context/container-context";
 import { motion } from "framer-motion";
 import { Projects } from "@/data/projects";
 import ProjectsComponents from "../components/ProjectItem";
+import { useTranslation } from "@/i18n";
 
 export default function RecentProjects() {
   const { isTiny } = useContext(ContainerContext);
+  const { t } = useTranslation();
 
   const stats = useMemo(() => ({
     total: Projects.length,
@@ -37,7 +39,7 @@ export default function RecentProjects() {
           className="text-4xl md:text-6xl font-bold tracking-tight text-center mb-6"
         >
           <span className="bg-linear-to-r from-neutral-800 via-neutral-600 to-neutral-800 dark:from-neutral-100 dark:via-neutral-300 dark:to-neutral-100 bg-clip-text text-transparent">
-            Recent Projects
+            {t("home.recent.title")}
           </span>
         </motion.h2>
 
@@ -48,12 +50,12 @@ export default function RecentProjects() {
           transition={{ delay: 0.1 }}
           className="text-lg md:text-xl text-neutral-600 dark:text-neutral-400 text-center max-w-2xl leading-relaxed mb-10"
         >
-          A curated selection of my latest work, focusing on user-centric design and technical innovation.
+          {t("home.recent.subtitle")}
         </motion.p>
 
         <div className="flex flex-wrap justify-center gap-4">
           {[
-            { label: "Total Built", value: stats.total, icon: TbTerminal },
+            { label: t("home.recent.totalBuilt"), value: stats.total, icon: TbTerminal },
           ].map((stat, i) => (
             <motion.div
               key={stat.label}
@@ -93,7 +95,7 @@ export default function RecentProjects() {
             <div className="absolute inset-0 bg-linear-to-r from-neutral-400/20 to-neutral-500/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl" />
             <TbCornerDownRight className="relative h-6 w-6 text-neutral-700 dark:text-neutral-300 transition-transform group-hover:translate-x-1" />
             <span className="relative font-bold text-neutral-800 dark:text-neutral-200">
-              View all ({Projects.length}) projects
+              {t("home.recent.viewAll", { count: Projects.length })}
             </span>
           </Link>
         </motion.div>

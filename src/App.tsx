@@ -4,6 +4,7 @@ import routes from '~react-pages';
 import { AnimatePresence, motion, useMotionValue } from 'framer-motion';
 import { useTheme } from 'next-themes';
 import ThemeProviderContext from './context/ThemeProviderContext';
+import { LanguageProvider } from './i18n';
 import ContainerProvider from './context/ContainerProvider';
 import WelcomeProvider from './context/WelcomeProvider';
 import { useWelcome } from './context/welcome-context';
@@ -14,6 +15,7 @@ import { preloadLineWaves } from './components/lineWavesLoader';
 import './App.css';
 import { inject } from "@vercel/analytics";
 import { BRAND_NAME } from "@/config/Identity";
+import { useTranslation } from "./i18n";
 
 const logoVariants = {
   initial: {
@@ -165,6 +167,7 @@ function NeuralNetworkCanvas({ dark }: { dark: boolean }) {
 
 function WelcomeScreen() {
   const name = BRAND_NAME;
+  const { t } = useTranslation();
   const { skipWelcome } = useWelcome();
   const { resolvedTheme } = useTheme();
 
@@ -183,10 +186,10 @@ function WelcomeScreen() {
       <button
         type="button"
         onClick={skipWelcome}
-        aria-label="Skip intro"
+        aria-label={t("common.skipIntro")}
         className="absolute right-5 top-5 z-30 rounded-full border border-neutral-200/70 bg-white/70 px-4 py-1.5 text-xs font-semibold text-neutral-600 shadow-sm backdrop-blur-md transition-colors hover:bg-white hover:text-neutral-900 dark:border-neutral-800/70 dark:bg-neutral-900/70 dark:text-neutral-300 dark:hover:bg-neutral-800"
       >
-        Skip
+        {t("common.skip")}
       </button>
 
       <motion.div className="relative z-10 flex flex-col items-center">
@@ -353,11 +356,13 @@ function App() {
   return (
     <Router>
       <ThemeProviderContext>
-        <ContainerProvider>
-          <WelcomeProvider>
-            <AppShell />
-          </WelcomeProvider>
-        </ContainerProvider>
+        <LanguageProvider>
+          <ContainerProvider>
+            <WelcomeProvider>
+              <AppShell />
+            </WelcomeProvider>
+          </ContainerProvider>
+        </LanguageProvider>
       </ThemeProviderContext>
     </Router>
   );

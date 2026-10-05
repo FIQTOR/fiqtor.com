@@ -11,6 +11,7 @@ import {
   type MotionValue,
 } from "framer-motion";
 import { ContainerContext } from "@/context/container-context";
+import { useTranslation } from "@/i18n";
 
 type Career = (typeof Careers)[number];
 
@@ -66,7 +67,13 @@ const TimelineItem = ({
 }) => {
   const isEven = index % 2 === 0;
   const { isMobile } = useContext(ContainerContext);
+  const { language } = useTranslation();
   const dotScale = useTransform(velocity.glow, [0.3, 1], [1, 1.35]);
+
+  const priode = career.priode[language];
+  const location = career.location[language];
+  const position = career.position[language];
+  const description = career.description?.[language];
 
   // On mobile: a soft solid card instead of a live `backdrop-blur` (the blur is
   // what murders the frame rate over a long, scroll-driven list), and a plain
@@ -95,9 +102,9 @@ const TimelineItem = ({
         {/* Date Side */}
         <div className={`hidden md:flex flex-1 ${isEven ? 'justify-end pr-12 text-right' : 'justify-start pl-12 text-left'}`}>
           <div className={`flex flex-col gap-1 ${isEven ? 'items-end' : 'items-start'}`}>
-            <span className="text-sm font-bold text-blue-500 dark:text-blue-400 uppercase tracking-tighter">{career.priode}</span>
+            <span className="text-sm font-bold text-blue-500 dark:text-blue-400 uppercase tracking-tighter">{priode}</span>
             <span className="text-xs text-neutral-400 flex items-center gap-1">
-              <TbMapPin className="h-3 w-3" /> {career.location}
+              <TbMapPin className="h-3 w-3" /> {location}
             </span>
           </div>
         </div>
@@ -140,7 +147,7 @@ const TimelineItem = ({
 
                   <div className="flex min-w-0 flex-1 flex-col items-start gap-1">
                     <div className="flex flex-wrap items-center gap-2">
-                      <h3 className="text-xl font-bold group-hover:text-blue-500 transition-colors">{career.position}</h3>
+                      <h3 className="text-xl font-bold group-hover:text-blue-500 transition-colors">{position}</h3>
                       {career.website && (
                         <span className="rounded-full bg-blue-500/10 p-1.5 text-blue-500 transition-colors group-hover:bg-blue-500 group-hover:text-white">
                           <TbWorld className="h-3.5 w-3.5" />
@@ -153,15 +160,15 @@ const TimelineItem = ({
 
                     {/* Mobile Only Info */}
                     <div className="flex flex-col gap-1 md:hidden text-sm font-medium text-neutral-500 dark:text-neutral-400">
-                      <span className="flex items-center gap-2"><TbCalendar /> {career.priode}</span>
-                      <span className="flex items-center gap-2"><TbMapPin /> {career.location}</span>
+                      <span className="flex items-center gap-2"><TbCalendar /> {priode}</span>
+                      <span className="flex items-center gap-2"><TbMapPin /> {location}</span>
                     </div>
                   </div>
                 </div>
 
                 {career.description && (
                   <p className="text-sm leading-relaxed text-neutral-500 dark:text-neutral-400">
-                    {career.description}
+                    {description}
                   </p>
                 )}
               </div>

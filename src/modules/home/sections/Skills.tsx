@@ -13,6 +13,7 @@ import {
   LanguageSkills,
 } from "../components/SkillIcon";
 import * as motion from "framer-motion/client";
+import { useTranslation } from "@/i18n";
 
 interface SkillSectionItemProps {
   Icon: React.ElementType;
@@ -33,6 +34,7 @@ const SkillSectionItem: React.FC<SkillSectionItemProps> = ({ Icon, title, Skills
 );
 
 export default function SkillsSection() {
+  const { t } = useTranslation();
   return (
     <section
       id="skills"
@@ -46,24 +48,24 @@ export default function SkillsSection() {
           <TbBrandVscode strokeWidth="1" className="h-full w-14 md:w-20" />
           <div className="flex flex-col">
             <div className="flex gap-4">
-              <span className="text-2xl md:text-4xl">Tech Stack</span>
+              <span className="text-2xl md:text-4xl">{t("home.skills.tagline")}</span>
               <span className="rocket-animate inline-block text-4xl">🚀</span>
             </div>
             <span className="md:text-xl">
-              My tech stack for software development
+              {t("home.skills.title")}
             </span>
           </div>
         </div>
         <span className="mt-4 leading-none md:mt-0 md:leading-normal">
-          You can hover the icon to show skill name.
+          {t("home.skills.hint")}
         </span>
       </div>
       <div className="flex w-full items-center">
         <div className="z-10 flex w-full flex-col items-start gap-7 text-neutral-600 dark:text-neutral-400 md:w-1/2">
-          <SkillSectionItem Icon={TbLanguage} title="Language" SkillsComponent={LanguageSkills} />
-          <SkillSectionItem Icon={TbLayoutDashboard} title="Frontend" SkillsComponent={FrontendSkills} />
-          <SkillSectionItem Icon={TbDatabase} title="Backend" SkillsComponent={BackendSkills} />
-          <SkillSectionItem Icon={TbGitFork} title="Other" SkillsComponent={OtherSkills} />
+          <SkillSectionItem Icon={TbLanguage} title={t("home.skills.language")} SkillsComponent={LanguageSkills} />
+          <SkillSectionItem Icon={TbLayoutDashboard} title={t("home.skills.frontend")} SkillsComponent={FrontendSkills} />
+          <SkillSectionItem Icon={TbDatabase} title={t("home.skills.backend")} SkillsComponent={BackendSkills} />
+          <SkillSectionItem Icon={TbGitFork} title={t("home.skills.other")} SkillsComponent={OtherSkills} />
         </div>
 
         <div className="absolute left-0 w-full blur-sm md:relative md:w-1/2 md:blur-none">

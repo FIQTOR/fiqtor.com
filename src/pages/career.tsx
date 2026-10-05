@@ -5,9 +5,11 @@ import { BackgroundBlobs } from "@/components/BackgroundBlobs";
 import HelmetContainer from "@/components/HelmetContainer";
 import { BRAND_NAME } from "@/config/Identity";
 import { ContainerContext } from "@/context/container-context";
+import { useTranslation } from "@/i18n";
 
 const CareerPage = () => {
     const { isMobile } = useContext(ContainerContext);
+    const { t } = useTranslation();
     const reduceMotion = useReducedMotion();
     // On mobile (and when the user prefers reduced motion) we skip the
     // scroll-linked hero parallax and the spring-smoothed progress bar: those
@@ -44,7 +46,7 @@ const CareerPage = () => {
                             transition={{ delay: 0.05, type: "spring", stiffness: 200, damping: 15 }}
                             className="mb-5 rounded-full border border-neutral-300/40 bg-white/40 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-neutral-500 backdrop-blur-md dark:border-neutral-700/50 dark:bg-neutral-900/40 dark:text-neutral-400"
                         >
-                            Working Experience
+                            {t("career.badge")}
                         </motion.span>
                         <motion.h1
                             initial={lightMotion ? false : { opacity: 0, y: 30 }}
@@ -52,7 +54,7 @@ const CareerPage = () => {
                             transition={{ duration: 0.7, delay: 0.1 }}
                             className="text-4xl md:text-6xl font-bold tracking-tight mb-4"
                         >
-                            Career Timeline of{" "}
+                            {t("career.title")}{" "}
                             <span className="bg-linear-to-br dark:from-white from-black to-transparent bg-clip-text text-transparent">
                                 {BRAND_NAME}
                             </span>
@@ -63,8 +65,7 @@ const CareerPage = () => {
                             transition={{ delay: 0.2, duration: 0.6 }}
                             className="max-w-2xl text-lg md:text-xl text-neutral-500 dark:text-neutral-400"
                         >
-                            Five years of engineering roles, company projects, and technical
-                            responsibilities, listed year by year.
+                            {t("career.subtitle")}
                         </motion.p>
                         <motion.div
                             initial={lightMotion ? false : { opacity: 0, y: 20 }}
@@ -72,7 +73,7 @@ const CareerPage = () => {
                             transition={{ delay: 0.35 }}
                             className="mt-6 flex flex-col items-center gap-2 text-xs font-medium uppercase tracking-widest text-neutral-400 dark:text-neutral-500"
                         >
-                            Scroll to explore
+                            {t("career.scroll")}
                             <motion.span
                                 animate={lightMotion ? undefined : { y: [0, 8, 0], opacity: [0.4, 1, 0.4] }}
                                 transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}

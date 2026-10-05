@@ -6,8 +6,11 @@ import { useState, useEffect, useRef } from "react";
 import { TbWorldShare, TbX } from "react-icons/tb";
 import gsap from "gsap";
 import ProjectGallery from "@/components/projects/ProjectGallery";
+import { useTranslation } from "@/i18n";
+import { PROJECT_CATEGORY_KEY } from "@/lib/projectCategory";
 
 export default function ProjectsComponents() {
+  const { t } = useTranslation();
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -113,7 +116,7 @@ export default function ProjectsComponents() {
 
                 <div className="flex flex-wrap items-center gap-3 pt-2">
                   <span className="text-xs font-semibold uppercase tracking-wider text-neutral-500 mr-1">
-                    Tech Stack:
+                    {t("project.techStack")}:
                   </span>
                   {project.icons?.map((icon, iconIndex: number) => (
                     <div key={iconIndex} className="group/tooltip relative flex items-center justify-center">
@@ -172,7 +175,7 @@ export default function ProjectsComponents() {
                     {selectedProject.category && (
                       <div>
                         <span className="inline-block rounded-full bg-blue-600 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-white">
-                          {selectedProject.category}
+                          {t(PROJECT_CATEGORY_KEY[selectedProject.category])}
                         </span>
                       </div>
                     )}
@@ -202,7 +205,7 @@ export default function ProjectsComponents() {
                   {selectedProject.images && selectedProject.images.length > 0 && (
                     <div className="mb-8">
                       <h4 className="text-xs font-bold uppercase tracking-widest text-neutral-500 mb-4">
-                        Screenshots
+                        {t("project.screenshots")}
                       </h4>
                       <ProjectGallery
                         images={selectedProject.images}
@@ -212,7 +215,7 @@ export default function ProjectsComponents() {
                   )}
 
                   <div className="mb-8">
-                    <h4 className="text-xs font-bold uppercase tracking-widest text-neutral-500 mb-4">Tech Stack</h4>
+                    <h4 className="text-xs font-bold uppercase tracking-widest text-neutral-500 mb-4">{t("project.techStack")}</h4>
                     <div className="flex flex-wrap gap-4">
                       {selectedProject.icons?.map((icon, i: number) => (
                         <div key={i} className="group/tooltip relative flex flex-col items-center">
@@ -236,14 +239,14 @@ export default function ProjectsComponents() {
                         className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 py-4 text-white font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/25"
                       >
                         <TbWorldShare className="h-5 w-5" />
-                        Visit Live Project
+                        {t("project.visitLive")}
                       </a>
                     ) : (
                       <Link
                         to="/talk"
                         className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-neutral-800 dark:bg-white dark:text-black px-6 py-4 text-white font-bold"
                       >
-                        Contact Developer
+                        {t("project.contactDev")}
                       </Link>
                     )}
                   </div>

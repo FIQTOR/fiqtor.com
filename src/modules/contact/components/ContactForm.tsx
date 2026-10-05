@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 import { TbSend, TbChevronDown, TbCheck } from "react-icons/tb";
 import Recaptcha from "./Recaptcha";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslation } from "@/i18n";
+import type { TranslationKey } from "@/i18n";
 
 export interface ContactErrors {
   tname: string;
@@ -27,18 +29,18 @@ interface formProps {
   errors: ContactErrors;
 }
 
-const OPTIONS = [
-  { label: "Landing Page (Product/Service Promotion)", value: "Landing Page" },
-  { label: "Company Profile Website", value: "Company Profile" },
-  { label: "Web Application (Interactive System)", value: "Web Application" },
-  { label: "Mobile Application (Android / iOS)", value: "Mobile Application" },
-  { label: "E-Commerce (Online Store)", value: "E-Commerce" },
-  { label: "AI Integration for Business", value: "AI Integration" },
-  { label: "Website / App Maintenance", value: "Maintenance" },
-  { label: "Business Partnership / Collaboration", value: "Partnership" },
-  { label: "Technical Consultation / Advice", value: "Consultation" },
-  { label: "Bug Report / Technical Issue", value: "Bug Report" },
-  { label: "Other (Please Specify)", value: "Other" },
+const OPTIONS: Array<{ labelKey: TranslationKey; value: string }> = [
+  { labelKey: "contact.opt.landing", value: "Landing Page" },
+  { labelKey: "contact.opt.companyProfile", value: "Company Profile" },
+  { labelKey: "contact.opt.webApp", value: "Web Application" },
+  { labelKey: "contact.opt.mobileApp", value: "Mobile Application" },
+  { labelKey: "contact.opt.ecommerce", value: "E-Commerce" },
+  { labelKey: "contact.opt.aiIntegration", value: "AI Integration" },
+  { labelKey: "contact.opt.maintenance", value: "Maintenance" },
+  { labelKey: "contact.opt.partnership", value: "Partnership" },
+  { labelKey: "contact.opt.consulting", value: "Consultation" },
+  { labelKey: "contact.opt.bug", value: "Bug Report" },
+  { labelKey: "contact.opt.other", value: "Other" },
 ];
 
 /** Accessible custom dropdown implemented as a listbox with keyboard support. */
@@ -51,6 +53,7 @@ function CustomDropdown({
   onChange: (val: string) => void;
   labelledBy: string;
 }) {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(() =>
     Math.max(0, OPTIONS.findIndex((o) => o.value === value))
@@ -130,7 +133,7 @@ function CustomDropdown({
         onKeyDown={onKeyDown}
         className="w-full rounded-2xl border border-neutral-300/40 bg-white/60 px-5 py-3.5 text-left text-neutral-800 backdrop-blur-md transition-all duration-300 flex items-center justify-between focus:border-blue-500/50 focus:outline-none focus:ring-2 focus:ring-blue-500/10 dark:border-neutral-700/40 dark:bg-neutral-900/60 dark:text-neutral-200 cursor-pointer"
       >
-        <span className="truncate">{selectedOption.label}</span>
+        <span className="truncate">{t(selectedOption.labelKey)}</span>
         <TbChevronDown className={`h-5 w-5 text-neutral-400 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`} />
       </button>
 
@@ -165,7 +168,7 @@ function CustomDropdown({
                           : "text-neutral-700 dark:text-neutral-300"
                     }`}
                   >
-                    <span>{option.label}</span>
+                    <span>{t(option.labelKey)}</span>
                     {selected && <TbCheck className="h-4 w-4" />}
                   </button>
                 </li>
@@ -187,6 +190,8 @@ export default function ContactForm({
   submitting,
   errors,
 }: formProps) {
+  const { t } = useTranslation();
+
   const handleRecaptchaChange = (value: boolean) => {
     setCaptcha(value);
   };
@@ -213,14 +218,14 @@ export default function ContactForm({
             className="flex flex-col gap-2"
           >
             <label htmlFor="contact-name" className={labelStyles}>
-              Your Name or Company
+              {t("contact.name.label")}
             </label>
             <input
               type="text"
               name="name"
               id="contact-name"
               autoComplete="name"
-              placeholder="e.g., Indonesia Studio"
+              placeholder={t("contact.name.placeholder")}
               value={values.name}
               aria-required="true"
               aria-invalid={Boolean(errors.tname)}
@@ -243,14 +248,14 @@ export default function ContactForm({
             className="flex flex-col gap-2"
           >
             <label htmlFor="contact-email" className={labelStyles}>
-              Email Address
+              {t("contact.email.label")}
             </label>
             <input
               type="email"
               name="email"
               id="contact-email"
               autoComplete="email"
-              placeholder="e.g., yourname@email.com"
+              placeholder={t("contact.email.placeholder")}
               value={values.email}
               aria-required="true"
               aria-invalid={Boolean(errors.temail)}
@@ -275,7 +280,7 @@ export default function ContactForm({
           className="flex flex-col gap-2"
         >
           <label id="contact-type-label" className={labelStyles}>
-            How can I help you?
+            {t("contact.topic.label")}
           </label>
           <CustomDropdown
             value={values.type}
@@ -292,12 +297,12 @@ export default function ContactForm({
           className="flex flex-col gap-2"
         >
           <label htmlFor="contact-message" className={labelStyles}>
-            What's on your mind?
+            {t("contact.message.label")}
           </label>
           <textarea
             name="message"
             id="contact-message"
-            placeholder="Tell me about your project, goals, timeline, or any questions you have..."
+            placeholder={t("contact.message.placeholder")}
             required
             rows={5}
             value={values.message}
@@ -349,12 +354,12 @@ export default function ContactForm({
           {submitting ? (
             <>
               <span className="h-5 w-5 animate-spin rounded-full border-2 border-current border-t-transparent" />
-              Sending…
+              {t("contact.sending")}
             </>
           ) : (
             <>
               <TbSend className="h-5 w-5 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
-              Send Message
+              {t("contact.send")}
             </>
           )}
         </motion.button>

@@ -2,6 +2,7 @@ import Loading from "@/components/Loading";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { TbCaretDownFilled, TbCaretUpFilled } from "react-icons/tb";
+import { useTranslation } from "@/i18n";
 
 type Coin = {
   rate: number;
@@ -64,6 +65,7 @@ const CryptoCard = ({
 };
 
 const CryptocurrencyPrice = () => {
+  const { t } = useTranslation();
   const [data, setData] = useState<DataType | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isDisabled, setDisabled] = useState(false);
@@ -100,10 +102,10 @@ const CryptocurrencyPrice = () => {
     <div className="space-y-3">
       <div className="mb-3">
         <h3 className="text-base font-semibold text-neutral-800 dark:text-neutral-200 mb-1">
-          Cryptocurrency Prices
+          {t("home.crypto.title")}
         </h3>
         <p className="text-sm text-neutral-600 dark:text-neutral-400">
-          USD market data (static)
+          {t("home.crypto.badge")}
         </p>
       </div>
 
@@ -131,7 +133,7 @@ const CryptocurrencyPrice = () => {
 
       <div className="mt-3 pt-3 border-t border-neutral-200 dark:border-neutral-700">
         <p className="text-xs text-neutral-500 dark:text-neutral-400 text-center">
-          Prices are served from our own backend
+          {t("home.crypto.footnote")}
         </p>
       </div>
     </div>

@@ -18,6 +18,7 @@ import { useKanbanDnD } from "@/modules/kanban/hooks/useKanbanDnD";
 import { KANBAN_COLUMNS, KANBAN_PRIORITIES, KANBAN_PRIORITY_MAP } from "@/data/kanban";
 import { downloadFile, exportFilename } from "@/modules/kanban/kanban.utils";
 import type { KanbanPriority, KanbanStatus, Task, TaskDraft } from "@/types/kanban";
+import { useTranslation } from "@/i18n";
 
 type ModalState =
   | { open: false }
@@ -28,6 +29,7 @@ const PRIORITY_VALUES = KANBAN_PRIORITIES.map((p) => p.id) as readonly string[];
 
 export default function KanbanBoard() {
   const store = useKanbanStore();
+  const { t, language } = useTranslation();
   // Search + priority filter are mirrored to the URL so the view survives a
   // refresh/back — consistent with the Projects page (?q=).
   const [params, setParams] = useSearchParams();
@@ -125,25 +127,27 @@ export default function KanbanBoard() {
   const savedLabel = useMemo(
     () =>
       store.savedAt
-        ? `Saved ${new Date(store.savedAt).toLocaleTimeString("en-GB", {
-            hour: "2-digit",
-            minute: "2-digit",
-          })}`
+        ? t("kanban.toast.saved", {
+            time: new Date(store.savedAt).toLocaleTimeString(
+              language === "id" ? "id-ID" : "en-GB",
+              { hour: "2-digit", minute: "2-digit" }
+            ),
+          })
         : null,
-    [store.savedAt]
+    [store.savedAt, t, language]
   );
 
   const handleSubmit = useCallback(
     (draft: TaskDraft) => {
       if (modal.open && modal.mode === "edit") {
         store.updateTask(modal.task.id, draft);
-        flash("Task updated");
+        flash(t("kanban.toast.taskUpdated"));
       } else {
         store.addTask(draft);
-        flash("Task created");
+        flash(t("kanban.toast.taskCreated"));
       }
     },
-    [modal, store, flash]
+    [modal, store, flash, t]
   );
 
   const handleImportFile = useCallback(
@@ -158,27 +162,27 @@ export default function KanbanBoard() {
             setConfirmOverwrite("import");
             return;
           }
-          if (store.replaceState(parsed)) flash("Board imported");
-          else flash("Import failed: invalid file");
+          if (store.replaceState(parsed)) flash(t("kanban.toast.boardImported"));
+          else flash(t("kanban.toast.importInvalid"));
         } catch {
-          flash("Import failed: could not parse JSON");
+          flash(t("kanban.toast.importParse"));
         }
       };
-      reader.onerror = () => flash("Import failed: could not read file");
+      reader.onerror = () => flash(t("kanban.toast.importRead"));
       reader.readAsText(file);
     },
-    [store, flash]
+    [store, flash, t]
   );
 
   const handleExport = useCallback(() => {
     downloadFile(exportFilename(), store.exportJson());
-    flash("Board exported");
-  }, [store, flash]);
+    flash(t("kanban.toast.boardExported"));
+  }, [store, flash, t]);
 
   const applyLoadSamples = useCallback(() => {
-    store.loadSamples();
-    flash("Sample tasks loaded");
-  }, [store, flash]);
+    store.loadSamples(language);
+    flash(t("kanban.toast.samplesLoaded"));
+  }, [store, flash, t, language]);
 
   const handleLoadSamples = useCallback(() => {
     // Non-empty board → ask before overwriting.
@@ -192,9 +196,9 @@ export default function KanbanBoard() {
   const handleMove = useCallback(
     (id: string, toStatus: KanbanStatus) => {
       store.moveTask(id, toStatus);
-      flash("Task moved");
+      flash(t("kanban.toast.taskMoved"));
     },
-    [store, flash]
+    [store, flash, t]
   );
 
   return (
@@ -215,8 +219,7 @@ export default function KanbanBoard() {
 
       {store.persistError && (
         <p className="rounded-xl border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-xs text-amber-600 dark:text-amber-400">
-          Could not write to localStorage (storage may be full or disabled).
-          Your changes are kept for this session only.
+{t("kanban.persistError")}
         </p>
       )}
 
@@ -227,10 +230,10 @@ export default function KanbanBoard() {
           <TbLayoutKanban className="h-10 w-10 opacity-40" />
           <div>
             <p className="text-sm font-medium text-neutral-500 dark:text-neutral-400">
-              Your board is empty.
+              {t("kanban.emptyTitle")}
             </p>
             <p className="mt-1 text-xs">
-              Create a task to get started — or load the sample tasks.
+              {t("kanban.emptyBody")}
             </p>
           </div>
           <div className="mt-2 flex flex-wrap items-center justify-center gap-2">
@@ -240,14 +243,14 @@ export default function KanbanBoard() {
               className="inline-flex cursor-pointer items-center gap-1.5 rounded-xl bg-blue-600 px-3.5 py-2 text-xs font-semibold text-white shadow-md shadow-blue-600/20 transition-all hover:-translate-y-0.5 hover:bg-blue-500 active:scale-95"
             >
               <TbPlus className="h-4 w-4" />
-              New Task
+              {t("kanban.newTask")}
             </button>
             <button
               type="button"
               onClick={handleLoadSamples}
               className="cursor-pointer rounded-xl border border-neutral-200/70 bg-white/70 px-3.5 py-2 text-xs font-semibold text-neutral-600 shadow-sm backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:shadow-md dark:border-neutral-800/70 dark:bg-neutral-900/70 dark:text-neutral-300"
             >
-              Load samples
+              {t("kanban.loadSamples")}
             </button>
           </div>
         </div>
@@ -274,7 +277,7 @@ export default function KanbanBoard() {
           {visibleCount === 0 && (
             <div className="flex flex-col items-center gap-2 py-10 text-center text-neutral-400">
               <TbLayoutKanban className="h-8 w-8 opacity-40" />
-              <p className="text-sm">No tasks match your search or filter.</p>
+              <p className="text-sm">{t("kanban.noMatch")}</p>
             </div>
           )}
         </>
@@ -293,49 +296,49 @@ export default function KanbanBoard() {
       {/* Delete confirmation */}
       <ConfirmDialog
         open={pendingDelete !== null}
-        title="Delete task?"
-        message={`"${pendingDelete?.title ?? ""}" will be permanently removed.`}
-        confirmLabel="Delete"
+        title={t("kanban.delete.title")}
+        message={`"${pendingDelete?.title ?? ""}" — ${t("kanban.delete.body")}`}
+        confirmLabel={t("kanban.delete.confirm")}
         onCancel={() => setPendingDelete(null)}
         onConfirm={() => {
           if (pendingDelete) store.deleteTask(pendingDelete.id);
           setPendingDelete(null);
-          flash("Task deleted");
+          flash(t("kanban.toast.taskDeleted"));
         }}
       />
 
       {/* Clear-board confirmation */}
       <ConfirmDialog
         open={confirmClear}
-        title="Clear the board?"
-        message="This permanently deletes every task. This cannot be undone."
-        confirmLabel="Clear all"
+        title={t("kanban.clearBoard.title")}
+        message={t("kanban.clearBoard.body")}
+        confirmLabel={t("kanban.clearBoard.confirm")}
         onCancel={() => setConfirmClear(false)}
         onConfirm={() => {
           store.clearBoard();
           setConfirmClear(false);
-          flash("Board cleared");
+          flash(t("kanban.toast.boardCleared"));
         }}
       />
 
       {/* Overwrite confirmation (load samples / import onto a non-empty board) */}
       <ConfirmDialog
         open={confirmOverwrite !== null}
-        title={confirmOverwrite === "import" ? "Replace current board?" : "Load sample tasks?"}
+        title={confirmOverwrite === "import" ? t("kanban.replace.title") : t("kanban.loadSamples.title")}
         message={
           confirmOverwrite === "import"
-            ? "Importing replaces every task currently on the board. Continue?"
-            : "Loading samples replaces every task currently on the board. Continue?"
+            ? t("kanban.replace.body")
+            : t("kanban.loadSamples.body")
         }
-        confirmLabel={confirmOverwrite === "import" ? "Import" : "Load samples"}
+        confirmLabel={confirmOverwrite === "import" ? t("kanban.importConfirm") : t("kanban.loadSamples")}
         onCancel={() => {
           setConfirmOverwrite(null);
           setPendingImport(null);
         }}
         onConfirm={() => {
           if (confirmOverwrite === "import") {
-            if (store.replaceState(pendingImport)) flash("Board imported");
-            else flash("Import failed: invalid file");
+            if (store.replaceState(pendingImport)) flash(t("kanban.toast.boardImported"));
+            else flash(t("kanban.toast.importInvalid"));
           } else {
             applyLoadSamples();
           }

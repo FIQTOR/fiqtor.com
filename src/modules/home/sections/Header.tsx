@@ -12,6 +12,7 @@ import {
   mailtoUrl,
 } from "@/config/Identity";
 import { Link as Link } from "react-router-dom";
+import { useTranslation } from "@/i18n";
 
 const StatCounter = ({ target, suffix, start }: { target: number; suffix: string; start: boolean }) => {
   const [count, setCount] = useState(0);
@@ -54,6 +55,7 @@ const StatCounter = ({ target, suffix, start }: { target: number; suffix: string
 
 export default function Header() {
   const metadata = MetadataConfig;
+  const { t } = useTranslation();
 
   const { isTiny } = useContext(ContainerContext);
   const [showCVLanguage, setShowCVLanguage] = useState(false);
@@ -162,7 +164,7 @@ export default function Header() {
             id="text"
             className="clipgsap z-10 flex tiny:text-4xl text-7xl md:text-9xl duration-200"
           >
-            {Array.from("NĬHĂO!").map((char, index) => (
+            {Array.from(t("home.hero.greeting")).map((char, index) => (
               <span key={index} className="word">
                 {char === " " ? "\u00A0" : char}
               </span>
@@ -172,7 +174,7 @@ export default function Header() {
             id="text"
             className=" flex justify-center z-10 flex-wrap gap-2 uppercase tiny:text-4xl text-6xl md:text-9xl duration-300 md:gap-0"
           >
-            {`I AM ${metadata.creator}`.split(" ").map((word: string, i: number) => (
+            {`${t("home.hero.iam")} ${metadata.creator}`.split(" ").map((word: string, i: number) => (
               <span key={i} className="animated-text clipgsap md:mr-5">
                 {Array.from(word).map((char: string, j: number) => (
                   <span key={j} className="word">
@@ -188,7 +190,7 @@ export default function Header() {
           >
             <div className="animated-text clipgsap flex">
               {Array.from(
-                "Experienced AI x Software Engineer",
+                t("home.hero.role"),
               ).map((char, index) => (
                 <span key={index} className="word">
                   {char === " " ? "\u00A0" : char}
@@ -196,7 +198,7 @@ export default function Header() {
               ))}
             </div>
             <div id="text" className="animated-text clipgsap flex">
-              {Array.from("With 5 years of proven expertise.").map(
+              {Array.from(t("home.hero.tagline")).map(
                 (char, index) => (
                   <span key={index} className="word">
                     {char === " " ? "\u00A0" : char}
@@ -212,9 +214,9 @@ export default function Header() {
             className="flex w-fit gap-1 lg:gap-4 z-10 text-base font-light"
           >
             <div className="flex gap-3 sm:gap-5 flex-wrap justify-center items-center mt-1">
-              <StatCounter target={100} suffix="Projects Completed" start={animateBadges} />
-              <StatCounter target={100} suffix="Satisfied Clients" start={animateBadges} />
-              <StatCounter target={10000} suffix="Pages Designed" start={animateBadges} />
+              <StatCounter target={100} suffix={t("home.hero.stat.projects")} start={animateBadges} />
+              <StatCounter target={100} suffix={t("home.hero.stat.clients")} start={animateBadges} />
+              <StatCounter target={10000} suffix={t("home.hero.stat.pages")} start={animateBadges} />
             </div>
           </motion.div>
           <motion.div
@@ -228,7 +230,7 @@ export default function Header() {
               className="flex gap-2 px-7 py-3 items-center justify-center rounded-full bg-blue-600/90 text-white font-medium hover:scale-105 hover:bg-blue-600 hover:shadow-[0_0_20px_rgba(37,99,235,0.6)] transition-all duration-300 shadow-md"
             >
               <TbDownload strokeWidth={2.2} className="w-5 h-5" />
-              <span>Resume</span>
+              <span>{t("home.hero.resume")}</span>
             </button>
 
             {/* Inline Social Icons for Mobile */}
@@ -287,7 +289,7 @@ export default function Header() {
                     className="absolute -top-3 -right-2 z-50 flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-600 text-[9px] font-black tracking-wider text-white shadow-[0_0_12px_rgba(37,99,235,0.8)] border border-white/40 pointer-events-none"
                   >
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
-                    CLICK ME 👈
+                    {t("home.hero.clickMe")} 👈
                   </motion.div>
 
                   <motion.div
@@ -348,7 +350,7 @@ export default function Header() {
                     transition={animateBadges ? { duration: 8.8, repeat: Infinity, ease: "easeInOut", delay: 0.5 } : { duration: 0.3 }}
                     className="text-xs font-medium tracking-normal text-neutral-600 dark:text-neutral-300 group-hover:text-white transition-colors"
                   >
-                    Explore Code
+                    {t("home.hero.exploreCode")}
                   </motion.span>
                 </Link>
               </motion.div>
@@ -385,7 +387,7 @@ export default function Header() {
                     transition={animateBadges ? { duration: 6.4, repeat: Infinity, ease: "easeInOut", delay: 0.7 } : { duration: 0.3 }}
                     className="text-xs font-semibold tracking-wider uppercase text-red-500/90 group-hover:text-red-500 transition-colors drop-shadow-xs"
                   >
-                    Send Inquiry
+                    {t("home.hero.sendInquiry")}
                   </motion.span>
                 </Link>
               </motion.div>
@@ -423,7 +425,7 @@ export default function Header() {
                     transition={animateBadges ? { duration: 8.6, repeat: Infinity, ease: "easeInOut", delay: 0.9 } : { duration: 0.3 }}
                     className="text-sm font-black tracking-wide text-neutral-800 dark:text-neutral-100 group-hover:text-emerald-500 transition-colors drop-shadow-xs"
                   >
-                    Quick Chat
+                    {t("home.hero.quickChat")}
                   </motion.span>
                 </Link>
               </motion.div>
@@ -449,7 +451,7 @@ export default function Header() {
             onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
           >
             <span className="text-sm font-medium tracking-wide text-neutral-600 dark:text-neutral-400 group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors duration-300">
-              Scroll Down
+              {t("home.hero.scrollDown")}
             </span>
             <div className="relative">
               <div className="absolute -inset-3 bg-blue-500/20 dark:bg-blue-400/20 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -492,42 +494,42 @@ export default function Header() {
               >
                 <TbX className="h-5 w-5 text-red-500 transition-transform duration-300 group-hover:rotate-90" />
               </button>
-              <h2 className="text-2xl font-semibold bg-linear-to-r from-purple-600 to-blue-600 dark:from-purple-400 dark:to-blue-400 bg-clip-text text-transparent">Select Resume Format:</h2>
+              <h2 className="text-2xl font-semibold bg-linear-to-r from-purple-600 to-blue-600 dark:from-purple-400 dark:to-blue-400 bg-clip-text text-transparent">{t("home.hero.resumeSelect")}</h2>
               <div className="flex flex-col gap-6">
                 <div className="flex flex-col gap-3">
-                  <h3 className="text-lg font-medium text-neutral-800 dark:text-neutral-200">Creative Resume</h3>
+                  <h3 className="text-lg font-medium text-neutral-800 dark:text-neutral-200">{t("home.hero.resumeCreative")}</h3>
                   <div className="flex gap-4">
                     <a
                       href={RESUME.creativeEn}
                       className="group w-full rounded-xl bg-linear-to-br from-purple-500/10 to-blue-500/10 px-4 py-3 text-center text-base transition-all duration-300 hover:from-purple-500/20 hover:to-blue-500/20 hover:shadow-lg hover:shadow-purple-500/10 dark:from-purple-500/5 dark:to-blue-500/5 dark:hover:from-purple-500/10 dark:hover:to-blue-500/10 relative overflow-hidden"
                     >
-                      <span className="relative z-10 font-medium text-purple-700 dark:text-purple-300 group-hover:text-purple-800 dark:group-hover:text-purple-200 transition-colors duration-300">English</span>
+                      <span className="relative z-10 font-medium text-purple-700 dark:text-purple-300 group-hover:text-purple-800 dark:group-hover:text-purple-200 transition-colors duration-300">{t("home.hero.langEnglish")}</span>
                       <div className="absolute inset-0 bg-linear-to-br from-purple-500/20 to-blue-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl" />
                     </a>
                     <a
                       href={RESUME.creativeId}
                       className="group w-full rounded-xl bg-linear-to-br from-blue-500/10 to-purple-500/10 px-4 py-3 text-center text-base transition-all duration-300 hover:from-blue-500/20 hover:to-purple-500/20 hover:shadow-lg hover:shadow-blue-500/10 dark:from-blue-500/5 dark:to-purple-500/5 dark:hover:from-blue-500/10 dark:hover:to-purple-500/10 relative overflow-hidden"
                     >
-                      <span className="relative z-10 font-medium text-blue-700 dark:text-blue-300 group-hover:text-blue-800 dark:group-hover:text-blue-200 transition-colors duration-300">Indonesia</span>
+                      <span className="relative z-10 font-medium text-blue-700 dark:text-blue-300 group-hover:text-blue-800 dark:group-hover:text-blue-200 transition-colors duration-300">{t("home.hero.langIndonesia")}</span>
                       <div className="absolute inset-0 bg-linear-to-br from-blue-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl" />
                     </a>
                   </div>
                 </div>
                 <div className="flex flex-col gap-3">
-                  <h3 className="text-lg font-medium text-neutral-800 dark:text-neutral-200">ATS Resume</h3>
+                  <h3 className="text-lg font-medium text-neutral-800 dark:text-neutral-200">{t("home.hero.resumeAts")}</h3>
                   <div className="flex gap-4">
                     <a
                       href={RESUME.atsEn}
                       className="group w-full rounded-xl bg-linear-to-br from-emerald-500/10 to-blue-500/10 px-4 py-3 text-center text-base transition-all duration-300 hover:from-emerald-500/20 hover:to-blue-500/20 hover:shadow-lg hover:shadow-emerald-500/10 dark:from-emerald-500/5 dark:to-blue-500/5 dark:hover:from-emerald-500/10 dark:hover:to-blue-500/10 relative overflow-hidden"
                     >
-                      <span className="relative z-10 font-medium text-emerald-700 dark:text-emerald-300 group-hover:text-emerald-800 dark:group-hover:text-emerald-200 transition-colors duration-300">English</span>
+                      <span className="relative z-10 font-medium text-emerald-700 dark:text-emerald-300 group-hover:text-emerald-800 dark:group-hover:text-emerald-200 transition-colors duration-300">{t("home.hero.langEnglish")}</span>
                       <div className="absolute inset-0 bg-linear-to-br from-emerald-500/20 to-blue-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl" />
                     </a>
                     <a
                       href={RESUME.atsId}
                       className="group w-full rounded-xl bg-linear-to-br from-blue-500/10 to-emerald-500/10 px-4 py-3 text-center text-base transition-all duration-300 hover:from-blue-500/20 hover:to-emerald-500/20 hover:shadow-lg hover:shadow-blue-500/10 dark:from-blue-500/5 dark:to-emerald-500/5 dark:hover:from-blue-500/10 dark:hover:to-emerald-500/10 relative overflow-hidden"
                     >
-                      <span className="relative z-10 font-medium text-blue-700 dark:text-blue-300 group-hover:text-blue-800 dark:group-hover:text-blue-200 transition-colors duration-300">Indonesia</span>
+                      <span className="relative z-10 font-medium text-blue-700 dark:text-blue-300 group-hover:text-blue-800 dark:group-hover:text-blue-200 transition-colors duration-300">{t("home.hero.langIndonesia")}</span>
                       <div className="absolute inset-0 bg-linear-to-br from-blue-500/20 to-emerald-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl" />
                     </a>
                   </div>

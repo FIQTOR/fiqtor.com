@@ -4,6 +4,7 @@ import {
   TbCalendar,
   TbAward,
 } from "react-icons/tb";
+import { useTranslation } from "@/i18n";
 
 export interface Certificate {
   title: string;
@@ -21,6 +22,7 @@ interface CertificateCardProps {
 }
 
 export const CertificateCard = ({ certificate, variant = "grid" }: CertificateCardProps) => {
+  const { t } = useTranslation();
   const isSlider = variant === "slider";
 
   const badge = (
@@ -35,7 +37,7 @@ export const CertificateCard = ({ certificate, variant = "grid" }: CertificateCa
             : "border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:border-emerald-500/30 dark:bg-emerald-500/15 dark:text-emerald-300"
       }`}
     >
-      {certificate.thisAcademic ? "Academic" : "Professional"}
+      {certificate.thisAcademic ? t("cert.badge.academic") : t("cert.badge.professional")}
     </span>
   );
 
@@ -54,7 +56,7 @@ export const CertificateCard = ({ certificate, variant = "grid" }: CertificateCa
           onClick={(e) => e.stopPropagation()}
         >
           <TbExternalLink className="h-3.5 w-3.5" />
-          <span>View</span>
+          <span>{t("cert.view")}</span>
         </a>
       )}
       {certificate.urlPdf && (
@@ -66,7 +68,7 @@ export const CertificateCard = ({ certificate, variant = "grid" }: CertificateCa
           onClick={(e) => e.stopPropagation()}
         >
           <TbDownload className="h-3.5 w-3.5" />
-          <span>PDF</span>
+          <span>{t("cert.pdf")}</span>
         </a>
       )}
     </div>

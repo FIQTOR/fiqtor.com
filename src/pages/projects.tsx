@@ -9,6 +9,8 @@ import { motion } from "framer-motion";
 import { Projects, ProjectCategories } from "@/data/projects";
 import type { ProjectCategory } from "@/data/projects";
 import { BRAND_NAME } from "@/config/Identity";
+import { useTranslation } from "@/i18n";
+import { PROJECT_CATEGORY_KEY } from "@/lib/projectCategory";
 
 type ActiveCategory = ProjectCategory | "all" | "live";
 
@@ -20,6 +22,7 @@ const isLivePreview = (project: { urlDirect?: string }): boolean =>
 
 const ProjectsPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { t } = useTranslation();
 
   const searchQuery = searchParams.get("q") ?? "";
   const categoryParam = searchParams.get("category") ?? "";
@@ -81,15 +84,15 @@ const ProjectsPage = () => {
 
   const categoryTabs = useMemo<Array<{ id: ActiveCategory; label: string; count: number }>>(() => {
     return [
-      { id: "all", label: "All", count: Projects.length },
-      { id: "live", label: "Live Preview", count: liveCount },
+      { id: "all", label: t("projects.tab.all"), count: Projects.length },
+      { id: "live", label: t("projects.tab.live"), count: liveCount },
       ...ProjectCategories.map((category) => ({
         id: category,
-        label: category,
+        label: t(PROJECT_CATEGORY_KEY[category]),
         count: Projects.filter((p) => p.category === category).length,
       })),
     ];
-  }, [liveCount]);
+  }, [liveCount, t]);
 
   return (
     <>
@@ -120,7 +123,7 @@ const ProjectsPage = () => {
             className="text-4xl md:text-6xl font-bold tracking-tight text-center mb-6"
           >
             <span className="bg-linear-to-r from-neutral-800 via-neutral-600 to-neutral-800 dark:from-neutral-100 dark:via-neutral-300 dark:to-neutral-100 bg-clip-text text-transparent">
-              {`Projects by ${BRAND_NAME}`}
+              {t("projects.title", { brand: BRAND_NAME })}
             </span>
           </motion.h1>
 
@@ -130,14 +133,13 @@ const ProjectsPage = () => {
             transition={{ delay: 0.3, duration: 0.6 }}
             className="text-lg md:text-xl text-neutral-600 dark:text-neutral-400 text-center max-w-2xl leading-relaxed mb-10"
           >
-            {Projects.length} shipped applications across AI automation, web apps,
-            business systems, e-commerce, landing pages, and templates.
+            {t("projects.subtitle", { count: Projects.length })}
           </motion.p>
 
           <div className="flex flex-wrap justify-center gap-4">
             {[
-              { label: "Total Built", value: stats.total, icon: TbTerminal },
-              { label: "Showing", value: filteredProjects.length, icon: TbFilter },
+              { label: t("projects.stat.totalBuilt"), value: stats.total, icon: TbTerminal },
+              { label: t("projects.stat.showing"), value: filteredProjects.length, icon: TbFilter },
             ].map((stat, i) => (
               <motion.div
                 key={stat.label}
@@ -160,8 +162,8 @@ const ProjectsPage = () => {
             <TbSearch className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-neutral-400 group-focus-within:text-blue-500 transition-colors" />
             <input
               type="text"
-              aria-label="Search projects"
-              placeholder="Search by title, tech, category, or tag..."
+              aria-label={t("projects.search.aria")}
+              placeholder={t("projects.search.placeholder")}
               value={searchQuery}
               onChange={(e) => updateParams({ q: e.target.value })}
               className="w-full pl-12 pr-4 py-3 rounded-2xl bg-white/50 dark:bg-neutral-900/50 backdrop-blur-md border border-neutral-300/30 dark:border-neutral-800/50 focus:border-blue-500/50 outline-none transition-all"
@@ -200,12 +202,12 @@ const ProjectsPage = () => {
               className="flex flex-col items-center justify-center py-20 text-neutral-500"
             >
               <TbStack2 className="h-20 w-20 opacity-20 mb-4" />
-              <p className="text-xl font-medium">No projects found matching your search.</p>
+              <p className="text-xl font-medium">{t("projects.empty")}</p>
               <button
                 onClick={() => setSearchParams(new URLSearchParams(), { replace: true })}
                 className="mt-4 text-blue-500 hover:underline"
               >
-                Clear all filters
+                {t("projects.clearFilters")}
               </button>
             </motion.div>
           )}

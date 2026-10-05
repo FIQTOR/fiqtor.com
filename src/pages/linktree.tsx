@@ -3,8 +3,10 @@ import HelmetContainer from "@/components/HelmetContainer";
 import LinktreeBox from "@/modules/linktree/components/LinktreeBox";
 import { AnimatePresence, motion } from "framer-motion";
 import { BRAND_NAME, COMPANY } from "@/config/Identity";
+import { useTranslation } from "@/i18n";
 
 const LinktreePage = () => {
+  const { t } = useTranslation();
   return (
     <>
       <HelmetContainer page="linktree" />
@@ -37,7 +39,7 @@ const LinktreePage = () => {
             id="linktree"
             className="mx-auto flex min-h-screen w-full max-w-md flex-col items-center justify-center px-4 pt-16"
           >
-            <h1 className="sr-only">{`${BRAND_NAME} - Official Social Links`}</h1>
+            <h1 className="sr-only">{t("linktree.aria", { brand: BRAND_NAME })}</h1>
             <LinktreeBox />
           </motion.section>
 
@@ -67,10 +69,10 @@ const LinktreePage = () => {
                 </div>
                 <div className="flex-1">
                   <p className="text-sm font-semibold text-gray-900 dark:text-white group-hover:text-neutral-600 dark:group-hover:text-blue-600 transition-colors">
-                    Coffee shop website discount
+                    {t("linktree.discount")}
                   </p>
                   <p className="text-xs text-gray-700 dark:text-gray-300 font-medium">
-                    From Rp300,000
+                    {t("linktree.from")}
                   </p>
                 </div>
                 <div className="shrink-0">

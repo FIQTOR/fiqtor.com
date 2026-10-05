@@ -11,6 +11,7 @@ import TaskCard from "@/modules/kanban/components/TaskCard";
 import type { KanbanColumnDef } from "@/data/kanban";
 import type { KanbanStatus, Task } from "@/types/kanban";
 import type { KanbanDnD } from "@/modules/kanban/hooks/useKanbanDnD";
+import { useTranslation } from "@/i18n";
 
 interface KanbanColumnProps {
   column: KanbanColumnDef;
@@ -31,7 +32,9 @@ const KanbanColumn = memo(function KanbanColumn({
   onMove,
   onAdd,
 }: KanbanColumnProps) {
+  const { t, language } = useTranslation();
   const isDropTarget = dnd.overStatus === column.id;
+  const columnLabel = column.label[language];
 
   return (
     <div
@@ -47,7 +50,7 @@ const KanbanColumn = memo(function KanbanColumn({
         <div className="flex items-center gap-2">
           <span className={`h-2.5 w-2.5 rounded-full ${column.accentClass}`} />
           <h3 className="text-sm font-semibold text-neutral-800 dark:text-neutral-100">
-            {column.label}{" "}
+            {columnLabel}{" "}
             <span className="font-medium text-neutral-400 dark:text-neutral-500">
               ({tasks.length})
             </span>
@@ -56,7 +59,7 @@ const KanbanColumn = memo(function KanbanColumn({
         <button
           type="button"
           onClick={() => onAdd(column.id)}
-          aria-label={`Add task to ${column.label}`}
+          aria-label={t("kanban.addTaskTo", { column: columnLabel })}
           className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-md text-neutral-400 transition-colors hover:bg-neutral-200/70 hover:text-neutral-700 dark:hover:bg-neutral-800 dark:hover:text-neutral-200"
         >
           <TbPlus className="h-4 w-4" />
@@ -109,7 +112,7 @@ const KanbanColumn = memo(function KanbanColumn({
                 : "border-neutral-300/70 text-neutral-400 dark:border-neutral-700/70"
             }`}
           >
-            {isDropTarget ? "Drop here" : "No tasks yet"}
+            {isDropTarget ? t("kanban.dropHere") : t("kanban.noTasksYet")}
           </div>
         )}
       </div>

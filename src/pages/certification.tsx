@@ -6,8 +6,10 @@ import { Certificates } from "@/data/certificate";
 import CertificatesGrid from "@/modules/certification/components/CertificatesGrid";
 import { TbAward, TbSearch, TbFilter, TbSchool, TbBriefcase } from "react-icons/tb";
 import { motion } from "framer-motion";
+import { useTranslation } from "@/i18n";
 
 const CertificatesPage = () => {
+  const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState<"all" | "professional" | "academic">("all");
 
@@ -58,7 +60,7 @@ const CertificatesPage = () => {
             className="text-4xl md:text-6xl font-bold tracking-tight text-center mb-6"
           >
             <span className="bg-linear-to-r from-neutral-800 via-neutral-600 to-neutral-800 dark:from-neutral-100 dark:via-neutral-300 dark:to-neutral-100 bg-clip-text text-transparent">
-              Certifications
+              {t("cert.title")}
             </span>
           </motion.h1>
 
@@ -68,8 +70,7 @@ const CertificatesPage = () => {
             transition={{ delay: 0.3, duration: 0.6 }}
             className="text-lg md:text-xl text-neutral-600 dark:text-neutral-400 text-center max-w-2xl leading-relaxed"
           >
-            {stats.total} verified credentials — {stats.professional} professional and{" "}
-            {stats.academic} academic — each with issuer and issue date.
+            {t("cert.subtitle", { total: stats.total, professional: stats.professional, academic: stats.academic })}
           </motion.p>
         </div>
 
@@ -77,9 +78,9 @@ const CertificatesPage = () => {
         <div className="relative z-10 mb-12 flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div className="flex p-1 gap-1 rounded-2xl bg-neutral-200/50 dark:bg-neutral-800/50 backdrop-blur-md border border-neutral-300/30 dark:border-neutral-700/30 w-fit">
             {([
-              { id: "all", label: "All", icon: TbFilter },
-              { id: "professional", label: "Professional", icon: TbBriefcase },
-              { id: "academic", label: "Academic", icon: TbSchool }
+              { id: "all", label: t("cert.tab.all"), icon: TbFilter },
+              { id: "professional", label: t("cert.tab.professional"), icon: TbBriefcase },
+              { id: "academic", label: t("cert.tab.academic"), icon: TbSchool }
             ] as const).map((tab) => (
               <button
                 key={tab.id}
@@ -99,7 +100,7 @@ const CertificatesPage = () => {
             <TbSearch className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-neutral-400 group-focus-within:text-blue-500 transition-colors" />
             <input
               type="text"
-              placeholder="Search by title, technology, or tag..."
+              placeholder={t("cert.search.placeholder")}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-12 pr-4 py-3 rounded-2xl bg-white/50 dark:bg-neutral-900/50 backdrop-blur-md border border-neutral-300/30 dark:border-neutral-800/50 focus:border-blue-500/50 outline-none transition-all"
@@ -113,9 +114,9 @@ const CertificatesPage = () => {
           className="relative z-10 mb-12 flex flex-wrap gap-2"
         >
           {[
-            { label: "Total", value: stats.total, color: "text-neutral-800 dark:text-neutral-200" },
-            { label: "Professional", value: stats.professional, color: "text-emerald-500" },
-            { label: "Academic", value: stats.academic, color: "text-blue-500" }
+            { label: t("cert.stat.total"), value: stats.total, color: "text-neutral-800 dark:text-neutral-200" },
+            { label: t("cert.stat.professional"), value: stats.professional, color: "text-emerald-500" },
+            { label: t("cert.stat.academic"), value: stats.academic, color: "text-blue-500" }
           ].map((stat, i) => (
             <motion.div
               key={stat.label}
@@ -141,12 +142,12 @@ const CertificatesPage = () => {
               className="flex flex-col items-center justify-center py-20 text-neutral-500"
             >
               <TbAward className="h-20 w-20 opacity-20 mb-4" />
-              <p className="text-xl font-medium">No certificates found matching your search.</p>
+              <p className="text-xl font-medium">{t("cert.empty")}</p>
               <button
                 onClick={() => { setSearchQuery(""); setActiveTab("all"); }}
                 className="mt-4 text-blue-500 hover:underline"
               >
-                Clear all filters
+                {t("cert.clearFilters")}
               </button>
             </motion.div>
           )}

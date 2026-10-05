@@ -14,6 +14,7 @@ import {
 } from "react-icons/tb";
 import { KANBAN_PRIORITIES } from "@/data/kanban";
 import type { KanbanPriority } from "@/types/kanban";
+import { useTranslation } from "@/i18n";
 
 interface KanbanToolbarProps {
   query: string;
@@ -42,6 +43,7 @@ const KanbanToolbar = ({
   onLoadSamples,
   onClear,
 }: KanbanToolbarProps) => {
+  const { t, language } = useTranslation();
   const fileRef = useRef<HTMLInputElement | null>(null);
 
   const actionBtn =
@@ -57,7 +59,7 @@ const KanbanToolbar = ({
             type="text"
             value={query}
             onChange={(e) => onQueryChange(e.target.value)}
-            placeholder="Search tasks…"
+            placeholder={t("kanban.searchPlaceholder")}
             className="w-full rounded-xl border border-neutral-200/70 bg-white/70 py-2 pl-9 pr-3 text-sm text-neutral-800 outline-none backdrop-blur-sm transition-colors placeholder:text-neutral-400 focus:border-blue-500/60 focus:ring-2 focus:ring-blue-500/20 dark:border-neutral-800/70 dark:bg-neutral-900/70 dark:text-neutral-100"
           />
         </div>
@@ -70,8 +72,8 @@ const KanbanToolbar = ({
                 const active = priorityFilter === id;
                 const label =
                   id === "all"
-                    ? "All"
-                    : KANBAN_PRIORITIES.find((p) => p.id === id)?.label ?? id;
+                    ? t("kanban.priority.all")
+                    : KANBAN_PRIORITIES.find((p) => p.id === id)?.label[language] ?? id;
                 return (
                   <button
                     key={id}
@@ -96,7 +98,7 @@ const KanbanToolbar = ({
       <div className="flex flex-wrap items-center gap-2">
         <div className="mr-auto flex flex-col text-right lg:mr-0">
           <span className="text-xs font-semibold text-neutral-700 dark:text-neutral-200">
-            {taskCount} task{taskCount === 1 ? "" : "s"}
+            {t("kanban.taskCount", { count: taskCount })}
           </span>
           {savedLabel && (
             <span className="text-xs text-neutral-500 dark:text-neutral-400">{savedLabel}</span>
@@ -105,7 +107,7 @@ const KanbanToolbar = ({
 
         <button type="button" onClick={onExport} className={actionBtn}>
           <TbDownload className="h-4 w-4" />
-          Export
+          {t("kanban.export")}
         </button>
 
         <button
@@ -114,7 +116,7 @@ const KanbanToolbar = ({
           className={actionBtn}
         >
           <TbUpload className="h-4 w-4" />
-          Import
+          {t("kanban.import")}
         </button>
         <input
           ref={fileRef}
@@ -130,7 +132,7 @@ const KanbanToolbar = ({
 
         <button type="button" onClick={onLoadSamples} className={actionBtn}>
           <TbSparkles className="h-4 w-4" />
-          Samples
+          {t("kanban.samples")}
         </button>
 
         <button
@@ -140,7 +142,7 @@ const KanbanToolbar = ({
           disabled={taskCount === 0}
         >
           <TbTrash className="h-4 w-4" />
-          Clear
+          {t("kanban.clear")}
         </button>
 
         <button
@@ -149,7 +151,7 @@ const KanbanToolbar = ({
           className="inline-flex cursor-pointer items-center gap-1.5 rounded-xl bg-blue-600 px-3.5 py-2 text-xs font-semibold text-white shadow-md shadow-blue-600/20 transition-all hover:-translate-y-0.5 hover:bg-blue-500 active:scale-95"
         >
           <TbPlus className="h-4 w-4" />
-          New Task
+          {t("kanban.newTask")}
         </button>
       </div>
     </div>
