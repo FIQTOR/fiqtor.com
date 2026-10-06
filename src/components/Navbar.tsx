@@ -30,12 +30,12 @@ const NavLink = memo(function NavLink({
       to={menu.pathName}
       aria-label={label}
       aria-current={isActive ? "page" : undefined}
-      className={`group relative z-10 flex items-center justify-center p-3 transition-colors duration-300 rounded-full ${isActive
+      className={`group relative z-10 flex shrink-0 items-center justify-center p-2 sm:p-2.5 md:p-3 transition-colors duration-300 rounded-full ${isActive
         ? "text-blue-500"
         : "text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100"
         }`}
     >
-      <menu.Svg className="h-6 w-6" strokeWidth="1.5" />
+      <menu.Svg className="h-5 w-5 sm:h-[22px] sm:w-[22px] md:h-6 md:w-6" strokeWidth="1.5" />
 
       {/* Active Dot */}
       {isActive && (
@@ -99,9 +99,9 @@ function LanguageSwitcher() {
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-label={t("nav.language.label")}
-        className="flex cursor-pointer h-10 items-center gap-1.5 rounded-full px-2.5 text-neutral-600 transition-colors hover:bg-neutral-200/50 dark:text-neutral-400 dark:hover:bg-neutral-800/50"
+        className="flex cursor-pointer h-9 md:h-10 shrink-0 items-center gap-1 md:gap-1.5 rounded-full px-2 md:px-2.5 text-neutral-600 transition-colors hover:bg-neutral-200/50 dark:text-neutral-400 dark:hover:bg-neutral-800/50"
       >
-        <TbWorld className="h-5 w-5" strokeWidth="1.5" />
+        <TbWorld className="h-[18px] w-[18px] md:h-5 md:w-5" strokeWidth="1.5" />
         <span className="text-xs font-bold tracking-wide">{language === "id" ? "ID" : "EN"}</span>
       </button>
 
@@ -257,9 +257,9 @@ export default function Navbar() {
       </div>
 
       {/* Bottom Navbar */}
-      <div className="fixed bottom-6 left-1/2 z-40 -translate-x-1/2 px-4 w-fit max-w-[95vw]">
-        <nav className="flex items-center gap-1 md:gap-2 rounded-full border border-neutral-200/50 bg-white/70 p-1.5 md:p-2 shadow-2xl backdrop-blur-xl dark:border-neutral-800/50 dark:bg-neutral-900/70">
-          <div ref={containerRef} className="relative flex items-center gap-0.5 md:gap-1">
+      <div className="fixed bottom-6 left-1/2 z-40 -translate-x-1/2 px-3 w-full max-w-[calc(100vw-0.5rem)] sm:w-fit sm:px-4 sm:max-w-[95vw] flex justify-center">
+        <nav className="flex items-center gap-0.5 sm:gap-1 md:gap-2 rounded-full border border-neutral-200/50 bg-white/70 p-1 sm:p-1.5 md:p-2 shadow-2xl backdrop-blur-xl dark:border-neutral-800/50 dark:bg-neutral-900/70">
+          <div ref={containerRef} className="relative flex items-center gap-0 sm:gap-0.5 md:gap-1">
             {/* Circle indicator that slides to follow the active menu item */}
             <span
               aria-hidden
@@ -297,19 +297,19 @@ export default function Navbar() {
           </Link>
 
           {/* Language Switcher + Theme Toggle */}
-          <div className="flex items-center gap-0.5 border-l border-neutral-300 pl-1 md:gap-1 md:pl-2 dark:border-neutral-700">
+          <div className="flex items-center gap-0 sm:gap-0.5 border-l border-neutral-300 pl-0.5 sm:pl-1 md:gap-1 md:pl-2 dark:border-neutral-700">
             <LanguageSwitcher />
 
             <div className="group relative">
               <button
                 onClick={(e) => cycleTheme(e)}
                 aria-label={themeLabel}
-                className="flex cursor-pointer h-10 w-10 items-center justify-center rounded-full text-neutral-600 transition-colors hover:bg-neutral-200/50 dark:text-neutral-400 dark:hover:bg-neutral-800/50"
+                className="flex cursor-pointer h-9 w-9 md:h-10 md:w-10 shrink-0 items-center justify-center rounded-full text-neutral-600 transition-colors hover:bg-neutral-200/50 dark:text-neutral-400 dark:hover:bg-neutral-800/50"
               >
                 {!mounted ? (
-                  <div className="h-6 w-6 animate-pulse rounded-full bg-neutral-300 dark:bg-neutral-700" />
+                  <div className="h-5 w-5 md:h-6 md:w-6 animate-pulse rounded-full bg-neutral-300 dark:bg-neutral-700" />
                 ) : (
-                  <ThemeIcon className="h-6 w-6" />
+                  <ThemeIcon className="h-5 w-5 md:h-6 md:w-6" />
                 )}
               </button>
 
