@@ -160,8 +160,7 @@ async function getCoins(): Promise<DataType | null> {
       eth: payload.eth,
       sol: payload.sol,
     };
-  } catch (error) {
-    console.error(error);
+  } catch {
     return null;
   }
 }

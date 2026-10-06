@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import HelmetContainer from "@/components/HelmetContainer";
 import { BackgroundBlobs } from "@/components/BackgroundBlobs";
 import InitialMotion from "@/components/InitialMotion";
+import { EmptyState } from "@/components/EmptyState";
 import ProjectsGrid from "@/modules/projects/components/ProjectsGrid";
 import { TbStack2, TbTerminal, TbSearch, TbFilter } from "react-icons/tb";
 import { motion } from "framer-motion";
@@ -199,19 +200,19 @@ const ProjectsPage = () => {
           </InitialMotion>
 
           {filteredProjects.length === 0 && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="flex flex-col items-center justify-center py-20 text-neutral-500"
-            >
-              <TbStack2 className="h-20 w-20 opacity-20 mb-4" />
-              <p className="text-xl font-medium">{t("projects.empty")}</p>
-              <button
-                onClick={() => setSearchParams(new URLSearchParams(), { replace: true })}
-                className="mt-4 text-blue-500 hover:underline"
-              >
-                {t("projects.clearFilters")}
-              </button>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+              <EmptyState
+                icon={TbStack2}
+                title={t("projects.empty")}
+                action={
+                  <button
+                    onClick={() => setSearchParams(new URLSearchParams(), { replace: true })}
+                    className="focus-ring rounded text-blue-500 hover:underline"
+                  >
+                    {t("projects.clearFilters")}
+                  </button>
+                }
+              />
             </motion.div>
           )}
         </div>

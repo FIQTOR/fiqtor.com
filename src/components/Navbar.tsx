@@ -7,6 +7,7 @@ import type { Project as MenuItem } from "../data/menu";
 import { ContainerContext } from "@/context/container-context";
 import { useTranslation } from "@/i18n";
 import type { Language } from "@/i18n";
+import Tooltip from "./Tooltip";
 
 const THEME_CYCLE = ["light", "dark"] as const;
 type ThemeMode = (typeof THEME_CYCLE)[number];
@@ -25,35 +26,28 @@ const NavLink = memo(function NavLink({
   const label = t(menu.labelKey);
 
   return (
-    <Link
-      ref={registerRef}
-      to={menu.pathName}
-      aria-label={label}
-      aria-current={isActive ? "page" : undefined}
-      className={`group relative z-10 flex shrink-0 items-center justify-center p-2 sm:p-2.5 md:p-3 transition-colors duration-300 rounded-full ${isActive
-        ? "text-blue-500"
-        : "text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100"
-        }`}
-    >
-      <menu.Svg className="h-5 w-5 sm:h-[22px] sm:w-[22px] md:h-6 md:w-6" strokeWidth="1.5" />
+    <Tooltip label={label}>
+      <Link
+        ref={registerRef}
+        to={menu.pathName}
+        aria-label={label}
+        aria-current={isActive ? "page" : undefined}
+        className={`group focus-ring focus-ring-rounded relative z-10 flex shrink-0 items-center justify-center p-2 sm:p-2.5 md:p-3 transition-colors duration-300 rounded-full ${isActive
+          ? "text-blue-500"
+          : "text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100"
+          }`}
+      >
+        <menu.Svg className="h-5 w-5 sm:h-[22px] sm:w-[22px] md:h-6 md:w-6" strokeWidth="1.5" />
 
-      {/* Active Dot */}
-      {isActive && (
-        <span className="absolute -top-1 right-1 flex h-2 w-2">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
-        </span>
-      )}
-
-      {/* Tooltip - Animated scale & opacity */}
-      <div className="absolute bottom-full mb-3 flex flex-col items-center opacity-0 scale-75 translate-y-1 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-focus-within:opacity-100 group-focus-within:scale-100 group-focus-within:translate-y-0 transition-all duration-200 ease-out origin-bottom">
-        <span className="relative z-10 whitespace-nowrap rounded-md bg-neutral-900 px-3 py-1.5 text-xs font-medium text-white shadow-xl dark:bg-neutral-100 dark:text-neutral-900">
-          {label}
-        </span>
-        {/* Tooltip Arrow */}
-        <div className="-mt-1 h-2 w-2 rotate-45 bg-neutral-900 dark:bg-neutral-100"></div>
-      </div>
-    </Link>
+        {/* Active Dot */}
+        {isActive && (
+          <span className="absolute -top-1 right-1 flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+          </span>
+        )}
+      </Link>
+    </Tooltip>
   );
 });
 
@@ -69,6 +63,11 @@ function LanguageSwitcher() {
   const { language, setLanguage, t } = useTranslation();
   const [open, setOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement | null>(null);
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
+  const optionRefs = useRef<Array<HTMLButtonElement | null>>([]);
+
+  // Index of the highlighted option when the list is open.
+  const activeIndex = Math.max(0, LANGUAGES.findIndex((l) => l.code === language));
 
   // Close on outside click / Escape.
   useEffect(() => {
@@ -79,7 +78,10 @@ function LanguageSwitcher() {
       }
     };
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
+      if (e.key === "Escape") {
+        setOpen(false);
+        buttonRef.current?.focus();
+      }
     };
     document.addEventListener("mousedown", onPointerDown);
     document.addEventListener("touchstart", onPointerDown);
@@ -91,15 +93,44 @@ function LanguageSwitcher() {
     };
   }, [open]);
 
+  // Focus the current option when the list opens.
+  useEffect(() => {
+    if (open) optionRefs.current[activeIndex]?.focus();
+  }, [open, activeIndex]);
+
+  const select = (code: Language) => {
+    setLanguage(code);
+    setOpen(false);
+    buttonRef.current?.focus();
+  };
+
+  // Roving focus for the listbox (Arrow/Home/End).
+  const onListKeyDown = (e: React.KeyboardEvent, index: number) => {
+    if (e.key === "ArrowDown" || e.key === "ArrowRight") {
+      e.preventDefault();
+      optionRefs.current[(index + 1) % LANGUAGES.length]?.focus();
+    } else if (e.key === "ArrowUp" || e.key === "ArrowLeft") {
+      e.preventDefault();
+      optionRefs.current[(index - 1 + LANGUAGES.length) % LANGUAGES.length]?.focus();
+    } else if (e.key === "Home") {
+      e.preventDefault();
+      optionRefs.current[0]?.focus();
+    } else if (e.key === "End") {
+      e.preventDefault();
+      optionRefs.current[LANGUAGES.length - 1]?.focus();
+    }
+  };
+
   return (
     <div ref={wrapperRef} className="relative">
       <button
+        ref={buttonRef}
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-label={t("nav.language.label")}
-        className="flex cursor-pointer h-9 md:h-10 shrink-0 items-center gap-1 md:gap-1.5 rounded-full px-2 md:px-2.5 text-neutral-600 transition-colors hover:bg-neutral-200/50 dark:text-neutral-400 dark:hover:bg-neutral-800/50"
+        className="flex cursor-pointer focus-ring focus-ring-rounded h-9 md:h-10 shrink-0 items-center gap-1 md:gap-1.5 rounded-full px-2 md:px-2.5 text-neutral-600 transition-colors hover:bg-neutral-200/50 dark:text-neutral-400 dark:hover:bg-neutral-800/50"
       >
         <TbWorld className="h-[18px] w-[18px] md:h-5 md:w-5" strokeWidth="1.5" />
         <span className="text-xs font-bold tracking-wide">{language === "id" ? "ID" : "EN"}</span>
@@ -111,19 +142,19 @@ function LanguageSwitcher() {
           aria-label={t("nav.language.label")}
           className="absolute bottom-full right-0 z-50 mb-3 w-44 overflow-hidden rounded-2xl border border-neutral-200/70 bg-white/95 p-1.5 shadow-2xl backdrop-blur-xl dark:border-neutral-700/70 dark:bg-neutral-900/95"
         >
-          {LANGUAGES.map((lang) => {
+          {LANGUAGES.map((lang, index) => {
             const active = language === lang.code;
             return (
               <button
                 key={lang.code}
+                ref={(el) => { optionRefs.current[index] = el; }}
                 type="button"
                 role="option"
+                tabIndex={-1}
                 aria-selected={active}
-                onClick={() => {
-                  setLanguage(lang.code);
-                  setOpen(false);
-                }}
-                className={`flex w-full cursor-pointer items-center justify-between gap-2 rounded-xl px-3 py-2 text-left text-sm font-medium transition-colors ${
+                onClick={() => select(lang.code)}
+                onKeyDown={(e) => onListKeyDown(e, index)}
+                className={`flex w-full cursor-pointer focus-ring items-center justify-between gap-2 rounded-xl px-3 py-2 text-left text-sm font-medium transition-colors ${
                   active
                     ? "bg-blue-500/10 text-blue-600 dark:text-blue-400"
                     : "text-neutral-700 hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-800"
@@ -247,8 +278,7 @@ export default function Navbar() {
       <div className="fixed right-5 top-5 z-40 md:hidden">
         <Link
           to="/talk"
-
-          className="cta relative flex items-center gap-2 overflow-hidden rounded-full bg-neutral-900 px-4 py-2 text-xs font-semibold text-white shadow-lg shadow-black/10 transition-all duration-300 active:scale-90 dark:bg-white dark:text-neutral-900 dark:shadow-white/10"
+          className="cta focus-ring focus-ring-rounded relative flex items-center gap-2 overflow-hidden rounded-full bg-neutral-900 px-4 py-2 text-xs font-semibold text-white shadow-lg shadow-black/10 transition-all duration-300 active:scale-90 dark:bg-white dark:text-neutral-900 dark:shadow-white/10"
         >
           <span aria-hidden className="cta-shine pointer-events-none absolute inset-0 rounded-full" />
           <TbMessage className="cta-icon h-4 w-4" />
@@ -282,8 +312,7 @@ export default function Navbar() {
           {/* Desktop-only Let's Talk Button inside center navbar */}
           <Link
             to="/talk"
-
-            className={`cta group relative hidden items-center gap-2 overflow-hidden rounded-full px-4 py-2 text-sm font-semibold transition-all duration-300 md:flex active:scale-95 ${
+            className={`cta focus-ring focus-ring-rounded group relative hidden items-center gap-2 overflow-hidden rounded-full px-4 py-2 text-sm font-semibold transition-all duration-300 md:flex active:scale-95 ${
               fullPathName === "/talk"
                 ? "bg-blue-600 text-white shadow-md shadow-blue-600/30"
                 : "bg-neutral-900 text-white shadow-lg shadow-black/10 hover:-translate-y-0.5 hover:shadow-xl dark:bg-white dark:text-neutral-900 dark:shadow-white/10 dark:hover:bg-neutral-100"
@@ -300,11 +329,11 @@ export default function Navbar() {
           <div className="flex items-center gap-0 sm:gap-0.5 border-l border-neutral-300 pl-0.5 sm:pl-1 md:gap-1 md:pl-2 dark:border-neutral-700">
             <LanguageSwitcher />
 
-            <div className="group relative">
+            <Tooltip label={mounted ? themeLabel : t("nav.theme.label")}>
               <button
                 onClick={(e) => cycleTheme(e)}
                 aria-label={themeLabel}
-                className="flex cursor-pointer h-9 w-9 md:h-10 md:w-10 shrink-0 items-center justify-center rounded-full text-neutral-600 transition-colors hover:bg-neutral-200/50 dark:text-neutral-400 dark:hover:bg-neutral-800/50"
+                className="flex cursor-pointer focus-ring focus-ring-rounded h-9 w-9 md:h-10 md:w-10 shrink-0 items-center justify-center rounded-full text-neutral-600 transition-colors hover:bg-neutral-200/50 dark:text-neutral-400 dark:hover:bg-neutral-800/50"
               >
                 {!mounted ? (
                   <div className="h-5 w-5 md:h-6 md:w-6 animate-pulse rounded-full bg-neutral-300 dark:bg-neutral-700" />
@@ -312,15 +341,7 @@ export default function Navbar() {
                   <ThemeIcon className="h-5 w-5 md:h-6 md:w-6" />
                 )}
               </button>
-
-              {/* Theme Tooltip */}
-              <div className="absolute bottom-full -translate-x-1/2 left-1/2 mb-3 flex flex-col items-center opacity-0 scale-75 translate-y-1 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 transition-all duration-200 ease-out origin-bottom">
-                <span className="relative z-10 whitespace-nowrap rounded-md bg-neutral-900 px-3 py-1.5 text-xs font-medium text-white shadow-xl dark:bg-neutral-100 dark:text-neutral-900">
-                  {mounted ? themeLabel : t("nav.theme.label")}
-                </span>
-                <div className="-mt-1 h-2 w-2 rotate-45 bg-neutral-900 dark:bg-neutral-100"></div>
-              </div>
-            </div>
+            </Tooltip>
           </div>
         </nav>
       </div>

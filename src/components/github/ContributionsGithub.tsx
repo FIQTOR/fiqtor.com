@@ -3,6 +3,7 @@ import { TbBrandGithub, TbGitFork } from "react-icons/tb";
 import { motion } from "framer-motion";
 import GithubConfig from "@/config/Github";
 import { ContainerContext } from "@/context/container-context";
+import { ErrorState } from "@/components/EmptyState";
 import axios from "axios";
 import { useTranslation } from "@/i18n";
 
@@ -124,7 +125,6 @@ function ContributionsGithub() {
         setData(response.data);
       } catch (error) {
         setError(error instanceof Error ? error.message : t("gh.failed"));
-        console.log(error);
       } finally {
         setLoading(false);
       }
@@ -145,8 +145,8 @@ function ContributionsGithub() {
 
   if (error || !data) {
     return (
-      <div className="mt-12 px-7 md:px-24 text-red-500">
-        <p>Error: {error || t("gh.invalidToken")}</p>
+      <div className="mt-12 px-7 md:px-24">
+        <ErrorState icon={TbBrandGithub} title={error || t("gh.invalidToken")} />
       </div>
     );
   }
@@ -156,8 +156,8 @@ function ContributionsGithub() {
 
   if (!calendar) {
     return (
-      <div className="mt-12 px-7 md:px-24 text-red-500">
-        <p>Error: {t("gh.couldNot")}</p>
+      <div className="mt-12 px-7 md:px-24">
+        <ErrorState icon={TbBrandGithub} title={t("gh.couldNot")} />
       </div>
     );
   }

@@ -53,7 +53,6 @@ const SubHeader = () => {
         });
       } catch {
         if (signal.aborted) return;
-        console.log("Failed to fetch stats, using fallback data.");
         // Fallback data when the backend itself is unavailable.
         setTiktok({ followers: 2006, following: 49 });
         setInstagram({ followers: 671, following: 572 });

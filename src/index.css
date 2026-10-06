@@ -128,9 +128,52 @@
 
 .page-base {
   min-height: 100vh;
-  font-weight: 300;
+  font-weight: 400;
   color: var(--text-main);
-  overflow: hidden;
+}
+
+/* --- Focus ring utility -----------------------------------------------------
+   One consistent, high-contrast keyboard focus indicator for every interactive
+   element. Applied globally to native controls below; the `focus-ring` class is
+   available for custom elements that opt in explicitly. :focus-visible only
+   matches keyboard focus, so mouse clicks stay ring-free. */
+.focus-ring {
+  outline: none;
+}
+
+.focus-ring:focus-visible {
+  outline: 2px solid var(--accent-blue);
+  outline-offset: 2px;
+  border-radius: 0.5rem;
+}
+
+/* Circular controls keep their shape when focused. */
+.focus-ring-rounded:focus-visible {
+  border-radius: 9999px;
+}
+
+@layer base {
+
+  /* Global keyboard-focus indicator for native interactive elements. */
+  a:focus-visible,
+  button:focus-visible,
+  [role="button"]:focus-visible,
+  [role="option"]:focus-visible,
+  [role="tab"]:focus-visible,
+  [tabindex]:not([tabindex="-1"]):focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible,
+  summary:focus-visible {
+    outline: 2px solid var(--accent-blue);
+    outline-offset: 2px;
+  }
+
+  /* Don't double-up when an element already uses the focus-ring utility. */
+  .focus-ring:focus-visible {
+    outline: 2px solid var(--accent-blue);
+    outline-offset: 2px;
+  }
 }
 
 /* Pause the float animations when the layer is off-screen or the tab is hidden
@@ -157,7 +200,7 @@
   --bg-surface: #ffffff;
   --text-main: #334155;
   --text-muted: #64748b;
-  /* --text-heading: #0f172a; */
+  --text-heading: #0f172a;
   --border-main: #e2e8f0;
   --accent-blue: #3b82f6;
 }
