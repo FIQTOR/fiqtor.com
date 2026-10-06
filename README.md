@@ -22,13 +22,13 @@ React 19 + TypeScript + Vite single-page app for the portfolio. Branding, identi
 
 - React 19, TypeScript, Vite, Tailwind CSS v4
 - Framer Motion, GSAP, `react-helmet-async`, `react-router-dom`
-- `three` / `ogl` (3D), `lottie-web`
+- `ogl` (WebGL line waves), `animejs`, `lottie-web`
 - Axios, `react-google-recaptcha`
-- Icons: `react-icons`, `lucide-react`
+- Icons: `react-icons`
 
 ## ✅ Prerequisites
 
-- Node.js **20.x+**, npm
+- Node.js **24.x**, npm
 
 ## 📦 Installation
 

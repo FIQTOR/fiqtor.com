@@ -18,6 +18,12 @@ interface ImportMetaEnv {
   // reCAPTCHA (site key only — never the secret)
   readonly VITE_RECAPTCHA_SITE_KEY: string
 
+  // Sentry (error tracking) — DSN is a write-only public key, safe to expose.
+  readonly VITE_SENTRY_DSN: string
+  readonly VITE_SENTRY_ENVIRONMENT: string
+  readonly VITE_SENTRY_RELEASE: string
+  readonly VITE_SENTRY_TRACES_SAMPLE_RATE: string
+
   // NOTE: Branding/identity, contact info, social URLs, resume paths, the
   // company brand and integration usernames are ALL code-based now:
   //   - src/config/Identity.ts
