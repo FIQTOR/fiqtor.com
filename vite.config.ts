@@ -3,12 +3,15 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import Pages from 'vite-plugin-pages'
 import path from 'path'
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import {
   buildHeadConfig,
   renderHeadHtml,
+  renderRouteHeadHtml,
   renderSitemap,
   renderRobots,
   renderSecurityTxt,
+  NAV_PAGES,
 } from './src/config/Head'
 
 /**
@@ -63,6 +66,29 @@ function htmlHeadPlugin(env: Record<string, string>): Plugin {
       this.emitFile({ type: 'asset', fileName: sitemap, source: renderSitemap(config) })
       this.emitFile({ type: 'asset', fileName: robots, source: renderRobots(config) })
       this.emitFile({ type: 'asset', fileName: securityTxt, source: renderSecurityTxt(config) })
+    },
+
+    // Build: after the SPA bundle is written, generate a static per-route
+    // index.html whose <head> carries unique title/description/canonical/
+    // JSON-LD. Crawlers that do not run JS now see route-specific metadata
+    // instead of one shared shell, while the SPA hydrates normally in-browser.
+    closeBundle() {
+      const config = buildHeadConfig(env)
+      const outDir = path.resolve(__dirname, 'dist')
+      const indexHtml = readFileSync(path.join(outDir, 'index.html'), 'utf8')
+
+      for (const route of NAV_PAGES) {
+        if (route.path === '/') continue
+        const filePath = path.join(outDir, route.path.replace(/^\//, ''), 'index.html')
+        // Keep the already-generated (hashed) asset tags from the built entry,
+        // but swap the <head> for route-specific metadata.
+        const html = indexHtml.replace(
+          /<head>[\s\S]*?<\/head>/,
+          `<head>${renderRouteHeadHtml(config, route)}</head>`
+        )
+        mkdirSync(path.dirname(filePath), { recursive: true })
+        writeFileSync(filePath, html)
+      }
     },
   }
 }

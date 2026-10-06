@@ -40,6 +40,30 @@
     ],
     "rewrites": [
         {
+            "source": "/projects",
+            "destination": "/projects/index.html"
+        },
+        {
+            "source": "/career",
+            "destination": "/career/index.html"
+        },
+        {
+            "source": "/certification",
+            "destination": "/certification/index.html"
+        },
+        {
+            "source": "/talk",
+            "destination": "/talk/index.html"
+        },
+        {
+            "source": "/linktree",
+            "destination": "/linktree/index.html"
+        },
+        {
+            "source": "/kanban",
+            "destination": "/kanban/index.html"
+        },
+        {
             "source": "/((?!sitemap\\.xml|robots\\.txt|\\.well-known/|admin(?:/|$)|.*\\.[^/]+$|\\.[^/]*(?:/|$)).*)",
             "destination": "/index.html"
         }
