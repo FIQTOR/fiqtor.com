@@ -272,6 +272,11 @@ export const renderHeadHtml = (cfg: HeadConfig): string => {
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
     <meta name="theme-color" content="${a(cfg.themeColor)}" />
     <meta name="application-name" content="${a(cfg.applicationName)}" />
+
+    <!-- Pre-paint theme bootstrap: applies .light/.dark on <html> before first
+         paint so loading in dark mode no longer flashes white. External file
+         keeps CSP on script-src 'self' (no 'unsafe-inline'). -->
+    <script src="/theme-init.js"></script>
     <meta name="geo.region" content="${a(cfg.geoRegion)}" />
     <meta name="geo.placename" content="${a(cfg.geoPlaceName)}" />
     <link rel="canonical" href="${a(cfg.canonical)}" />
@@ -515,6 +520,11 @@ export const renderRouteHeadHtml = (
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
     <meta name="theme-color" content="${a(cfg.themeColor)}" />
     <meta name="application-name" content="${a(cfg.applicationName)}" />
+
+    <!-- Pre-paint theme bootstrap: applies .light/.dark on <html> before first
+         paint so loading in dark mode no longer flashes white. External file
+         keeps CSP on script-src 'self' (no 'unsafe-inline'). -->
+    <script src="/theme-init.js"></script>
     <meta name="geo.region" content="${a(cfg.geoRegion)}" />
     <meta name="geo.placename" content="${a(cfg.geoPlaceName)}" />
     <link rel="canonical" href="${a(canonical)}" />

@@ -177,6 +177,14 @@
     @apply border-border-main;
   }
 
+  /* During first paint (before the app hydrates), disable transitions so the
+     pre-paint dark theme does not animate from the light default. */
+  .theme-boot *,
+  .theme-boot *::before,
+  .theme-boot *::after {
+    transition: none !important;
+  }
+
   body {
     @apply bg-bg-base text-text-main font-sans selection:bg-primary/30;
     /* Do not transition background-color here if using view transitions, let the API handle it smoothly */
