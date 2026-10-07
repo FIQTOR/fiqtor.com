@@ -190,6 +190,23 @@ const escapeAttr = (value: string): string =>
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;");
 
+/**
+ * Render the Google Analytics snippet.
+ *
+ * The gtag bootstrap lives in `public/ga-init.js` (loaded via `src`) instead of
+ * being inlined, so the Content-Security-Policy can stay on `script-src 'self'`
+ * without 'unsafe-inline'. The measurement ID travels on the script tag's
+ * `data-ga-id` attribute, keeping Head.ts the single source of truth.
+ */
+const renderGaSnippet = (cfg: HeadConfig): string => {
+  const a = escapeAttr;
+  return cfg.gaMeasurementId
+    ? `
+    <script async src="https://www.googletagmanager.com/gtag/js?id=${a(cfg.gaMeasurementId)}"></script>
+    <script src="/ga-init.js" data-ga-id="${a(cfg.gaMeasurementId)}"></script>`
+    : "";
+};
+
 /** Render the `<head>` inner HTML string from a HeadConfig. */
 export const renderHeadHtml = (cfg: HeadConfig): string => {
   const a = escapeAttr;
@@ -243,16 +260,7 @@ export const renderHeadHtml = (cfg: HeadConfig): string => {
     ],
   };
 
-  const ga = cfg.gaMeasurementId
-    ? `
-    <script async src="https://www.googletagmanager.com/gtag/js?id=${a(cfg.gaMeasurementId)}"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', ${JSON.stringify(cfg.gaMeasurementId)});
-    </script>`
-    : "";
+  const ga = renderGaSnippet(cfg);
 
   return `
     <meta charset="UTF-8" />
@@ -554,7 +562,7 @@ export const renderRouteHeadHtml = (
 
     <script type="application/ld+json">
 ${JSON.stringify(jsonLd, null, 2)}
-    </script>`;
+    </script>${renderGaSnippet(cfg)}`;
 };
 
 /** Escape a string for safe use inside XML text/attributes (sitemap). */

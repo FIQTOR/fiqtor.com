@@ -89,9 +89,15 @@ function htmlHeadPlugin(env: Record<string, string>): Plugin {
         )
       )
         .map((m) => m[0])
-        // Skip the pre-paint theme bootstrap — it's already emitted by
-        // renderRouteHeadHtml, so re-adding it would duplicate the tag.
-        .filter((tag) => !tag.includes('/theme-init.js'))
+        // Skip the static bootstrap scripts and the GA loader already emitted
+        // by renderRouteHeadHtml (theme + GA) — re-adding them would duplicate
+        // the tags on every prerendered route.
+        .filter(
+          (tag) =>
+            !tag.includes('/theme-init.js') &&
+            !tag.includes('/ga-init.js') &&
+            !tag.includes('googletagmanager.com/gtag/js')
+        )
         .join('\n    ')
 
       for (const route of NAV_PAGES) {
