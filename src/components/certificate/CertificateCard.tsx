@@ -21,7 +21,10 @@ interface CertificateCardProps {
   variant?: "grid" | "slider";
 }
 
-export const CertificateCard = ({ certificate, variant = "grid" }: CertificateCardProps) => {
+export const CertificateCard = ({
+  certificate,
+  variant = "grid",
+}: CertificateCardProps) => {
   const { t } = useTranslation();
   const isSlider = variant === "slider";
 
@@ -37,7 +40,9 @@ export const CertificateCard = ({ certificate, variant = "grid" }: CertificateCa
             : "border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:border-emerald-500/30 dark:bg-emerald-500/15 dark:text-emerald-300"
       }`}
     >
-      {certificate.thisAcademic ? t("cert.badge.academic") : t("cert.badge.professional")}
+      {certificate.thisAcademic
+        ? t("cert.badge.academic")
+        : t("cert.badge.professional")}
     </span>
   );
 
@@ -78,7 +83,9 @@ export const CertificateCard = ({ certificate, variant = "grid" }: CertificateCa
     <div className="flex flex-col gap-2">
       <div
         className={`flex items-center gap-1.5 text-xs ${
-          isSlider ? "text-neutral-300" : "text-neutral-500 dark:text-neutral-400"
+          isSlider
+            ? "text-neutral-300"
+            : "text-neutral-500 dark:text-neutral-400"
         }`}
       >
         <TbCalendar className="h-3.5 w-3.5" />
@@ -111,16 +118,36 @@ export const CertificateCard = ({ certificate, variant = "grid" }: CertificateCa
     </div>
   ) : null;
 
+  // In the slider the info sits on top of a fixed 16:10 image, so keep the
+  // tag row to one line to guarantee the layout never overflows.
+  const sliderTags = certificate.tags?.length ? (
+    <div className="flex flex-wrap gap-1.5">
+      {certificate.tags.slice(0, 3).map((tag) => (
+        <span
+          key={tag}
+          className="rounded-md border border-white/10 bg-white/10 px-2 py-0.5 text-[10px] font-medium text-neutral-300"
+        >
+          #{tag}
+        </span>
+      ))}
+      {certificate.tags.length > 3 && (
+        <span className="rounded-md border border-white/10 bg-white/10 px-2 py-0.5 text-[10px] font-medium text-neutral-300">
+          +{certificate.tags.length - 3}
+        </span>
+      )}
+    </div>
+  ) : null;
+
   if (isSlider) {
     return (
       <div className="group w-full max-w-full">
         <div className="relative flex h-full w-full flex-col overflow-hidden rounded-2xl border border-neutral-300/10 bg-neutral-900 shadow-xl dark:border-neutral-700/30">
-          <div className="relative w-full overflow-hidden">
+          <div className="relative aspect-[16/10] w-full overflow-hidden">
             <img
               src={certificate.srcImage}
               alt={certificate.title}
               loading="lazy"
-              className="h-auto w-full object-contain transition-transform duration-700 group-hover:scale-105"
+              className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
             />
             <div className="absolute inset-0 flex flex-col justify-between bg-linear-to-t from-neutral-950/90 via-neutral-950/50 to-neutral-950/20 p-5 opacity-85 transition-opacity duration-300 group-hover:opacity-100 group-focus-within:opacity-100">
               <div className="flex items-start justify-between gap-3">
@@ -132,7 +159,7 @@ export const CertificateCard = ({ certificate, variant = "grid" }: CertificateCa
               </div>
               <div className="mt-auto flex flex-col gap-2">
                 {meta}
-                {tags}
+                {sliderTags}
               </div>
             </div>
           </div>
@@ -143,12 +170,12 @@ export const CertificateCard = ({ certificate, variant = "grid" }: CertificateCa
 
   return (
     <div className="group flex h-full w-full flex-col overflow-hidden rounded-3xl border border-neutral-300/60 bg-white shadow-md ring-1 ring-black/5 transition-all duration-500 hover:-translate-y-1 hover:shadow-xl hover:shadow-neutral-500/15 dark:border-neutral-800 dark:bg-neutral-900 dark:ring-white/5 dark:hover:shadow-black/40">
-      <div className="relative w-full overflow-hidden bg-neutral-100 dark:bg-neutral-800">
+      <div className="relative aspect-[16/10] w-full overflow-hidden bg-neutral-100 dark:bg-neutral-800">
         <img
           src={certificate.srcImage}
           alt={certificate.title}
           loading="lazy"
-          className="block h-auto w-full object-contain"
+          className="block h-full w-full object-cover object-top"
         />
       </div>
 

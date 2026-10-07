@@ -29,7 +29,7 @@ export const Certificates: Array<Certificate> = [
       "https://drive.google.com/file/d/1JRJXPr4zt0w0IheRY-u1Jal2qWn6G5ME/view?usp=sharing",
     published: "Jan 2025",
     srcImage:
-      "/img/certificate/bnsp-junior-web-developer-competency-taufiiqul-hakim.webp",
+      "/img/certificate/bnsp-junior-web-developer-competency-taufiiqul-hakim-wide.webp",
     thisAcademic: true,
     tags: [
       "BNSP",
@@ -111,7 +111,7 @@ export const Certificates: Array<Certificate> = [
       "https://officeseamolec-my.sharepoint.com/:f:/g/personal/seaqis_seameo_id/EjCcCaEA3PFHu70p7R_KQZ0BpYSlKVWPv65DOZSMr7-vIQ?e=5cGJbz",
     published: "Jul 2024",
     srcImage:
-      "/img/certificate/seameo-qitep-in-science-pkl-taufiiqul-hakim.webp",
+      "/img/certificate/seameo-qitep-in-science-pkl-taufiiqul-hakim-wide.webp",
     thisAcademic: true,
     tags: ["Internship", "Software Engineering", "SEAMEO QITEP in Science"],
   },
