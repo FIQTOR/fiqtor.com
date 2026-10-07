@@ -4,12 +4,17 @@ import { TbArrowRight, TbChevronsRight } from "react-icons/tb";
 import { Certificates } from "@/data/certificate";
 import { CertificateCard } from "@/components/certificate/CertificateCard";
 import type { Certificate } from "@/components/certificate/CertificateCard";
+import CertificateModal from "@/components/certificate/CertificateModal";
 import { motion, useInView } from "framer-motion";
 import { useTranslation } from "@/i18n";
 
 /** A carousel slot: either a real certificate or the "view all" marker card. */
 type CarouselCard =
-  | (Certificate & { uniqueId: string; isViewAll: false; originalIndex: number })
+  | (Certificate & {
+      uniqueId: string;
+      isViewAll: false;
+      originalIndex: number;
+    })
   | { uniqueId: string; isViewAll: true; originalIndex: number };
 
 export default function Certification() {
@@ -19,6 +24,8 @@ export default function Certification() {
 
   const featured = Certificates.slice(0, 8);
   const totalItems = featured.length + 1;
+
+  const [selected, setSelected] = useState<Certificate | null>(null);
 
   const [cards, setCards] = useState<CarouselCard[]>(() => {
     const certCards: CarouselCard[] = featured.map((cert, i) => ({
@@ -71,7 +78,6 @@ export default function Certification() {
       <div className="absolute bottom-20 -right-20 w-96 h-96 md:w-120 md:h-120 bg-purple-500/10 blur-[100px] rounded-full pointer-events-none" />
 
       <div className="px-5 sm:px-7 md:px-24 relative z-10 flex flex-col xl:flex-row gap-10 xl:gap-16 items-center">
-
         {/* Left Side: Copywriting */}
         <div className="w-full xl:w-2/5 flex flex-col gap-6 md:gap-8 z-20 mt-4 md:mt-0">
           <motion.h2
@@ -82,8 +88,12 @@ export default function Certification() {
           >
             <span className="font-extrabold">{t("home.cert.titleA")}</span>
             <span className="flex items-center gap-2 lg:gap-4 mt-2">
-              <span className="font-light italic text-neutral-400 dark:text-neutral-500 text-3xl lg:text-6xl">&</span>
-              <span className="font-extrabold pb-2">{t("home.cert.titleB")}</span>
+              <span className="font-light italic text-neutral-400 dark:text-neutral-500 text-3xl lg:text-6xl">
+                &
+              </span>
+              <span className="font-extrabold pb-2">
+                {t("home.cert.titleB")}
+              </span>
             </span>
           </motion.h2>
 
@@ -107,7 +117,10 @@ export default function Certification() {
               { label: t("home.cert.academic"), value: academicCount },
               { label: t("home.cert.professional"), value: professionalCount },
             ].map((stat, idx) => (
-              <div key={stat.label} className="flex flex-col gap-1 relative w-[45%] md:w-auto">
+              <div
+                key={stat.label}
+                className="flex flex-col gap-1 relative w-[45%] md:w-auto"
+              >
                 {idx !== 0 && (
                   <div className="hidden md:block absolute -left-6 top-1/2 -translate-y-1/2 w-px h-8 bg-neutral-200 dark:bg-neutral-800" />
                 )}
@@ -120,12 +133,10 @@ export default function Certification() {
               </div>
             ))}
           </motion.div>
-
         </div>
 
         {/* Right Side: Interactive Card Stack */}
         <div className="w-full xl:w-3/5 flex flex-col items-center mt-4 xl:mt-0 z-10">
-
           {/* Card stack wrapper with a responsive height */}
           <div className="relative min-h-[22rem] sm:min-h-[28rem] lg:min-h-[32rem] w-full flex items-center justify-center perspective-[1000px]">
             {cards.map((card, index) => {
@@ -139,7 +150,11 @@ export default function Certification() {
               // Card Stack Offset logic:
               const xPos = isVisible ? offset * 8 : 0;
               const yPos = isVisible ? offset * 24 : 0;
-              const rotateZ = isVisible ? (offset % 2 === 0 ? offset * 1.5 : -offset * 1.5) : 0;
+              const rotateZ = isVisible
+                ? offset % 2 === 0
+                  ? offset * 1.5
+                  : -offset * 1.5
+                : 0;
               const zIndex = 50 - offset;
 
               return (
@@ -166,12 +181,18 @@ export default function Certification() {
                     const swipeThreshold = 50;
                     if (dragOffset.x < -swipeThreshold || velocity.x < -300) {
                       handleNext();
-                    } else if (dragOffset.x > swipeThreshold || velocity.x > 300) {
+                    } else if (
+                      dragOffset.x > swipeThreshold ||
+                      velocity.x > 300
+                    ) {
                       handlePrev();
                     }
                   }}
-                  className={`absolute w-full max-w-[92vw] sm:max-w-120 md:max-w-140 lg:max-w-160 xl:max-w-175 ${isFront ? "cursor-grab active:cursor-grabbing hover:-translate-y-2" : "pointer-events-none"
-                    } transition-transform duration-300 ease-out`}
+                  className={`absolute w-full max-w-[92vw] sm:max-w-120 md:max-w-140 lg:max-w-160 xl:max-w-175 ${
+                    isFront
+                      ? "cursor-grab active:cursor-grabbing hover:-translate-y-2"
+                      : "pointer-events-none"
+                  } transition-transform duration-300 ease-out`}
                 >
                   {card.isViewAll ? (
                     <Link
@@ -186,13 +207,19 @@ export default function Certification() {
                           {t("home.cert.exploreAll")}
                         </p>
                         <p className="text-xs md:text-sm font-medium text-neutral-500 mt-2">
-                          {t("home.cert.viewAll", { count: Certificates.length })}
+                          {t("home.cert.viewAll", {
+                            count: Certificates.length,
+                          })}
                         </p>
                       </div>
                     </Link>
                   ) : (
                     <div className="bg-white dark:bg-neutral-900 rounded-4xl md:rounded-[2.5rem] shadow-2xl shadow-black/10 overflow-hidden border border-neutral-100 dark:border-neutral-800 pointer-events-none sm:pointer-events-auto">
-                      <CertificateCard certificate={card} variant="slider" />
+                      <CertificateCard
+                        certificate={card}
+                        variant="slider"
+                        onOpen={setSelected}
+                      />
                     </div>
                   )}
 
@@ -204,7 +231,10 @@ export default function Certification() {
                       >
                         <span
                           className="pointer-events-auto grid cursor-pointer place-items-center rounded-full p-1.5 text-white/80 transition-colors hover:bg-white/10"
-                          onClick={(e) => { e.stopPropagation(); handlePrev(); }}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handlePrev();
+                          }}
                         >
                           <TbChevronsRight className="h-4 w-4 origin-center rotate-180" />
                         </span>
@@ -215,12 +245,18 @@ export default function Certification() {
                             <motion.span
                               initial={false}
                               animate={{ x: [0, 30, 0] }}
-                              transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+                              transition={{
+                                duration: 2.4,
+                                repeat: Infinity,
+                                ease: "easeInOut",
+                              }}
                               className="relative h-1.5 w-12 rounded-full bg-white/15"
                             >
                               <span className="absolute left-0.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 rounded-full bg-gradient-to-br from-blue-400 to-cyan-300 shadow-[0_0_14px_rgba(56,189,248,0.9)]" />
                             </motion.span>
-                            <span className="sr-only">{t("home.cert.swipeHint")}</span>
+                            <span className="sr-only">
+                              {t("home.cert.swipeHint")}
+                            </span>
                           </span>
                           <span className="text-[10px] font-bold uppercase tracking-[0.28em] text-white/90">
                             {t("home.cert.swipe")}
@@ -229,7 +265,10 @@ export default function Certification() {
 
                         <span
                           className="pointer-events-auto grid cursor-pointer place-items-center rounded-full p-1.5 text-white/80 transition-colors hover:bg-white/10"
-                          onClick={(e) => { e.stopPropagation(); handleNext(); }}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleNext();
+                          }}
                         >
                           <TbChevronsRight className="h-4 w-4" />
                         </span>
@@ -248,16 +287,22 @@ export default function Certification() {
               {Array.from({ length: totalItems }).map((_, idx) => (
                 <div
                   key={idx}
-                  className={`h-1.5 rounded-full transition-all duration-300 ${idx === activeOriginalIndex
-                    ? "w-6 md:w-8 bg-blue-500"
-                    : "w-2 bg-neutral-300 dark:bg-neutral-700"
-                    }`}
+                  className={`h-1.5 rounded-full transition-all duration-300 ${
+                    idx === activeOriginalIndex
+                      ? "w-6 md:w-8 bg-blue-500"
+                      : "w-2 bg-neutral-300 dark:bg-neutral-700"
+                  }`}
                 />
               ))}
             </div>
           </div>
-</div>
+        </div>
       </div>
+
+      <CertificateModal
+        certificate={selected}
+        onClose={() => setSelected(null)}
+      />
     </section>
   );
 }

@@ -180,6 +180,11 @@ export const en = {
   "cert.badge.professional": "Professional",
   "cert.view": "View",
   "cert.pdf": "PDF",
+  "cert.openPreview": "Open certificate preview: {title}",
+  "cert.modal.close": "Close preview",
+  "cert.modal.issued": "Issued",
+  "cert.modal.zoom": "Click the certificate to zoom",
+  "cert.modal.fullscreen.close": "Exit fullscreen",
 
   // ---- Linktree page ----
   "linktree.aria": "{brand} - Official Social Links",
@@ -189,7 +194,8 @@ export const en = {
   "linktree.contact": "Contact Me",
   "linktree.business": "{company} - Business Solutions",
   "linktree.aiPrd": "{company} AI - Make PRD Now",
-  "linktree.bio": "Hello there! I'm a software engineer who builds digital experiences with code, creativity, and AI ✨",
+  "linktree.bio":
+    "Hello there! I'm a software engineer who builds digital experiences with code, creativity, and AI ✨",
   "linktree.pronouns": "📍 Indonesian • 👨‍💻 he/him",
 
   // ---- Contact / Talk page ----
@@ -333,7 +339,8 @@ export const en = {
   "kanban.newTask": "New Task",
   "kanban.loadSamples": "Load samples",
   "kanban.emptyTitle": "Your board is empty.",
-  "kanban.emptyBody": "Create a task to get started — or load the sample tasks.",
+  "kanban.emptyBody":
+    "Create a task to get started — or load the sample tasks.",
   "kanban.noMatch": "No tasks match your search or filter.",
   "kanban.storageNote":
     "Your board is saved automatically to this browser only. Nothing is sent to a server.",
@@ -353,12 +360,15 @@ export const en = {
   "kanban.delete.body": "This task will be permanently removed.",
   "kanban.delete.confirm": "Delete",
   "kanban.clearBoard.title": "Clear the board?",
-  "kanban.clearBoard.body": "This permanently deletes every task. This cannot be undone.",
+  "kanban.clearBoard.body":
+    "This permanently deletes every task. This cannot be undone.",
   "kanban.clearBoard.confirm": "Clear all",
   "kanban.replace.title": "Replace current board?",
-  "kanban.replace.body": "Loading samples replaces your current tasks. Continue?",
+  "kanban.replace.body":
+    "Loading samples replaces your current tasks. Continue?",
   "kanban.loadSamples.title": "Load sample tasks?",
-  "kanban.loadSamples.body": "This adds a few example tasks so you can try the board.",
+  "kanban.loadSamples.body":
+    "This adds a few example tasks so you can try the board.",
   "kanban.importConfirm": "Import",
   "kanban.task.untitled": "Untitled task",
   "kanban.task.untitledShort": "Untitled",
@@ -531,7 +541,8 @@ export const id: Record<TranslationKey, string> = {
   "projects.stat.showing": "Ditampilkan",
   "projects.tab.all": "Semua",
   "projects.tab.live": "Pratinjau Langsung",
-  "projects.search.placeholder": "Cari berdasarkan judul, teknologi, kategori, atau tag...",
+  "projects.search.placeholder":
+    "Cari berdasarkan judul, teknologi, kategori, atau tag...",
   "projects.search.aria": "Cari proyek",
   "projects.empty": "Tidak ada proyek yang cocok dengan pencarian Anda.",
   "projects.clearFilters": "Hapus semua filter",
@@ -567,6 +578,11 @@ export const id: Record<TranslationKey, string> = {
   "cert.badge.professional": "Profesional",
   "cert.view": "Lihat",
   "cert.pdf": "PDF",
+  "cert.openPreview": "Buka pratinjau sertifikat: {title}",
+  "cert.modal.close": "Tutup pratinjau",
+  "cert.modal.issued": "Diterbitkan",
+  "cert.modal.zoom": "Klik sertifikat untuk memperbesar",
+  "cert.modal.fullscreen.close": "Keluar layar penuh",
 
   // ---- Linktree page ----
   "linktree.aria": "{brand} - Tautan Sosial Resmi",
@@ -576,7 +592,8 @@ export const id: Record<TranslationKey, string> = {
   "linktree.contact": "Hubungi Saya",
   "linktree.business": "{company} - Solusi Bisnis",
   "linktree.aiPrd": "{company} AI - Buat PRD Sekarang",
-  "linktree.bio": "Halo! Saya seorang software engineer yang membangun pengalaman digital dengan kode, kreativitas, dan AI ✨",
+  "linktree.bio":
+    "Halo! Saya seorang software engineer yang membangun pengalaman digital dengan kode, kreativitas, dan AI ✨",
   "linktree.pronouns": "📍 Indonesia • 👨‍💻 he/him",
 
   // ---- Contact / Talk page ----
@@ -653,7 +670,8 @@ export const id: Record<TranslationKey, string> = {
   "ai.suggested": "Pertanyaan yang Disarankan:",
   "ai.dropFile": "Letakkan file Anda di sini",
   "ai.maxFile": "Ukuran file maksimum: 4.5MB",
-  "ai.composerPlaceholder": "Tanyakan apa saja…  (Shift + Enter untuk baris baru)",
+  "ai.composerPlaceholder":
+    "Tanyakan apa saja…  (Shift + Enter untuk baris baru)",
   "ai.attach": "Lampirkan file (maks 4.5MB)",
   "ai.attachMax": "Maks 4.5MB",
   "ai.attachImage": "Gambar",
@@ -691,7 +709,8 @@ export const id: Record<TranslationKey, string> = {
   "gh.more": "Banyak",
   "gh.failed": "Gagal memuat kontribusi.",
   "gh.invalidToken": "Token GitHub tidak valid!",
-  "gh.couldNot": "Tidak dapat mengambil data kontribusi GitHub untuk pengguna ini.",
+  "gh.couldNot":
+    "Tidak dapat mengambil data kontribusi GitHub untuk pengguna ini.",
   "gh.definitionShort":
     "Kontribusi GitHub adalah aktivitas dan partisipasi developer di repositori",
   "gh.definitionMore": "...baca selengkapnya",
@@ -721,7 +740,8 @@ export const id: Record<TranslationKey, string> = {
   "kanban.loadSamples": "Muat contoh",
   "kanban.emptyTitle": "Papan Anda kosong.",
   "kanban.emptyBody": "Buat tugas untuk memulai — atau muat contoh tugas.",
-  "kanban.noMatch": "Tidak ada tugas yang cocok dengan pencarian atau filter Anda.",
+  "kanban.noMatch":
+    "Tidak ada tugas yang cocok dengan pencarian atau filter Anda.",
   "kanban.storageNote":
     "Papan Anda disimpan otomatis hanya di browser ini. Tidak ada yang dikirim ke server.",
   "kanban.toast.saved": "Tersimpan {time}",
@@ -740,12 +760,15 @@ export const id: Record<TranslationKey, string> = {
   "kanban.delete.body": "Tugas ini akan dihapus secara permanen.",
   "kanban.delete.confirm": "Hapus",
   "kanban.clearBoard.title": "Bersihkan papan?",
-  "kanban.clearBoard.body": "Ini menghapus semua tugas secara permanen. Tidak dapat dibatalkan.",
+  "kanban.clearBoard.body":
+    "Ini menghapus semua tugas secara permanen. Tidak dapat dibatalkan.",
   "kanban.clearBoard.confirm": "Hapus semua",
   "kanban.replace.title": "Ganti papan saat ini?",
-  "kanban.replace.body": "Memuat contoh akan mengganti tugas Anda saat ini. Lanjutkan?",
+  "kanban.replace.body":
+    "Memuat contoh akan mengganti tugas Anda saat ini. Lanjutkan?",
   "kanban.loadSamples.title": "Muat contoh tugas?",
-  "kanban.loadSamples.body": "Ini menambahkan beberapa contoh tugas agar Anda bisa mencoba papan.",
+  "kanban.loadSamples.body":
+    "Ini menambahkan beberapa contoh tugas agar Anda bisa mencoba papan.",
   "kanban.importConfirm": "Impor",
   "kanban.task.untitled": "Tugas tanpa judul",
   "kanban.task.untitledShort": "Tanpa judul",
@@ -761,7 +784,8 @@ export const id: Record<TranslationKey, string> = {
   "kanban.modal.titlePlaceholder": "mis. Penjangkauan: kirim pesan ke 46 kafe",
   "kanban.modal.titleRequired": "Judul wajib diisi.",
   "kanban.modal.descLabel": "Deskripsi",
-  "kanban.modal.descPlaceholder": "Tambahkan konteks, tautan, atau kriteria penerimaan…",
+  "kanban.modal.descPlaceholder":
+    "Tambahkan konteks, tautan, atau kriteria penerimaan…",
   "kanban.modal.columnLabel": "Kolom",
   "kanban.modal.priorityLabel": "Prioritas",
   "kanban.modal.dueLabel": "Tenggat waktu",

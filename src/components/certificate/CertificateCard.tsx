@@ -19,14 +19,20 @@ export interface Certificate {
 interface CertificateCardProps {
   certificate: Certificate;
   variant?: "grid" | "slider";
+  /** Called when the user clicks the card to open the full preview modal. */
+  onOpen?: (certificate: Certificate) => void;
 }
 
 export const CertificateCard = ({
   certificate,
   variant = "grid",
+  onOpen,
 }: CertificateCardProps) => {
   const { t } = useTranslation();
   const isSlider = variant === "slider";
+  const isInteractive = Boolean(onOpen);
+
+  const triggerOpen = () => onOpen?.(certificate);
 
   const badge = (
     <span
@@ -47,7 +53,11 @@ export const CertificateCard = ({
   );
 
   const actions = (
-    <div className="flex items-center gap-2">
+    <div
+      className="flex items-center gap-2"
+      onClick={(e) => e.stopPropagation()}
+      onKeyDown={(e) => e.stopPropagation()}
+    >
       {certificate.urlDirect && (
         <a
           href={certificate.urlDirect}
@@ -58,7 +68,6 @@ export const CertificateCard = ({
               ? "bg-white/10 text-white hover:bg-white/20"
               : "border border-neutral-300/70 bg-white text-neutral-700 hover:bg-neutral-200 dark:border-neutral-700 dark:bg-white/10 dark:text-white dark:hover:bg-white/20"
           }`}
-          onClick={(e) => e.stopPropagation()}
         >
           <TbExternalLink className="h-3.5 w-3.5" />
           <span>{t("cert.view")}</span>
@@ -70,7 +79,6 @@ export const CertificateCard = ({
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-1.5 rounded-lg bg-blue-600/80 px-2.5 py-1.5 text-xs font-medium text-white backdrop-blur-md transition-all hover:bg-blue-600 hover:scale-105"
-          onClick={(e) => e.stopPropagation()}
         >
           <TbDownload className="h-3.5 w-3.5" />
           <span>{t("cert.pdf")}</span>
@@ -141,7 +149,12 @@ export const CertificateCard = ({
   if (isSlider) {
     return (
       <div className="group w-full max-w-full">
-        <div className="relative flex h-full w-full flex-col overflow-hidden rounded-2xl border border-neutral-300/10 bg-neutral-900 shadow-xl dark:border-neutral-700/30">
+        <div
+          className={`relative flex h-full w-full flex-col overflow-hidden rounded-2xl border border-neutral-300/10 bg-neutral-900 shadow-xl dark:border-neutral-700/30 ${
+            isInteractive ? "cursor-pointer" : ""
+          }`}
+          onClick={isInteractive ? triggerOpen : undefined}
+        >
           <div className="relative aspect-[16/10] w-full overflow-hidden">
             <img
               src={certificate.srcImage}
@@ -169,13 +182,37 @@ export const CertificateCard = ({
   }
 
   return (
-    <div className="group flex h-full w-full flex-col overflow-hidden rounded-3xl border border-neutral-300/60 bg-white shadow-md ring-1 ring-black/5 transition-all duration-500 hover:-translate-y-1 hover:shadow-xl hover:shadow-neutral-500/15 dark:border-neutral-800 dark:bg-neutral-900 dark:ring-white/5 dark:hover:shadow-black/40">
-      <div className="relative aspect-[16/10] w-full overflow-hidden bg-neutral-100 dark:bg-neutral-800">
+    <div
+      role={isInteractive ? "button" : undefined}
+      tabIndex={isInteractive ? 0 : undefined}
+      onClick={isInteractive ? triggerOpen : undefined}
+      onKeyDown={
+        isInteractive
+          ? (e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                triggerOpen();
+              }
+            }
+          : undefined
+      }
+      aria-label={
+        isInteractive
+          ? t("cert.openPreview", { title: certificate.title })
+          : undefined
+      }
+      className={`group flex h-full w-full flex-col overflow-hidden rounded-3xl border border-neutral-300/60 bg-white shadow-md ring-1 ring-black/5 transition-all duration-500 hover:-translate-y-1 hover:shadow-xl hover:shadow-neutral-500/15 dark:border-neutral-800 dark:bg-neutral-900 dark:ring-white/5 dark:hover:shadow-black/40 ${
+        isInteractive
+          ? "cursor-zoom-in focus-ring focus-ring-rounded outline-none"
+          : ""
+      }`}
+    >
+      <div className="relative block aspect-[16/10] w-full overflow-hidden bg-neutral-100 dark:bg-neutral-800">
         <img
           src={certificate.srcImage}
           alt={certificate.title}
           loading="lazy"
-          className="block h-full w-full object-cover object-top"
+          className="block h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
         />
       </div>
 
