@@ -81,19 +81,31 @@ function htmlHeadPlugin(env: Record<string, string>): Plugin {
       // module script that boots the SPA, the modulepreload hints, and the
       // stylesheet link. Without these, the prerendered per-route pages ship
       // zero JavaScript and render a blank (black) screen on hard refresh.
+      //
+      // Only asset-bearing tags are collected, and each is captured WITH its
+      // closing tag. A loose /<script[^>]*>/ match would grab just the opening
+      // tag of an inline <script type="application/ld+json"> data block, and
+      // injecting an unclosed <script> would swallow the module script that
+      // follows — blanking the page for real.
       const headMatch = indexHtml.match(/<head>([\s\S]*?)<\/head>/)
       const entryHead = headMatch ? headMatch[1] : ''
       const assetTags = Array.from(
         entryHead.matchAll(
-          /<(?:script|link)\b[^>]*>(?:<\/script>)?/g
+          /<script\b[^>]*\bsrc="[^"]*"[^>]*>\s*<\/script>|<link\b[^>]*>/g
         )
       )
         .map((m) => m[0])
-        // Skip the static bootstrap scripts and the GA loader already emitted
-        // by renderRouteHeadHtml (theme + GA) — re-adding them would duplicate
-        // the tags on every prerendered route.
         .filter(
           (tag) =>
+            // Drop JSON-LD / non-asset data blocks outright.
+            !tag.includes('ld+json') &&
+            // Keep only stylesheet + modulepreload <link>s (skip canonical,
+            // icons, preloads, etc. that renderRouteHeadHtml already emits or
+            // that must stay route-specific).
+            (!tag.startsWith('<link') ||
+              /rel="(?:stylesheet|modulepreload)"/.test(tag)) &&
+            // Skip the bootstrap scripts and GA loader already emitted by
+            // renderRouteHeadHtml — re-adding them would duplicate the tags.
             !tag.includes('/theme-init.js') &&
             !tag.includes('/ga-init.js') &&
             !tag.includes('googletagmanager.com/gtag/js')
@@ -109,6 +121,19 @@ function htmlHeadPlugin(env: Record<string, string>): Plugin {
           /<head>[\s\S]*?<\/head>/,
           `<head>${renderRouteHeadHtml(config, route)}\n    ${assetTags}\n  </head>`
         )
+
+        // Safety net: an unclosed <script> (e.g. a JSON-LD block whose opening
+        // tag was injected without its body/closing tag) makes the browser
+        // swallow the following module script, shipping a blank page. Refuse
+        // to emit unbalanced HTML rather than deploy a broken route.
+        const opens = (html.match(/<script\b/g) || []).length
+        const closes = (html.match(/<\/script>/g) || []).length
+        if (opens !== closes) {
+          throw new Error(
+            `[html-head] Prerendered ${route.path} has ${opens} <script> but ${closes} </script> — refusing to write unbalanced HTML.`
+          )
+        }
+
         mkdirSync(path.dirname(filePath), { recursive: true })
         writeFileSync(filePath, html)
       }
