@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { useRef, useState } from "react";
-import { TbArrowRight, TbChevronsRight } from "react-icons/tb";
-import { Certificates } from "@/data/certificate";
+import { TbArrowRight, TbChevronsRight } from "react-icons/tb";import { Certificates } from "@/data/certificate";
 import { CertificateCard } from "@/components/certificate/CertificateCard";
 import type { Certificate } from "@/components/certificate/CertificateCard";
 import CertificateModal from "@/components/certificate/CertificateModal";
@@ -132,6 +131,27 @@ export default function Certification() {
                 </span>
               </div>
             ))}
+          </motion.div>
+
+          {/* See-all CTA — jumps to the full /certification library */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="mt-2"
+          >
+            <Link
+              to="/certification"
+              className="group inline-flex items-center gap-3 rounded-full bg-neutral-900 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-neutral-900/20 transition-all duration-300 hover:bg-blue-600 hover:shadow-blue-500/30 hover:shadow-xl dark:bg-white dark:text-neutral-900 dark:hover:bg-blue-500 dark:hover:text-white"
+            >
+              <span className="flex flex-col items-start leading-tight">
+                <span>{t("home.cert.seeAll")}</span>
+                <span className="text-[10px] font-medium text-neutral-400 transition-colors group-hover:text-blue-100 dark:text-neutral-500 dark:group-hover:text-blue-100">
+                  {t("home.cert.seeAllHint")}
+                </span>
+              </span>
+              <TbArrowRight className="h-4 w-4 shrink-0 transition-transform duration-300 group-hover:translate-x-1" />
+            </Link>
           </motion.div>
         </div>
 

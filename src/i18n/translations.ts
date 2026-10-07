@@ -120,6 +120,8 @@ export const en = {
   "home.cert.professional": "Professional",
   "home.cert.exploreAll": "Explore Full Library",
   "home.cert.viewAll": "View all {count} certificates",
+  "home.cert.seeAll": "See all certificates",
+  "home.cert.seeAllHint": "Browse every credential with filters and search",
   "home.cert.swipe": "Swipe",
   "home.cert.swipeHint": "Swipe indicator",
 
@@ -517,6 +519,8 @@ export const id: Record<TranslationKey, string> = {
   "home.cert.professional": "Profesional",
   "home.cert.exploreAll": "Jelajahi Semua",
   "home.cert.viewAll": "Lihat semua {count} sertifikat",
+  "home.cert.seeAll": "Lihat semua sertifikat",
+  "home.cert.seeAllHint": "Jelajahi semua kredensial dengan filter dan pencarian",
   "home.cert.swipe": "Geser",
   "home.cert.swipeHint": "Indikator geser",
 

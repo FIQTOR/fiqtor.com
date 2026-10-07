@@ -25,8 +25,6 @@ export const Certificates: Array<Certificate> = [
   {
     title:
       "BNSP — National Professional Certification: Certified Junior Web Developer (Competency Certificate)",
-    urlDirect:
-      "https://drive.google.com/file/d/1JRJXPr4zt0w0IheRY-u1Jal2qWn6G5ME/view?usp=sharing",
     published: "Jan 2025",
     srcImage:
       "/img/certificate/bnsp-junior-web-developer-competency-taufiiqul-hakim.webp",
@@ -52,8 +50,6 @@ export const Certificates: Array<Certificate> = [
   {
     title:
       "LKS SMK East Java XXXII — Web Technologies, 4th Place out of 44 (Provincial Level)",
-    urlDirect:
-      "https://drive.google.com/file/d/1JRJXPr4zt0w0IheRY-u1Jal2qWn6G5ME/view?usp=sharing",
     published: "Apr 2024",
     srcImage:
       "/img/certificate/lksjatim32-webtechnologies-certificate-taufiiqul_hakim.webp",
@@ -70,8 +66,6 @@ export const Certificates: Array<Certificate> = [
   {
     title:
       "LKS SMK Jombang Regency XXXII — Web Technologies Champion (1st Place)",
-    urlDirect:
-      "https://drive.google.com/file/d/1JRJXPr4zt0w0IheRY-u1Jal2qWn6G5ME/view?usp=sharing",
     published: "Feb 2024",
     srcImage:
       "/img/certificate/LKS juara1 tingkat kabupaten jombang - Taufiiqul Hakim.webp",
@@ -107,8 +101,6 @@ export const Certificates: Array<Certificate> = [
   {
     title:
       "SEAMEO QITEP in Science — Internship / Praktik Kerja Lapangan (Distinction)",
-    urlDirect:
-      "https://officeseamolec-my.sharepoint.com/:f:/g/personal/seaqis_seameo_id/EjCcCaEA3PFHu70p7R_KQZ0BpYSlKVWPv65DOZSMr7-vIQ?e=5cGJbz",
     published: "Jul 2024",
     srcImage:
       "/img/certificate/seameo-qitep-in-science-pkl-taufiiqul-hakim.webp",
@@ -241,8 +233,6 @@ export const Certificates: Array<Certificate> = [
   {
     title:
       "Future Entrepreneur Summit Surabaya 2025 — Public Speaking Training",
-    urlDirect:
-      "https://app.simvent.id/certificates?context=NjM5MDY6TUJHR1VGN1cwRA==",
     published: "Dec 2025",
     srcImage:
       "/img/certificate/cerificate-future-entrepreneur-summit-2025-sby-5.webp",
@@ -252,8 +242,6 @@ export const Certificates: Array<Certificate> = [
   {
     title:
       "Future Entrepreneur Summit Surabaya 2025 — Future National Competition",
-    urlDirect:
-      "https://app.simvent.id/certificates?context=NjM5MDY6TUJHR1VGN1cwRA==",
     published: "Dec 2025",
     srcImage:
       "/img/certificate/cerificate-future-entrepreneur-summit-2025-sby-4.webp",
@@ -263,8 +251,6 @@ export const Certificates: Array<Certificate> = [
   {
     title:
       "Future Entrepreneur Summit Surabaya 2025 — International Youth Innovation Summit Selection Program 2025",
-    urlDirect:
-      "https://app.simvent.id/certificates?context=NjM5MDY6TUJHR1VGN1cwRA==",
     published: "Dec 2025",
     srcImage:
       "/img/certificate/cerificate-future-entrepreneur-summit-2025-sby-3.webp",
@@ -274,8 +260,6 @@ export const Certificates: Array<Certificate> = [
   {
     title:
       "Future Entrepreneur Summit Surabaya 2025 — Improvement Softskill Webinar",
-    urlDirect:
-      "https://app.simvent.id/certificates?context=NjM5MDY6TUJHR1VGN1cwRA==",
     published: "Dec 2025",
     srcImage:
       "/img/certificate/cerificate-future-entrepreneur-summit-2025-sby-2.webp",
@@ -285,8 +269,6 @@ export const Certificates: Array<Certificate> = [
   {
     title:
       "Future Entrepreneur Summit Surabaya 2025 — Participation Certificate",
-    urlDirect:
-      "https://app.simvent.id/certificates?context=NjM5MDY6TUJHR1VGN1cwRA==",
     published: "Dec 2025",
     srcImage:
       "/img/certificate/cerificate-future-entrepreneur-summit-2025-sby-1.webp",

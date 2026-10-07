@@ -77,14 +77,31 @@ function htmlHeadPlugin(env: Record<string, string>): Plugin {
       const outDir = path.resolve(__dirname, 'dist')
       const indexHtml = readFileSync(path.join(outDir, 'index.html'), 'utf8')
 
+      // Pull the hashed asset tags Vite injected into the entry <head> — the
+      // module script that boots the SPA, the modulepreload hints, and the
+      // stylesheet link. Without these, the prerendered per-route pages ship
+      // zero JavaScript and render a blank (black) screen on hard refresh.
+      const headMatch = indexHtml.match(/<head>([\s\S]*?)<\/head>/)
+      const entryHead = headMatch ? headMatch[1] : ''
+      const assetTags = Array.from(
+        entryHead.matchAll(
+          /<(?:script|link)\b[^>]*>(?:<\/script>)?/g
+        )
+      )
+        .map((m) => m[0])
+        // Skip the pre-paint theme bootstrap — it's already emitted by
+        // renderRouteHeadHtml, so re-adding it would duplicate the tag.
+        .filter((tag) => !tag.includes('/theme-init.js'))
+        .join('\n    ')
+
       for (const route of NAV_PAGES) {
         if (route.path === '/') continue
         const filePath = path.join(outDir, route.path.replace(/^\//, ''), 'index.html')
         // Keep the already-generated (hashed) asset tags from the built entry,
-        // but swap the <head> for route-specific metadata.
+        // but swap the metadata tags for route-specific ones.
         const html = indexHtml.replace(
           /<head>[\s\S]*?<\/head>/,
-          `<head>${renderRouteHeadHtml(config, route)}</head>`
+          `<head>${renderRouteHeadHtml(config, route)}\n    ${assetTags}\n  </head>`
         )
         mkdirSync(path.dirname(filePath), { recursive: true })
         writeFileSync(filePath, html)
