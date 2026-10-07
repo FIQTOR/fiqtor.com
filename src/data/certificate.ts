@@ -5,6 +5,9 @@
  * @property {string} [urlDirect] - Optional direct URL to view/download the certificate
  * @property {string} published - Publication/issuance date of the certificate
  * @property {string} srcImage - Path to the certificate's image file
+ * @property {string} [srcImageSecondary] - Optional second image (e.g. a results
+ *   sheet) shown alongside the certificate in the card/modal
+ * @property {string} [secondaryLabel] - Optional caption for the second image
  * @property {boolean} thisAcademic - Indicates if this is an academic certificate
  * @property {Array<string>} [tags] - Optional array of tags/keywords related to the certificate
  */
@@ -13,6 +16,8 @@ type Certificate = {
   urlDirect?: string;
   published: string;
   srcImage: string;
+  srcImageSecondary?: string;
+  secondaryLabel?: string;
   thisAcademic: boolean;
   tags?: Array<string>;
 };
@@ -49,10 +54,13 @@ export const Certificates: Array<Certificate> = [
   },
   {
     title:
-      "LKS SMK East Java XXXII — Web Technologies, 4th Place out of 44 (Provincial Level)",
+      "LKS SMK East Java XXXII — Web Technologies: 4th Place / Rank 4 of 44 (Provincial Level)",
     published: "Apr 2024",
     srcImage:
       "/img/certificate/lksjatim32-webtechnologies-certificate-taufiiqul_hakim.webp",
+    srcImageSecondary:
+      "/img/certificate/lks-jatim-32-web-technologies-score-sheet-rank4.webp",
+    secondaryLabel: "Official final score sheet — Rank 4 (69.75)",
     thisAcademic: true,
     tags: [
       "Laravel",

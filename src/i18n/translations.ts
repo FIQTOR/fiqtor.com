@@ -187,6 +187,9 @@ export const en = {
   "cert.modal.issued": "Issued",
   "cert.modal.zoom": "Click the certificate to zoom",
   "cert.modal.fullscreen.close": "Exit fullscreen",
+  "cert.twoPages": "2 pages",
+  "cert.scrollHint": "Scroll to see the supporting document",
+  "cert.badge.certificate": "Certificate",
 
   // ---- Linktree page ----
   "linktree.aria": "{brand} - Official Social Links",
@@ -587,6 +590,9 @@ export const id: Record<TranslationKey, string> = {
   "cert.modal.issued": "Diterbitkan",
   "cert.modal.zoom": "Klik sertifikat untuk memperbesar",
   "cert.modal.fullscreen.close": "Keluar layar penuh",
+  "cert.twoPages": "2 halaman",
+  "cert.scrollHint": "Gulir untuk melihat dokumen pendukung",
+  "cert.badge.certificate": "Sertifikat",
 
   // ---- Linktree page ----
   "linktree.aria": "{brand} - Tautan Sosial Resmi",

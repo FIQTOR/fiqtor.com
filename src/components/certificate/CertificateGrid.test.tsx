@@ -21,6 +21,15 @@ const certs: Certificate[] = [
     thisAcademic: false,
     tags: ["HTML"],
   },
+  {
+    title: "LKS SMK East Java XXXII Web Technologies",
+    published: "Apr 2024",
+    srcImage: "/img/certificate/lks-cert.webp",
+    srcImageSecondary: "/img/certificate/lks-scores.webp",
+    secondaryLabel: "Official final score sheet — Rank 4 (69.75)",
+    thisAcademic: true,
+    tags: ["LKS"],
+  },
 ];
 
 /** Render inside the real i18n provider so `t()` interpolates like production. */
@@ -60,5 +69,25 @@ describe("CertificatesGrid", () => {
     const view = screen.getByRole("link", { name: /view/i });
     fireEvent.click(view);
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  });
+
+  it("shows both the certificate and the score sheet for a two-image cert", () => {
+    renderGrid(<CertificatesGrid certificates={[certs[2]]} />);
+    fireEvent.click(
+      screen.getByRole("button", {
+        name: /open certificate preview: LKS SMK East Java XXXII/i,
+      }),
+    );
+
+    const dialog = screen.getByRole("dialog");
+    const srcs = Array.from(dialog.querySelectorAll("img")).map((i) =>
+      i.getAttribute("src"),
+    );
+    expect(srcs).toContain("/img/certificate/lks-cert.webp");
+    expect(srcs).toContain("/img/certificate/lks-scores.webp");
+    // The score-sheet caption is shown.
+    expect(
+      screen.getByText(/Official final score sheet — Rank 4/i),
+    ).toBeInTheDocument();
   });
 });

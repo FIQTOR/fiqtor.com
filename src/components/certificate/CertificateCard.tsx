@@ -10,6 +10,10 @@ export interface Certificate {
   title: string;
   published: string;
   srcImage: string;
+  /** Optional second image (e.g. a results sheet) shown with the certificate. */
+  srcImageSecondary?: string;
+  /** Optional caption for the second image. */
+  secondaryLabel?: string;
   urlDirect?: string;
   urlPdf?: string;
   thisAcademic?: boolean;
@@ -214,6 +218,11 @@ export const CertificateCard = ({
           loading="lazy"
           className="block h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
         />
+        {certificate.srcImageSecondary && (
+          <span className="pointer-events-none absolute right-2 top-2 inline-flex items-center gap-1 rounded-full bg-black/55 px-2 py-0.5 text-[10px] font-semibold text-white backdrop-blur-sm">
+            {t("cert.twoPages")}
+          </span>
+        )}
       </div>
 
       <div className="flex flex-1 flex-col justify-between gap-4 p-4 sm:p-5">

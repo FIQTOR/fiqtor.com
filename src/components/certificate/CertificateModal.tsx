@@ -34,12 +34,14 @@ export default function CertificateModal({
   const { t } = useTranslation();
   const isOpen = Boolean(certificate);
   const [isZoomed, setIsZoomed] = useState(false);
+  const [isZoomedSecondary, setIsZoomedSecondary] = useState(false);
 
   const trapRef = useFocusTrap<HTMLDivElement>(isOpen, onClose);
   useBodyScrollLock(isOpen);
 
   const close = () => {
     setIsZoomed(false);
+    setIsZoomedSecondary(false);
     onClose();
   };
 
@@ -119,23 +121,75 @@ export default function CertificateModal({
 
               {/* Image stage */}
               <div className="flex min-h-0 flex-1 items-center justify-center overflow-auto bg-neutral-100 p-3 sm:p-6 dark:bg-neutral-950/60">
-                <button
-                  type="button"
-                  onClick={() => setIsZoomed(true)}
-                  aria-label={t("cert.modal.zoom")}
-                  className="group relative flex max-h-full cursor-zoom-in items-center justify-center"
-                >
-                  <img
-                    src={certificate.srcImage}
-                    alt={certificate.title}
-                    loading="lazy"
-                    decoding="async"
-                    className="max-h-[62vh] w-auto max-w-full rounded-lg object-contain shadow-lg sm:max-h-[68vh]"
-                  />
-                  <span className="pointer-events-none absolute right-3 top-3 grid place-items-center rounded-full bg-black/50 p-2 text-white opacity-0 backdrop-blur-sm transition-opacity duration-200 group-hover:opacity-100">
-                    <TbMaximize className="h-4 w-4" />
-                  </span>
-                </button>
+                {certificate.srcImageSecondary ? (
+                  <div className="flex w-full flex-col items-center gap-4 lg:flex-row lg:items-start lg:justify-center">
+                    <figure className="flex flex-col items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setIsZoomed(true)}
+                        aria-label={t("cert.modal.zoom")}
+                        className="group relative flex cursor-zoom-in items-center justify-center"
+                      >
+                        <img
+                          src={certificate.srcImage}
+                          alt={certificate.title}
+                          loading="lazy"
+                          decoding="async"
+                          className="max-h-[42vh] w-auto max-w-full rounded-lg object-contain shadow-lg sm:max-h-[52vh] lg:max-h-[60vh]"
+                        />
+                        <span className="pointer-events-none absolute right-3 top-3 grid place-items-center rounded-full bg-black/50 p-2 text-white opacity-0 backdrop-blur-sm transition-opacity duration-200 group-hover:opacity-100">
+                          <TbMaximize className="h-4 w-4" />
+                        </span>
+                      </button>
+                      <figcaption className="text-xs font-medium text-neutral-500 dark:text-neutral-400">
+                        {t("cert.badge.certificate")}
+                      </figcaption>
+                    </figure>
+
+                    <figure className="flex flex-col items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setIsZoomedSecondary(true)}
+                        aria-label={t("cert.modal.zoom")}
+                        className="group relative flex cursor-zoom-in items-center justify-center"
+                      >
+                        <img
+                          src={certificate.srcImageSecondary}
+                          alt={certificate.secondaryLabel ?? certificate.title}
+                          loading="lazy"
+                          decoding="async"
+                          className="max-h-[42vh] w-auto max-w-full rounded-lg object-contain shadow-lg sm:max-h-[52vh] lg:max-h-[60vh]"
+                        />
+                        <span className="pointer-events-none absolute right-3 top-3 grid place-items-center rounded-full bg-black/50 p-2 text-white opacity-0 backdrop-blur-sm transition-opacity duration-200 group-hover:opacity-100">
+                          <TbMaximize className="h-4 w-4" />
+                        </span>
+                      </button>
+                      {certificate.secondaryLabel && (
+                        <figcaption className="max-w-xs text-center text-xs font-medium text-neutral-500 dark:text-neutral-400">
+                          {certificate.secondaryLabel}
+                        </figcaption>
+                      )}
+                    </figure>
+                  </div>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => setIsZoomed(true)}
+                    aria-label={t("cert.modal.zoom")}
+                    className="group relative flex max-h-full cursor-zoom-in items-center justify-center"
+                  >
+                    <img
+                      src={certificate.srcImage}
+                      alt={certificate.title}
+                      loading="lazy"
+                      decoding="async"
+                      className="max-h-[62vh] w-auto max-w-full rounded-lg object-contain shadow-lg sm:max-h-[68vh]"
+                    />
+                    <span className="pointer-events-none absolute right-3 top-3 grid place-items-center rounded-full bg-black/50 p-2 text-white opacity-0 backdrop-blur-sm transition-opacity duration-200 group-hover:opacity-100">
+                      <TbMaximize className="h-4 w-4" />
+                    </span>
+                  </button>
+                )}
               </div>
 
               {/* Footer: tags + actions */}
@@ -181,18 +235,29 @@ export default function CertificateModal({
 
           {/* Fullscreen zoom */}
           <AnimatePresence>
-            {isZoomed && (
+            {(isZoomed || isZoomedSecondary) && (
               <motion.div
                 key="cert-modal-zoom"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                onClick={() => setIsZoomed(false)}
+                onClick={() => {
+                  setIsZoomed(false);
+                  setIsZoomedSecondary(false);
+                }}
                 className="fixed inset-0 z-[200] flex cursor-zoom-out items-center justify-center bg-black/95 p-4"
               >
                 <img
-                  src={certificate.srcImage}
-                  alt={certificate.title}
+                  src={
+                    isZoomedSecondary && certificate.srcImageSecondary
+                      ? certificate.srcImageSecondary
+                      : certificate.srcImage
+                  }
+                  alt={
+                    isZoomedSecondary
+                      ? certificate.secondaryLabel ?? certificate.title
+                      : certificate.title
+                  }
                   className="max-h-full max-w-full rounded-lg object-contain shadow-2xl"
                 />
                 <button
@@ -200,6 +265,7 @@ export default function CertificateModal({
                   onClick={(e) => {
                     e.stopPropagation();
                     setIsZoomed(false);
+                    setIsZoomedSecondary(false);
                   }}
                   aria-label={t("cert.modal.fullscreen.close")}
                   className="absolute right-4 top-4 grid cursor-pointer place-items-center rounded-full bg-white/10 p-2.5 text-white backdrop-blur-sm transition hover:bg-white/20"
