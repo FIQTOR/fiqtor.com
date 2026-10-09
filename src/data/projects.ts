@@ -1527,4 +1527,74 @@ export const Projects: Array<Project> = [
       },
     ],
   },
+  {
+    title: {
+      en: "Lagoon - Interactive 3D Island Diorama",
+      id: "Lagoon - Diorama Pulau 3D Interaktif",
+    },
+    category: "Creative",
+    description: {
+      en: "A real-time 3D island diorama I built where every tap on the lagoon sends a ripple across the reef, with a full day-to-night cycle, rain and sunset presets, overwater villas, and a live water simulation. It solves the problem of static, lifeless hero visuals — visitors can play with the scene, dragging the sun from golden hour to starlight and stirring the water themselves.",
+      id: "Diorama pulau 3D real-time yang saya bangun di mana setiap ketukan di laguna mengirim riak melintasi terumbu, dengan siklus siang-malam penuh, preset hujan dan matahari terbenam, vila di atas air, dan simulasi air langsung. Ini menyelesaikan masalah visual hero yang statis dan tanpa nyawa — pengunjung bisa bermain dengan adegan, menggeser matahari dari golden hour ke cahaya bintang dan mengaduk air sendiri.",
+    },
+    urlDirect: "https://lagoon-mocha.vercel.app/",
+    srcImage: "img/projects/lagoon.webp",
+    tags: {
+      en: ["3D", "Three.js", "WebGL", "Interactive", "Water Simulation", "Creative Coding"],
+      id: ["3D", "Three.js", "WebGL", "Interaktif", "Simulasi Air", "Creative Coding"],
+    },
+    icons: [
+      {
+        SvgIcon: Javascript,
+        title: "JavaScript",
+      },
+      {
+        SvgIcon: Html5,
+        title: "HTML5",
+      },
+      {
+        SvgIcon: Css3,
+        title: "CSS3",
+      },
+      {
+        SvgIcon: Vercel,
+        title: "Vercel",
+      },
+    ],
+  },
+  {
+    title: {
+      en: "Lintas Rent - Premium Car Rental",
+      id: "Lintas Rent - Rental Mobil Premium",
+    },
+    category: "Landing Page",
+    description: {
+      en: "A premium car rental website I built with a cinematic scroll-driven 3D showroom featuring real GLB car models (Ferrari, Lamborghini, Porsche). Visitors scrub through each car, get a live price estimate for their chosen dates and options, and send a pre-filled booking straight to WhatsApp. It solves the problem of rental businesses showing flat photo galleries — here customers explore the actual cars in 3D and book in seconds.",
+      id: "Situs rental mobil premium yang saya bangun dengan showroom 3D sinematik yang digerakkan scroll menampilkan model mobil GLB asli (Ferrari, Lamborghini, Porsche). Pengunjung menelusuri setiap mobil, mendapat estimasi harga langsung untuk tanggal dan opsi pilihan, lalu mengirim pemesanan siap-pakai langsung ke WhatsApp. Ini menyelesaikan masalah bisnis rental yang hanya menampilkan galeri foto datar — di sini pelanggan menjelajahi mobil sebenarnya dalam 3D dan memesan dalam hitungan detik.",
+    },
+    urlDirect: "https://lintas-rent.vercel.app/",
+    srcImage: "img/projects/lintas-rent.webp",
+    tags: {
+      en: ["Landing Page", "3D", "Three.js", "GLTF", "GSAP ScrollTrigger", "Booking"],
+      id: ["Landing Page", "3D", "Three.js", "GLTF", "GSAP ScrollTrigger", "Pemesanan"],
+    },
+    icons: [
+      {
+        SvgIcon: Javascript,
+        title: "JavaScript",
+      },
+      {
+        SvgIcon: Html5,
+        title: "HTML5",
+      },
+      {
+        SvgIcon: Css3,
+        title: "CSS3",
+      },
+      {
+        SvgIcon: Vercel,
+        title: "Vercel",
+      },
+    ],
+  },
 ];
