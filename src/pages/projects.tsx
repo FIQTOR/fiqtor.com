@@ -7,8 +7,9 @@ import { EmptyState } from "@/components/EmptyState";
 import ProjectsGrid from "@/modules/projects/components/ProjectsGrid";
 import { TbStack2, TbTerminal, TbSearch, TbFilter } from "react-icons/tb";
 import { motion } from "framer-motion";
-import { Projects, ProjectCategories } from "@/data/projects";
-import type { ProjectCategory } from "@/data/projects";
+import { Projects, BestProjects, RecentProjects, ProjectCategories } from "@/data/projects";
+import type { Project, ProjectCategory, ProjectHighlight } from "@/data/projects";
+import HighlightTabs from "@/components/projects/HighlightTabs";
 import { BRAND_NAME } from "@/config/Identity";
 import { useTranslation } from "@/i18n";
 import { PROJECT_CATEGORY_KEY } from "@/lib/projectCategory";
@@ -18,8 +19,16 @@ type ActiveCategory = ProjectCategory | "all" | "live";
 const isProjectCategory = (value: string): value is ProjectCategory =>
   (ProjectCategories as Array<string>).includes(value);
 
+const isProjectHighlight = (value: string): value is ProjectHighlight =>
+  value === "best" || value === "recent";
+
 const isLivePreview = (project: { urlDirect?: string }): boolean =>
   typeof project.urlDirect === "string" && project.urlDirect.trim().length > 0;
+
+const HIGHLIGHT_SOURCE: Record<ProjectHighlight, Array<Project>> = {
+  best: BestProjects,
+  recent: RecentProjects,
+};
 
 const ProjectsPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -27,14 +36,25 @@ const ProjectsPage = () => {
 
   const searchQuery = searchParams.get("q") ?? "";
   const categoryParam = searchParams.get("category") ?? "";
+  const highlightParam = searchParams.get("tab") ?? "";
+  // The projects page defaults to the "Recent Project" list; the homepage
+  // defaults to "Best Project".
+  const activeHighlight: ProjectHighlight = isProjectHighlight(highlightParam)
+    ? highlightParam
+    : "recent";
   const activeCategory: ActiveCategory =
     categoryParam === "live"
       ? "live"
       : isProjectCategory(categoryParam)
         ? categoryParam
         : "all";
+  const highlightProjects = HIGHLIGHT_SOURCE[activeHighlight];
 
-  const updateParams = (next: { q?: string; category?: ActiveCategory }) => {
+  const updateParams = (next: {
+    q?: string;
+    category?: ActiveCategory;
+    highlight?: ProjectHighlight;
+  }) => {
     const params = new URLSearchParams(searchParams);
 
     if (next.q !== undefined) {
@@ -47,13 +67,18 @@ const ProjectsPage = () => {
       else params.delete("category");
     }
 
+    if (next.highlight !== undefined) {
+      if (next.highlight !== "recent") params.set("tab", next.highlight);
+      else params.delete("tab");
+    }
+
     setSearchParams(params, { replace: true });
   };
 
   const filteredProjects = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
 
-    return Projects.filter((project) => {
+    return highlightProjects.filter((project) => {
       const matchesCategory =
         activeCategory === "all"
           ? true
@@ -75,28 +100,33 @@ const ProjectsPage = () => {
 
       return matchesCategory && matchesSearch;
     });
-  }, [searchQuery, activeCategory]);
+  }, [searchQuery, activeCategory, highlightProjects]);
+
+  const highlightCounts = useMemo<Record<ProjectHighlight, number>>(
+    () => ({ best: BestProjects.length, recent: RecentProjects.length }),
+    []
+  );
 
   const stats = useMemo(() => ({
     total: Projects.length,
   }), []);
 
   const liveCount = useMemo(
-    () => Projects.filter(isLivePreview).length,
-    []
+    () => highlightProjects.filter(isLivePreview).length,
+    [highlightProjects]
   );
 
   const categoryTabs = useMemo<Array<{ id: ActiveCategory; label: string; count: number }>>(() => {
     return [
-      { id: "all", label: t("projects.tab.all"), count: Projects.length },
+      { id: "all", label: t("projects.tab.all"), count: highlightProjects.length },
       { id: "live", label: t("projects.tab.live"), count: liveCount },
       ...ProjectCategories.map((category) => ({
         id: category,
         label: t(PROJECT_CATEGORY_KEY[category]),
-        count: Projects.filter((p) => p.category === category).length,
+        count: highlightProjects.filter((p) => p.category === category).length,
       })),
     ];
-  }, [liveCount, t]);
+  }, [highlightProjects, liveCount, t]);
 
   return (
     <>
@@ -162,15 +192,23 @@ const ProjectsPage = () => {
 
         {/* Filters & Search UI */}
         <div className="relative z-10 mb-12 flex flex-col gap-6">
-          <div className="relative group max-w-md w-full">
-            <TbSearch className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-neutral-400 group-focus-within:text-blue-500 transition-colors" />
-            <input
-              type="text"
-              aria-label={t("projects.search.aria")}
-              placeholder={t("projects.search.placeholder")}
-              value={searchQuery}
-              onChange={(e) => updateParams({ q: e.target.value })}
-              className="w-full pl-12 pr-4 py-3 rounded-2xl bg-white/50 dark:bg-neutral-900/50 backdrop-blur-md border border-neutral-300/30 dark:border-neutral-800/50 focus:border-blue-500/50 outline-none transition-all"
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="relative group max-w-md w-full">
+              <TbSearch className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-neutral-400 group-focus-within:text-blue-500 transition-colors" />
+              <input
+                type="text"
+                aria-label={t("projects.search.aria")}
+                placeholder={t("projects.search.placeholder")}
+                value={searchQuery}
+                onChange={(e) => updateParams({ q: e.target.value })}
+                className="w-full pl-12 pr-4 py-3 rounded-2xl bg-white/50 dark:bg-neutral-900/50 backdrop-blur-md border border-neutral-300/30 dark:border-neutral-800/50 focus:border-blue-500/50 outline-none transition-all"
+              />
+            </div>
+
+            <HighlightTabs
+              value={activeHighlight}
+              onChange={(next) => updateParams({ highlight: next })}
+              counts={highlightCounts}
             />
           </div>
 

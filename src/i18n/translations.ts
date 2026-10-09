@@ -109,6 +109,12 @@ export const en = {
     "A curated selection of my latest work, focusing on user-centric design and technical innovation.",
   "home.recent.totalBuilt": "Total Built",
   "home.recent.viewAll": "View all ({count}) projects",
+  "home.projects.bestTitle": "Best Projects",
+  "home.projects.bestSubtitle":
+    "My flagship work — the most complete and highest-impact systems I've designed and shipped end to end.",
+  "home.projects.recentTitle": "Recent Projects",
+  "home.projects.recentSubtitle":
+    "A curated selection of my latest work, focusing on user-centric design and technical innovation.",
 
   // ---- Home: Certification ----
   "home.cert.titleA": "Certifications",
@@ -146,6 +152,8 @@ export const en = {
   "projects.stat.showing": "Showing",
   "projects.tab.all": "All",
   "projects.tab.live": "Live Preview",
+  "projects.tab.best": "Best Project",
+  "projects.tab.recent": "Recent Project",
   "projects.search.placeholder": "Search by title, tech, category, or tag...",
   "projects.search.aria": "Search projects",
   "projects.empty": "No projects found matching your search.",
@@ -511,6 +519,12 @@ export const id: Record<TranslationKey, string> = {
     "Pilihan karya terbaru saya, dengan fokus pada desain yang berpusat pada pengguna dan inovasi teknis.",
   "home.recent.totalBuilt": "Total Dibuat",
   "home.recent.viewAll": "Lihat semua {count} proyek",
+  "home.projects.bestTitle": "Proyek Terbaik",
+  "home.projects.bestSubtitle":
+    "Karya unggulan saya — sistem paling lengkap dan berdampak tinggi yang saya rancang dan rilis dari awal hingga akhir.",
+  "home.projects.recentTitle": "Proyek Terbaru",
+  "home.projects.recentSubtitle":
+    "Pilihan karya terbaru saya, dengan fokus pada desain yang berpusat pada pengguna dan inovasi teknis.",
 
   // ---- Home: Certification ----
   "home.cert.titleA": "Sertifikasi",
@@ -548,6 +562,8 @@ export const id: Record<TranslationKey, string> = {
   "projects.stat.showing": "Ditampilkan",
   "projects.tab.all": "Semua",
   "projects.tab.live": "Pratinjau Langsung",
+  "projects.tab.best": "Proyek Terbaik",
+  "projects.tab.recent": "Proyek Terbaru",
   "projects.search.placeholder":
     "Cari berdasarkan judul, teknologi, kategori, atau tag...",
   "projects.search.aria": "Cari proyek",

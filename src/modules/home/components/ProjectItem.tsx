@@ -9,7 +9,17 @@ import ProjectGallery from "@/components/projects/ProjectGallery";
 import { useTranslation } from "@/i18n";
 import { PROJECT_CATEGORY_KEY } from "@/lib/projectCategory";
 
-export default function ProjectsComponents() {
+interface ProjectsComponentsProps {
+  /** Projects to render. Defaults to the first four entries of the full list. */
+  projects?: Array<Project>;
+  /** Max number of entries to show (0 / undefined = no limit). */
+  limit?: number;
+}
+
+export default function ProjectsComponents({
+  projects = Projects,
+  limit = 4,
+}: ProjectsComponentsProps) {
   const { t, language } = useTranslation();
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -57,10 +67,12 @@ export default function ProjectsComponents() {
     ));
   };
 
+  const visibleProjects = limit > 0 ? projects.slice(0, limit) : projects;
+
   return (
     <div ref={containerRef} className="w-full">
       <div className="flex flex-col w-full divide-y divide-neutral-200/20 dark:divide-neutral-800/40">
-        {Projects.slice(0, 4).map((project: Project, index: number) => {
+        {visibleProjects.map((project: Project, index: number) => {
           const isEven = index % 2 === 0;
 
           return (

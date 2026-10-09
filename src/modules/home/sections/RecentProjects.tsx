@@ -1,19 +1,25 @@
 import { Link as Link } from "react-router-dom";
-import { useContext, useMemo } from "react";
+import { useContext, useMemo, useState } from "react";
 import { TbStack2, TbCornerDownRight, TbTerminal } from "react-icons/tb";
 import { ContainerContext } from "@/context/container-context";
-import { motion } from "framer-motion";
-import { Projects } from "@/data/projects";
+import { AnimatePresence, motion } from "framer-motion";
+import { BestProjects, RecentProjects } from "@/data/projects";
+import type { ProjectHighlight } from "@/data/projects";
 import ProjectsComponents from "../components/ProjectItem";
+import HighlightTabs from "@/components/projects/HighlightTabs";
 import { useTranslation } from "@/i18n";
 
-export default function RecentProjects() {
+export default function RecentProjectsSection() {
   const { isTiny } = useContext(ContainerContext);
   const { t } = useTranslation();
+  const [activeTab, setActiveTab] = useState<ProjectHighlight>("best");
 
-  const stats = useMemo(() => ({
-    total: Projects.length,
-  }), []);
+  const counts = useMemo(
+    () => ({ best: BestProjects.length, recent: RecentProjects.length }),
+    []
+  );
+
+  const visibleProjects = activeTab === "best" ? BestProjects : RecentProjects;
 
   return (
     <section
@@ -39,7 +45,9 @@ export default function RecentProjects() {
           className="text-4xl md:text-6xl font-bold tracking-tight text-center mb-6"
         >
           <span className="bg-linear-to-r from-neutral-800 via-neutral-600 to-neutral-800 dark:from-neutral-100 dark:via-neutral-300 dark:to-neutral-100 bg-clip-text text-transparent">
-            {t("home.recent.title")}
+            {activeTab === "best"
+              ? t("home.projects.bestTitle")
+              : t("home.projects.recentTitle")}
           </span>
         </motion.h2>
 
@@ -50,12 +58,14 @@ export default function RecentProjects() {
           transition={{ delay: 0.1 }}
           className="text-lg md:text-xl text-neutral-600 dark:text-neutral-400 text-center max-w-2xl leading-relaxed mb-10"
         >
-          {t("home.recent.subtitle")}
+          {activeTab === "best"
+            ? t("home.projects.bestSubtitle")
+            : t("home.projects.recentSubtitle")}
         </motion.p>
 
-        <div className="flex flex-wrap justify-center gap-4">
+        <div className="flex flex-wrap justify-center gap-4 mb-10">
           {[
-            { label: t("home.recent.totalBuilt"), value: stats.total, icon: TbTerminal },
+            { label: t("home.recent.totalBuilt"), value: counts.best + counts.recent, icon: TbTerminal },
           ].map((stat, i) => (
             <motion.div
               key={stat.label}
@@ -71,6 +81,13 @@ export default function RecentProjects() {
             </motion.div>
           ))}
         </div>
+
+        <HighlightTabs
+          value={activeTab}
+          onChange={setActiveTab}
+          counts={counts}
+          animateMode="inView"
+        />
       </div>
 
       <motion.div
@@ -78,7 +95,17 @@ export default function RecentProjects() {
         whileInView={isTiny ? {} : { opacity: 1, y: 0 }}
         viewport={isTiny ? {} : { once: true, amount: 0.1 }}
       >
-        <ProjectsComponents />
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeTab}
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -16 }}
+            transition={{ duration: 0.3 }}
+          >
+            <ProjectsComponents projects={visibleProjects} />
+          </motion.div>
+        </AnimatePresence>
       </motion.div>
 
       <div className="flex w-full items-center justify-center mt-16 text-neutral-700 dark:text-neutral-300">
@@ -95,7 +122,7 @@ export default function RecentProjects() {
             <div className="absolute inset-0 bg-linear-to-r from-neutral-400/20 to-neutral-500/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl" />
             <TbCornerDownRight className="relative h-6 w-6 text-neutral-700 dark:text-neutral-300 transition-transform group-hover:translate-x-1" />
             <span className="relative font-bold text-neutral-800 dark:text-neutral-200">
-              {t("home.recent.viewAll", { count: Projects.length })}
+              {t("home.recent.viewAll", { count: counts.best + counts.recent })}
             </span>
           </Link>
         </motion.div>

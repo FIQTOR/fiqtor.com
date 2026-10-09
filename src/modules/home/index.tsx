@@ -5,7 +5,7 @@ import Header from "./sections/Header";
 import SubHeader from "./sections/SubHeader";
 import Loading from "@/components/Loading";
 import ServicesSection from "./sections/Services";
-import RecentProjects from "./sections/RecentProjects";
+import RecentProjectsSection from "./sections/RecentProjects";
 import LineWaves from "@/components/LineWavesLazy";
 
 // Heavy, below-the-fold sections: loaded on their own chunks, keeping the home
@@ -46,7 +46,7 @@ const Home = () => {
             <Header />
             <main className="flex flex-col gap-12 py-14 md:gap-24">
                 <SubHeader />
-                <RecentProjects />
+                <RecentProjectsSection />
                 <div className="relative">
                     <ServicesSection />
                     <About />

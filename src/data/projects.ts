@@ -62,6 +62,11 @@ export const ProjectCategories: Array<ProjectCategory> = [
 // Localizable string, keyed by language code.
 export type LocalizedText = Record<Language, string>;
 
+// Which project list a project should appear in when browsing by tab.
+// - "best": flagship, highest-impact projects (shown first on the homepage)
+// - "recent": newer / smaller shipped work (everything that isn't "best")
+export type ProjectHighlight = "best" | "recent";
+
 // Define the Project type interface
 // title: Name of the project (per language)
 // category: Main category of the project
@@ -70,8 +75,11 @@ export type LocalizedText = Record<Language, string>;
 // srcImage: Path to project screenshot/image (used as the cover image)
 // images: Optional array of extra screenshots to render as a gallery in the modal
 //         (if omitted, only srcImage is shown)
-// tags: Optional array of project categories/keywords (per language)
-// icons: Array of technology icons used in the project
+//   tags: Optional array of project categories/keywords (per language)
+//   icons: Array of technology icons used in the project
+//   best: When true the project is a flagship project shown in the "Best
+//         Project" tab (homepage default). Omit/false means it belongs to the
+//         "Recent Project" tab instead.
 export type Project = {
   title: LocalizedText;
   category: ProjectCategory;
@@ -81,6 +89,7 @@ export type Project = {
   images?: Array<string>;
   tags?: Record<Language, Array<string>>;
   icons: Array<Icon>;
+  best?: boolean;
 };
 
 // Export array of projects data
@@ -91,6 +100,7 @@ export const Projects: Array<Project> = [
       id: "Ekosistem IARTY - Inti Bisnis",
     },
     category: "Business System",
+    best: true,
     description: {
       en: "A digital business ecosystem I built that combines online courses, an AI-powered investment tool, and a digital marketplace under one account system. It solves the problem of business owners having to subscribe to and switch between many separate tools that don't share data — I unified education, investment, and commerce into a single platform they can also extend with custom apps.",
       id: "Ekosistem bisnis digital yang saya bangun dengan menggabungkan kursus online, alat investasi bertenaga AI, dan marketplace digital dalam satu sistem akun. Ini menyelesaikan masalah pemilik bisnis yang harus berlangganan dan berpindah-pindah banyak alat terpisah yang tidak berbagi data — saya menyatukan pendidikan, investasi, dan perdagangan ke dalam satu platform yang juga bisa diperluas dengan aplikasi khusus.",
@@ -147,6 +157,7 @@ export const Projects: Array<Project> = [
       id: "Enterprise Suite - Platform ERP Lengkap",
     },
     category: "Business System",
+    best: true,
     description: {
       en: "A full ERP platform I built that unifies sales, purchasing, multi-warehouse inventory, CRM, double-entry accounting, HR & payroll, approvals, and reports into one workspace. It solves the problem of business data being split across notebooks and spreadsheets: instead of reconciling multiple sources by hand, owners see live sales, stock, debts, salaries, and real profit on one dashboard.",
       id: "Platform ERP lengkap yang saya bangun untuk menyatukan penjualan, pembelian, inventaris multi-gudang, CRM, akuntansi double-entry, HR & penggajian, persetujuan, dan laporan ke dalam satu ruang kerja. Ini menyelesaikan masalah data bisnis yang terpecah di buku catatan dan spreadsheet: alih-alih merekonsiliasi banyak sumber secara manual, pemilik melihat penjualan, stok, utang, gaji, dan laba riil secara langsung di satu dasbor.",
@@ -218,6 +229,7 @@ export const Projects: Array<Project> = [
       id: "CRM Panel - Autentikasi, RBAC & Suite CRM Penjualan",
     },
     category: "Business System",
+    best: true,
     description: {
       en: "A sales CRM I built with secure login (including 2FA), role-based access control, a drag-and-drop deal pipeline, automatic lead scoring, tasks & reminders, and an analytics dashboard. It solves the problem of sales teams losing track of prospects and follow-ups: every lead, customer, and deal lives in one place, so nothing gets forgotten and performance is measurable.",
       id: "CRM penjualan yang saya bangun dengan login aman (termasuk 2FA), kontrol akses berbasis peran, pipeline deal drag-and-drop, penilaian prospek otomatis, tugas & pengingat, serta dasbor analitik. Ini menyelesaikan masalah tim penjualan yang kehilangan jejak prospek dan tindak lanjut: setiap prospek, pelanggan, dan deal tersimpan di satu tempat, sehingga tak ada yang terlupa dan performa bisa diukur.",
@@ -289,6 +301,7 @@ export const Projects: Array<Project> = [
       id: "HRIS - Sistem SDM Universal",
     },
     category: "Business System",
+    best: true,
     description: {
       en: "A Human Resource Information System I built covering employee records, attendance, leave, payroll, recruitment, performance, and an employee self-service portal. It solves the problem of HR admin being slow and error-prone when done manually: employees clock in and request leave from their phone, and payroll, attendance, and headcount reports are generated automatically.",
       id: "Sistem Informasi SDM yang saya bangun mencakup data karyawan, absensi, cuti, penggajian, rekrutmen, performa, dan portal swalayan karyawan. Ini menyelesaikan masalah administrasi HR yang lambat dan rawan salah saat dilakukan manual: karyawan absen dan mengajukan cuti dari ponsel, dan laporan gaji, kehadiran, serta jumlah karyawan dibuat otomatis.",
@@ -361,6 +374,7 @@ export const Projects: Array<Project> = [
       id: "IHS E-School - Manajemen Sekolah & LMS",
     },
     category: "Business System",
+    best: true,
     description: {
       en: "A school management system + learning platform I built with online admissions, attendance, gradebooks, CBT exams, tuition billing, a parent portal, and an LMS for materials and assignments. It solves the problem of schools running admissions, grades, fees, and parent updates on paper: everything moves into one connected platform so staff save time and parents can follow their child's progress.",
       id: "Sistem manajemen sekolah + platform pembelajaran yang saya bangun dengan pendaftaran online, absensi, buku nilai, ujian CBT, tagihan SPP, portal orang tua, dan LMS untuk materi serta tugas. Ini menyelesaikan masalah sekolah yang menjalankan pendaftaran, nilai, biaya, dan info ke orang tua di atas kertas: semuanya pindah ke satu platform terhubung sehingga staf hemat waktu dan orang tua bisa memantau perkembangan anak.",
@@ -433,6 +447,7 @@ export const Projects: Array<Project> = [
       id: "Golden Dragon - Aplikasi Pesan QR Restoran",
     },
     category: "Business System",
+    best: true,
     description: {
       en: "A restaurant self-ordering app I built: diners scan a table QR code, order and pay from their phone (QRIS, transfer, e-wallet, card), and orders appear live on kitchen and cashier screens, plus a staff dashboard for menu, table QR, orders, and sales. It solves the problem of waiters running back and forth, slow ordering, and lost orders — guests order themselves and payment is verified automatically.",
       id: "Aplikasi pesan mandiri restoran yang saya bangun: pelanggan memindai kode QR di meja, memesan dan membayar dari ponsel (QRIS, transfer, e-wallet, kartu), dan pesanan muncul langsung di layar dapur dan kasir, plus dasbor staf untuk menu, QR meja, pesanan, dan penjualan. Ini menyelesaikan masalah pelayan yang mondar-mandir, pemesanan lambat, dan pesanan yang terlewat — tamu memesan sendiri dan pembayaran terverifikasi otomatis.",
@@ -502,6 +517,7 @@ export const Projects: Array<Project> = [
       id: "Otomasi WhatsApp - Chatbot AI",
     },
     category: "AI & Automation",
+    best: true,
     description: {
       en: "An AI chatbot I built for WhatsApp that automatically answers customer questions, shares product info, and takes orders 24/7. It solves the problem of businesses losing sales because they can't reply to WhatsApp fast enough or outside working hours — the bot handles customer chats automatically without hiring extra admin staff.",
       id: "Chatbot AI yang saya bangun untuk WhatsApp yang otomatis menjawab pertanyaan pelanggan, membagikan info produk, dan menerima pesanan 24/7. Ini menyelesaikan masalah bisnis yang kehilangan penjualan karena tidak bisa membalas WhatsApp dengan cepat atau di luar jam kerja — bot menangani obrolan pelanggan secara otomatis tanpa menambah staf admin.",
@@ -540,6 +556,7 @@ export const Projects: Array<Project> = [
       id: "IARTY AI (Pihak Ketiga) - Beragam Model AI",
     },
     category: "AI & Automation",
+    best: true,
     description: {
       en: "An AI chat platform I built where you can talk to 50+ AI models (GPT, DeepSeek, and others) in one conversation and switch models mid-chat. It solves the problem of needing multiple AI subscriptions and juggling separate apps — one tool covers writing, planning, problem-solving, and stock/crypto analysis, and conversations can be exported.",
       id: "Platform obrolan AI yang saya bangun di mana Anda bisa berbicara dengan 50+ model AI (GPT, DeepSeek, dan lainnya) dalam satu percakapan dan berpindah model di tengah obrolan. Ini menyelesaikan masalah kebutuhan banyak langganan AI dan repot berpindah aplikasi — satu alat mencakup menulis, merencanakan, memecahkan masalah, dan analisis saham/kripto, serta percakapan bisa diekspor.",
@@ -587,6 +604,7 @@ export const Projects: Array<Project> = [
       id: "Marketplace AI - Temukan prompt terbaik untuk proyek Anda",
     },
     category: "E-Commerce",
+    best: true,
     description: {
       en: "An online marketplace I built where users browse and buy AI tools, prompts, and templates for their projects. It solves the problem of people building everything from scratch or searching everywhere for good AI resources — they can find and start using ready-made solutions in one place.",
       id: "Marketplace online yang saya bangun tempat pengguna menjelajahi dan membeli alat, prompt, dan template AI untuk proyek mereka. Ini menyelesaikan masalah orang yang membangun segalanya dari nol atau mencari ke mana-mana untuk sumber AI yang bagus — mereka bisa menemukan dan langsung memakai solusi siap pakai di satu tempat.",
@@ -630,6 +648,7 @@ export const Projects: Array<Project> = [
       id: "Zantova App - Marketplace UI",
     },
     category: "E-Commerce",
+    best: true,
     description: {
       en: "A UI marketplace I built where customers buy ready-to-use website designs and components. It solves the problem of businesses and creators spending months and a lot of money on custom design — they get professional, ready-made UI they can drop straight into their project for a fraction of the cost and time.",
       id: "Marketplace UI yang saya bangun tempat pelanggan membeli desain dan komponen situs yang siap pakai. Ini menyelesaikan masalah bisnis dan kreator yang menghabiskan berbulan-bulan dan banyak biaya untuk desain kustom — mereka mendapat UI profesional siap pakai yang bisa langsung dipasang ke proyek dengan biaya dan waktu jauh lebih sedikit.",
@@ -1598,3 +1617,18 @@ export const Projects: Array<Project> = [
     ],
   },
 ];
+
+// Flagship projects (marked with `best: true`), shown in the "Best Project" tab.
+export const BestProjects: Array<Project> = Projects.filter(
+  (project) => project.best === true
+);
+
+// Everything that isn't a flagship project, shown in the "Recent Project" tab.
+export const RecentProjects: Array<Project> = Projects.filter(
+  (project) => project.best !== true
+);
+
+// Convenience helper to grab the list for a given highlight tab.
+export const getProjectsByHighlight = (
+  highlight: ProjectHighlight
+): Array<Project> => (highlight === "best" ? BestProjects : RecentProjects);
