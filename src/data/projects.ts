@@ -96,6 +96,41 @@ export type Project = {
 export const Projects: Array<Project> = [
   {
     title: {
+      en: "Oriental Pearl Tower - Interactive 3D Explorer",
+      id: "Menara Mutiara Oriental - Penjelajah 3D Interaktif",
+    },
+    category: "Creative",
+    description: {
+      en: "A real-time 3D explorer I built for Shanghai's 468 m Oriental Pearl Tower, loaded from a Draco-compressed GLB with automatic multi-stage fallback loading. Visitors orbit the tower, explode it into 34 labeled components (structure, façade, glass, lighting, radome, plaza…) and reassemble it, with a draggable sun, real-time shadows and a day/night switch. It solves the problem of flat photo galleries for complex structures — every layer of the building can be inspected in 3D right in the browser.",
+      id: "Penjelajah 3D real-time yang saya bangun untuk Menara Mutiara Oriental Shanghai setinggi 468 m, dimuat dari GLB terkompresi Draco dengan pemuatan cadangan otomatis berlapis. Pengunjung memutar menara, membongkarnya menjadi 34 komponen berlabel (rangka, fasad, kaca, lampu, radome, plaza…) lalu menyatukannya kembali, dengan matahari yang bisa digeser, bayangan real-time, dan sakelar siang/malam. Ini menyelesaikan masalah galeri foto datar untuk struktur kompleks — setiap lapisan bangunan bisa diperiksa dalam 3D langsung di browser.",
+    },
+    urlDirect: "https://oriental-pearl-tower.vercel.app/",
+    srcImage: "img/projects/oriental-pearl-tower.webp",
+    tags: {
+      en: ["3D", "Three.js", "WebGL", "GLTF", "Draco", "Interactive", "Creative Coding"],
+      id: ["3D", "Three.js", "WebGL", "GLTF", "Draco", "Interaktif", "Creative Coding"],
+    },
+    icons: [
+      {
+        SvgIcon: Javascript,
+        title: "JavaScript",
+      },
+      {
+        SvgIcon: Html5,
+        title: "HTML5",
+      },
+      {
+        SvgIcon: Css3,
+        title: "CSS3",
+      },
+      {
+        SvgIcon: Vercel,
+        title: "Vercel",
+      },
+    ],
+  },
+  {
+    title: {
       en: "Lagoon - Interactive 3D Island Diorama",
       id: "Lagoon - Diorama Pulau 3D Interaktif",
     },
@@ -1613,41 +1648,6 @@ export const Projects: Array<Project> = [
       {
         SvgIcon: Tailwindcss,
         title: "TailwindCSS",
-      },
-    ],
-  },
-  {
-    title: {
-      en: "Oriental Pearl Tower - Interactive 3D Explorer",
-      id: "Menara Mutiara Oriental - Penjelajah 3D Interaktif",
-    },
-    category: "Creative",
-    description: {
-      en: "A real-time 3D explorer I built for Shanghai's 468 m Oriental Pearl Tower, loaded from a Draco-compressed GLB with automatic multi-stage fallback loading. Visitors orbit the tower, explode it into 34 labeled components (structure, façade, glass, lighting, radome, plaza…) and reassemble it, with a draggable sun, real-time shadows and a day/night switch. It solves the problem of flat photo galleries for complex structures — every layer of the building can be inspected in 3D right in the browser.",
-      id: "Penjelajah 3D real-time yang saya bangun untuk Menara Mutiara Oriental Shanghai setinggi 468 m, dimuat dari GLB terkompresi Draco dengan pemuatan cadangan otomatis berlapis. Pengunjung memutar menara, membongkarnya menjadi 34 komponen berlabel (rangka, fasad, kaca, lampu, radome, plaza…) lalu menyatukannya kembali, dengan matahari yang bisa digeser, bayangan real-time, dan sakelar siang/malam. Ini menyelesaikan masalah galeri foto datar untuk struktur kompleks — setiap lapisan bangunan bisa diperiksa dalam 3D langsung di browser.",
-    },
-    urlDirect: "https://oriental-pearl-tower.vercel.app/",
-    srcImage: "img/projects/oriental-pearl-tower.webp",
-    tags: {
-      en: ["3D", "Three.js", "WebGL", "GLTF", "Draco", "Interactive", "Creative Coding"],
-      id: ["3D", "Three.js", "WebGL", "GLTF", "Draco", "Interaktif", "Creative Coding"],
-    },
-    icons: [
-      {
-        SvgIcon: Javascript,
-        title: "JavaScript",
-      },
-      {
-        SvgIcon: Html5,
-        title: "HTML5",
-      },
-      {
-        SvgIcon: Css3,
-        title: "CSS3",
-      },
-      {
-        SvgIcon: Vercel,
-        title: "Vercel",
       },
     ],
   },
