@@ -41,7 +41,7 @@ export default function HighlightTabs({
   return (
     <motion.div
       {...animationProps}
-      className={`flex flex-wrap p-1 gap-1 rounded-2xl bg-neutral-200/50 dark:bg-neutral-800/50 backdrop-blur-md border border-neutral-300/30 dark:border-neutral-700/30 w-fit ${className}`}
+      className={`flex flex-wrap p-1 gap-1 rounded-2xl bg-neutral-200/90 dark:bg-neutral-800/90 md:bg-neutral-200/50 md:dark:bg-neutral-800/50 md:backdrop-blur-md border border-neutral-300/30 dark:border-neutral-700/30 w-fit ${className}`}
     >
       {OPTIONS.map((option) => {
         const isActive = value === option.id;

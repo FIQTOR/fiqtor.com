@@ -144,7 +144,7 @@ export default function About() {
               animate={!isMobile ? { y: [0, -8, 0, 8, 0], x: [0, 5, 0, -5, 0] } : {}}
               transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
               onUpdate={updateLines}
-              className="px-5 py-3 rounded-2xl bg-white/70 dark:bg-[#121212]/70 backdrop-blur-md shadow-lg border border-neutral-200/50 dark:border-neutral-800/80 flex items-center gap-3"
+              className="px-5 py-3 rounded-2xl bg-white/95 dark:bg-[#121212]/95 md:bg-white/70 md:dark:bg-[#121212]/70 md:backdrop-blur-md shadow-lg border border-neutral-200/50 dark:border-neutral-800/80 flex items-center gap-3"
             >
               <div ref={badge1Ref} className="p-2 bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 rounded-lg">
                 <TbSchool className="w-5 h-5" />
@@ -169,7 +169,7 @@ export default function About() {
               animate={!isMobile ? { y: [0, 10, 0, -10, 0], x: [0, -6, 0, 6, 0] } : {}}
               transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
               onUpdate={updateLines}
-              className="px-5 py-3 rounded-2xl bg-white/70 dark:bg-[#121212]/70 backdrop-blur-md shadow-lg border border-neutral-200/50 dark:border-neutral-800/80 flex items-center gap-3"
+              className="px-5 py-3 rounded-2xl bg-white/95 dark:bg-[#121212]/95 md:bg-white/70 md:dark:bg-[#121212]/70 md:backdrop-blur-md shadow-lg border border-neutral-200/50 dark:border-neutral-800/80 flex items-center gap-3"
             >
               <div ref={badge2Ref} className="p-2 bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 rounded-lg">
                 <TbBriefcase className="w-5 h-5" />
@@ -194,7 +194,7 @@ export default function About() {
               animate={!isMobile ? { y: [0, -12, 0, 12, 0], x: [0, 8, 0, -8, 0] } : {}}
               transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 1 }}
               onUpdate={updateLines}
-              className="px-5 py-3 rounded-2xl bg-white/70 dark:bg-[#121212]/70 backdrop-blur-md shadow-lg border border-neutral-200/50 dark:border-neutral-800/80 flex items-center gap-3"
+              className="px-5 py-3 rounded-2xl bg-white/95 dark:bg-[#121212]/95 md:bg-white/70 md:dark:bg-[#121212]/70 md:backdrop-blur-md shadow-lg border border-neutral-200/50 dark:border-neutral-800/80 flex items-center gap-3"
             >
               <div ref={badge3Ref} className="p-2 bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 rounded-lg">
                 <TbCode className="w-5 h-5" />

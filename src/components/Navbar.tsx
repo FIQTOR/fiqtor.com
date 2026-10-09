@@ -288,7 +288,14 @@ export default function Navbar() {
 
       {/* Bottom Navbar */}
       <div className="fixed bottom-6 left-1/2 z-40 -translate-x-1/2 px-3 w-full max-w-[calc(100vw-0.5rem)] sm:w-fit sm:px-4 sm:max-w-[95vw] flex justify-center">
-        <nav className="flex items-center gap-0.5 sm:gap-1 md:gap-2 rounded-full border border-neutral-200/50 bg-white/70 p-1 sm:p-1.5 md:p-2 shadow-2xl backdrop-blur-xl dark:border-neutral-800/50 dark:bg-neutral-900/70">
+        {/*
+          The bottom bar is `fixed`, so any `backdrop-filter` here forces the
+          GPU to re-blur the page behind it on every scroll frame — one of the
+          biggest sources of scroll jank on phones. Mobile gets an (almost)
+          opaque background instead of a blurred one; desktop keeps the glass
+          look via `md:backdrop-blur-xl`.
+        */}
+        <nav className="flex items-center gap-0.5 sm:gap-1 md:gap-2 rounded-full border border-neutral-200/50 bg-white/95 p-1 sm:p-1.5 md:p-2 shadow-2xl md:bg-white/70 md:backdrop-blur-xl dark:border-neutral-800/50 dark:bg-neutral-900/95 md:dark:bg-neutral-900/70">
           <div ref={containerRef} className="relative flex items-center gap-0 sm:gap-0.5 md:gap-1">
             {/* Circle indicator that slides to follow the active menu item */}
             <span

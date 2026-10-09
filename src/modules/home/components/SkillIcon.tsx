@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { useContext } from "react";
 
 export const LanguageSkills = () => {
-  const { isTiny } = useContext(ContainerContext);
+  const { isMobile } = useContext(ContainerContext);
   return (
     <>
       {Skills.language?.map((icon: Item, index: number) => (
@@ -17,14 +17,14 @@ export const LanguageSkills = () => {
             {icon.tooltip}
           </span>
           <div className="absolute h-10 w-10 scale-0 cursor-pointer rounded-full bg-neutral-400 blur-lg duration-300 dark:bg-white"></div>
-          <IconSkills icon={icon} animation={!isTiny} index_={index} />
+          <IconSkills icon={icon} animation={!isMobile} index_={index} />
         </li>
       ))}
     </>
   );
 };
 export const FrontendSkills = () => {
-  const { isTiny } = useContext(ContainerContext);
+  const { isMobile } = useContext(ContainerContext);
   return (
     <>
       {Skills.frontend?.map((icon: Item, index: number) => (
@@ -36,14 +36,14 @@ export const FrontendSkills = () => {
             {icon.tooltip}
           </span>
           <div className="absolute h-10 w-10 scale-0 rounded-full bg-neutral-400 blur-lg duration-300 dark:bg-white"></div>
-          <IconSkills icon={icon} animation={!isTiny} index_={index} />
+          <IconSkills icon={icon} animation={!isMobile} index_={index} />
         </li>
       ))}
     </>
   );
 };
 export const BackendSkills = () => {
-  const { isTiny } = useContext(ContainerContext);
+  const { isMobile } = useContext(ContainerContext);
   return (
     <>
       {Skills.backend?.map((icon: Item, index: number) => (
@@ -55,14 +55,14 @@ export const BackendSkills = () => {
             {icon.tooltip}
           </span>
           <div className="absolute h-10 w-10 scale-0 rounded-full bg-neutral-400 blur-lg duration-300 dark:bg-white"></div>
-          <IconSkills icon={icon} animation={!isTiny} index_={index} />
+          <IconSkills icon={icon} animation={!isMobile} index_={index} />
         </li>
       ))}
     </>
   );
 };
 export const OtherSkills = () => {
-  const { isTiny } = useContext(ContainerContext);
+  const { isMobile } = useContext(ContainerContext);
   return (
     <>
       {Skills.other?.map((icon: Item, index: number) => (
@@ -74,7 +74,7 @@ export const OtherSkills = () => {
             {icon.tooltip}
           </span>
           <div className="absolute h-10 w-10 scale-0 rounded-full bg-neutral-400 blur-lg duration-300 dark:bg-white group-hover:scale-100"></div>
-          <IconSkills icon={icon} animation={!isTiny} index_={index} />
+          <IconSkills icon={icon} animation={!isMobile} index_={index} />
         </li>
 
       ))}

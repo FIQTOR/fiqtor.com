@@ -15,19 +15,26 @@ import { Link as Link } from "react-router-dom";
 import { useTranslation } from "@/i18n";
 
 const StatCounter = ({ target, suffix, start }: { target: number; suffix: string; start: boolean }) => {
-  const [count, setCount] = useState(0);
+  // Drive the number straight through the DOM instead of React state. The old
+  // version called setState on every animation frame (×3 counters), forcing
+  // ~180 React re-renders per second while the hero was on screen — pure jank.
+  // Writing textContent in rAF keeps the exact same visual with zero re-renders.
+  const valueRef = useRef<HTMLSpanElement | null>(null);
 
   useEffect(() => {
     if (!start) return;
     const duration = 5000;
     const startTime = performance.now();
 
+    const write = (value: number) => {
+      if (valueRef.current) valueRef.current.textContent = `${value.toLocaleString()}+`;
+    };
+
     const updateCount = (now: number) => {
       const elapsed = now - startTime;
       const progress = Math.min(elapsed / duration, 1);
       const easeProgress = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
-      const currentCount = Math.floor(easeProgress * target);
-      setCount(currentCount);
+      write(Math.floor(easeProgress * target));
 
       if (progress < 1) {
         requestAnimationFrame(updateCount);
@@ -43,8 +50,11 @@ const StatCounter = ({ target, suffix, start }: { target: number; suffix: string
 
   return (
     <div className="flex flex-col items-center px-4 py-2 ">
-      <span className="text-xl sm:text-2xl md:text-3xl font-extrabold text-neutral-900 dark:text-neutral-100 font-mono tracking-tight">
-        {count.toLocaleString()}+
+      <span
+        ref={valueRef}
+        className="text-xl sm:text-2xl md:text-3xl font-extrabold text-neutral-900 dark:text-neutral-100 font-mono tracking-tight"
+      >
+        0+
       </span>
       <span className="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
         {suffix}
@@ -472,21 +482,21 @@ export default function Header() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center px-4 backdrop-blur-lg"
+            className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center px-4 md:backdrop-blur-lg"
           >
             <motion.button
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setShowCVLanguage(false)}
-              className="absolute left-0 top-0 h-full w-full cursor-default bg-black/40 backdrop-blur-sm transition-all duration-300 hover:bg-black/50"
+              className="absolute left-0 top-0 h-full w-full cursor-default bg-black/60 transition-all duration-300 hover:bg-black/50 md:bg-black/40 md:backdrop-blur-sm"
             />
             <motion.div
               initial={{ scale: 0.7, opacity: 0, y: 30 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.7, opacity: 0, y: 30 }}
               transition={{ type: "spring", stiffness: 350, damping: 25 }}
-              className="relative flex w-full max-w-md flex-col gap-6 overflow-hidden rounded-2xl bg-white/90 p-8 shadow-2xl dark:bg-neutral-900/90 backdrop-blur-xl border border-white/20 dark:border-neutral-700/30"
+              className="relative flex w-full max-w-md flex-col gap-6 overflow-hidden rounded-2xl bg-white p-8 shadow-2xl dark:bg-neutral-900 md:bg-white/90 md:dark:bg-neutral-900/90 md:backdrop-blur-xl border border-white/20 dark:border-neutral-700/30"
             >
               <button
                 className="absolute right-4 top-4 rounded-full p-2 transition-all duration-300 hover:bg-red-100 dark:hover:bg-red-900/30 group"

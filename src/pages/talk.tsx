@@ -321,7 +321,7 @@ export default function ContactPage() {
                       rel="noopener noreferrer"
                       className="group relative flex items-center justify-between overflow-hidden rounded-3xl border border-neutral-300/30 bg-linear-to-br from-neutral-900 to-neutral-800 p-8 text-white shadow-xl shadow-neutral-500/10 transition-all duration-300 hover:shadow-2xl dark:border-neutral-700/40 dark:from-neutral-200 dark:to-white dark:text-neutral-900"
                     >
-                      <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-emerald-500/20 blur-3xl transition-all duration-500 group-hover:bg-emerald-500/40" />
+                      <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-emerald-500/20 blur-3xl transition-all duration-500 group-hover:bg-emerald-500/40 hidden md:block" />
                       <div>
                         <p className="text-sm font-bold uppercase tracking-widest opacity-70">
                           {t("talk.preferChat")}

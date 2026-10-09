@@ -182,7 +182,7 @@ export default function Certification() {
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5, delay: 0.35 }}
-            className="flex p-1 gap-1 rounded-2xl bg-neutral-200/60 dark:bg-neutral-800/60 backdrop-blur-md border border-neutral-300/40 dark:border-neutral-700/40 w-fit"
+            className="flex p-1 gap-1 rounded-2xl bg-neutral-200/90 dark:bg-neutral-800/90 md:bg-neutral-200/60 md:dark:bg-neutral-800/60 md:backdrop-blur-md border border-neutral-300/40 dark:border-neutral-700/40 w-fit"
           >
             {([
               { id: "best", label: t("cert.tab.best"), icon: TbStar },
@@ -289,7 +289,7 @@ export default function Certification() {
                   {card.isViewAll ? (
                     <Link
                       to="/certification"
-                      className="group relative flex h-70 sm:h-87.5 lg:h-100 w-full flex-col items-center justify-center gap-4 md:gap-6 rounded-4xl md:rounded-[2.5rem] border-2 border-dashed border-neutral-300 dark:border-neutral-700 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-md transition-all duration-500 hover:border-blue-500 hover:shadow-2xl hover:shadow-blue-500/20 p-4"
+                      className="group relative flex h-70 sm:h-87.5 lg:h-100 w-full flex-col items-center justify-center gap-4 md:gap-6 rounded-4xl md:rounded-[2.5rem] border-2 border-dashed border-neutral-300 dark:border-neutral-700 bg-white/95 dark:bg-neutral-900/95 md:bg-white/80 md:dark:bg-neutral-900/80 md:backdrop-blur-md transition-all duration-500 hover:border-blue-500 hover:shadow-2xl hover:shadow-blue-500/20 p-4"
                     >
                       <div className="relative flex h-20 w-20 md:h-24 md:w-24 items-center justify-center rounded-3xl md:rounded-3xl bg-neutral-100 shadow-sm transition-all duration-500 group-hover:bg-blue-600 group-hover:-rotate-12 group-hover:scale-110 dark:bg-neutral-800">
                         <TbArrowRight className="h-10 w-10 md:h-12 md:w-12 text-neutral-400 transition-all duration-500 group-hover:text-white" />
@@ -318,7 +318,7 @@ export default function Certification() {
                   {isFront && (
                     <div className="pointer-events-none absolute inset-x-0 bottom-2 z-30 flex justify-center sm:bottom-3">
                       <div
-                        className="flex grow-0 items-center gap-4 rounded-full border border-white/15 bg-neutral-950/55 py-2 pl-4 pr-5 shadow-2xl shadow-black/30 backdrop-blur-md"
+                        className="flex grow-0 items-center gap-4 rounded-full border border-white/15 bg-neutral-950/90 md:bg-neutral-950/55 py-2 pl-4 pr-5 shadow-2xl shadow-black/30 md:backdrop-blur-md"
                         aria-label="Gesture: swipe the card left or right to browse, or click the arrows"
                       >
                         <span

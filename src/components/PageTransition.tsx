@@ -1,12 +1,17 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import type { ReactNode } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
+import { ContainerContext } from '@/context/container-context';
 
 interface PageTransitionProps {
   children: ReactNode;
 }
 
+// Desktop keeps the blurred slide. The `filter: blur()` transition forces a
+// full-page repaint on every navigation, which is expensive on phone GPUs, so
+// mobile uses an opacity + small-translate variant instead (GPU-only, no
+// repaint). Same feel, far cheaper.
 const pageVariants = {
   initial: {
     opacity: 0,
@@ -39,14 +44,30 @@ const pageVariants = {
   },
 };
 
+const mobilePageVariants = {
+  initial: { opacity: 0, y: 10 },
+  animate: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] as const },
+    transitionEnd: { transform: 'none' },
+  },
+  exit: {
+    opacity: 0,
+    y: -10,
+    transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] as const },
+  },
+};
+
 const PageTransition: React.FC<PageTransitionProps> = ({ children }) => {
   const location = useLocation();
+  const { isMobile } = useContext(ContainerContext);
 
   return (
     <AnimatePresence mode="wait">
       <motion.div
         key={location.pathname}
-        variants={pageVariants}
+        variants={isMobile ? mobilePageVariants : pageVariants}
         initial="initial"
         animate="animate"
         exit="exit"

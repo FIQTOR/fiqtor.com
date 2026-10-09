@@ -23,7 +23,7 @@ interface SkillSectionItemProps {
 
 const SkillSectionItem: React.FC<SkillSectionItemProps> = ({ Icon, title, SkillsComponent }) => (
   <div className="flex flex-col gap-5 md:gap-7 lg:flex-row">
-    <span className="flex h-fit w-fit min-w-[180px] items-center gap-2 rounded-full border-t border-neutral-300 py-3 pl-7 shadow-xl backdrop-blur-md dark:border-neutral-700 md:text-xl">
+      <span className="flex h-fit w-fit min-w-[180px] items-center gap-2 rounded-full border-t border-neutral-300 py-3 pl-7 shadow-xl bg-white/90 backdrop-blur-none md:bg-transparent md:backdrop-blur-md dark:border-neutral-700 dark:bg-neutral-900/90 md:dark:bg-transparent md:text-xl">
       <Icon strokeWidth="1.5" className="h-7 w-7" />
       {title}
     </span>

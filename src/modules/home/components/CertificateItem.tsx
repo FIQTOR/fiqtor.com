@@ -36,7 +36,9 @@ export default function CertificateComponent({ certificate }: Props) {
       <motion.div
         initial={{
           opacity: 0,
-          filter: "blur(15px)",
+          // Blurring a large card on the way in forces a costly repaint on
+          // phones; mobile animates opacity/scale only.
+          filter: isMobile ? "blur(0px)" : "blur(15px)",
           y: isMobile ? 0 : 300,
           scale: 0.5,
         }}

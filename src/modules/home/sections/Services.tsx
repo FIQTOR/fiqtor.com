@@ -34,7 +34,7 @@ const FloatingBadge = ({
     to={to}
     target="_blank"
     rel="noopener noreferrer"
-    className="flex w-full px-4 py-3 sm:px-5 sm:py-3 rounded-2xl bg-white/70 dark:bg-[#121212]/70 backdrop-blur-md shadow-lg border border-neutral-200/50 dark:border-neutral-800/80 items-center gap-3 hover:scale-105 hover:bg-white dark:hover:bg-neutral-900 transition-all group z-30"
+      className="flex w-full px-4 py-3 sm:px-5 sm:py-3 rounded-2xl bg-white/95 dark:bg-[#121212]/95 md:bg-white/70 md:dark:bg-[#121212]/70 md:backdrop-blur-md shadow-lg border border-neutral-200/50 dark:border-neutral-800/80 items-center gap-3 hover:scale-105 hover:bg-white dark:hover:bg-neutral-900 transition-all group z-30"
   >
     <div
       ref={badgeRef}
@@ -179,7 +179,7 @@ const ServicesSection = () => {
                 href={COMPANY.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center gap-2 rounded-full border border-neutral-300/60 dark:border-neutral-700/60 bg-white/60 dark:bg-neutral-900/60 backdrop-blur-md px-4 py-2 text-sm font-semibold text-neutral-700 dark:text-neutral-200 transition-all duration-300 hover:scale-105 hover:border-purple-500/50 hover:text-purple-600 dark:hover:text-blue-400"
+                className="group inline-flex items-center gap-2 rounded-full border border-neutral-300/60 dark:border-neutral-700/60 bg-white/90 dark:bg-neutral-900/90 md:bg-white/60 md:dark:bg-neutral-900/60 md:backdrop-blur-md px-4 py-2 text-sm font-semibold text-neutral-700 dark:text-neutral-200 transition-all duration-300 hover:scale-105 hover:border-purple-500/50 hover:text-purple-600 dark:hover:text-blue-400"
               >
                 <TbWorld className="h-4 w-4" />
                 {COMPANY.url.replace(/^https?:\/\//, "")}
@@ -189,7 +189,7 @@ const ServicesSection = () => {
                 href={COMPANY.aiUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center gap-2 rounded-full border border-neutral-300/60 dark:border-neutral-700/60 bg-white/60 dark:bg-neutral-900/60 backdrop-blur-md px-4 py-2 text-sm font-semibold text-neutral-700 dark:text-neutral-200 transition-all duration-300 hover:scale-105 hover:border-purple-500/50 hover:text-purple-600 dark:hover:text-blue-400"
+                className="group inline-flex items-center gap-2 rounded-full border border-neutral-300/60 dark:border-neutral-700/60 bg-white/90 dark:bg-neutral-900/90 md:bg-white/60 md:dark:bg-neutral-900/60 md:backdrop-blur-md px-4 py-2 text-sm font-semibold text-neutral-700 dark:text-neutral-200 transition-all duration-300 hover:scale-105 hover:border-purple-500/50 hover:text-purple-600 dark:hover:text-blue-400"
               >
                 <TbRobot className="h-4 w-4" />
                 {COMPANY.aiUrl.replace(/^https?:\/\//, "")}
@@ -214,7 +214,7 @@ const ServicesSection = () => {
               className="relative md:absolute md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 z-40 mb-6 md:mb-0"
             >
               <div className="relative block group">
-                <div className="absolute -inset-4 bg-linear-to-br from-purple-500/40 to-blue-500/40 rounded-full blur-2xl opacity-60 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute -inset-4 bg-linear-to-br from-purple-500/40 to-blue-500/40 rounded-full blur-2xl opacity-60 group-hover:opacity-100 transition-opacity duration-300 hidden md:block" />
                 <div className="relative w-36 h-36 md:w-44 md:h-44 rounded-full p-1 bg-linear-to-br from-purple-500/50 via-neutral-300 to-blue-500/50 shadow-2xl cursor-pointer hover:scale-105 transition-transform duration-500">
                   <div className="w-full h-full rounded-full overflow-hidden bg-white border-[6px] border-white shadow-[0_0_20px_rgba(255,255,255,0.8)]">
                     <Image

@@ -73,7 +73,7 @@ export default function RecentProjectsSection() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 + i * 0.1 }}
-              className="px-5 py-2 rounded-2xl border border-neutral-300/20 bg-white/30 dark:bg-neutral-900/30 backdrop-blur-md flex items-center gap-3"
+              className="px-5 py-2 rounded-2xl border border-neutral-300/20 bg-white/90 dark:bg-neutral-900/90 md:bg-white/30 md:dark:bg-neutral-900/30 md:backdrop-blur-md flex items-center gap-3"
             >
               <stat.icon className="h-4 w-4 text-blue-500" />
               <span className="text-xl font-bold text-neutral-800 dark:text-neutral-200">{stat.value}</span>
@@ -117,7 +117,7 @@ export default function RecentProjectsSection() {
         >
           <Link
             to="/projects"
-            className="group relative flex items-center gap-3 self-end rounded-full border border-neutral-400/30 bg-linear-to-r from-neutral-200/50 to-neutral-300/50 px-8 py-3 shadow-xl backdrop-blur-md transition-all duration-300 hover:scale-105 hover:border-neutral-500/50 hover:shadow-2xl hover:shadow-neutral-400/20 dark:border-neutral-600/30 dark:from-neutral-700/20 dark:to-neutral-600/20 dark:hover:border-neutral-500/50 dark:hover:shadow-neutral-400/20"
+            className="group relative flex items-center gap-3 self-end rounded-full border border-neutral-400/30 bg-linear-to-r from-neutral-200/90 to-neutral-300/90 px-8 py-3 shadow-xl transition-all duration-300 hover:scale-105 hover:border-neutral-500/50 hover:shadow-2xl hover:shadow-neutral-400/20 md:backdrop-blur-md md:from-neutral-200/50 md:to-neutral-300/50 dark:border-neutral-600/30 dark:from-neutral-700/90 dark:to-neutral-600/90 md:dark:from-neutral-700/20 md:dark:to-neutral-600/20 dark:hover:border-neutral-500/50 dark:hover:shadow-neutral-400/20"
           >
             <div className="absolute inset-0 bg-linear-to-r from-neutral-400/20 to-neutral-500/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl" />
             <TbCornerDownRight className="relative h-6 w-6 text-neutral-700 dark:text-neutral-300 transition-transform group-hover:translate-x-1" />
