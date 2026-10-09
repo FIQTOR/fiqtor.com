@@ -9,6 +9,7 @@
  *   sheet) shown alongside the certificate in the card/modal
  * @property {string} [secondaryLabel] - Optional caption for the second image
  * @property {boolean} thisAcademic - Indicates if this is an academic certificate
+ * @property {boolean} [best] - Optional flag marking an outstanding/featured credential
  * @property {Array<string>} [tags] - Optional array of tags/keywords related to the certificate
  */
 type Certificate = {
@@ -19,6 +20,7 @@ type Certificate = {
   srcImageSecondary?: string;
   secondaryLabel?: string;
   thisAcademic: boolean;
+  best?: boolean;
   tags?: Array<string>;
 };
 
@@ -34,6 +36,7 @@ export const Certificates: Array<Certificate> = [
     srcImage:
       "/img/certificate/bnsp-junior-web-developer-competency-taufiiqul-hakim.webp",
     thisAcademic: true,
+    best: true,
     tags: [
       "BNSP",
       "National Certification",
@@ -50,6 +53,7 @@ export const Certificates: Array<Certificate> = [
     srcImage:
       "/img/certificate/seameo-qitep-in-science-web-cloud-engineering.webp",
     thisAcademic: true,
+    best: true,
     tags: ["AWS Academy", "Laravel SAIL", "MySQL", "Putty", "Docker"],
   },
   {
@@ -78,6 +82,7 @@ export const Certificates: Array<Certificate> = [
     srcImage:
       "/img/certificate/LKS juara1 tingkat kabupaten jombang - Taufiiqul Hakim.webp",
     thisAcademic: true,
+    best: true,
     tags: [
       "Laravel",
       "ReactJS",
@@ -217,6 +222,7 @@ export const Certificates: Array<Certificate> = [
     published: "Dec 2023",
     srcImage: "/img/certificate/freecodecamp-responsive-web-design.webp",
     thisAcademic: false,
+    best: true,
     tags: ["HTML5", "CSS3", "Responsive On Mobile"],
   },
   {

@@ -178,6 +178,8 @@ export const en = {
   "cert.subtitle":
     "{total} verified credentials — {professional} professional and {academic} academic — each with issuer and issue date.",
   "cert.tab.all": "All",
+  "cert.tab.best": "Best",
+  "cert.tab.recent": "Recent",
   "cert.tab.professional": "Professional",
   "cert.tab.academic": "Academic",
   "cert.search.placeholder": "Search by title, technology, or tag...",
@@ -589,6 +591,8 @@ export const id: Record<TranslationKey, string> = {
   "cert.subtitle":
     "{total} kredensial terverifikasi — {professional} profesional dan {academic} akademik — masing-masing dengan penerbit dan tanggal terbit.",
   "cert.tab.all": "Semua",
+  "cert.tab.best": "Terbaik",
+  "cert.tab.recent": "Terbaru",
   "cert.tab.professional": "Profesional",
   "cert.tab.academic": "Akademik",
   "cert.search.placeholder": "Cari berdasarkan judul, teknologi, atau tag...",

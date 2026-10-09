@@ -4,21 +4,50 @@ import HelmetContainer from "@/components/HelmetContainer";
 import { BackgroundBlobs } from "@/components/BackgroundBlobs";
 import { Certificates } from "@/data/certificate";
 import CertificatesGrid from "@/modules/certification/components/CertificatesGrid";
-import { TbAward, TbSearch, TbFilter, TbSchool, TbBriefcase } from "react-icons/tb";
+import { TbAward, TbSearch, TbFilter, TbSchool, TbBriefcase, TbStar, TbClock } from "react-icons/tb";
 import { motion } from "framer-motion";
 import { useTranslation } from "@/i18n";
+
+type CertTab = "all" | "best" | "recent" | "professional" | "academic";
+
+const MONTHS: Record<string, number> = {
+  jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5,
+  jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11,
+};
+
+/** Parses a "Mon YYYY" / "YYYY" label into a numeric timestamp (0 if unknown). */
+const parsePublished = (published: string): number => {
+  const parts = published.trim().split(/\s+/);
+  const last = parts[parts.length - 1];
+  const year = Number(last);
+  if (Number.isNaN(year)) return 0;
+  const monthKey = parts.length > 1 ? parts[0].slice(0, 3).toLowerCase() : "jan";
+  const month = MONTHS[monthKey] ?? 0;
+  return year * 100 + month;
+};
+
+// Newest credentials first — reused for the "Recent" tab.
+const recentCertificates = [...Certificates].sort(
+  (a, b) => parsePublished(b.published) - parsePublished(a.published),
+);
 
 const CertificatesPage = () => {
   const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeTab, setActiveTab] = useState<"all" | "professional" | "academic">("all");
+  const [activeTab, setActiveTab] = useState<CertTab>("all");
 
   const filteredCertificates = useMemo(() => {
-    return Certificates.filter((cert) => {
+    const base =
+      activeTab === "recent"
+        ? recentCertificates
+        : activeTab === "best"
+          ? Certificates.filter((cert) => cert.best)
+          : Certificates;
+
+    return base.filter((cert) => {
       const matchesSearch = cert.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         cert.tags?.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
 
-      if (activeTab === "all") return matchesSearch;
       if (activeTab === "academic") return matchesSearch && cert.thisAcademic;
       if (activeTab === "professional") return matchesSearch && !cert.thisAcademic;
       return matchesSearch;
@@ -79,6 +108,8 @@ const CertificatesPage = () => {
           <div className="flex p-1 gap-1 rounded-2xl bg-neutral-200/50 dark:bg-neutral-800/50 backdrop-blur-md border border-neutral-300/30 dark:border-neutral-700/30 w-fit">
             {([
               { id: "all", label: t("cert.tab.all"), icon: TbFilter },
+              { id: "best", label: t("cert.tab.best"), icon: TbStar },
+              { id: "recent", label: t("cert.tab.recent"), icon: TbClock },
               { id: "professional", label: t("cert.tab.professional"), icon: TbBriefcase },
               { id: "academic", label: t("cert.tab.academic"), icon: TbSchool }
             ] as const).map((tab) => (

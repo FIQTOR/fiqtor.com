@@ -17,6 +17,8 @@ export interface Certificate {
   urlDirect?: string;
   urlPdf?: string;
   thisAcademic?: boolean;
+  /** Marks an outstanding/featured credential (used for the "Best" tab). */
+  best?: boolean;
   tags?: string[];
 }
 

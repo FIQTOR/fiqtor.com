@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
-import { useRef, useState } from "react";
-import { TbArrowRight, TbChevronsRight } from "react-icons/tb";import { Certificates } from "@/data/certificate";
+import { useMemo, useRef, useState } from "react";
+import { TbArrowRight, TbChevronsRight, TbStar, TbClock } from "react-icons/tb";
+import { Certificates } from "@/data/certificate";
 import { CertificateCard } from "@/components/certificate/CertificateCard";
 import type { Certificate } from "@/components/certificate/CertificateCard";
 import CertificateModal from "@/components/certificate/CertificateModal";
@@ -16,33 +17,76 @@ type CarouselCard =
     })
   | { uniqueId: string; isViewAll: true; originalIndex: number };
 
+/** Home carousel filter tabs. */
+type HomeCertTab = "best" | "recent";
+
+const MONTHS: Record<string, number> = {
+  jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5,
+  jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11,
+};
+
+/** Parses a "Mon YYYY" / "YYYY" label into a numeric timestamp (0 if unknown). */
+const parsePublished = (published: string): number => {
+  const parts = published.trim().split(/\s+/);
+  const last = parts[parts.length - 1];
+  const year = Number(last);
+  if (Number.isNaN(year)) return 0;
+  const monthKey = parts.length > 1 ? parts[0].slice(0, 3).toLowerCase() : "jan";
+  return year * 100 + (MONTHS[monthKey] ?? 0);
+};
+
+/** Newest credentials first — used for the "Recent" tab. */
+const recentCertificates = [...Certificates].sort(
+  (a, b) => parsePublished(b.published) - parsePublished(a.published),
+);
+
+const buildCards = (list: Certificate[]): CarouselCard[] => {
+  const featured = list.slice(0, 8);
+  const certCards: CarouselCard[] = featured.map((cert, i) => ({
+    ...cert,
+    uniqueId: `cert-${i}`,
+    isViewAll: false,
+    originalIndex: i,
+  }));
+
+  return [
+    ...certCards,
+    {
+      uniqueId: "view-all-card",
+      isViewAll: true,
+      originalIndex: featured.length,
+    },
+  ];
+};
+
 export default function Certification() {
   const { t } = useTranslation();
   const sectionRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { once: false, amount: 0.1 });
 
-  const featured = Certificates.slice(0, 8);
-  const totalItems = featured.length + 1;
+  const [activeTab, setActiveTab] = useState<HomeCertTab>("best");
+
+  const activeList = useMemo(
+    () =>
+      activeTab === "best"
+        ? Certificates.filter((cert) => cert.best)
+        : recentCertificates,
+    [activeTab],
+  );
+
+  const totalItems = Math.min(activeList.length, 8) + 1;
 
   const [selected, setSelected] = useState<Certificate | null>(null);
 
-  const [cards, setCards] = useState<CarouselCard[]>(() => {
-    const certCards: CarouselCard[] = featured.map((cert, i) => ({
-      ...cert,
-      uniqueId: `cert-${i}`,
-      isViewAll: false,
-      originalIndex: i,
-    }));
+  const [cards, setCards] = useState<CarouselCard[]>(() =>
+    buildCards(Certificates.filter((cert) => cert.best)),
+  );
 
-    return [
-      ...certCards,
-      {
-        uniqueId: "view-all-card",
-        isViewAll: true,
-        originalIndex: featured.length,
-      },
-    ];
-  });
+  const handleTabChange = (tab: HomeCertTab) => {
+    if (tab === activeTab) return;
+    setActiveTab(tab);
+    setCards(buildCards(tab === "best" ? Certificates.filter((c) => c.best) : recentCertificates));
+  };
 
   const handleNext = () => {
     setCards((prev) => {
@@ -130,6 +174,34 @@ export default function Certification() {
                   {stat.label}
                 </span>
               </div>
+            ))}
+          </motion.div>
+
+          {/* Best / Recent tab switcher — retargets the card stack */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.5, delay: 0.35 }}
+            className="flex p-1 gap-1 rounded-2xl bg-neutral-200/60 dark:bg-neutral-800/60 backdrop-blur-md border border-neutral-300/40 dark:border-neutral-700/40 w-fit"
+          >
+            {([
+              { id: "best", label: t("cert.tab.best"), icon: TbStar },
+              { id: "recent", label: t("cert.tab.recent"), icon: TbClock },
+            ] as const).map((tab) => (
+              <button
+                key={tab.id}
+                type="button"
+                onClick={() => handleTabChange(tab.id)}
+                aria-pressed={activeTab === tab.id}
+                className={`flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold transition-all duration-300 ${
+                  activeTab === tab.id
+                    ? "bg-white text-neutral-900 shadow-lg dark:bg-neutral-900 dark:text-white"
+                    : "text-neutral-500 hover:text-neutral-700 dark:hover:text-neutral-300"
+                }`}
+              >
+                <tab.icon className="h-4 w-4" />
+                {tab.label}
+              </button>
             ))}
           </motion.div>
 
