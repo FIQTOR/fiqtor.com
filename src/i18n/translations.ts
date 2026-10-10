@@ -204,8 +204,6 @@ export const en = {
 
   // ---- Linktree page ----
   "linktree.aria": "{brand} - Official Social Links",
-  "linktree.discount": "Coffee shop website discount",
-  "linktree.from": "From Rp300,000",
   "linktree.portfolio": "Portfolio Website",
   "linktree.contact": "Contact Me",
   "linktree.business": "{company} - Business Solutions",
@@ -620,8 +618,6 @@ export const id: Record<TranslationKey, string> = {
 
   // ---- Linktree page ----
   "linktree.aria": "{brand} - Tautan Sosial Resmi",
-  "linktree.discount": "Diskon website coffee shop",
-  "linktree.from": "Mulai Rp300.000",
   "linktree.portfolio": "Website Portofolio",
   "linktree.contact": "Hubungi Saya",
   "linktree.business": "{company} - Solusi Bisnis",
