@@ -14,6 +14,13 @@ gsap.registerPlugin(ScrollTrigger);
 // same visual effect while eliminating the thrash.
 ScrollTrigger.config({ ignoreMobileResize: true });
 
+/**
+ * Format a raw count using Indonesian thousand separators (dots), e.g.
+ * 130000 -> "130.000". Used for the TikTok likes headline.
+ */
+const formatCompact = (value: number): string =>
+  new Intl.NumberFormat("id-ID").format(value);
+
 const SubHeader = () => {
   const { t } = useTranslation();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -21,7 +28,7 @@ const SubHeader = () => {
   const tiktokRef = useRef<HTMLDivElement>(null);
   const instagramRef = useRef<HTMLDivElement>(null);
   const [wakatime, setWakatime] = useState({ coding_lifetime: '', since: '' });
-  const [tiktok, setTiktok] = useState({ followers: 0, following: 0 });
+  const [tiktok, setTiktok] = useState({ followers: 0, following: 0, likes: 0 });
   const [instagram, setInstagram] = useState({ followers: 0, following: 0 });
 
   useEffect(() => {
@@ -44,7 +51,8 @@ const SubHeader = () => {
 
         setTiktok({
           followers: tiktok?.followers ?? 0,
-          following: tiktok?.following ?? 0
+          following: tiktok?.following ?? 0,
+          likes: tiktok?.likes ?? 0
         });
 
         setInstagram({
@@ -54,7 +62,7 @@ const SubHeader = () => {
       } catch {
         if (signal.aborted) return;
         // Fallback data when the backend itself is unavailable.
-        setTiktok({ followers: 130000, following: 1955 });
+        setTiktok({ followers: 1955, following: 33, likes: 130000 });
         setInstagram({ followers: 696, following: 579 });
       }
 
@@ -271,6 +279,7 @@ const SubHeader = () => {
           <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-12 text-2xl md:text-3xl">
             <p className="font-semibold">{tiktok.followers} {t("home.sub.followers")}</p>
             <p className="text-gray-600 dark:text-gray-400">{tiktok.following} {t("home.sub.following")}</p>
+            <p className="font-semibold">{formatCompact(tiktok.likes)}+ {t("home.sub.likes")}</p>
           </div>
           <a
             href={SOCIAL_LINKS.tiktok}
