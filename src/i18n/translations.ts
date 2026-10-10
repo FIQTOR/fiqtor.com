@@ -213,6 +213,8 @@ export const en = {
   "linktree.bio":
     "Hello there! I'm a software engineer who builds digital experiences with code, creativity, and AI ✨",
   "linktree.pronouns": "📍 Indonesian • 👨‍💻 he/him",
+  "linktree.share": "Share this page",
+  "linktree.copied": "Link copied!",
 
   // ---- Contact / Talk page ----
   "talk.title": "Contact {brand}",
@@ -627,6 +629,8 @@ export const id: Record<TranslationKey, string> = {
   "linktree.bio":
     "Halo! Saya seorang software engineer yang membangun pengalaman digital dengan kode, kreativitas, dan AI ✨",
   "linktree.pronouns": "📍 Indonesia • 👨‍💻 he/him",
+  "linktree.share": "Bagikan halaman ini",
+  "linktree.copied": "Tautan disalin!",
 
   // ---- Contact / Talk page ----
   "talk.title": "Hubungi {brand}",
