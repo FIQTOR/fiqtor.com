@@ -54,8 +54,8 @@ const SubHeader = () => {
       } catch {
         if (signal.aborted) return;
         // Fallback data when the backend itself is unavailable.
-        setTiktok({ followers: 2006, following: 49 });
-        setInstagram({ followers: 671, following: 572 });
+        setTiktok({ followers: 130000, following: 1955 });
+        setInstagram({ followers: 696, following: 579 });
       }
 
       try {
