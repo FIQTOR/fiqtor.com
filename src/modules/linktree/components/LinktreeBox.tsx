@@ -1,5 +1,6 @@
 // Import required dependencies
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { SocialLink } from "@/data/social";
 import {
   SiGithub,
@@ -260,10 +261,10 @@ function CustomCursor({ rootRef }: { rootRef: React.RefObject<HTMLElement | null
 
   if (disabled) return null;
 
-  return (
+  return createPortal(
     <div
       aria-hidden
-      className="pointer-events-none fixed inset-0 z-[9999] overflow-hidden"
+      className="pointer-events-none fixed inset-0 z-[9999]"
     >
       {/* Soft trailing circle that follows the native cursor */}
       <motion.div
@@ -282,7 +283,8 @@ function CustomCursor({ rootRef }: { rootRef: React.RefObject<HTMLElement | null
         animate={{ opacity: visible ? 1 : 0, scale: visible ? 1 : 0.6 }}
         transition={{ duration: 0.18 }}
       />
-    </div>
+    </div>,
+    document.body,
   );
 }
 
