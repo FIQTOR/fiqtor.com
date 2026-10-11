@@ -29,45 +29,35 @@ type SocialLinkType = {
   image?: string; // Optional image path
 };
 
-// IARTY network — the four subdomains shown side-by-side as horizontal tiles
+// IARTY network — the subdomains shown side-by-side as horizontal tiles
 type HubLinkType = {
-  /** i18n key used to resolve the display label at render time. */
-  nameKey: "linktree.business" | "linktree.aiPrd" | "linktree.marketplace";
-  /** Variables fed to the translation (e.g. {company}). */
-  nameVars?: Record<string, string>;
+  /** Display label rendered on the tile. */
+  label: string;
   /** The bare domain rendered under the label. */
   domain: string;
   href: string;
   image: string;
-  /** Short accent tag rendered as a badge. */
-  tag: string;
 };
 
 // Array of IARTY subdomain tiles pinned to the top of the linktree
 const hubLinks: HubLinkType[] = [
   {
-    nameKey: "linktree.business",
-    nameVars: { company: COMPANY.name },
+    label: "Official Website",
     domain: "iarty.biz.id",
     href: COMPANY.url,
     image: COMPANY.image,
-    tag: "HQ",
   },
   {
-    nameKey: "linktree.aiPrd",
-    nameVars: { company: COMPANY.name },
+    label: "IARTY AI",
     domain: "ai.iarty.biz.id",
     href: COMPANY.aiUrl,
     image: COMPANY.image,
-    tag: "AI",
   },
   {
-    nameKey: "linktree.marketplace",
-    nameVars: { company: COMPANY.name },
+    label: "Marketplace",
     domain: "marketplace.iarty.biz.id",
     href: COMPANY.marketplaceUrl,
     image: COMPANY.image,
-    tag: "SHOP",
   },
 ];
 
@@ -214,20 +204,18 @@ function LinkRow({
   );
 }
 
-/** Horizontal IARTY subdomain tile — a compact card with domain + tag badge. */
+/** Horizontal IARTY subdomain tile — a compact card with domain + label. */
 function HubTile({
   href,
   label,
   domain,
   image,
-  tag,
   disabled,
 }: {
   href: string;
   label: string;
   domain: string;
   image: string;
-  tag: string;
   disabled?: boolean;
 }) {
   const tileRef = useRef<HTMLAnchorElement>(null);
@@ -271,11 +259,6 @@ function HubTile({
           className="relative z-10 h-8 w-8 rounded-md object-contain transition-transform duration-200 group-hover/tile:scale-110"
         />
         <span className="relative z-10 flex flex-col items-center gap-0.5">
-          <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wide text-gray-500 dark:text-gray-400">
-            <span className="rounded bg-black/80 px-1.5 py-0.5 text-[9px] text-white dark:bg-white/90 dark:text-black">
-              {tag}
-            </span>
-          </span>
           <span className="line-clamp-1 text-xs font-semibold text-gray-900 dark:text-gray-100">
             {label}
           </span>
@@ -384,24 +367,28 @@ export default function LinktreeBox() {
       </div>
 
       {/* IARTY network — subdomain tiles laid out horizontally */}
-      <motion.ul
-        className="z-10 flex flex-row items-stretch gap-3 px-7 pb-1"
-        variants={listVariants}
-        initial="hidden"
-        animate="show"
-      >
-        {hubLinks.map(({ nameKey, nameVars, domain, href, image, tag }) => (
-          <HubTile
-            key={href}
-            href={href}
-            label={t(nameKey, nameVars)}
-            domain={domain}
-            image={image}
-            tag={tag}
-            disabled={effectsDisabled}
-          />
-        ))}
-      </motion.ul>
+      <div className="z-10 flex flex-col gap-2 px-7">
+        <p className="text-center text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">
+          {t("linktree.hubHeading")}
+        </p>
+        <motion.ul
+          className="flex flex-row items-stretch gap-3"
+          variants={listVariants}
+          initial="hidden"
+          animate="show"
+        >
+          {hubLinks.map(({ label, domain, href, image }) => (
+            <HubTile
+              key={href}
+              href={href}
+              label={label}
+              domain={domain}
+              image={image}
+              disabled={effectsDisabled}
+            />
+          ))}
+        </motion.ul>
+      </div>
 
       {/* Social links list (staggered entrance) */}
       <motion.ul
