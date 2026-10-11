@@ -19,7 +19,6 @@ import {
   useLowPower,
   usePrefersReducedMotion,
 } from "@/hooks/useDeviceCapabilities";
-
 // Define the type for social link items
 type SocialLinkType = {
   /** Static display name. Ignored when `nameKey` is present. */
@@ -266,7 +265,7 @@ function CustomCursor({ rootRef }: { rootRef: React.RefObject<HTMLElement | null
       aria-hidden
       className="pointer-events-none fixed inset-0 z-[9999] overflow-hidden"
     >
-      {/* Soft trailing glow ring */}
+      {/* Soft trailing circle that follows the native cursor */}
       <motion.div
         className="absolute rounded-full border"
         style={{
@@ -281,13 +280,6 @@ function CustomCursor({ rootRef }: { rootRef: React.RefObject<HTMLElement | null
           backdropFilter: hovering ? "blur(2px)" : "none",
         }}
         animate={{ opacity: visible ? 1 : 0, scale: visible ? 1 : 0.6 }}
-        transition={{ duration: 0.18 }}
-      />
-      {/* Tiny center dot for precision */}
-      <motion.div
-        className="absolute h-1.5 w-1.5 rounded-full bg-neutral-800 dark:bg-white"
-        style={{ x, y, translateX: "-50%", translateY: "-50%" }}
-        animate={{ opacity: visible ? 1 : 0, scale: hovering ? 0 : 1 }}
         transition={{ duration: 0.18 }}
       />
     </div>
@@ -365,10 +357,7 @@ export default function LinktreeBox() {
   const { t } = useTranslation();
   const lowPower = useLowPower();
   const reducedMotion = usePrefersReducedMotion();
-  const isDesktop = useIsDesktop();
   const effectsDisabled = lowPower || reducedMotion;
-  // The custom cursor is desktop-only and needs motion to feel right.
-  const cursorEnabled = isDesktop && !reducedMotion;
 
   // --- 3D tilt (desktop, pointer only) ---
   const cardRef = useRef<HTMLDivElement>(null);
@@ -401,9 +390,7 @@ export default function LinktreeBox() {
           ? undefined
           : { rotateX, rotateY, transformPerspective: 900 }
       }
-      className={`relative flex h-full w-full flex-col gap-2 mb-14 rounded-xl shadow-xl backdrop-blur-md dark:border-t dark:border-neutral-800 dark:bg-neutral-900/50 ${
-        cursorEnabled ? "cursor-none" : ""
-      }`}
+      className="relative flex h-full w-full flex-col gap-2 mb-14 rounded-xl shadow-xl backdrop-blur-md dark:border-t dark:border-neutral-800 dark:bg-neutral-900/50"
     >
       {/* Desktop-only custom circle cursor */}
       <CustomCursor rootRef={cardRef} />
