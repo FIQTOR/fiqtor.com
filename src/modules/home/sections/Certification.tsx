@@ -182,7 +182,7 @@ export default function Certification() {
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5, delay: 0.35 }}
-            className="flex p-1 gap-1 rounded-2xl bg-neutral-200/90 dark:bg-neutral-800/90 md:bg-neutral-200/60 md:dark:bg-neutral-800/60 md:backdrop-blur-md border border-neutral-300/40 dark:border-neutral-700/40 w-fit max-w-full overflow-x-auto scrollbar-hide"
+            className="flex p-1 gap-1 rounded-2xl bg-neutral-200/90 dark:bg-neutral-800/90 md:bg-neutral-200/60 md:dark:bg-neutral-800/60 md:backdrop-blur-md border border-neutral-300/40 dark:border-neutral-700/40 w-fit max-w-full"
           >
             {([
               { id: "best", label: t("cert.tab.best"), icon: TbStar },

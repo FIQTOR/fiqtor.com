@@ -105,8 +105,8 @@ const CertificatesPage = () => {
 
         {/* Filters & Search UI */}
         <div className="relative z-10 mb-12 flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-          <div className="w-full md:w-fit max-w-full overflow-x-auto scrollbar-hide -mx-1 px-1">
-            <div className="flex p-1 gap-1 rounded-2xl bg-neutral-200/50 dark:bg-neutral-800/50 backdrop-blur-md border border-neutral-300/30 dark:border-neutral-700/30 w-max">
+          <div className="w-full min-w-0 md:w-fit max-w-full overflow-x-auto scrollbar-hide">
+            <div className="flex w-max p-1 gap-1 rounded-2xl bg-neutral-200/50 dark:bg-neutral-800/50 backdrop-blur-md border border-neutral-300/30 dark:border-neutral-700/30">
               {([
                 { id: "all", label: t("cert.tab.all"), icon: TbFilter },
                 { id: "best", label: t("cert.tab.best"), icon: TbStar },
@@ -129,7 +129,7 @@ const CertificatesPage = () => {
             </div>
           </div>
 
-          <div className="relative group max-w-md w-full">
+          <div className="relative group max-w-md w-full min-w-0">
             <TbSearch className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-neutral-400 group-focus-within:text-blue-500 transition-colors" />
             <input
               type="text"
