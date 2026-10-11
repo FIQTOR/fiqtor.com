@@ -28,6 +28,31 @@ export function useLowPower() {
 }
 
 /**
+ * Reports whether the current device is a true desktop with a fine pointer
+ * (mouse/trackpad) and a wide viewport. Used to gate desktop-only affordances
+ * such as the custom cursor. Re-evaluates on resize so docking/resizing a
+ * window updates live.
+ */
+export function useIsDesktop() {
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const compute = () =>
+      window.matchMedia("(min-width: 768px)").matches &&
+      window.matchMedia("(pointer: fine)").matches &&
+      !window.matchMedia("(pointer: coarse)").matches;
+
+    const update = () => setIsDesktop(compute());
+    update();
+
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+
+  return isDesktop;
+}
+
+/**
  * Reports whether the user asked for reduced motion via the
  * `prefers-reduced-motion` media query. Decorative continuous/parallax motion
  * should be disabled when this is `true`.
