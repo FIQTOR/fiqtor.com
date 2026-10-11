@@ -64,24 +64,25 @@ export default function CustomCursor() {
 
   if (disabled) return null;
 
+  // Both layers are portaled straight to <body> and positioned `fixed` with no
+  // intermediate wrapper. This is essential: any ancestor with its own
+  // stacking/isolation context would make `mix-blend-mode: difference` blend
+  // against that ancestor instead of the page — which is why the disc used to
+  // always render pure white. As a direct fixed child of <body>, the disc
+  // blends against the real page content underneath it.
   return createPortal(
-    // The wrapper must not create a stacking/isolation context for the blend,
-    // otherwise `difference` would only blend against the (empty) wrapper
-    // instead of the page content underneath.
-    <div
-      aria-hidden
-      className="pointer-events-none fixed inset-0 z-[9999]"
-      style={{ isolation: "auto" }}
-    >
+    <>
       {/* Layer 1 — reverse-color fill disc (only on hover) */}
       <motion.div
-        className="absolute rounded-full bg-white"
+        aria-hidden
+        className="pointer-events-none fixed top-0 left-0 rounded-full bg-white"
         style={{
           x: springX,
           y: springY,
           translateX: "-50%",
           translateY: "-50%",
           mixBlendMode: "difference",
+          zIndex: 9998,
         }}
         animate={{
           width: hovering ? 64 : 30,
@@ -97,13 +98,15 @@ export default function CustomCursor() {
 
       {/* Layer 2 — monochrome border-only ring (always visible) */}
       <motion.div
-        className="absolute rounded-full border-2"
+        aria-hidden
+        className="pointer-events-none fixed top-0 left-0 rounded-full border-2"
         style={{
           x: springX,
           y: springY,
           translateX: "-50%",
           translateY: "-50%",
           borderColor: "rgba(128,128,128,0.8)",
+          zIndex: 9999,
         }}
         animate={{
           width: hovering ? 64 : 30,
@@ -116,7 +119,7 @@ export default function CustomCursor() {
           opacity: { duration: 0.25 },
         }}
       />
-    </div>,
+    </>,
     document.body,
   );
 }
