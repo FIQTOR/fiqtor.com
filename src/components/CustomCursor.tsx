@@ -9,11 +9,12 @@ import {
 /**
  * Global monochrome circle cursor.
  *
- * A solid white disc follows the pointer across the whole page on desktop and
- * uses `mix-blend-mode: difference`, so it renders white over dark areas and
- * black over light areas — effectively inverting whatever sits behind it.
- * When hovering an interactive control (`a`, `button`, input, …) the circle
- * grows to create a "reverse color" spotlight effect.
+ * Layers:
+ *  - A hollow **border-only ring** in a neutral gray by default — reads on both
+ *    light and dark surfaces without disturbing them.
+ *  - A **fill disc** that fades in only on hover, using
+ *    `mix-blend-mode: difference` so whatever is behind it is inverted —
+ *    a white surface turns black and a black surface turns white.
  *
  * The native OS cursor remains visible; the circle is purely additive.
  * Renders nothing on touch devices or when the user prefers reduced motion.
@@ -64,8 +65,15 @@ export default function CustomCursor() {
   if (disabled) return null;
 
   return createPortal(
-    <div aria-hidden className="pointer-events-none fixed inset-0 z-[9999]">
-      {/* Monochrome disc that follows the cursor with a soft trailing spring */}
+    // The wrapper must not create a stacking/isolation context for the blend,
+    // otherwise `difference` would only blend against the (empty) wrapper
+    // instead of the page content underneath.
+    <div
+      aria-hidden
+      className="pointer-events-none fixed inset-0 z-[9999]"
+      style={{ isolation: "auto" }}
+    >
+      {/* Layer 1 — reverse-color fill disc (only on hover) */}
       <motion.div
         className="absolute rounded-full bg-white"
         style={{
@@ -76,8 +84,30 @@ export default function CustomCursor() {
           mixBlendMode: "difference",
         }}
         animate={{
-          width: hovering ? 64 : 26,
-          height: hovering ? 64 : 26,
+          width: hovering ? 64 : 30,
+          height: hovering ? 64 : 30,
+          opacity: visible && hovering ? 1 : 0,
+        }}
+        transition={{
+          width: { type: "spring", stiffness: 300, damping: 26 },
+          height: { type: "spring", stiffness: 300, damping: 26 },
+          opacity: { duration: 0.18 },
+        }}
+      />
+
+      {/* Layer 2 — monochrome border-only ring (always visible) */}
+      <motion.div
+        className="absolute rounded-full border-2"
+        style={{
+          x: springX,
+          y: springY,
+          translateX: "-50%",
+          translateY: "-50%",
+          borderColor: "rgba(128,128,128,0.8)",
+        }}
+        animate={{
+          width: hovering ? 64 : 30,
+          height: hovering ? 64 : 30,
           opacity: visible ? 1 : 0,
         }}
         transition={{
