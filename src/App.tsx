@@ -11,6 +11,7 @@ import { useWelcome } from './context/welcome-context';
 import MainLayout from './layouts/MainLayout';
 import Loading from './components/Loading';
 import PageTransition from './components/PageTransition';
+import CustomCursor from './components/CustomCursor';
 import { preloadLineWaves } from './components/lineWavesLoader';
 import './App.css';
 import { inject } from "@vercel/analytics";
@@ -339,6 +340,7 @@ function AppShell() {
 
   return (
     <>
+      <CustomCursor />
       <ScrollProgressBar />
       <AnimatePresence mode="wait">
         {showWelcome && <WelcomeScreen key="welcome" />}

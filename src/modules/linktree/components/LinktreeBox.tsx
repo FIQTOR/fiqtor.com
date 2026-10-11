@@ -1,6 +1,5 @@
 // Import required dependencies
-import { useEffect, useRef, useState } from "react";
-import { createPortal } from "react-dom";
+import { useRef } from "react";
 import { SocialLink } from "@/data/social";
 import {
   SiGithub,
@@ -16,7 +15,6 @@ import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { BRAND_NAME, OWNER_ALIAS, SOCIAL_LINKS, COMPANY } from "@/config/Identity";
 import { useTranslation } from "@/i18n";
 import {
-  useIsDesktop,
   useLowPower,
   usePrefersReducedMotion,
 } from "@/hooks/useDeviceCapabilities";
@@ -208,86 +206,6 @@ function LinkRow({
   );
 }
 
-/** A custom circle cursor that follows the pointer on desktop and reacts to
- * interactive elements. Returns `null` on non-desktop / reduced-motion devices
- * so the native cursor is used everywhere else. */
-function CustomCursor({ rootRef }: { rootRef: React.RefObject<HTMLElement | null> }) {
-  const isDesktop = useIsDesktop();
-  const reducedMotion = usePrefersReducedMotion();
-  const disabled = !isDesktop || reducedMotion;
-
-  const x = useMotionValue(-100);
-  const y = useMotionValue(-100);
-  // The outer ring trails slightly behind for a soft, springy feel.
-  const ringX = useSpring(x, { stiffness: 350, damping: 28, mass: 0.5 });
-  const ringY = useSpring(y, { stiffness: 350, damping: 28, mass: 0.5 });
-
-  const [visible, setVisible] = useState(false);
-  const [hovering, setHovering] = useState(false);
-
-  useEffect(() => {
-    if (disabled) return;
-    const root = rootRef.current;
-    if (!root) return;
-
-    const handleMove = (e: MouseEvent) => {
-      x.set(e.clientX);
-      y.set(e.clientY);
-    };
-    const handleOver = (e: MouseEvent) => {
-      setVisible(true);
-      const target = e.target as HTMLElement | null;
-      // React when hovering any interactive control inside the card.
-      setHovering(
-        !!target?.closest(
-          "a, button, [role='button'], input, select, textarea, [data-cursor-hover]",
-        ),
-      );
-    };
-    const handleLeave = () => {
-      setVisible(false);
-      setHovering(false);
-    };
-
-    window.addEventListener("mousemove", handleMove, { passive: true });
-    root.addEventListener("mouseover", handleOver);
-    root.addEventListener("mouseleave", handleLeave);
-    return () => {
-      window.removeEventListener("mousemove", handleMove);
-      root.removeEventListener("mouseover", handleOver);
-      root.removeEventListener("mouseleave", handleLeave);
-    };
-  }, [disabled, rootRef, x, y]);
-
-  if (disabled) return null;
-
-  return createPortal(
-    <div
-      aria-hidden
-      className="pointer-events-none fixed inset-0 z-[9999]"
-    >
-      {/* Soft trailing circle that follows the native cursor */}
-      <motion.div
-        className="absolute rounded-full border"
-        style={{
-          x: ringX,
-          y: ringY,
-          translateX: "-50%",
-          translateY: "-50%",
-          width: hovering ? 56 : 34,
-          height: hovering ? 56 : 34,
-          borderColor: hovering ? "rgba(16,185,129,0.9)" : "rgba(120,120,120,0.7)",
-          backgroundColor: hovering ? "rgba(16,185,129,0.15)" : "transparent",
-          backdropFilter: hovering ? "blur(2px)" : "none",
-        }}
-        animate={{ opacity: visible ? 1 : 0, scale: visible ? 1 : 0.6 }}
-        transition={{ duration: 0.18 }}
-      />
-    </div>,
-    document.body,
-  );
-}
-
 /** Horizontal IARTY subdomain tile — a compact card with domain + label. */
 function HubTile({
   href,
@@ -394,9 +312,6 @@ export default function LinktreeBox() {
       }
       className="relative flex h-full w-full flex-col gap-2 mb-14 rounded-xl shadow-xl backdrop-blur-md dark:border-t dark:border-neutral-800 dark:bg-neutral-900/50"
     >
-      {/* Desktop-only custom circle cursor */}
-      <CustomCursor rootRef={cardRef} />
-
       {/* Background header image section */}
       <div className="absolute h-28 w-full overflow-hidden rounded-t-xl bg-neutral-400">
         <img
