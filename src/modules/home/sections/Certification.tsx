@@ -182,7 +182,7 @@ export default function Certification() {
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5, delay: 0.35 }}
-            className="flex p-1 gap-1 rounded-2xl bg-neutral-200/90 dark:bg-neutral-800/90 md:bg-neutral-200/60 md:dark:bg-neutral-800/60 md:backdrop-blur-md border border-neutral-300/40 dark:border-neutral-700/40 w-fit"
+            className="flex p-1 gap-1 rounded-2xl bg-neutral-200/90 dark:bg-neutral-800/90 md:bg-neutral-200/60 md:dark:bg-neutral-800/60 md:backdrop-blur-md border border-neutral-300/40 dark:border-neutral-700/40 w-fit max-w-full overflow-x-auto scrollbar-hide"
           >
             {([
               { id: "best", label: t("cert.tab.best"), icon: TbStar },
@@ -193,7 +193,7 @@ export default function Certification() {
                 type="button"
                 onClick={() => handleTabChange(tab.id)}
                 aria-pressed={activeTab === tab.id}
-                className={`flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold transition-all duration-300 ${
+                className={`flex shrink-0 items-center gap-2 whitespace-nowrap rounded-xl px-4 py-2 text-sm font-semibold transition-all duration-300 ${
                   activeTab === tab.id
                     ? "bg-white text-neutral-900 shadow-lg dark:bg-neutral-900 dark:text-white"
                     : "text-neutral-500 hover:text-neutral-700 dark:hover:text-neutral-300"
