@@ -208,6 +208,7 @@ export const en = {
   "linktree.contact": "Contact Me",
   "linktree.business": "{company} - Business Solutions",
   "linktree.aiPrd": "{company} AI - Make PRD Now",
+  "linktree.marketplace": "{company} Marketplace",
   "linktree.bio":
     "Hello there! I'm a software engineer who builds digital experiences with code, creativity, and AI ✨",
   "linktree.pronouns": "📍 Indonesian • 👨‍💻 he/him",
@@ -624,6 +625,7 @@ export const id: Record<TranslationKey, string> = {
   "linktree.contact": "Hubungi Saya",
   "linktree.business": "{company} - Solusi Bisnis",
   "linktree.aiPrd": "{company} AI - Buat PRD Sekarang",
+  "linktree.marketplace": "{company} Marketplace",
   "linktree.bio":
     "Halo! Saya seorang software engineer yang membangun pengalaman digital dengan kode, kreativitas, dan AI ✨",
   "linktree.pronouns": "📍 Indonesia • 👨‍💻 he/him",

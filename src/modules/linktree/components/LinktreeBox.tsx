@@ -21,13 +21,55 @@ type SocialLinkType = {
   /** Static display name. Ignored when `nameKey` is present. */
   name: string;
   /** i18n key used to resolve the display name at render time. */
-  nameKey?: "linktree.portfolio" | "linktree.contact" | "linktree.business" | "linktree.aiPrd";
+  nameKey?: "linktree.portfolio" | "linktree.contact";
   /** Variables fed to the translation (e.g. {company}). */
   nameVars?: Record<string, string>;
   href: string; // URL or path for the link
   icon?: React.ReactNode; // Optional icon component
   image?: string; // Optional image path
 };
+
+// IARTY network — the four subdomains shown side-by-side as horizontal tiles
+type HubLinkType = {
+  /** i18n key used to resolve the display label at render time. */
+  nameKey: "linktree.business" | "linktree.aiPrd" | "linktree.marketplace";
+  /** Variables fed to the translation (e.g. {company}). */
+  nameVars?: Record<string, string>;
+  /** The bare domain rendered under the label. */
+  domain: string;
+  href: string;
+  image: string;
+  /** Short accent tag rendered as a badge. */
+  tag: string;
+};
+
+// Array of IARTY subdomain tiles pinned to the top of the linktree
+const hubLinks: HubLinkType[] = [
+  {
+    nameKey: "linktree.business",
+    nameVars: { company: COMPANY.name },
+    domain: "iarty.biz.id",
+    href: COMPANY.url,
+    image: COMPANY.image,
+    tag: "HQ",
+  },
+  {
+    nameKey: "linktree.aiPrd",
+    nameVars: { company: COMPANY.name },
+    domain: "ai.iarty.biz.id",
+    href: COMPANY.aiUrl,
+    image: COMPANY.image,
+    tag: "AI",
+  },
+  {
+    nameKey: "linktree.marketplace",
+    nameVars: { company: COMPANY.name },
+    domain: "marketplace.iarty.biz.id",
+    href: COMPANY.marketplaceUrl,
+    image: COMPANY.image,
+    tag: "SHOP",
+  },
+];
 
 // Array of social media links and other important links
 const socialLinks: SocialLinkType[] = [
@@ -46,20 +88,6 @@ const socialLinks: SocialLinkType[] = [
     icon: (
       <TbAffiliate className="h-6 w-6 transform transition-transform group-hover:scale-125" />
     ),
-  },
-  {
-    name: `${COMPANY.name} - Business Solutions`,
-    nameKey: "linktree.business",
-    nameVars: { company: COMPANY.name },
-    href: COMPANY.url,
-    image: COMPANY.image,
-  },
-  {
-    name: `${COMPANY.name} AI - Make PRD Now`,
-    nameKey: "linktree.aiPrd",
-    nameVars: { company: COMPANY.name },
-    href: COMPANY.aiUrl,
-    image: COMPANY.image,
   },
   {
     name: `TikTok (1900+ Followers) • @${OWNER_ALIAS}`,
@@ -186,6 +214,80 @@ function LinkRow({
   );
 }
 
+/** Horizontal IARTY subdomain tile — a compact card with domain + tag badge. */
+function HubTile({
+  href,
+  label,
+  domain,
+  image,
+  tag,
+  disabled,
+}: {
+  href: string;
+  label: string;
+  domain: string;
+  image: string;
+  tag: string;
+  disabled?: boolean;
+}) {
+  const tileRef = useRef<HTMLAnchorElement>(null);
+
+  const handleMove = (e: React.MouseEvent) => {
+    if (disabled || !tileRef.current) return;
+    const rect = tileRef.current.getBoundingClientRect();
+    tileRef.current.style.setProperty("--x", `${e.clientX - rect.left}px`);
+    tileRef.current.style.setProperty("--y", `${e.clientY - rect.top}px`);
+  };
+
+  return (
+    <motion.li variants={itemVariants} className="group/tile relative flex-1 min-w-0">
+      <a
+        ref={tileRef}
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        onMouseMove={handleMove}
+        className="relative flex h-full flex-col items-center gap-2 overflow-hidden rounded-lg border border-black/10 bg-white/60 px-3 py-3 text-center shadow-md backdrop-blur-sm duration-200 hover:-translate-y-1 hover:border-black/40 hover:shadow-xl dark:border-white/10 dark:bg-white/5 dark:hover:border-white/40"
+      >
+        {/* Cursor-following spotlight (monochrome) */}
+        {!disabled && (
+          <span
+            aria-hidden
+            className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover/tile:opacity-100"
+            style={{
+              background:
+                "radial-gradient(90px circle at var(--x, 50%) var(--y, 50%), rgba(120,120,120,0.28), transparent 65%)",
+            }}
+          />
+        )}
+        {/* Shine sweep on hover */}
+        <span
+          aria-hidden
+          className="pointer-events-none absolute top-0 -left-full h-full w-1/2 -skew-x-12 bg-linear-to-r from-transparent via-white/30 to-transparent transition-transform duration-700 group-hover/tile:translate-x-[300%]"
+        />
+        <img
+          src={image}
+          alt={label}
+          className="relative z-10 h-8 w-8 rounded-md object-contain transition-transform duration-200 group-hover/tile:scale-110"
+        />
+        <span className="relative z-10 flex flex-col items-center gap-0.5">
+          <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wide text-gray-500 dark:text-gray-400">
+            <span className="rounded bg-black/80 px-1.5 py-0.5 text-[9px] text-white dark:bg-white/90 dark:text-black">
+              {tag}
+            </span>
+          </span>
+          <span className="line-clamp-1 text-xs font-semibold text-gray-900 dark:text-gray-100">
+            {label}
+          </span>
+          <span className="w-full truncate text-[10px] font-medium text-gray-500 dark:text-gray-400">
+            {domain}
+          </span>
+        </span>
+      </a>
+    </motion.li>
+  );
+}
+
 export default function LinktreeBox() {
   const { t } = useTranslation();
   const lowPower = useLowPower();
@@ -281,9 +383,29 @@ export default function LinktreeBox() {
         </div>
       </div>
 
+      {/* IARTY network — subdomain tiles laid out horizontally */}
+      <motion.ul
+        className="z-10 flex flex-row items-stretch gap-3 px-7 pb-1"
+        variants={listVariants}
+        initial="hidden"
+        animate="show"
+      >
+        {hubLinks.map(({ nameKey, nameVars, domain, href, image, tag }) => (
+          <HubTile
+            key={href}
+            href={href}
+            label={t(nameKey, nameVars)}
+            domain={domain}
+            image={image}
+            tag={tag}
+            disabled={effectsDisabled}
+          />
+        ))}
+      </motion.ul>
+
       {/* Social links list (staggered entrance) */}
       <motion.ul
-        className="flex flex-col gap-4 px-7 pb-7"
+        className="flex flex-col gap-4 px-7 pb-7 pt-3"
         variants={listVariants}
         initial="hidden"
         animate="show"
