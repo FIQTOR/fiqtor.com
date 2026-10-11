@@ -10,7 +10,12 @@ import { useEffect, useRef } from "react";
  * The float animation is also paused whenever the element is off-screen or the
  * tab is hidden (see `is-paused` handling in index.css).
  */
-export const BackgroundBlobs = () => {
+interface BackgroundBlobsProps {
+  /** Extra classes applied to the blobs container (e.g. to hide on mobile). */
+  className?: string;
+}
+
+export const BackgroundBlobs = ({ className = "" }: BackgroundBlobsProps) => {
   const rootRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -41,7 +46,7 @@ export const BackgroundBlobs = () => {
   return (
     <div
       ref={rootRef}
-      className="bg-blobs fixed inset-0 h-full w-full pointer-events-none overflow-hidden"
+      className={`bg-blobs fixed inset-0 h-full w-full pointer-events-none overflow-hidden ${className}`}
     >
       {/* Layer 1: blue → indigo (was Blob 1) */}
       <div className="bg-blob bg-blob-1 animate-float-slower" />

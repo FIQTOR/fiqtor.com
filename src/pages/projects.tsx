@@ -135,7 +135,7 @@ const ProjectsPage = () => {
         id="projects"
         className="page-base page-x relative py-24"
       >
-        <BackgroundBlobs />
+        <BackgroundBlobs className="hidden md:block" />
 
         {/* Header Section */}
         <div className="relative z-10 flex flex-col items-center mb-16 pt-10">
