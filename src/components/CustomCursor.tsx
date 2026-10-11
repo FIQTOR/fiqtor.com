@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 import {
@@ -6,15 +6,24 @@ import {
   usePrefersReducedMotion,
 } from "@/hooks/useDeviceCapabilities";
 
+/** Elements that count as "interactive" for the cursor's hover state. */
+const INTERACTIVE_SELECTOR =
+  "a, button, [role='button'], input, select, textarea, label, [data-cursor-hover]";
+
 /**
  * Global monochrome circle cursor.
  *
- * Layers:
- *  - A hollow **border-only ring** in a neutral gray by default — reads on both
- *    light and dark surfaces without disturbing them.
- *  - A **fill disc** that fades in only on hover, using
- *    `mix-blend-mode: difference` so whatever is behind it is inverted —
- *    a white surface turns black and a black surface turns white.
+ * The whole cursor is wrapped in a single element that blends with the page via
+ * `mix-blend-mode: difference`. Because it is portaled straight to <body> as a
+ * direct child (no isolating ancestor, no positive `z-index` creating a nested
+ * group), the white ring and white fill disc both invert whatever sits behind
+ * them — a light surface turns dark and a dark surface turns light — keeping
+ * the cursor strictly black & white on any background.
+ *
+ *  - Default state: a hollow **border-only ring** (white border → inverts to a
+ *    crisp monochrome outline).
+ *  - Hover state: an inner **fill disc** fades in and grows, so the area under
+ *    the cursor visibly reverses color.
  *
  * The native OS cursor remains visible; the circle is purely additive.
  * Renders nothing on touch devices or when the user prefers reduced motion.
@@ -32,6 +41,9 @@ export default function CustomCursor() {
 
   const [visible, setVisible] = useState(false);
   const [hovering, setHovering] = useState(false);
+  // Mirror the latest state values so the high-frequency mousemove handlers can
+  // read them without re-subscribing or triggering renders on every event.
+  const visibleRef = useRef(false);
 
   useEffect(() => {
     if (disabled) return;
@@ -39,51 +51,59 @@ export default function CustomCursor() {
     const handleMove = (e: MouseEvent) => {
       x.set(e.clientX);
       y.set(e.clientY);
-      setVisible(true);
+      // Only flip to visible once; otherwise this would set state on every
+      // mousemove event.
+      if (!visibleRef.current) {
+        visibleRef.current = true;
+        setVisible(true);
+      }
     };
+
     const handleOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement | null;
-      // Enlarge over any interactive control anywhere on the page.
-      setHovering(
-        !!target?.closest(
-          "a, button, [role='button'], input, select, textarea, label, [data-cursor-hover]",
-        ),
-      );
+      const next = !!target?.closest(INTERACTIVE_SELECTOR);
+      // Only re-render when the hover state actually changes.
+      setHovering((prev) => (prev === next ? prev : next));
     };
-    const handleLeave = () => setVisible(false);
+
+    // When the pointer leaves the document (toward browser chrome, another
+    // monitor, an iframe edge, …) or the window loses focus, hide the cursor
+    // so it can't get stuck on screen.
+    const hide = () => {
+      visibleRef.current = false;
+      setVisible(false);
+      setHovering(false);
+    };
+    const handleOut = (e: MouseEvent) => {
+      if (!e.relatedTarget) hide();
+    };
 
     window.addEventListener("mousemove", handleMove, { passive: true });
     window.addEventListener("mouseover", handleOver, { passive: true });
-    document.addEventListener("mouseleave", handleLeave);
+    window.addEventListener("mouseout", handleOut, { passive: true });
+    window.addEventListener("blur", hide);
     return () => {
       window.removeEventListener("mousemove", handleMove);
       window.removeEventListener("mouseover", handleOver);
-      document.removeEventListener("mouseleave", handleLeave);
+      window.removeEventListener("mouseout", handleOut);
+      window.removeEventListener("blur", hide);
     };
   }, [disabled, x, y]);
 
   if (disabled) return null;
 
-  // Both layers are portaled straight to <body> and positioned `fixed` with no
-  // intermediate wrapper. This is essential: any ancestor with its own
-  // stacking/isolation context would make `mix-blend-mode: difference` blend
-  // against that ancestor instead of the page — which is why the disc used to
-  // always render pure white. As a direct fixed child of <body>, the disc
-  // blends against the real page content underneath it.
+  // A single fixed wrapper carries the blend mode so both layers share the same
+  // compositing group and invert the page beneath. It is a direct child of
+  // <body> with no positive z-index / isolation, so nothing re-nests the blend.
   return createPortal(
-    <>
-      {/* Layer 1 — reverse-color fill disc (only on hover) */}
+    <motion.div
+      aria-hidden
+      className="pointer-events-none fixed top-0 left-0"
+      style={{ x: springX, y: springY, mixBlendMode: "difference" }}
+    >
+      {/* Layer 1 — reverse-color fill disc (fades in + grows on hover) */}
       <motion.div
-        aria-hidden
-        className="pointer-events-none fixed top-0 left-0 rounded-full bg-white"
-        style={{
-          x: springX,
-          y: springY,
-          translateX: "-50%",
-          translateY: "-50%",
-          mixBlendMode: "difference",
-          zIndex: 9998,
-        }}
+        className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full bg-white"
         animate={{
           width: hovering ? 64 : 30,
           height: hovering ? 64 : 30,
@@ -96,18 +116,9 @@ export default function CustomCursor() {
         }}
       />
 
-      {/* Layer 2 — monochrome border-only ring (always visible) */}
+      {/* Layer 2 — monochrome border-only ring (always visible when on page) */}
       <motion.div
-        aria-hidden
-        className="pointer-events-none fixed top-0 left-0 rounded-full border-2"
-        style={{
-          x: springX,
-          y: springY,
-          translateX: "-50%",
-          translateY: "-50%",
-          borderColor: "rgba(128,128,128,0.8)",
-          zIndex: 9999,
-        }}
+        className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white"
         animate={{
           width: hovering ? 64 : 30,
           height: hovering ? 64 : 30,
@@ -119,7 +130,7 @@ export default function CustomCursor() {
           opacity: { duration: 0.25 },
         }}
       />
-    </>,
+    </motion.div>,
     document.body,
   );
 }

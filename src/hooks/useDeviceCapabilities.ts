@@ -37,16 +37,22 @@ export function useIsDesktop() {
   const [isDesktop, setIsDesktop] = useState(false);
 
   useEffect(() => {
-    const compute = () =>
-      window.matchMedia("(min-width: 768px)").matches &&
-      window.matchMedia("(pointer: fine)").matches &&
-      !window.matchMedia("(pointer: coarse)").matches;
+    const wide = window.matchMedia("(min-width: 768px)");
+    const fine = window.matchMedia("(pointer: fine)");
+    const coarse = window.matchMedia("(pointer: coarse)");
 
-    const update = () => setIsDesktop(compute());
+    const update = () => setIsDesktop(wide.matches && fine.matches && !coarse.matches);
     update();
 
+    // React to both viewport size changes and pointer-type changes (e.g. a
+    // mouse being plugged/unplugged on a hybrid device), not just resize.
+    const queries = [wide, fine, coarse];
+    queries.forEach((mq) => mq.addEventListener("change", update));
     window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
+    return () => {
+      queries.forEach((mq) => mq.removeEventListener("change", update));
+      window.removeEventListener("resize", update);
+    };
   }, []);
 
   return isDesktop;
