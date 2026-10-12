@@ -25,9 +25,9 @@ const INTERACTIVE_SELECTOR =
  *  - Hover state: an inner **fill disc** fades in and grows, so the area under
  *    the cursor visibly reverses color.
  *
- * The native OS cursor is hidden (via `body.cursor-custom`) while this is
- * mounted, so the ring/disc is the only pointer. A very high z-index keeps it
- * above cards, the navbar, modals and toasts.
+ * The native OS cursor stays visible; this ring/disc is additive. A very high
+ * z-index (forced in index.css) keeps it above cards, the navbar, modals and
+ * toasts.
  * Renders nothing on touch devices or when the user prefers reduced motion.
  */
 export default function CustomCursor() {
@@ -50,8 +50,6 @@ export default function CustomCursor() {
 
   useEffect(() => {
     if (disabled) return;
-
-    document.body.classList.add("cursor-custom");
 
     const handleMove = (e: MouseEvent) => {
       x.set(e.clientX);
@@ -92,7 +90,6 @@ export default function CustomCursor() {
     window.addEventListener("mouseout", handleOut, { passive: true });
     window.addEventListener("blur", hide);
     return () => {
-      document.body.classList.remove("cursor-custom");
       window.removeEventListener("mousemove", handleMove);
       window.removeEventListener("mouseover", handleOver);
       window.removeEventListener("mouseout", handleOut);

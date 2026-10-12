@@ -364,21 +364,11 @@ html {
 }
 
 /* --- Global custom cursor --- */
-/* Hide the native pointer on desktop (fine pointer) and only when the JS
-   cursor actually mounted (`body.cursor-custom`). Touch / reduced-motion keep
-   the OS cursor because the body class is never added there. Text fields keep
-   a real caret cursor for usability. */
-@media (hover: hover) and (pointer: fine) {
-  body.cursor-custom,
-  body.cursor-custom * {
-    cursor: none !important;
-  }
-}
-
 /* Keep the cursor above everything. It is portaled to <body>, but the page
    renders it *after* `#root`, so a top-layer rule escapes every stacking
    context — including ancestors with `filter`/`transform`/`backdrop-filter`
-   (which would otherwise re-parent the blend and cover the circle). */
+   (which would otherwise re-parent the blend and cover the circle).
+   The native OS pointer is intentionally left visible; the ring is additive. */
 body > #custom-cursor {
   position: fixed !important;
   inset: 0 auto auto 0 !important;
