@@ -107,7 +107,7 @@ const TaskModalForm = ({
       aria-modal="true"
       aria-labelledby="task-modal-title"
       tabIndex={-1}
-      className="max-h-[92vh] w-full max-w-lg overflow-y-auto rounded-t-2xl border border-neutral-200/70 bg-white/95 p-5 shadow-2xl backdrop-blur-xl outline-none dark:border-neutral-800/70 dark:bg-neutral-950/95 sm:rounded-2xl"
+      className="max-h-[92vh] w-full max-w-lg overflow-y-auto rounded-t-2xl border border-neutral-200/70 bg-white/95 p-5 shadow-2xl backdrop-blur-sm outline-none dark:border-neutral-800/70 dark:bg-neutral-950/95 sm:rounded-2xl"
     >
       {/* Header */}
       <div className="mb-5 flex items-center justify-between">

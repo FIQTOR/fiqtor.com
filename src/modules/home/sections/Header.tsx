@@ -496,7 +496,7 @@ export default function Header() {
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.7, opacity: 0, y: 30 }}
               transition={{ type: "spring", stiffness: 350, damping: 25 }}
-              className="relative flex w-full max-w-md flex-col gap-6 overflow-hidden rounded-2xl bg-white p-8 shadow-2xl dark:bg-neutral-900 md:bg-white/90 md:dark:bg-neutral-900/90 md:backdrop-blur-xl border border-white/20 dark:border-neutral-700/30"
+              className="relative flex w-full max-w-md flex-col gap-6 overflow-hidden rounded-2xl bg-white p-8 shadow-2xl dark:bg-neutral-900 md:bg-white/90 md:dark:bg-neutral-900/90 md:backdrop-blur-md border border-white/20 dark:border-neutral-700/30"
             >
               <button
                 className="absolute right-4 top-4 rounded-full p-2 transition-all duration-300 hover:bg-red-100 dark:hover:bg-red-900/30 group"

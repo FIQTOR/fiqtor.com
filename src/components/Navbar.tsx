@@ -140,7 +140,7 @@ function LanguageSwitcher() {
         <div
           role="listbox"
           aria-label={t("nav.language.label")}
-          className="absolute bottom-full right-0 z-50 mb-3 w-44 overflow-hidden rounded-2xl border border-neutral-200/70 bg-white/95 p-1.5 shadow-2xl backdrop-blur-xl dark:border-neutral-700/70 dark:bg-neutral-900/95"
+          className="absolute bottom-full right-0 z-50 mb-3 w-44 overflow-hidden rounded-2xl border border-neutral-200/70 bg-white/95 p-1.5 shadow-2xl backdrop-blur-md dark:border-neutral-700/70 dark:bg-neutral-900/95"
         >
           {LANGUAGES.map((lang, index) => {
             const active = language === lang.code;
@@ -295,7 +295,7 @@ export default function Navbar() {
           opaque background instead of a blurred one; desktop keeps the glass
           look via `md:backdrop-blur-xl`.
         */}
-        <nav className="flex items-center gap-0.5 sm:gap-1 md:gap-2 rounded-full border border-neutral-200/50 bg-white/95 p-1 sm:p-1.5 md:p-2 shadow-2xl md:bg-white/70 md:backdrop-blur-xl dark:border-neutral-800/50 dark:bg-neutral-900/95 md:dark:bg-neutral-900/70">
+        <nav className="flex items-center gap-0.5 sm:gap-1 md:gap-2 rounded-full border border-neutral-200/50 bg-white/95 p-1 sm:p-1.5 md:p-2 shadow-2xl md:bg-white/70 md:backdrop-blur-md dark:border-neutral-800/50 dark:bg-neutral-900/95 md:dark:bg-neutral-900/70">
           <div ref={containerRef} className="relative flex items-center gap-0 sm:gap-0.5 md:gap-1">
             {/* Circle indicator that slides to follow the active menu item */}
             <span

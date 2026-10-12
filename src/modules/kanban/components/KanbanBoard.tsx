@@ -356,7 +356,7 @@ export default function KanbanBoard() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 12 }}
-            className="pointer-events-none fixed bottom-24 left-1/2 z-[80] -translate-x-1/2 rounded-full border border-neutral-200/70 bg-white/90 px-4 py-2 text-xs font-semibold text-neutral-700 shadow-xl backdrop-blur-xl dark:border-neutral-800/70 dark:bg-neutral-900/90 dark:text-neutral-200"
+            className="pointer-events-none fixed bottom-24 left-1/2 z-[80] -translate-x-1/2 rounded-full border border-neutral-200/70 bg-white/90 px-4 py-2 text-xs font-semibold text-neutral-700 shadow-xl backdrop-blur-sm dark:border-neutral-800/70 dark:bg-neutral-900/90 dark:text-neutral-200"
           >
             {toast}
           </motion.div>

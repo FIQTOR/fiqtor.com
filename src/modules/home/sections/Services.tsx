@@ -214,7 +214,7 @@ const ServicesSection = () => {
               className="relative md:absolute md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 z-40 mb-6 md:mb-0"
             >
               <div className="relative block group">
-                <div className="absolute -inset-4 bg-linear-to-br from-purple-500/40 to-blue-500/40 rounded-full blur-2xl opacity-60 group-hover:opacity-100 transition-opacity duration-300 hidden md:block" />
+                <div className="absolute -inset-4 rounded-full blur-2xl opacity-60 group-hover:opacity-100 transition-opacity duration-300 hidden md:block bg-[conic-gradient(from_135deg,rgba(168,85,247,0.4),rgba(59,130,246,0.4),rgba(168,85,247,0.4))]" />
                 <div className="relative w-36 h-36 md:w-44 md:h-44 rounded-full p-1 bg-linear-to-br from-purple-500/50 via-neutral-300 to-blue-500/50 shadow-2xl cursor-pointer hover:scale-105 transition-transform duration-500">
                   <div className="w-full h-full rounded-full overflow-hidden bg-white border-[6px] border-white shadow-[0_0_20px_rgba(255,255,255,0.8)]">
                     <Image

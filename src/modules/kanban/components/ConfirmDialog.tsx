@@ -55,7 +55,7 @@ const ConfirmDialog = ({
             aria-labelledby="confirm-title"
             aria-describedby="confirm-message"
             tabIndex={-1}
-            className="w-full max-w-sm rounded-2xl border border-neutral-200/70 bg-white/95 p-5 shadow-2xl backdrop-blur-xl outline-none dark:border-neutral-800/70 dark:bg-neutral-950/95"
+            className="w-full max-w-sm rounded-2xl border border-neutral-200/70 bg-white/95 p-5 shadow-2xl backdrop-blur-sm outline-none dark:border-neutral-800/70 dark:bg-neutral-950/95"
           >
             <h3
               id="confirm-title"

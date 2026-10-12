@@ -116,9 +116,10 @@ export default function Certification() {
       ref={sectionRef}
       className="relative w-full font-light text-neutral-700 dark:text-neutral-300 py-16 md:py-32 overflow-hidden bg-neutral-50 dark:bg-neutral-950"
     >
-      {/* Decorative Background Elements */}
-      <div className="absolute top-0 -left-20 w-96 h-96 md:w-120 md:h-120 bg-blue-500/10 blur-[100px] rounded-full pointer-events-none" />
-      <div className="absolute bottom-20 -right-20 w-96 h-96 md:w-120 md:h-120 bg-purple-500/10 blur-[100px] rounded-full pointer-events-none" />
+      {/* Decorative Background Elements — radial-gradients instead of huge
+          `blur(100px)` filters (same glow, much cheaper to composite). */}
+      <div className="absolute top-0 -left-20 w-96 h-96 md:w-120 md:h-120 rounded-full pointer-events-none bg-[radial-gradient(circle,rgba(59,130,246,0.12),transparent_70%)]" />
+      <div className="absolute bottom-20 -right-20 w-96 h-96 md:w-120 md:h-120 rounded-full pointer-events-none bg-[radial-gradient(circle,rgba(168,85,247,0.12),transparent_70%)]" />
 
       <div className="px-5 sm:px-7 md:px-24 relative z-10 flex flex-col xl:flex-row gap-10 xl:gap-16 items-center">
         {/* Left Side: Copywriting */}

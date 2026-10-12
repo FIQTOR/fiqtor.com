@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import LineWaves from "@/components/LineWaves";
+import LineWaves from "@/components/LineWavesLazy";
 import HelmetContainer from "@/components/HelmetContainer";
 import LinktreeBox from "@/modules/linktree/components/LinktreeBox";
 import { AnimatePresence, motion, useMotionValue, useSpring } from "framer-motion";

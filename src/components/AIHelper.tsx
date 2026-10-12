@@ -148,7 +148,7 @@ const AIHelper: React.FC = () => {
               setActive(true);
               dismissTooltip();
             }}
-            className="relative cursor-pointer backdrop-blur-xl bg-neutral-900/90 dark:bg-neutral-800/90 text-white px-3 py-1.5 rounded-full shadow-xl border border-white/20 dark:border-neutral-700/60 text-xs flex items-center gap-2 whitespace-nowrap hover:scale-105 transition-transform"
+            className="relative cursor-pointer backdrop-blur-sm bg-neutral-900/90 dark:bg-neutral-800/90 text-white px-3 py-1.5 rounded-full shadow-xl border border-white/20 dark:border-neutral-700/60 text-xs flex items-center gap-2 whitespace-nowrap hover:scale-105 transition-transform"
           >
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>

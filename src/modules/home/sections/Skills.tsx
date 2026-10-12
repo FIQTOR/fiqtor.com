@@ -41,8 +41,8 @@ export default function SkillsSection() {
       className="flex w-full flex-col gap-5 px-7 font-light text-neutral-700 dark:text-neutral-300 md:px-24"
     >
       <div className="relative flex flex-col items-center">
-        <div className="absolute -left-[200px] top-[400px] hidden h-[400px] w-[400px] rounded-full bg-orange-400/40 opacity-70 blur-3xl dark:bg-neutral-600 md:block"></div>
-        <div className="absolute -left-[200px] top-0 hidden h-[500px] w-[800px] rounded-full bg-purple-200 opacity-70 blur-3xl dark:bg-neutral-800 md:block"></div>
+        <div className="absolute -left-[200px] top-[400px] hidden h-[400px] w-[400px] rounded-full opacity-70 pointer-events-none bg-[radial-gradient(circle,rgba(251,146,60,0.4),transparent_70%)] dark:bg-[radial-gradient(circle,rgba(82,82,82,0.35),transparent_70%)] md:block"></div>
+        <div className="absolute -left-[200px] top-0 hidden h-[500px] w-[800px] rounded-full opacity-70 pointer-events-none bg-[radial-gradient(ellipse_at_center,rgba(233,213,255,1),transparent_70%)] dark:bg-[radial-gradient(ellipse_at_center,rgba(38,38,38,0.9),transparent_70%)] md:block"></div>
 
         <div className="flex gap-3 md:items-center">
           <TbBrandVscode strokeWidth="1" className="h-full w-14 md:w-20" />

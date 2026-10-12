@@ -47,7 +47,7 @@ export default function AIComposer({
         accept="image/*"
       />
 
-      <div className="flex flex-col rounded-3xl border border-neutral-200/70 bg-white/85 shadow-2xl backdrop-blur-xl dark:border-neutral-700/60 dark:bg-neutral-900/85">
+      <div className="flex flex-col rounded-3xl border border-neutral-200/70 bg-white/85 shadow-2xl backdrop-blur-md dark:border-neutral-700/60 dark:bg-neutral-900/85">
         <textarea
           ref={inputRef}
           rows={1}
@@ -86,7 +86,7 @@ export default function AIComposer({
             {showAttachMenu && (
               <div
                 ref={attachMenuRef}
-                className="absolute bottom-full left-0 mb-2 z-30 w-44 overflow-hidden rounded-2xl border border-neutral-200/70 bg-white/95 p-1 shadow-2xl backdrop-blur-xl dark:border-neutral-700/60 dark:bg-neutral-900/95"
+                className="absolute bottom-full left-0 mb-2 z-30 w-44 overflow-hidden rounded-2xl border border-neutral-200/70 bg-white/95 p-1 shadow-2xl backdrop-blur-sm dark:border-neutral-700/60 dark:bg-neutral-900/95"
               >
                 <button
                   type="button"

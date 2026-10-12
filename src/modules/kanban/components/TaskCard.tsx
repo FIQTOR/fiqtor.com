@@ -141,7 +141,7 @@ const TaskCard = memo(function TaskCard({
               {menuOpen && (
                 <div
                   role="menu"
-                  className="absolute right-0 bottom-full z-30 mb-1.5 w-40 overflow-hidden rounded-xl border border-neutral-200/70 bg-white/95 p-1 shadow-2xl backdrop-blur-xl dark:border-neutral-700/60 dark:bg-neutral-900/95"
+                  className="absolute right-0 bottom-full z-30 mb-1.5 w-40 overflow-hidden rounded-xl border border-neutral-200/70 bg-white/95 p-1 shadow-2xl backdrop-blur-sm dark:border-neutral-700/60 dark:bg-neutral-900/95"
                 >
                   <p className="px-2.5 py-1 text-xs font-semibold uppercase tracking-wide text-neutral-400">
                     Move to

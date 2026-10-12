@@ -52,8 +52,9 @@ export default function About() {
       id="about"
       className="relative z-20 w-full px-4 py-24 md:py-32 font-light text-neutral-700 dark:text-neutral-300 sm:px-6 lg:px-8 xl:px-20 overflow-hidden bg-[#fafafa] dark:bg-[#0a0a0a] shadow-[0_-30px_60px_-15px_rgba(0,0,0,0.5)] rounded-t-[2.5rem] border-t border-neutral-200/50 dark:border-neutral-800/80"
     >
-      {/* Background Glow - Subtle Luxury Glow instead of bright colors */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-160 h-160 bg-neutral-300/10 dark:bg-neutral-700/10 blur-[120px] rounded-full pointer-events-none" />
+      {/* Background Glow — radial-gradient instead of a huge `blur(120px)`
+          filter (same soft glow, composites far cheaper on the GPU). */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-160 h-160 rounded-full pointer-events-none bg-[radial-gradient(circle,rgba(212,212,212,0.12),transparent_70%)] dark:bg-[radial-gradient(circle,rgba(64,64,64,0.18),transparent_70%)]" />
 
       <div className="max-w-6xl mx-auto relative z-10 flex flex-col items-center">
 

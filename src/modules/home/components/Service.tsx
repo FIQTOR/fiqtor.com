@@ -35,7 +35,7 @@ const Service = ({ service, variant = "default", iconRef }: ServiceProps) => {
   return (
     <motion.div
       whileHover={{ scale: 1.02 }}
-      className="flex flex-col gap-4 rounded-xl bg-white p-6 transition-all border-t border-t-neutral-300 shadow-2xl backdrop-blur-xl duration-300 hover:scale-105 dark:border-t dark:border-neutral-800 dark:bg-neutral-900/50"
+      className="flex flex-col gap-4 rounded-xl bg-white p-6 transition-all border-t border-t-neutral-300 shadow-2xl backdrop-blur-sm duration-300 hover:scale-105 dark:border-t dark:border-neutral-800 dark:bg-neutral-900/50"
     >
       <div className="flex items-center gap-4">
         <div className="rounded-full bg-neutral-100 p-4 dark:bg-neutral-800">
