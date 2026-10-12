@@ -46,6 +46,7 @@ export default function CustomCursor() {
   // Mirror the latest state values so the high-frequency mousemove handlers can
   // read them without re-subscribing or triggering renders on every event.
   const visibleRef = useRef(false);
+  const hoveringRef = useRef(false);
 
   useEffect(() => {
     if (disabled) return;
@@ -67,7 +68,10 @@ export default function CustomCursor() {
       const target = e.target as HTMLElement | null;
       const next = !!target?.closest(INTERACTIVE_SELECTOR);
       // Only re-render when the hover state actually changes.
-      setHovering((prev) => (prev === next ? prev : next));
+      if (next !== hoveringRef.current) {
+        hoveringRef.current = next;
+        setHovering(next);
+      }
     };
 
     // When the pointer leaves the document (toward browser chrome, another
@@ -75,6 +79,7 @@ export default function CustomCursor() {
     // so it can't get stuck on screen.
     const hide = () => {
       visibleRef.current = false;
+      hoveringRef.current = false;
       setVisible(false);
       setHovering(false);
     };

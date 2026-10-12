@@ -68,6 +68,7 @@ export default function ProjectsCard({ projects }: ProjectsGridProps) {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.97 }}
                 onClick={() => setSelectedProject(project)}
+                data-cursor-hover
                 className="group relative h-full min-h-[280px] w-full cursor-pointer overflow-hidden rounded-2xl border border-neutral-300/20 bg-neutral-100 shadow-xl backdrop-blur-md transition-shadow duration-300 hover:shadow-2xl dark:border-neutral-700/30 dark:bg-neutral-900 sm:min-h-[300px]"
               >
                 {/* Project Image */}

@@ -160,6 +160,7 @@ export const CertificateCard = ({
             isInteractive ? "cursor-pointer" : ""
           }`}
           onClick={isInteractive ? triggerOpen : undefined}
+          data-cursor-hover={isInteractive ? "" : undefined}
         >
           <div className="relative aspect-[16/10] w-full overflow-hidden">
             <img
@@ -192,6 +193,7 @@ export const CertificateCard = ({
       role={isInteractive ? "button" : undefined}
       tabIndex={isInteractive ? 0 : undefined}
       onClick={isInteractive ? triggerOpen : undefined}
+      data-cursor-hover={isInteractive ? "" : undefined}
       onKeyDown={
         isInteractive
           ? (e) => {

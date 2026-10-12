@@ -79,6 +79,7 @@ export default function ProjectsComponents({
             <div
               key={index}
               onClick={() => setSelectedProject(project)}
+              data-cursor-hover
               className={`group cursor-pointer relative w-full flex flex-col md:flex-row ${
                 isEven ? "md:flex-row" : "md:flex-row-reverse"
               } min-h-[320px] md:min-h-[380px] overflow-hidden transition-colors duration-300 hover:bg-neutral-500/5`}

@@ -373,12 +373,6 @@ html {
   body.cursor-custom * {
     cursor: none !important;
   }
-
-  body.cursor-custom input,
-  body.cursor-custom textarea,
-  body.cursor-custom [contenteditable="true"] {
-    cursor: text !important;
-  }
 }
 
 /* Keep the cursor above everything. It is portaled to <body>, but the page
