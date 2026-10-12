@@ -25,7 +25,9 @@ const INTERACTIVE_SELECTOR =
  *  - Hover state: an inner **fill disc** fades in and grows, so the area under
  *    the cursor visibly reverses color.
  *
- * The native OS cursor remains visible; the circle is purely additive.
+ * The native OS cursor is hidden (via `body.cursor-custom`) while this is
+ * mounted, so the ring/disc is the only pointer. A very high z-index keeps it
+ * above cards, the navbar, modals and toasts.
  * Renders nothing on touch devices or when the user prefers reduced motion.
  */
 export default function CustomCursor() {
@@ -47,6 +49,8 @@ export default function CustomCursor() {
 
   useEffect(() => {
     if (disabled) return;
+
+    document.body.classList.add("cursor-custom");
 
     const handleMove = (e: MouseEvent) => {
       x.set(e.clientX);
@@ -83,6 +87,7 @@ export default function CustomCursor() {
     window.addEventListener("mouseout", handleOut, { passive: true });
     window.addEventListener("blur", hide);
     return () => {
+      document.body.classList.remove("cursor-custom");
       window.removeEventListener("mousemove", handleMove);
       window.removeEventListener("mouseover", handleOver);
       window.removeEventListener("mouseout", handleOut);
@@ -98,7 +103,7 @@ export default function CustomCursor() {
   return createPortal(
     <motion.div
       aria-hidden
-      className="pointer-events-none fixed top-0 left-0"
+      className="pointer-events-none fixed top-0 left-0 z-[2147483647]"
       style={{ x: springX, y: springY, mixBlendMode: "difference" }}
     >
       {/* Layer 1 — reverse-color fill disc (fades in + grows on hover) */}

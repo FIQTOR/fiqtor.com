@@ -363,6 +363,24 @@ html {
   }
 }
 
+/* --- Global custom cursor --- */
+/* Hide the native pointer on desktop (fine pointer) and only when the JS
+   cursor actually mounted (`body.cursor-custom`). Touch / reduced-motion keep
+   the OS cursor because the body class is never added there. Text fields keep
+   a real caret cursor for usability. */
+@media (hover: hover) and (pointer: fine) {
+  body.cursor-custom,
+  body.cursor-custom * {
+    cursor: none !important;
+  }
+
+  body.cursor-custom input,
+  body.cursor-custom textarea,
+  body.cursor-custom [contenteditable="true"] {
+    cursor: text !important;
+  }
+}
+
 /* --- recording-bars (AI voice equalizer) unchanged below --- */
 .recording-bars {
   display: flex;
