@@ -308,11 +308,13 @@
 
 @font-face {
   font-family: "Ginto";
-  src: url("/font/Ginto.ttf") format("truetype");
+  /* woff2, subset to latin + the symbols/accents the UI actually uses.
+     244 KB vs. the original 1.09 MB TTF (−78%). */
+  src: url("/font/Ginto.woff2") format("woff2");
   font-style: normal;
   font-weight: 100 900;
   /* Render with a fallback immediately, then swap in Ginto — avoids blocking
-     paint on the 1 MB font file. */
+     paint on the font file. */
   font-display: swap;
 }
 

@@ -165,17 +165,28 @@ export default defineConfig(({ mode }) => {
       // Split heavy third-party libs out of the entry chunk so the initial
       // payload (and parse/execute time) drops sharply. Each group only loads
       // on routes that actually use it.
+      //
+      // NOTE: Rolldown (Vite 8) ignores per-id `manualChunks` for shared
+      // modules like `react/jsx-runtime` and hands them to whichever chunk
+      // needs them first — which silently folded a copy of React into the
+      // lazily-imported markdown chunk and dragged it into the eager preload.
+      // `advancedChunks.groups` is Rolldown's supported API and pins by
+      // package name instead.
       rollupOptions: {
         output: {
-          manualChunks(id) {
-            if (!id.includes('node_modules')) return;
-            if (id.includes('gsap')) return 'vendor-gsap';
-            if (id.includes('framer-motion')) return 'vendor-motion';
-            if (id.includes('react-markdown') || id.includes('remark') || id.includes('unified') || id.includes('micromark') || id.includes('mdast') || id.includes('hast')) return 'vendor-markdown';
-            if (id.includes('lottie-web')) return 'vendor-lottie';
-            if (id.includes('ogl')) return 'vendor-webgl';
-            if (id.includes('react-router') || id.includes('@remix-run')) return 'vendor-router';
-            if (id.includes('react-dom') || id.includes('/react/') || id.includes('scheduler')) return 'vendor-react';
+          advancedChunks: {
+            groups: [
+              { name: 'vendor-react', test: /[\\/]node_modules[\\/](react|react-dom|scheduler)[\\/]/ },
+              { name: 'vendor-router', test: /[\\/]node_modules[\\/](react-router|@remix-run)[\\/]/ },
+              { name: 'vendor-motion', test: /[\\/]node_modules[\\/]framer-motion[\\/]/ },
+              { name: 'vendor-gsap', test: /[\\/]node_modules[\\/]gsap[\\/]/ },
+              {
+                name: 'vendor-markdown',
+                test: /[\\/]node_modules[\\/](react-markdown|remark|unified|micromark|mdast|hast|unist|property-information|space-separated-tokens|comma-separated-tokens|vfile|devlop|bail|trough|is-plain-obj|zwitch|character-entities|decode-named-character-reference|trim-lines|longest-streak|markdown-table|ccount|escape-string-regexp|html-url-attributes|style-to-object|inline-style-parser|unist-util-stringify-position)[\\/]/,
+              },
+              { name: 'vendor-lottie', test: /[\\/]node_modules[\\/]lottie-web[\\/]/ },
+              { name: 'vendor-webgl', test: /[\\/]node_modules[\\/]ogl[\\/]/ },
+            ],
           },
         },
       },

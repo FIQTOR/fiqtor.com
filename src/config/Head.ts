@@ -269,7 +269,7 @@ export const renderHeadHtml = (cfg: HeadConfig): string => {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Preload the brand font so text paints without a late swap-in -->
-    <link rel="preload" href="${a("/font/Ginto.ttf")}" as="font" type="font/ttf" crossorigin />
+    <link rel="preload" href="${a("/font/Ginto.woff2")}" as="font" type="font/woff2" crossorigin />
 
     <!-- Generated at build time from src/config/Head.ts -->
     <title>${cfg.title}</title>
@@ -519,7 +519,7 @@ export const renderRouteHeadHtml = (
     <link rel="icon" type="image/x-icon" href="${a(cfg.icons.favicon)}" />
     <link rel="apple-touch-icon" href="${a(cfg.icons.appleTouch)}" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="preload" href="${a("/font/Ginto.ttf")}" as="font" type="font/ttf" crossorigin />
+    <link rel="preload" href="${a("/font/Ginto.woff2")}" as="font" type="font/woff2" crossorigin />
     <title>${a(route.title)}</title>
     <meta name="title" content="${a(route.title)}" />
     <meta name="description" content="${a(route.description)}" />
