@@ -99,16 +99,19 @@ export default function CustomCursor() {
 
   // A single fixed wrapper carries the blend mode so both layers share the same
   // compositing group and invert the page beneath. It is a direct child of
-  // <body> with no positive z-index / isolation, so nothing re-nests the blend.
+  // <body> with an explicit z-index so cards, navbar, modals and toasts (all
+  // with their own stacking contexts) can never paint on top of it.
   return createPortal(
     <motion.div
+      id="custom-cursor"
       aria-hidden
       className="pointer-events-none fixed top-0 left-0 z-[2147483647]"
       style={{ x: springX, y: springY, mixBlendMode: "difference" }}
     >
       {/* Layer 1 — reverse-color fill disc (fades in + grows on hover) */}
       <motion.div
-        className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full bg-white"
+        className="absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white"
+        style={{ width: 30, height: 30 }}
         animate={{
           width: hovering ? 64 : 30,
           height: hovering ? 64 : 30,
@@ -123,7 +126,8 @@ export default function CustomCursor() {
 
       {/* Layer 2 — monochrome border-only ring (always visible when on page) */}
       <motion.div
-        className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white"
+        className="absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white"
+        style={{ width: 30, height: 30 }}
         animate={{
           width: hovering ? 64 : 30,
           height: hovering ? 64 : 30,

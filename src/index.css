@@ -381,6 +381,20 @@ html {
   }
 }
 
+/* Keep the cursor above everything. It is portaled to <body>, but the page
+   renders it *after* `#root`, so a top-layer rule escapes every stacking
+   context — including ancestors with `filter`/`transform`/`backdrop-filter`
+   (which would otherwise re-parent the blend and cover the circle). */
+body > #custom-cursor {
+  position: fixed !important;
+  inset: 0 auto auto 0 !important;
+  z-index: 2147483647 !important;
+  pointer-events: none !important;
+  isolation: isolate;
+  mix-blend-mode: difference;
+  contain: layout style;
+}
+
 /* --- recording-bars (AI voice equalizer) unchanged below --- */
 .recording-bars {
   display: flex;
