@@ -1,0 +1,23 @@
+# ================================================================
+# Cloudflare Pages — routing
+# ================================================================
+# Intentionally (nearly) empty of rules.
+#
+# How routing works for this project (Cloudflare Pages, Git integration):
+#
+#   • A URL that matches a file in dist/ is served as-is, including every
+#     prerendered /<route>/index.html (built by vite.config.ts).
+#   • A URL that matches nothing falls back to the SPA shell (index.html,
+#     200) — this is Pages' automatic SPA behavior and is what makes deep
+#     links / client-side routes work.
+#   • The one thing the fallback gets wrong — answering a MISSING image or
+#     asset (e.g. /img/projects/typo.webp) with the HTML shell instead of a
+#     404 — is corrected in `functions/_middleware.js`.
+#
+# ⚠️ Do NOT add a `/* /index.html 200` rule here. Cloudflare follows
+# `_redirects` rules even when a static file exists for the path, so a
+# catch-all would clobber the per-route prerendered HTML.
+#
+# Add only real, permanent redirects below, e.g.:
+#   /old-path /new-path 301
+# ================================================================

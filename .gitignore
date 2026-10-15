@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+# Cloudflare / Wrangler local dev state
+.wrangler
+.dev.vars
+
 # Environment variables (never commit real secrets)
 .env
 .env.*

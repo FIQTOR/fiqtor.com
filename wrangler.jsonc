@@ -1,0 +1,32 @@
+{
+  // ================================================================
+  // Cloudflare Pages configuration (Wrangler)
+  // ================================================================
+  // You deploy this project through Cloudflare Pages Git integration
+  // (connect the repo → Pages builds & redeploys on every push), so this
+  // file is OPTIONAL — it only matters if you also want to deploy from
+  // the command line with `npm run deploy` / preview with `npm run preview:cf`.
+  //
+  // Keep it in sync with the dashboard build settings:
+  //   • Framework preset:        None
+  //   • Build command:           npm run build
+  //   • Build output directory:  dist
+  //   • Root directory:          /  (this repo IS the frontend)
+  //
+  // Routing that the SPA cannot express in static config lives in
+  // `functions/_middleware.js` (Pages Functions). Pages picks that folder
+  // up automatically — no configuration needed.
+  //
+  // Docs: https://developers.cloudflare.com/pages/configuration/
+  // ================================================================
+  "$schema": "./node_modules/wrangler/config-schema.json",
+
+  // Must match the Pages project name in the Cloudflare dashboard.
+  "name": "fiqtor-com",
+
+  // Directory that Pages deploys.
+  "pages_build_output_dir": "./dist",
+
+  // Pin runtime behavior. Bump to today's date (UTC) when you deploy.
+  "compatibility_date": "2025-01-01"
+}

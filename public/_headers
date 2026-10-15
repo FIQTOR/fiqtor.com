@@ -1,0 +1,41 @@
+# ================================================================
+# Cloudflare Pages — custom response headers
+# ================================================================
+# This file is copied verbatim into the build output (dist/_headers)
+# by Vite, and Cloudflare Pages applies it to static asset responses.
+# It is the Cloudflare equivalent of the top-level `headers` block in
+# vercel.json, so keep the two in sync when you change the CSP.
+#
+# Syntax: a URL pattern line, then indented `Name: value` lines.
+# Docs: https://developers.cloudflare.com/pages/configuration/headers/
+#
+# NOTE: `_headers` rules ONLY attach headers — they do NOT affect
+# routing. SPA fallback is handled automatically by Pages (see
+# public/_redirects and the README) and must not be added here.
+# ================================================================
+
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://www.googletagmanager.com https://va.vercel-scripts.com https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https://api.fiqtor.com https://analytics.iarty.biz.id https://vitals.vercel-insights.com https://www.google-analytics.com https://cloudflareinsights.com; frame-ancestors 'none'; base-uri 'self'; object-src 'none'
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Resource-Policy: same-origin
+
+# Fingerprinted build assets never change content, so cache them
+# aggressively. Hashed filenames make this safe.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# The entry HTML and generated metadata must always be revalidated so
+# new deploys are picked up immediately.
+/
+  Cache-Control: public, max-age=0, must-revalidate
+
+/sitemap.xml
+  Cache-Control: public, max-age=3600
+
+/robots.txt
+  Cache-Control: public, max-age=3600

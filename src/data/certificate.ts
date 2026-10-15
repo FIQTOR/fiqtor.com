@@ -80,7 +80,7 @@ export const Certificates: Array<Certificate> = [
       "LKS SMK Jombang Regency XXXII — Web Technologies Champion (1st Place)",
     published: "Feb 2024",
     srcImage:
-      "/img/certificate/LKS juara1 tingkat kabupaten jombang - Taufiiqul Hakim.webp",
+      "/img/certificate/lks-juara1-tingkat-kabupaten-jombang-taufiiqul-hakim.webp",
     thisAcademic: true,
     best: true,
     tags: [
@@ -107,7 +107,7 @@ export const Certificates: Array<Certificate> = [
     urlDirect:
       "https://drive.google.com/drive/folders/1HoocGBaHSmQJ_1EGiHcCwvpB5t_cILEx",
     published: "Sep 2024",
-    srcImage: "/img/certificate/HMJ TI - Setifikat Tim Syntheric.webp",
+    srcImage: "/img/certificate/hmj-ti-sertifikat-tim-sintetik.webp",
     thisAcademic: true,
     tags: ["Website", "UI/UX Design"],
   },

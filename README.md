@@ -137,8 +137,10 @@ frontend/
 │   ├── pages/         # file-based routes (thin wrappers around modules)
 │   ├── App.tsx
 │   └── main.tsx
+├── functions/         # Cloudflare Pages Functions — middleware for correct asset 404s
 ├── index.html         # minimal shell (head injected at build)
 ├── vite.config.ts     # htmlHeadPlugin (head + sitemap + robots)
+├── wrangler.jsonc     # Cloudflare Pages config (optional; for CLI deploys)
 └── .env.example
 ```
 
@@ -146,7 +148,49 @@ frontend/
 
 ## 🚢 Deployment
 
-Vercel-ready (`vercel.json`, SPA rewrite that preserves `sitemap.xml` / `robots.txt`). Import the `frontend/` folder, set `VITE_API_BASE_URL` (and optionally `VITE_DOMAIN`), and deploy.
+The project deploys to **Cloudflare Pages** (Git integration — auto-redeploys on every push) or **Vercel**. Both configs are committed and independent.
+
+### Cloudflare Pages (recommended)
+
+Pages builds `dist/` (`npm run build`) and serves it as static assets. Routing that a static config can't express lives in **Pages Functions**:
+
+| File                          | Purpose                                                                       |
+| ----------------------------- | ----------------------------------------------------------------------------- |
+| `functions/_middleware.js`    | Returns a real `404` for missing files; leaves the SPA shell for real routes. |
+| `public/_headers`             | Security headers (CSP, HSTS, X-Frame-Options, …) + asset cache policy.         |
+| `public/_redirects`           | Kept rule-free on purpose (see note below) — add only real 301s here.          |
+| `wrangler.jsonc`              | Optional: only for CLI deploys (`npm run deploy`); not needed for Git integration. |
+
+> ⚠️ **Why the middleware is needed — the "all images broken" bug.**
+> Pages' automatic SPA fallback answers **every** unmatched path with the root `index.html` (`200 text/html`) — including requests that clearly want a file, like `/img/projects/typo.webp` or `/assets/missing.js`. The browser then receives HTML where it expected an image/script and shows a **broken resource**, so a single wrong/stale/mis-cased asset URL looks like "all the images are gone".
+> `functions/_middleware.js` runs the request normally (real files are served untouched), then replaces the one wrong case: a request that looks like a file but came back as the HTML shell becomes a genuine `404`. Client-side routes (no file extension) still fall back to the shell, so deep links keep working.
+> Do **not** "fix" routing with a `/* /index.html 200` rule in `_redirects` — Cloudflare follows `_redirects` rules even when a static file exists, so a catch-all would clobber every prerendered `/<route>/index.html`.
+
+**Cloudflare Pages Git integration (your setup).** Dashboard → **Workers & Pages → Create → Pages → Connect to Git**, pick this repo, and set:
+
+- **Framework preset:** `None`
+- **Build command:** `npm run build`
+- **Build output directory:** `dist`
+- **Root directory:** `/` (this repo *is* the frontend)
+- **Environment variables:** `VITE_DOMAIN`, `VITE_API_BASE_URL`, `VITE_RECAPTCHA_SITE_KEY`, `VITE_ENABLE_AI`, `VITE_SENTRY_DSN`
+
+Every push then builds and redeploys automatically — including `functions/` and the copied `_headers` / `_redirects`.
+
+**Custom domain.** Add `fiqtor.com` under **Pages project → Custom domains**, then point DNS at it (remove any record that still sends the domain to another host, e.g. Vercel). Until the domain is pointed at Pages, visitors keep hitting the old origin and none of this takes effect.
+
+**CLI alternative** (optional — Git integration already deploys for you):
+
+```bash
+npx wrangler login
+npm run deploy        # build + `wrangler pages deploy dist`
+npm run preview:cf    # build + `wrangler pages dev dist` (real runtime + Functions)
+```
+
+⚠️ `VITE_*` values are baked into the **public** bundle — never put real secrets there.
+
+### Vercel
+
+`vercel.json` is committed (SPA rewrite that preserves `sitemap.xml` / `robots.txt` and excludes paths with a file extension, so assets are never swallowed by the SPA rule). Import the `frontend/` folder, set the same `VITE_*` vars, and deploy.
 
 ## 🔒 Security
 
