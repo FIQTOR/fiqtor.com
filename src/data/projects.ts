@@ -93,7 +93,24 @@ export type Project = {
 };
 
 // Export array of projects data
-export const Projects: Array<Project> = [
+//
+// NOTE: image paths in this file are authored inconsistently — some start
+// with `/` and some do not. A path without a leading slash is RELATIVE, so
+// `img/projects/x.webp` resolves against the current route: on `/projects/`
+// the browser asks for `/projects/img/projects/x.webp` and the image 404s
+// (it only "works" on `/`). We normalize every image path to an absolute
+// `/img/...` URL once, here, so both the data file there and every consumer
+// (ProjectsGrid, ProjectGallery, …) are safe regardless of the route.
+const toAbsoluteAssetPath = (src: string): string =>
+  src.startsWith('/') || /^[a-z]+:\/\//i.test(src) ? src : `/${src}`;
+
+const normalizeProjectImages = (project: Project): Project => ({
+  ...project,
+  srcImage: toAbsoluteAssetPath(project.srcImage),
+  images: project.images?.map(toAbsoluteAssetPath),
+});
+
+const rawProjects: Array<Project> = [
   {
     title: {
       en: "Oriental Pearl Tower - Interactive 3D Explorer",
@@ -1652,6 +1669,11 @@ export const Projects: Array<Project> = [
     ],
   },
 ];
+
+// Normalized projects: every image path is an absolute `/img/...` URL, so a
+// project screenshot loads the same on `/` and on a deep route like
+// `/projects/`.
+export const Projects: Array<Project> = rawProjects.map(normalizeProjectImages);
 
 // Flagship projects (marked with `best: true`), shown in the "Best Project" tab.
 export const BestProjects: Array<Project> = Projects.filter(
