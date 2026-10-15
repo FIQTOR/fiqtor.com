@@ -16,7 +16,6 @@
   "dependencies": {
     "@sentry/react": "^9.0.0",
     "@tailwindcss/vite": "^4.2.2",
-    "@vercel/analytics": "^2.0.1",
     "autoprefixer": "^10.4.27",
     "axios": "^1.13.6",
     "framer-motion": "^12.38.0",

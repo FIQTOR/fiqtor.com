@@ -39,7 +39,10 @@ function isAssetPath(pathname) {
   if (
     pathname === '/robots.txt' ||
     pathname === '/sitemap.xml' ||
-    pathname.startsWith('/.well-known/')
+    pathname.startsWith('/.well-known/') ||
+    // Leftover Vercel Analytics endpoint: it must 404, never resolve to
+    // the HTML shell (which the browser rejects as a bad MIME type).
+    pathname.startsWith('/_vercel/')
   ) {
     return true;
   }

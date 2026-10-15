@@ -14,7 +14,6 @@ import PageTransition from './components/PageTransition';
 import CustomCursor from './components/CustomCursor';
 import { preloadLineWaves } from './components/lineWavesLoader';
 import './App.css';
-import { inject } from "@vercel/analytics";
 import { BRAND_NAME } from "@/config/Identity";
 import { useTranslation } from "./i18n";
 
@@ -323,10 +322,6 @@ function AppRoutes() {
 
 function AppShell() {
   const { showWelcome, isWelcomeDone } = useWelcome();
-
-  useEffect(() => {
-    inject();
-  }, []);
 
   // Warm the WebGL background chunk during the welcome screen so it's ready
   // before Home mounts (otherwise it lazily pops in after the hero animation).
