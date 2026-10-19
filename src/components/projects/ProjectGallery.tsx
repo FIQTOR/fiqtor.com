@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { TbChevronLeft, TbChevronRight, TbMaximize } from "react-icons/tb";
 import { useTranslation } from "@/i18n";
+import ProjectImage from "@/components/projects/ProjectImage";
 
 interface ProjectGalleryProps {
   /** All screenshots to display. The first item is treated as the cover. */
@@ -147,19 +148,24 @@ export default function ProjectGallery({
       {/* Large preview */}
       <div className="group/gallery relative w-full aspect-video overflow-hidden rounded-2xl bg-neutral-100 dark:bg-neutral-800">
         <AnimatePresence mode="wait" initial={false}>
-          <motion.img
+          <motion.div
             key={gallery[activeIndex]}
-            src={gallery[activeIndex]}
-            alt={t("gallery.screenshotAlt", { title, n: activeIndex + 1 })}
-            loading="lazy"
-            decoding="async"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25, ease: "easeOut" }}
             onClick={() => setIsLightboxOpen(true)}
-            className="absolute inset-0 h-full w-full cursor-zoom-in object-contain"
-          />
+            className="absolute inset-0 cursor-zoom-in"
+          >
+            <ProjectImage
+              src={gallery[activeIndex]}
+              alt={t("gallery.screenshotAlt", { title, n: activeIndex + 1 })}
+              loading="lazy"
+              decoding="async"
+              tone="light"
+              className="absolute inset-0 h-full w-full object-contain"
+            />
+          </motion.div>
         </AnimatePresence>
 
         {/* Zoom hint */}
@@ -225,12 +231,14 @@ export default function ProjectGallery({
                   : "border-transparent opacity-60 hover:opacity-100"
               }`}
             >
-              <img
+              <ProjectImage
                 src={src}
                 alt={t("gallery.thumbnailAlt", { title, n: index + 1 })}
                 loading="lazy"
                 decoding="async"
                 draggable={false}
+                tone="light"
+                placeholderClassName="rounded-[inherit]"
                 className="pointer-events-none h-full w-full object-cover"
               />
             </button>

@@ -6,6 +6,7 @@ import { useState, useEffect, useRef } from "react";
 import { TbWorldShare, TbX } from "react-icons/tb";
 import gsap from "gsap";
 import ProjectGallery from "@/components/projects/ProjectGallery";
+import ProjectImage from "@/components/projects/ProjectImage";
 import { useTranslation } from "@/i18n";
 import { PROJECT_CATEGORY_KEY } from "@/lib/projectCategory";
 
@@ -86,11 +87,12 @@ export default function ProjectsComponents({
             >
               {/* Image Container (1/3 Width on Desktop) with Smooth Mask Fade */}
               <div className="relative w-full md:w-1/3 h-64 md:h-auto overflow-hidden shrink-0">
-                <img
+                <ProjectImage
                   src={project.srcImage}
                   alt={project.title[language]}
                   loading="lazy"
                   decoding="async"
+                  tone="light"
                   className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                   style={{
                     WebkitMaskImage: isEven
@@ -175,11 +177,12 @@ export default function ProjectsComponents({
                 </button>
 
                 <div className="relative w-full h-64 sm:h-80 overflow-hidden shrink-0">
-                  <img
+                  <ProjectImage
                     src={selectedProject.srcImage}
                     alt={selectedProject.title[language]}
                     loading="lazy"
                     decoding="async"
+                    tone="light"
                     className="w-full h-full object-cover"
                   />
                   <div className="absolute inset-0 bg-linear-to-t from-white via-white/80 to-transparent dark:from-neutral-900 dark:via-neutral-900/80 dark:to-transparent" />

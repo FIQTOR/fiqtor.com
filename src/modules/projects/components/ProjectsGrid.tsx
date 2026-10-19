@@ -5,6 +5,7 @@ import { TbWorldShare, TbX } from "react-icons/tb";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import ProjectGallery from "@/components/projects/ProjectGallery";
+import ProjectImage from "@/components/projects/ProjectImage";
 import { useTranslation } from "@/i18n";
 import { PROJECT_CATEGORY_KEY } from "@/lib/projectCategory";
 
@@ -72,9 +73,9 @@ export default function ProjectsCard({ projects }: ProjectsGridProps) {
                 className="group relative h-full min-h-[280px] w-full cursor-pointer overflow-hidden rounded-2xl border border-neutral-300/20 bg-neutral-100 shadow-xl backdrop-blur-md transition-shadow duration-300 hover:shadow-2xl dark:border-neutral-700/30 dark:bg-neutral-900 sm:min-h-[300px]"
               >
                 {/* Project Image */}
-                <img
+                <ProjectImage
                   src={project.srcImage}
-                  alt="projectImage.webp"
+                  alt={project.title[language]}
                   loading="lazy"
                   decoding="async"
                   className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-110"
@@ -174,11 +175,12 @@ export default function ProjectsCard({ projects }: ProjectsGridProps) {
 
                 {/* Hero Image di Modal */}
                 <div className="relative w-full h-64 sm:h-80 overflow-hidden shrink-0">
-                  <img
+                  <ProjectImage
                     src={selectedProject.srcImage}
                     alt={selectedProject.title[language]}
                     loading="lazy"
                     decoding="async"
+                    tone="light"
                     className="w-full h-full object-cover"
                   />
                   <div className="absolute inset-0 bg-linear-to-t from-white via-white/80 to-transparent dark:from-neutral-900 dark:via-neutral-900/80 dark:to-transparent" />
