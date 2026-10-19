@@ -113,6 +113,55 @@ const normalizeProjectImages = (project: Project): Project => ({
 const rawProjects: Array<Project> = [
   {
     title: {
+      en: "Jakarta Transit - Live Public Transport Tracking",
+      id: "Jakarta Transit - Pelacakan Transportasi Umum Live",
+    },
+    category: "Web App",
+    best: true,
+    description: {
+      en: "A realtime public transport tracker I built for Greater Jakarta and East Java — 1,160+ TransJakarta buses (BRT, Mikrotrans, Integrasi, Rusun, Royal, Wisata), KRL, MRT, LRT, Whoosh and 24-hour intercity KAI trains move on a MapLibre vector map every ~3 seconds over WebSocket. It solves the problem of guessing when a bus or train will actually arrive: a multi-modal A→B journey planner returns Fastest / Cheapest / Fewest-transfers options with real fares and draws the route polyline on the map, alongside search over 7,819 bus stops and 211 stations plus GPS-based \"stops near me\" — all in an iOS-style glass UI with a full dark map.",
+      id: "Pelacak transportasi umum realtime yang saya bangun untuk Jabodetabek dan Jawa Timur — 1.160+ bus TransJakarta (BRT, Mikrotrans, Integrasi, Rusun, Royal, Wisata), KRL, MRT, LRT, Whoosh, dan KAI antarkota 24 jam bergerak di peta vektor MapLibre setiap ~3 detik lewat WebSocket. Ini menyelesaikan masalah menebak kapan bus atau kereta benar-benar tiba: perencana perjalanan multi-modal A→B memberi opsi Tercepat / Termurah / Paling sedikit pindah dengan tarif nyata dan menggambar polyline rute di peta, plus pencarian 7.819 halte dan 211 stasiun serta \"halte di dekatku\" berbasis GPS — semuanya dalam UI glass bergaya iOS dengan peta gelap penuh.",
+    },
+    urlDirect: "https://transit.iarty.biz.id/",
+    srcImage: "img/projects/transit-thumbnail.webp",
+    images: [
+      "/img/projects/transit-thumbnail.webp",
+      "/img/projects/transit-live-map.webp",
+      "/img/projects/transit-journey.webp",
+      "/img/projects/transit-live-map-dark.webp",
+      "/img/projects/transit-routes.webp",
+      "/img/projects/transit-halte.webp",
+      "/img/projects/transit-mobile-map.webp",
+    ],
+    tags: {
+      en: ["Realtime", "WebSocket", "MapLibre", "Journey Planner", "Geolocation", "Dark Mode"],
+      id: ["Realtime", "WebSocket", "MapLibre", "Perencana Perjalanan", "Geolokasi", "Mode Gelap"],
+    },
+    icons: [
+      {
+        SvgIcon: ReactJS,
+        title: "ReactJS",
+      },
+      {
+        SvgIcon: Javascript,
+        title: "JavaScript",
+      },
+      {
+        SvgIcon: Tailwindcss,
+        title: "TailwindCSS",
+      },
+      {
+        SvgIcon: Node,
+        title: "NodeJS",
+      },
+      {
+        SvgIcon: Express,
+        title: "Express",
+      },
+    ],
+  },
+  {
+    title: {
       en: "Oriental Pearl Tower - Interactive 3D Explorer",
       id: "Menara Mutiara Oriental - Penjelajah 3D Interaktif",
     },
