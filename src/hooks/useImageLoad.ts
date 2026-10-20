@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 
 export type ImageLoadStatus = "loading" | "loaded" | "error";
 
@@ -32,9 +32,18 @@ export function useImageLoad(src?: string): UseImageLoadResult {
   );
 
   // Reset whenever the source changes (e.g. gallery next/prev, new project).
-  useEffect(() => {
+  //
+  // Done during render rather than in an effect: a `src` change invalidates the
+  // previous status, so the fresh value is *derived* from the current `src`.
+  // React restarts the render immediately without committing the stale state,
+  // which also avoids the extra paint (and the cascading-render warning) a
+  // setState-in-effect would cause. See
+  // https://react.dev/learn/you-might-not-need-an-effect#adjusting-some-state-when-a-prop-changes
+  const [prevSrc, setPrevSrc] = useState(src);
+  if (src !== prevSrc) {
+    setPrevSrc(src);
     setStatus(src ? "loading" : "error");
-  }, [src]);
+  }
 
   const onLoad = useCallback(() => setStatus("loaded"), []);
   const onError = useCallback(() => setStatus("error"), []);
