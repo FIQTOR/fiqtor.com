@@ -134,7 +134,9 @@ export const en = {
 
   // ---- Home: Crypto ----
   "home.crypto.title": "Cryptocurrency Prices",
-  "home.crypto.badge": "USD market data (static)",
+  "home.crypto.badge": "Live USD market data · updates every 30s",
+  "home.crypto.stale": "Connection lost · showing last known prices",
+  "home.crypto.live": "Live",
   "home.crypto.footnote": "Prices are served from our own backend",
 
   // ---- Shared project card/grid ----
@@ -551,7 +553,9 @@ export const id: Record<TranslationKey, string> = {
 
   // ---- Home: Crypto ----
   "home.crypto.title": "Harga Cryptocurrency",
-  "home.crypto.badge": "Data pasar USD (statis)",
+  "home.crypto.badge": "Data pasar USD realtime · diperbarui tiap 30 detik",
+  "home.crypto.stale": "Koneksi terputus · menampilkan harga terakhir",
+  "home.crypto.live": "Live",
   "home.crypto.footnote": "Harga disajikan dari backend kami sendiri",
 
   // ---- Shared project card/grid ----
