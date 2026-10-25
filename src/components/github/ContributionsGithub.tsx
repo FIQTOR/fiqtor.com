@@ -2,6 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import { TbBrandGithub, TbGitFork } from "react-icons/tb";
 import { motion } from "framer-motion";
 import GithubConfig from "@/config/Github";
+import { API_BASE_URL } from "@/config/Api";
 import { ContainerContext } from "@/context/container-context";
 import { ErrorState } from "@/components/EmptyState";
 import axios from "axios";
@@ -121,7 +122,7 @@ function ContributionsGithub() {
   useEffect(() => {
     const fetchGithubContributions = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/v1/github/contributions`);
+        const response = await axios.get(`${API_BASE_URL}/v1/github/contributions`);
         setData(response.data);
       } catch (error) {
         setError(error instanceof Error ? error.message : t("gh.failed"));

@@ -20,5 +20,11 @@ export default defineConfig({
     setupFiles: ['./src/test/setup.ts'],
     include: ['src/**/*.{test,spec}.{ts,tsx}'],
     css: false,
+    // Components import `@/config/Api`, which throws when VITE_API_BASE_URL is
+    // missing (by design). Tests don't hit the network, so provide a dummy
+    // absolute URL to satisfy the guard during unit tests.
+    env: {
+      VITE_API_BASE_URL: 'http://localhost:4000/api',
+    },
   },
 });

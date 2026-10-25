@@ -13,6 +13,7 @@ import {
   whatsappUrl,
   mailtoUrl,
 } from "@/config/Identity";
+import { API_BASE_URL } from "@/config/Api";
 import {
   TbBrandWhatsapp,
   TbBrandGmail,
@@ -110,7 +111,7 @@ export default function ContactPage() {
 
     setSubmitting(true);
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/v1/contact/send`, {
+      const res = await fetch(`${API_BASE_URL}/v1/contact/send`, {
         method: "POST",
         headers: {
           Accept: "application/json, text/plain, */*",

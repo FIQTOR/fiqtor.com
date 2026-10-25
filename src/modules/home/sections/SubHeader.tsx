@@ -3,6 +3,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import axios from "axios";
 import { SOCIAL_LINKS } from "@/config/Identity";
+import { API_BASE_URL } from "@/config/Api";
 import WakatimeConfig from "@/config/Wakatime";
 import { useTranslation } from "@/i18n";
 
@@ -44,7 +45,7 @@ const SubHeader = () => {
         // request always returns a usable payload. We only need a local
         // fallback for the case where the backend itself is unreachable.
         const response = await axios.get(
-          `${import.meta.env.VITE_API_BASE_URL}/v1/social/stats`,
+          `${API_BASE_URL}/v1/social/stats`,
           { signal }
         );
         const { tiktok, instagram } = response.data?.data ?? {};
@@ -68,7 +69,7 @@ const SubHeader = () => {
 
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_API_BASE_URL}/v1/wakatime`,
+          `${API_BASE_URL}/v1/wakatime`,
           { signal }
         );
         const data = response.data?.data;

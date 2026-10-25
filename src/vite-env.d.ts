@@ -10,7 +10,9 @@ declare module '~react-pages' {
 interface ImportMetaEnv {
   // Site / domain (optional origin override; defaults to src/config/Identity.ts)
   readonly VITE_DOMAIN: string
-  readonly VITE_API_BASE_URL: string
+  // Optional at the type level: a missing value must be caught by
+  // src/config/Api.ts (fail-fast), not silently assumed present here.
+  readonly VITE_API_BASE_URL?: string
 
   // Feature flags
   readonly VITE_ENABLE_AI: string

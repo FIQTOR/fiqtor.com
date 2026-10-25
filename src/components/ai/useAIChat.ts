@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from '@/config/Api';
 import type { AttachedFile, Message, StreamChunk } from './types';
 
 /**
@@ -77,7 +78,7 @@ export function useAIChat(
             parts: [{ text: m.text }],
           }));
 
-        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/v1/ai/generate`, {
+        const response = await fetch(`${API_BASE_URL}/v1/ai/generate`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
