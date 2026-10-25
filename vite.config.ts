@@ -1,196 +1,195 @@
-import { defineConfig, loadEnv, type Plugin } from 'vite'
-import react from '@vitejs/plugin-react'
-import tailwindcss from '@tailwindcss/vite'
-import Pages from 'vite-plugin-pages'
-import path from 'path'
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { defineConfig, loadEnv, type Plugin } from 'vite';
+import react from '@vitejs/plugin-react';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { THEME_BOOT_SCRIPT } from './src/lib/themeBoot.ts';
 import {
-  buildHeadConfig,
+  ROUTES,
+  buildSeoConfig,
   renderHeadHtml,
-  renderRouteHeadHtml,
-  renderSitemap,
   renderRobots,
+  renderRouteHeadHtml,
+  renderLlmsFullTxt,
+  renderLlmsTxt,
+  renderManifest,
+  renderNoscript,
   renderSecurityTxt,
-  NAV_PAGES,
-} from './src/config/Head'
+  renderSitemap,
+  type EnvRecord,
+} from './src/config/Seo.ts';
+
+/** Inline script that applies the saved theme before first paint. */
+const THEME_SCRIPT = `<script>${THEME_BOOT_SCRIPT}</script>`;
 
 /**
- * Injects the full <head> (title, meta, OpenGraph, Twitter, JSON-LD, GA) into
- * index.html at build/dev time, and emits sitemap.xml + robots.txt +
- * .well-known/security.txt derived from the configured domain — all from
- * src/config/Head.ts. This keeps every piece of branding/SEO/security metadata
- * derived from env vars (no hardcoded domain in the repo).
+ * Build-time SEO:
+ *  - injects the full <head> into index.html,
+ *  - emits sitemap.xml, robots.txt and .well-known/security.txt,
+ *  - after the bundle is written, creates a static `/<route>/index.html`
+ *    whose <head> carries route-specific metadata (same hashed asset tags),
+ *    so a crawler that does not run JS still sees the right title/description
+ *    and a hard refresh of a deep link boots the SPA normally.
  */
-function htmlHeadPlugin(env: Record<string, string>): Plugin {
-  const sitemap = 'sitemap.xml'
-  const robots = 'robots.txt'
-  const securityTxt = '.well-known/security.txt'
+const ROOT = path.dirname(fileURLToPath(import.meta.url));
+
+function seoPlugin(env: EnvRecord): Plugin {
+  const cfg = buildSeoConfig(env);
 
   return {
-    name: 'vite-html-head',
-
+    name: 'fiqtor-seo',
     transformIndexHtml(html) {
-      const config = buildHeadConfig(env)
-      const withHead = html.replace('<!--vite-html-head-->', renderHeadHtml(config))
-      // Apply the configured lang attribute to <html>
-      return withHead.replace(/<html[^>]*>/, `<html lang="${config.lang}">`)
+      // The theme bootstrap script must run before the first paint (it sets
+      // `data-theme` on <html>), otherwise a light-mode visitor sees a dark
+      // flash on every reload. It is inlined into the head, ahead of the CSS.
+      return html
+        .replace('<!--vite-html-head-->', `${THEME_SCRIPT}\n    ${renderHeadHtml(cfg)}`)
+        .replace('<!--vite-html-noscript-->', renderNoscript(cfg));
     },
-
-    // Dev server: serve generated sitemap.xml / robots.txt
     configureServer(server) {
-      const config = buildHeadConfig(env)
       server.middlewares.use((req, res, next) => {
-        const url = (req.url || '').split('?')[0]
-        if (url === `/${sitemap}`) {
-          res.setHeader('Content-Type', 'application/xml')
-          res.end(renderSitemap(config))
-          return
+        const url = (req.url || '').split('?')[0];
+        if (url === '/sitemap.xml') {
+          res.setHeader('Content-Type', 'application/xml');
+          res.end(renderSitemap(cfg));
+          return;
         }
-        if (url === `/${robots}`) {
-          res.setHeader('Content-Type', 'text/plain')
-          res.end(renderRobots(config))
-          return
+        if (url === '/llms.txt' || url === '/llms-full.txt') {
+          res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+          res.end(url === '/llms.txt' ? renderLlmsTxt(cfg) : renderLlmsFullTxt(cfg));
+          return;
         }
-        if (url === `/${securityTxt}`) {
-          res.setHeader('Content-Type', 'text/plain; charset=utf-8')
-          res.end(renderSecurityTxt(config))
-          return
+        if (url === '/manifest.webmanifest') {
+          res.setHeader('Content-Type', 'application/manifest+json');
+          res.end(renderManifest(cfg));
+          return;
         }
-        next()
-      })
+        if (url === '/robots.txt') {
+          res.setHeader('Content-Type', 'text/plain');
+          res.end(renderRobots(cfg));
+          return;
+        }
+        if (url === '/.well-known/security.txt') {
+          res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+          res.end(renderSecurityTxt(cfg));
+          return;
+        }
+        next();
+      });
     },
-
-    // Build: emit sitemap.xml / robots.txt into the output directory
     generateBundle() {
-      const config = buildHeadConfig(env)
-      this.emitFile({ type: 'asset', fileName: sitemap, source: renderSitemap(config) })
-      this.emitFile({ type: 'asset', fileName: robots, source: renderRobots(config) })
-      this.emitFile({ type: 'asset', fileName: securityTxt, source: renderSecurityTxt(config) })
+      this.emitFile({ type: 'asset', fileName: 'sitemap.xml', source: renderSitemap(cfg) });
+      this.emitFile({ type: 'asset', fileName: 'robots.txt', source: renderRobots(cfg) });
+      this.emitFile({ type: 'asset', fileName: 'llms.txt', source: renderLlmsTxt(cfg) });
+      this.emitFile({ type: 'asset', fileName: 'llms-full.txt', source: renderLlmsFullTxt(cfg) });
+      this.emitFile({ type: 'asset', fileName: 'manifest.webmanifest', source: renderManifest(cfg) });
+      this.emitFile({ type: 'asset', fileName: '.well-known/security.txt', source: renderSecurityTxt(cfg) });
     },
-
-    // Build: after the SPA bundle is written, generate a static per-route
-    // index.html whose <head> carries unique title/description/canonical/
-    // JSON-LD. Crawlers that do not run JS now see route-specific metadata
-    // instead of one shared shell, while the SPA hydrates normally in-browser.
     closeBundle() {
-      const config = buildHeadConfig(env)
-      const outDir = path.resolve(__dirname, 'dist')
-      const indexHtml = readFileSync(path.join(outDir, 'index.html'), 'utf8')
+      const outDir = path.resolve(ROOT, 'dist');
+      let indexHtml: string;
+      try {
+        indexHtml = readFileSync(path.join(outDir, 'index.html'), 'utf8');
+      } catch {
+        return;
+      }
 
-      // Pull the hashed asset tags Vite injected into the entry <head> — the
-      // module script that boots the SPA, the modulepreload hints, and the
-      // stylesheet link. Without these, the prerendered per-route pages ship
-      // zero JavaScript and render a blank (black) screen on hard refresh.
-      //
-      // Only asset-bearing tags are collected, and each is captured WITH its
-      // closing tag. A loose /<script[^>]*>/ match would grab just the opening
-      // tag of an inline <script type="application/ld+json"> data block, and
-      // injecting an unclosed <script> would swallow the module script that
-      // follows — blanking the page for real.
-      const headMatch = indexHtml.match(/<head>([\s\S]*?)<\/head>/)
-      const entryHead = headMatch ? headMatch[1] : ''
+      // Keep only the asset tags Vite injected (module script, stylesheet,
+      // modulepreload). Loose matches would grab half of an inline script and
+      // break the HTML.
+      const headMatch = indexHtml.match(/<head>([\s\S]*?)<\/head>/);
+      const entryHead = headMatch ? headMatch[1] : '';
+
+      /**
+       * Tags that are neither route metadata nor asset references — they are
+       * document-level requirements that must survive into EVERY prerendered
+       * shell. Without them the per-route `index.html` files would drop
+       * `charset` and `viewport`, and every deep link would render a 980px
+       * zoomed-out page on mobile. `charset` must also stay inside the first
+       * 1024 bytes, so both are re-emitted first.
+       */
+      const bootTags = Array.from(entryHead.matchAll(/<meta\b[^>]*\/?>/g))
+        .map((m) => m[0].trim())
+        .filter((tag) => /\b(?:charset|name="viewport")/i.test(tag))
+        .join('\n    ');
+
+      // Keep inline scripts (the theme bootstrap must stay), external module
+      // scripts, and stylesheet/modulepreload links. JSON-LD is re-generated
+      // per route below, so it is dropped here to avoid duplicates.
       const assetTags = Array.from(
         entryHead.matchAll(
-          /<script\b[^>]*\bsrc="[^"]*"[^>]*>\s*<\/script>|<link\b[^>]*>/g
-        )
+          /<script\b(?![^>]*\bsrc=)[^>]*>[\s\S]*?<\/script>|<script\b[^>]*\bsrc="[^"]*"[^>]*>\s*<\/script>|<link\b[^>]*\/?>/g,
+        ),
       )
-        .map((m) => m[0])
-        .filter(
-          (tag) =>
-            // Drop JSON-LD / non-asset data blocks outright.
-            !tag.includes('ld+json') &&
-            // Keep only stylesheet + modulepreload <link>s (skip canonical,
-            // icons, preloads, etc. that renderRouteHeadHtml already emits or
-            // that must stay route-specific).
-            (!tag.startsWith('<link') ||
-              /rel="(?:stylesheet|modulepreload)"/.test(tag)) &&
-            // Skip the bootstrap scripts and GA loader already emitted by
-            // renderRouteHeadHtml — re-adding them would duplicate the tags.
-            !tag.includes('/theme-init.js') &&
-            !tag.includes('/ga-init.js') &&
-            !tag.includes('googletagmanager.com/gtag/js')
-        )
-        .join('\n    ')
+        .map((m) => m[0].trim())
+        .filter((tag) => {
+          if (/ld\+json/.test(tag)) return false;
+          if (THEME_BOOT_SCRIPT && tag.includes(THEME_BOOT_SCRIPT)) return true;
+          if (tag.startsWith('<link')) return /rel="(?:stylesheet|modulepreload)"/.test(tag);
+          return true;
+        })
+        .join('\n    ');
 
-      for (const route of NAV_PAGES) {
-        if (route.path === '/') continue
-        const filePath = path.join(outDir, route.path.replace(/^\//, ''), 'index.html')
-        // Keep the already-generated (hashed) asset tags from the built entry,
-        // but swap the metadata tags for route-specific ones.
+      /*
+       * A route shell that loses its metadata guards silently — it still looks
+       * like valid HTML — so fail the build loudly instead of shipping a deep
+       * link that renders zoomed-out on every phone.
+       */
+      if (!/charset=/i.test(bootTags) || !/name="viewport"/i.test(bootTags)) {
+        throw new Error(
+          '[seo] charset/viewport not found in the entry <head> — refusing to write route shells ' +
+            'that would render the site unusable on mobile. Did index.html lose its meta tags?',
+        );
+      }
+
+      for (const route of ROUTES) {
+        if (route.path === '/') continue;
+        const filePath = path.join(outDir, route.path.replace(/^\//, ''), 'index.html');
         const html = indexHtml.replace(
           /<head>[\s\S]*?<\/head>/,
-          `<head>${renderRouteHeadHtml(config, route)}\n    ${assetTags}\n  </head>`
-        )
-
-        // Safety net: an unclosed <script> (e.g. a JSON-LD block whose opening
-        // tag was injected without its body/closing tag) makes the browser
-        // swallow the following module script, shipping a blank page. Refuse
-        // to emit unbalanced HTML rather than deploy a broken route.
-        const opens = (html.match(/<script\b/g) || []).length
-        const closes = (html.match(/<\/script>/g) || []).length
+          `<head>\n    ${bootTags}\n    ${renderRouteHeadHtml(cfg, route)}\n    ${assetTags}\n  </head>`,
+        );
+        const opens = (html.match(/<script\b/g) || []).length;
+        const closes = (html.match(/<\/script>/g) || []).length;
         if (opens !== closes) {
-          throw new Error(
-            `[html-head] Prerendered ${route.path} has ${opens} <script> but ${closes} </script> — refusing to write unbalanced HTML.`
-          )
+          throw new Error(`[seo] ${route.path}: unbalanced <script> tags — refusing to write.`);
         }
-
-        mkdirSync(path.dirname(filePath), { recursive: true })
-        writeFileSync(filePath, html)
+        mkdirSync(path.dirname(filePath), { recursive: true });
+        writeFileSync(filePath, html);
       }
     },
-  }
+  };
 }
 
-// https://vite.dev/config/
 export default defineConfig(({ mode }) => {
-  // Load ALL env vars (empty prefix) so config files can read VITE_* values.
-  const env = loadEnv(mode, process.cwd(), '')
+  // Load ALL env vars (empty prefix) so the SEO plugin can read VITE_* values.
+  const env = loadEnv(mode, process.cwd(), '');
 
   return {
-    plugins: [
-      tailwindcss(),
-      react(),
-      Pages({
-        dirs: 'src/pages',
-        extensions: ['tsx'],
-      }),
-      htmlHeadPlugin(env),
-    ],
+    // 'bundle' is the explicit, stable default: it reads the TS config file
+    // deterministically (the experimental 'native' loader can emit warnings
+    // to stdout that look like errors in CI logs).
+    configLoader: 'bundle',
+    plugins: [react(), seoPlugin(env)],
     resolve: {
-      alias: {
-        '@': path.resolve(__dirname, './src'),
-      },
+      alias: { '@': path.resolve(ROOT, './src') },
     },
     build: {
-      // Split heavy third-party libs out of the entry chunk so the initial
-      // payload (and parse/execute time) drops sharply. Each group only loads
-      // on routes that actually use it.
-      //
-      // NOTE: Rolldown (Vite 8) ignores per-id `manualChunks` for shared
-      // modules like `react/jsx-runtime` and hands them to whichever chunk
-      // needs them first — which silently folded a copy of React into the
-      // lazily-imported markdown chunk and dragged it into the eager preload.
-      // `advancedChunks.groups` is Rolldown's supported API and pins by
-      // package name instead.
+      target: 'es2022',
+      cssCodeSplit: true,
       rollupOptions: {
         output: {
+          // Split the heavy third-party libs out of the entry chunk.
           advancedChunks: {
             groups: [
               { name: 'vendor-react', test: /[\\/]node_modules[\\/](react|react-dom|scheduler)[\\/]/ },
               { name: 'vendor-router', test: /[\\/]node_modules[\\/](react-router|@remix-run)[\\/]/ },
-              { name: 'vendor-motion', test: /[\\/]node_modules[\\/]framer-motion[\\/]/ },
               { name: 'vendor-gsap', test: /[\\/]node_modules[\\/]gsap[\\/]/ },
-              {
-                name: 'vendor-markdown',
-                test: /[\\/]node_modules[\\/](react-markdown|remark|unified|micromark|mdast|hast|unist|property-information|space-separated-tokens|comma-separated-tokens|vfile|devlop|bail|trough|is-plain-obj|zwitch|character-entities|decode-named-character-reference|trim-lines|longest-streak|markdown-table|ccount|escape-string-regexp|html-url-attributes|style-to-object|inline-style-parser|unist-util-stringify-position)[\\/]/,
-              },
-              { name: 'vendor-lottie', test: /[\\/]node_modules[\\/]lottie-web[\\/]/ },
-              { name: 'vendor-webgl', test: /[\\/]node_modules[\\/]ogl[\\/]/ },
+              { name: 'vendor-recaptcha', test: /[\\/]node_modules[\\/]react-google-recaptcha[\\/]/ },
             ],
           },
         },
       },
     },
-    base: '/',
-  }
-})
+  };
+});

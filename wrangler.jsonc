@@ -1,32 +1,28 @@
 {
   // ================================================================
-  // Cloudflare Pages configuration (Wrangler)
-  // ================================================================
-  // You deploy this project through Cloudflare Pages Git integration
-  // (connect the repo → Pages builds & redeploys on every push), so this
-  // file is OPTIONAL — it only matters if you also want to deploy from
-  // the command line with `npm run deploy` / preview with `npm run preview:cf`.
+  // Cloudflare Pages configuration (optional — only needed for the CLI
+  // commands `npm run preview:cf` / `npm run deploy`).
   //
-  // Keep it in sync with the dashboard build settings:
+  // Dashboard build settings must match:
   //   • Framework preset:        None
   //   • Build command:           npm run build
   //   • Build output directory:  dist
-  //   • Root directory:          /  (this repo IS the frontend)
+  //   • Root directory:          /   (this repo IS the frontend)
   //
   // Routing that the SPA cannot express in static config lives in
-  // `functions/_middleware.js` (Pages Functions). Pages picks that folder
-  // up automatically — no configuration needed.
-  //
-  // Docs: https://developers.cloudflare.com/pages/configuration/
+  // `functions/_middleware.js` (Pages Functions) — it turns the SPA shell
+  // returned for a MISSING asset into a real 404. Pages picks that folder up
+  // automatically; no build wiring needed.
   // ================================================================
   "$schema": "./node_modules/wrangler/config-schema.json",
 
-  // Must match the Pages project name in the Cloudflare dashboard.
+  // Reuses the existing Pages project that already serves fiqtor.com, so the
+  // custom domain, environment variables and analytics keep working when v3
+  // replaces v2. v2 lives on as the `v2-archive` branch + `v2-final` release.
   "name": "fiqtor-com",
 
   // Directory that Pages deploys.
   "pages_build_output_dir": "./dist",
 
-  // Pin runtime behavior. Bump to today's date (UTC) when you deploy.
   "compatibility_date": "2025-01-01"
 }

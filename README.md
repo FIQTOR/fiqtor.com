@@ -1,205 +1,240 @@
-# 🎨 Frontend — Portfolio SPA
+# FIQTOR Portfolio — v3
 
-React 19 + TypeScript + Vite single-page app for the portfolio. Branding, identity and SEO metadata are configuration-driven (code in `src/config/`, plus a few env vars), so the project doubles as a reusable template.
+The third generation of my personal portfolio: **React 19 + TypeScript + Vite**, a
+motion-rich single-page site with a **real content catalogue** (37 projects, 30 credentials,
+4 roles) and **live integrations** (AI assistant, GitHub, WakaTime, crypto, social stats,
+contact form).
 
-> 🔗 See the [root README](../README.md) for full-stack setup and configuration.
+Dark is the default theme; a **monochrome light theme** is one click away. The name shown to
+visitors is **FIQTOR** — the legal name (*Taufiiqul Hakim*) appears only in the About section
+and in structured data, so it stays findable without being the brand.
 
-## ✨ Features
+This is a separate repo from the previous frontend (`personal-website/frontend`), which is
+untouched — v3 is a fresh rewrite in a new visual direction.
 
-- ⚡ **Vite + React 19** with TypeScript (strict) and HMR.
-- 🎨 **Tailwind CSS v4** (`@tailwindcss/vite`) + Framer Motion animations, dark/light theme.
-- 🧭 **File-based routing** via `vite-plugin-pages` (`src/pages/*.tsx`).
-- 🔍 **Config-driven SEO** — `<head>`, OpenGraph, Twitter, JSON-LD, `sitemap.xml`, and `robots.txt` are **generated at build time** from `src/config/Head.ts` + `src/config/Identity.ts`.
-- 🤖 **AI Assistant (`src/components/AIHelper.tsx`)** — streaming chat with:
-  - 🎙️ **Voice dictation** — Web Speech API transcribes speech straight into the composer textarea (append mode, auto-stops on close).
-  - 📎 **Attachment type picker** — a popup to choose **Image / Video / Document** before opening the file dialog (max 4.5MB; drag-and-drop also supported).
-  - A 4-bar equalizer animation while listening, copy & regenerate actions, and a dimmed + blurred backdrop (with a width-stable scroll lock) while the panel is open.
-- 🖼️ **Interactive widgets** — contact form (reCAPTCHA), live GitHub/WakaTime stats, crypto widget.
-- 🌐 **Fully configurable** — no personal data in component code; identity comes from `src/config/Identity.ts` and only a few `VITE_*` env vars.
-- 🔐 **No secrets in the bundle** — crypto prices and social stats are fetched from *our backend* (static data); integration usernames live in `src/config/*.ts`. No third-party API key ever reaches the browser.
+---
 
-## 🛠 Tech Stack
+## Why v3
 
-- React 19, TypeScript, Vite, Tailwind CSS v4
-- Framer Motion, GSAP, `react-helmet-async`, `react-router-dom`
-- `ogl` (WebGL line waves), `animejs`, `lottie-web`
-- Axios, `react-google-recaptcha`
-- Icons: `react-icons`
+| | v2 (previous frontend) | **v3 (this repo)** |
+| --- | --- | --- |
+| Stack | Vite + React + Tailwind + shadcn-ish | Vite + React + hand-written CSS system |
+| Look | Light/dark, card-heavy | Dark canvas, dot grid, oversized type |
+| Motion | Framer Motion page fades | Column-curtain page transitions, GSAP hero, interactive dot portrait |
+| Content | i18n dictionary, EN/ID toggle | Bilingual data (EN/ID) with a language switch |
+| Integrations | AI chat, contact form, stats | Same, rebuilt on a streaming SSE client with graceful fallbacks |
 
-## ✅ Prerequisites
+The `/kanban` board is intentionally **not** part of v3.
 
-- Node.js **24.x**, npm
+---
 
-## 📦 Installation
+## Quick start
 
 ```bash
-cd frontend
 npm install
-cp .env.example .env    # then edit .env with your values
+cp .env.example .env        # set VITE_API_BASE_URL (and optionally reCAPTCHA)
+npm run dev                 # http://localhost:5173
+npm run build               # typecheck + production build → dist/
+npm run preview             # serve the production build
 ```
 
-## ▶️ Running
+| Script | What it does |
+| --- | --- |
+| `npm run dev` | Vite dev server with HMR |
+| `npm run build` | `tsc -b` typecheck, then the production bundle |
+| `npm run preview` | Preview `dist/` |
+| `npm run lint` | oxlint |
+| `npm run typecheck` | TypeScript project build (no emit) |
+
+### Theme
+`src/lib/theme.tsx` owns the theme state; `src/lib/themeBoot.ts` is the tiny inline script
+injected into `<head>` at build time so a light-mode visitor never sees a dark flash. Both
+themes are **monochrome** — the palette is a set of CSS custom properties on
+`html[data-theme="dark"|"light"]` in `site.css`.
+
+---
+
+## Project structure
+
+```
+index.html                      # shell; <head> is injected at build time
+vite.config.ts                  # React plugin + build-time SEO plugin
+public/
+  img/projects|career|certificate|cryptocurrency/   # all screenshots & logos
+  pdf/                          # résumés
+  icon.webp                     # portrait / OG image
+  favicon.ico                   # tab icon (original artwork from the v1 portfolio)
+  img/icons/                    # PWA icons: 192, 512, maskable, apple-touch
+  _headers, _redirects          # Cloudflare Pages housekeeping
+src/
+  main.tsx                      # router (Home, Projects, Career, Certificates, Contact, Linktree, 404)
+  styles/site.css               # the whole visual system (ported + v3 additions)
+  config/
+    Identity.ts                 # ★ brand, owner, contact, social URLs, résumé paths
+    Api.ts                      # VITE_API_BASE_URL validation
+    Features.ts                 # reCAPTCHA / AI feature flags
+    Seo.ts                      # ★ per-route meta, JSON-LD (SEO/AEO/GEO), sitemap, robots,
+                                #   llms.txt, llms-full.txt, manifest (PURE → also used by vite.config)
+  data/
+    site.ts                     # ★ the site object `S` (services, FAQ, linktree, career, normalized catalog)
+    projects.ts                 # 37 projects (EN/ID) — unchanged content from v2
+    certificates.ts             # 30 credentials — unchanged content from v2
+    certificatesExtra.ts        # longer descriptions used in the detail modal
+    certGroups.ts               # ★ certificate taxonomy: flagship order, groups, merged quiz bundles
+    galleryLabels.ts            # screenshot captions
+    portrait.ts                 # 6,586-particle portrait data
+  components/
+    Layout.tsx                  # providers + navbar/main/footer/modal shell
+    Loader.tsx                  # initial loader + column-curtain page transitions
+    Navbar.tsx                  # pill nav, Linktree icon link, language + theme switch, drawer
+    Logo.tsx                    # brand mark (vector redraw of the previous icon) + <Brand />
+    ThemeSwitch.tsx             # dark / light toggle
+    Footer.tsx                  # menu, socials, live clock
+    GlobalEffects.tsx           # custom cursor, spotlight, card tilt, magnetic buttons
+    DotPortrait.tsx             # interactive canvas portrait
+    Cards.tsx                   # project & certificate cards
+    DetailModal.tsx             # project/certificate modal (uncropped 16:9 cover) + lightbox
+    FilterGallery.tsx           # project filter + certificate gallery (flagship → grouped → search)
+    Seo.tsx                     # react-helmet-async <head> for SPA navigation
+    home/Hero.tsx               # GSAP hero intro + parallax
+    home/HomeSections.tsx       # projects, services, about, GitHub heatmap, certificates, CTA
+    home/LiveStats.tsx          # crypto / social / WakaTime / GitHub live panels
+  lib/
+    catalog.tsx                 # catalog modal state + LanguageProvider
+    chat.tsx                    # AI assistant (SSE streaming, endpoint fallback, local answers)
+    ui.tsx                      # toasts + motion/pointer preferences
+    utils.ts                    # pure helpers (no JSX, importable from Node)
+    utils.tsx                   # icon components + clipboard
+    theme.tsx                   # dark/light provider
+    themeBoot.ts                # pre-paint theme script (inlined into <head>)
+  hooks/useReveal.tsx           # scroll reveal, interactive titles, count-up, typewriter
+  pages/                        # one file per route
+```
+
+### Editing content
+
+* **Identity / contact / socials** → `src/config/Identity.ts`
+* **Services, FAQ, process, Linktree, career** → `src/data/site.ts`
+* **Projects & certificates** → `src/data/projects.ts`, `src/data/certificates.ts`
+* **Which certificates are "flagship" / how they are grouped** → `src/data/certGroups.ts`
+* **Routes, page titles, FAQ answers, structured data** → `src/config/Seo.ts` (`ROUTES`, `FAQ`)
+
+---
+
+## Live integrations (backend contract)
+
+All network calls go to `VITE_API_BASE_URL` (default `http://localhost:4000/api`) and degrade
+gracefully — if the backend is down, the UI keeps working with local defaults.
+
+| Feature | Endpoint | Notes |
+| --- | --- | --- |
+| AI assistant | `POST /v1/ai/generate` | Streams `text/event-stream`. Events: `{text}` tokens, `{type:'redirectLocal',url}`, `{type:'redirect',platform}` |
+| Contact form | `POST /v1/contact/send` | JSON `{name,email,wa,type,budget,timeline,message,captcha}` |
+| GitHub contributions | `GET /v1/github/contributions` | Live panel; the homepage heatmap uses the public contributions API directly |
+| WakaTime | `GET /v1/wakatime` | `data.text` + `data.range.start_text` |
+| Crypto prices | `GET /v1/crypto` | `{btc,eth,sol}` with `rate` + `delta.day|month` |
+| Social stats | `GET /v1/social/stats` | TikTok / Instagram follower counts |
+
+`/kanban` is not part of v3.
+
+---
+
+## SEO · AEO · GEO
+
+Everything is generated from one pure module, `src/config/Seo.ts`, which is used twice: by
+`vite.config.ts` at build time (static HTML per route) and by `<Seo />` at runtime (SPA
+navigation).
+
+**SEO**
+* Per-route `<title>`, description, keywords, canonical, and OpenGraph/Twitter cards.
+* `hreflang` for `en`, `id`, and `x-default` (every page carries the EN/ID switch).
+* `sitemap.xml` with `xhtml:link` alternates, `robots.txt`, `.well-known/security.txt`,
+  and a web app manifest.
+* A static `/<route>/index.html` per route, so crawlers and hard refreshes get correct
+  metadata without running JavaScript.
+
+**AEO (answer engines)**
+* `FAQPage` — 8 short, self-contained Q&As (who / what / where / experience / certificates /
+  contact / international / stack). The same answers are rendered on `/contact` under
+  *Quick answers* and in the *Key facts* block on the homepage.
+* `HowTo` — the four-step engagement process.
+* `ItemList` — services, the 37 projects, all 25 certificate entries, the career roles.
+* `BreadcrumbList` on every route, `SpeakableSpecification` pointing at the headline, lead,
+  identity line, and fact rows.
+
+**GEO (generative engines)**
+* `/llms.txt` — concise entity summary + page index + facts (llmstxt.org format).
+* `/llms-full.txt` — the complete record: identity, skills, every project, career, every
+  certificate, and citation guidance.
+* `robots.txt` explicitly allows the named AI crawlers (GPTBot, OAI-SearchBot, ClaudeBot,
+  PerplexityBot, Google-Extended, Applebot-Extended, CCBot, and others) — being quotable is
+  the point of a portfolio.
+* `Person` JSON-LD carries the legal name as `additionalName`, `knowsAbout`, `hasCredential`,
+  `award`, `subjectOf` (the résumé PDFs), and `sameAs` for every profile.
+
+Deploy targets:
+
+* **Cloudflare Pages** — build `npm run build`, output `dist` (see `public/_headers`, `_redirects`).
+* **Vercel** — `vercel.json` includes the SPA rewrites and security headers.
+* **Any static host** — serve `dist/` with an SPA fallback for unknown paths.
+
+### Deploying to Cloudflare Pages
+
+Dashboard settings (both must match `wrangler.jsonc`):
+
+| Setting | Value |
+| --- | --- |
+| Framework preset | None |
+| Build command | `npm run build` |
+| Build output directory | `dist` |
+| Root directory | `/` |
+| Node version | 20 or newer |
+
+Environment variables — these are **inlined at build time**, so changing one
+requires a redeploy, not just a restart:
+
+| Variable | Example | Notes |
+| --- | --- | --- |
+| `VITE_DOMAIN` | `fiqtor.com` | Feeds canonical / OG / JSON-LD URLs |
+| `VITE_API_BASE_URL` | `https://api.fiqtor.com/api` | Every live widget degrades gracefully if wrong |
+| `VITE_ENABLE_AI` | `TRUE` | `false` hides the assistant FAB |
+| `VITE_RECAPTCHA_SITE_KEY` | `6L…` | Empty = widget off (backend still rate-limits) |
+| `VITE_GA_ID` | *(leave empty)* | Empty → falls back to `GA_MEASUREMENT_ID`; set `none` to disable |
+
+After every deploy, verify the live site:
 
 ```bash
-npm run dev       # dev server at http://localhost:5173
-npm run build     # type-check + production build
-npm run preview   # preview the production build
-npm run lint      # ESLint
+bash scripts/verify-deploy.sh                      # production
+bash scripts/verify-deploy.sh https://staging…     # any other origin
 ```
 
-Make sure the backend is running (`http://localhost:4000`) and `VITE_API_BASE_URL` matches it.
+It checks the failures that are invisible in a browser-free glance: a missing
+`<meta name="viewport">` (the whole site renders zoomed-out on phones), lost
+prerendered `<head>` per route, 404s on legacy URLs, missing security headers,
+and CSP-blocked analytics. Exit code is non-zero on any failure.
 
-## ⚙️ Configuration
+**Legacy redirects.** v2 served `/certification`; v3 calls the page
+`/certificates`. `public/_redirects` 301s the old path so inbound links and
+existing Google results keep working — keep those rules above the SPA
+fallback, because Cloudflare evaluates `_redirects` top-down.
 
-### Environment Variables (`frontend/.env`)
+---
 
-Only a handful of values remain in env — everything else is code-based. See [`.env.example`](.env.example).
+## Accessibility & performance notes
 
-> ⚠️ **Every `VITE_*` variable is embedded in the public browser bundle.** Never put secrets (API secrets, private tokens) behind a `VITE_` variable — keep those on the backend.
+* Respects `prefers-reduced-motion` (loader, hero intro, cursor effects and tilt all disable).
+* Cursor/tilt/magnetic effects only run on precise-pointer devices.
+* The interactive titles, reveal-on-scroll and count-ups are progressive: without JS the
+  content is still visible.
+* Pages that are heaviest (certificates, contact/reCAPTCHA) are lazy-loaded routes.
+* Images are `loading="lazy"` with explicit dimensions to avoid layout shift.
+* Mobile: 320–430px audited (tap targets ≥ 2.9rem, no horizontal overflow, iOS-safe input
+  sizes, bottom-sheet modals, scroll-safe heatmap and galleries).
+* The certificate page shows 9 flagship credentials first; the remaining records are grouped
+  by type and one click away, and repeated quiz completions are merged into one card.
 
-| Variable | Purpose |
-|----------|---------|
-| `VITE_DOMAIN` | Optional site-origin override (defaults to `SITE_ORIGIN` in `src/config/Identity.ts`) |
-| `VITE_API_BASE_URL` | Backend API base URL |
-| `VITE_RECAPTCHA_SITE_KEY` | reCAPTCHA **site** key (never the secret) |
-| `VITE_ENABLE_AI` | `TRUE` / `FALSE` to toggle AI features |
+---
 
-### Identity & branding (`src/config/Identity.ts`)
+## License
 
-> ℹ️ Branding, owner identity, contact info, social URLs, resume paths, the company/business brand, the site origin and the Google Analytics ID are **code-based** (NOT env vars). Edit [`src/config/Identity.ts`](src/config/Identity.ts) and rebuild.
-
-| Export | Controls |
-|--------|----------|
-| `BRAND_NAME`, `OWNER_NAME`, `OWNER_ALIAS`, `JOB_TITLE`, `HEADLINE` | Names / role / tagline |
-| `YEARS_OF_EXPERIENCE`, `COUNTRY`, `COUNTRY_CODE`, `LANGUAGES` | Profile facts |
-| `CONTACT_EMAIL`, `BUSINESS_EMAIL`, `CONTACT_PHONE`, `WHATSAPP_NUMBER`, `TWITTER_HANDLE` | Contact info |
-| `SOCIAL_LINKS`, `RESUME`, `PORTRAIT_IMAGE` | Socials, resumes, portrait |
-| `COMPANY` | Company/business brand (services & linktree) |
-| `SITE_ORIGIN`, `GA_MEASUREMENT_ID` | Canonical origin & analytics |
-
-> 🔐 **No API keys here.** Crypto prices (`/api/v1/crypto`) and social stats (`/api/v1/social/stats`) are fetched from the backend, which serves static data. Integration usernames also live in source, not env:
->
-> | File | Controls |
-> |------|----------|
-> | `src/config/Github.ts` | GitHub username (profile link) |
-> | `src/config/Wakatime.ts` | WakaTime username (profile link) |
->
-> Social handles (Instagram, TikTok, YouTube, LinkedIn, GitHub) come from `SOCIAL_LINKS` in `src/config/Identity.ts`.
-
-### Content (`src/data/`)
-
-Replace the sample content with your own:
-
-| File | Controls |
-|------|----------|
-| `projects.ts` | Project portfolio |
-| `career.ts` | Work experience timeline |
-| `certificate.ts` | Certificates & awards |
-| `skills.ts` / `services.ts` | Skills & services |
-| `menu.ts` | Navigation |
-| `social.ts` | Social links (wired to `Identity.ts`) |
-
-### Integration usernames (`src/config/`)
-
-Public usernames are kept out of env and live in source, since they're not secrets and are edited far less often than env vars: `Github.ts`, `Wakatime.ts`. Social handles live in `SOCIAL_LINKS` inside `src/config/Identity.ts`. Secrets for those integrations stay on the **backend**.
-
-### `<head>` / SEO generation
-
-- `src/config/Head.ts` builds the `<head>` (title, meta, OG, Twitter, JSON-LD, GA) **and** `sitemap.xml` + `robots.txt`.
-- The `htmlHeadPlugin` in `vite.config.ts` injects them at dev/build time.
-- `index.html` is a minimal shell with a `<!--vite-html-head-->` marker — **don't edit it directly**; change `src/config/Identity.ts` (or the optional `VITE_DOMAIN`) instead.
-- Origin defaults to `SITE_ORIGIN` in `src/config/Identity.ts`, optionally overridden via `VITE_DOMAIN`.
-
-### Styling & layout notes
-
-- **No horizontal scroll:** `html, body { overflow-x: clip }` in `src/index.css` guards against page-wide horizontal scroll from full-bleed / off-screen decorative elements. Use `w-full` (not `w-screen` / `100vw`, which includes the scrollbar width).
-- **Stable layout width:** `html { scrollbar-gutter: stable }` permanently reserves the scrollbar space, so opening overlays that lock scrolling (e.g. the AI panel) never causes a layout shift.
-- **Voice-input types:** the Web Speech API typings live in `src/vite-env.d.ts` (not in the default TS DOM lib).
-
-## 📂 Project Structure
-
-```
-frontend/
-├── public/            # static assets (img, pdf, favicon) — sitemap/robots are generated
-├── src/
-│   ├── components/    # shared UI components (incl. AIHelper.tsx, Footer.tsx)
-│   ├── config/        # Identity, Metadata, Head, Github/Wakatime
-│   ├── context/       # React contexts (theme, container, welcome)
-│   ├── data/          # 📝 your content (projects, career, certificates…)
-│   ├── layouts/       # layout wrappers
-│   ├── modules/       # feature modules — page = folder
-│   │   ├── home/      #   ├── sections/  (header, about, skills…) + components/ + index.tsx
-│   │   ├── career/    #   └── components/ (CareerView.tsx)
-│   │   ├── certification/  # certificates grid
-│   │   ├── contact/   # contact form, recaptcha, response message
-│   │   ├── linktree/  # linktree box
-│   │   └── projects/  # projects grid
-│   ├── pages/         # file-based routes (thin wrappers around modules)
-│   ├── App.tsx
-│   └── main.tsx
-├── functions/         # Cloudflare Pages Functions — middleware for correct asset 404s
-├── index.html         # minimal shell (head injected at build)
-├── vite.config.ts     # htmlHeadPlugin (head + sitemap + robots)
-├── wrangler.jsonc     # Cloudflare Pages config (optional; for CLI deploys)
-└── .env.example
-```
-
-> 🧹 **Naming conventions:** shared `components/` and module files use **PascalCase** (`CareerView.tsx`); module sub-folders are `sections/` (page blocks) and `components/` (domain pieces); each page-module has an `index.tsx` entry.
-
-## 🚢 Deployment
-
-The project deploys to **Cloudflare Pages** (Git integration — auto-redeploys on every push) or **Vercel**. Both configs are committed and independent.
-
-### Cloudflare Pages (recommended)
-
-Pages builds `dist/` (`npm run build`) and serves it as static assets. Routing that a static config can't express lives in **Pages Functions**:
-
-| File                          | Purpose                                                                       |
-| ----------------------------- | ----------------------------------------------------------------------------- |
-| `functions/_middleware.js`    | Returns a real `404` for missing files; leaves the SPA shell for real routes. |
-| `public/_headers`             | Security headers (CSP, HSTS, X-Frame-Options, …) + asset cache policy.         |
-| `public/_redirects`           | Kept rule-free on purpose (see note below) — add only real 301s here.          |
-| `wrangler.jsonc`              | Optional: only for CLI deploys (`npm run deploy`); not needed for Git integration. |
-
-> ⚠️ **Why the middleware is needed — the "all images broken" bug.**
-> Pages' automatic SPA fallback answers **every** unmatched path with the root `index.html` (`200 text/html`) — including requests that clearly want a file, like `/img/projects/typo.webp` or `/assets/missing.js`. The browser then receives HTML where it expected an image/script and shows a **broken resource**, so a single wrong/stale/mis-cased asset URL looks like "all the images are gone".
-> `functions/_middleware.js` runs the request normally (real files are served untouched), then replaces the one wrong case: a request that looks like a file but came back as the HTML shell becomes a genuine `404`. Client-side routes (no file extension) still fall back to the shell, so deep links keep working.
-> Do **not** "fix" routing with a `/* /index.html 200` rule in `_redirects` — Cloudflare follows `_redirects` rules even when a static file exists, so a catch-all would clobber every prerendered `/<route>/index.html`.
-
-**Cloudflare Pages Git integration (your setup).** Dashboard → **Workers & Pages → Create → Pages → Connect to Git**, pick this repo, and set:
-
-- **Framework preset:** `None`
-- **Build command:** `npm run build`
-- **Build output directory:** `dist`
-- **Root directory:** `/` (this repo *is* the frontend)
-- **Environment variables:** `VITE_DOMAIN`, `VITE_API_BASE_URL`, `VITE_RECAPTCHA_SITE_KEY`, `VITE_ENABLE_AI`, `VITE_SENTRY_DSN`
-
-Every push then builds and redeploys automatically — including `functions/` and the copied `_headers` / `_redirects`.
-
-**Custom domain.** Add `fiqtor.com` under **Pages project → Custom domains**, then point DNS at it (remove any record that still sends the domain to another host, e.g. Vercel). Until the domain is pointed at Pages, visitors keep hitting the old origin and none of this takes effect.
-
-**CLI alternative** (optional — Git integration already deploys for you):
-
-```bash
-npx wrangler login
-npm run deploy        # build + `wrangler pages deploy dist`
-npm run preview:cf    # build + `wrangler pages dev dist` (real runtime + Functions)
-```
-
-⚠️ `VITE_*` values are baked into the **public** bundle — never put real secrets there.
-
-### Vercel
-
-`vercel.json` is committed (SPA rewrite that preserves `sitemap.xml` / `robots.txt` and excludes paths with a file extension, so assets are never swallowed by the SPA rule). Import the `frontend/` folder, set the same `VITE_*` vars, and deploy.
-
-## 🔒 Security
-
-- Never commit `.env` (gitignored) — only `.env.example` is tracked.
-- `VITE_*` values are **public**; no secrets in the frontend.
-- reCAPTCHA **secret** key belongs on the backend, never here.
-- **No third-party API keys on the client.** Crypto/social data comes from the backend (static), and integration usernames live in `src/config/*.ts`. If you add a live provider later, proxy it through the backend.
-- No hardcoded credentials in source — secrets live only in env on the backend; public identity lives in `src/config/`.
-
-## 📄 License
-
-ISC.
+MIT — see [LICENSE](./LICENSE).

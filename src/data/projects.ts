@@ -1,116 +1,9 @@
-// Import icons from the icons directory
-import type { ComponentType } from "react";
-import type { Language } from "@/i18n/translations";
-import {
-  Axios,
-  Cpanel,
-  Css3,
-  Docker,
-  Express,
-  Framer,
-  Git,
-  Google,
-  Html5,
-  Javascript,
-  JQuery,
-  Jsonwebtokens,
-  Laravel,
-  Mysql,
-  N8N,
-  NextJS,
-  Node,
-  Openai,
-  Postgresql,
-  ReactJS,
-  Redux,
-  Swiper,
-  Tailwindcss,
-  Typescript,
-  Vercel,
-  Whatsapp,
-} from "./icons";
+// AUTO-GENERATED from the previous frontend data file (src/data/projects.ts).
+// Content is unchanged; only the icon references are kept as tech-name strings.
+import type { RawProject } from './site';
 
-// Define the Icon type interface
-// SvgIcon: SVG component for the technology icon
-// title: Display name of the technology
-export type Icon = {
-  SvgIcon: ComponentType<{ className?: string }>;
-  title: string;
-};
-
-// Available project categories used for filtering
-export type ProjectCategory =
-  | "AI & Automation"
-  | "Web App"
-  | "Business System"
-  | "E-Commerce"
-  | "Landing Page"
-  | "Template"
-  | "Creative";
-
-// Ordered list of categories for filter controls
-export const ProjectCategories: Array<ProjectCategory> = [
-  "AI & Automation",
-  "Web App",
-  "Business System",
-  "E-Commerce",
-  "Landing Page",
-  "Template",
-  "Creative",
-];
-
-// Localizable string, keyed by language code.
-export type LocalizedText = Record<Language, string>;
-
-// Which project list a project should appear in when browsing by tab.
-// - "best": flagship, highest-impact projects (shown first on the homepage)
-// - "recent": newer / smaller shipped work (everything that isn't "best")
-export type ProjectHighlight = "best" | "recent";
-
-// Define the Project type interface
-// title: Name of the project (per language)
-// category: Main category of the project
-// description: Brief explanation of the project (per language)
-// urlDirect: Optional live demo URL
-// srcImage: Path to project screenshot/image (used as the cover image)
-// images: Optional array of extra screenshots to render as a gallery in the modal
-//         (if omitted, only srcImage is shown)
-//   tags: Optional array of project categories/keywords (per language)
-//   icons: Array of technology icons used in the project
-//   best: When true the project is a flagship project shown in the "Best
-//         Project" tab (homepage default). Omit/false means it belongs to the
-//         "Recent Project" tab instead.
-export type Project = {
-  title: LocalizedText;
-  category: ProjectCategory;
-  description: LocalizedText;
-  urlDirect?: string;
-  srcImage: string;
-  images?: Array<string>;
-  tags?: Record<Language, Array<string>>;
-  icons: Array<Icon>;
-  best?: boolean;
-};
-
-// Export array of projects data
-//
-// NOTE: image paths in this file are authored inconsistently — some start
-// with `/` and some do not. A path without a leading slash is RELATIVE, so
-// `img/projects/x.webp` resolves against the current route: on `/projects/`
-// the browser asks for `/projects/img/projects/x.webp` and the image 404s
-// (it only "works" on `/`). We normalize every image path to an absolute
-// `/img/...` URL once, here, so both the data file there and every consumer
-// (ProjectsGrid, ProjectGallery, …) are safe regardless of the route.
-const toAbsoluteAssetPath = (src: string): string =>
-  src.startsWith('/') || /^[a-z]+:\/\//i.test(src) ? src : `/${src}`;
-
-const normalizeProjectImages = (project: Project): Project => ({
-  ...project,
-  srcImage: toAbsoluteAssetPath(project.srcImage),
-  images: project.images?.map(toAbsoluteAssetPath),
-});
-
-const rawProjects: Array<Project> = [
+/** Raw (bilingual) project entries — normalized by catalog.ts into `S.projects`. */
+export const rawProjects: RawProject[] = [
   {
     title: {
       en: "Jakarta Transit - Live Public Transport Tracking",
@@ -137,28 +30,7 @@ const rawProjects: Array<Project> = [
       en: ["Realtime", "WebSocket", "MapLibre", "Journey Planner", "Geolocation", "Dark Mode"],
       id: ["Realtime", "WebSocket", "MapLibre", "Perencana Perjalanan", "Geolokasi", "Mode Gelap"],
     },
-    icons: [
-      {
-        SvgIcon: ReactJS,
-        title: "ReactJS",
-      },
-      {
-        SvgIcon: Javascript,
-        title: "JavaScript",
-      },
-      {
-        SvgIcon: Tailwindcss,
-        title: "TailwindCSS",
-      },
-      {
-        SvgIcon: Node,
-        title: "NodeJS",
-      },
-      {
-        SvgIcon: Express,
-        title: "Express",
-      },
-    ],
+    icons: ["ReactJS", "JavaScript", "TailwindCSS", "NodeJS", "Express"],
   },
   {
     title: {
@@ -176,24 +48,7 @@ const rawProjects: Array<Project> = [
       en: ["3D", "Three.js", "WebGL", "GLTF", "Draco", "Interactive", "Creative Coding"],
       id: ["3D", "Three.js", "WebGL", "GLTF", "Draco", "Interaktif", "Creative Coding"],
     },
-    icons: [
-      {
-        SvgIcon: Javascript,
-        title: "JavaScript",
-      },
-      {
-        SvgIcon: Html5,
-        title: "HTML5",
-      },
-      {
-        SvgIcon: Css3,
-        title: "CSS3",
-      },
-      {
-        SvgIcon: Vercel,
-        title: "Vercel",
-      },
-    ],
+    icons: ["JavaScript", "HTML5", "CSS3", "Vercel"],
   },
   {
     title: {
@@ -211,24 +66,7 @@ const rawProjects: Array<Project> = [
       en: ["3D", "Three.js", "WebGL", "Interactive", "Water Simulation", "Creative Coding"],
       id: ["3D", "Three.js", "WebGL", "Interaktif", "Simulasi Air", "Creative Coding"],
     },
-    icons: [
-      {
-        SvgIcon: Javascript,
-        title: "JavaScript",
-      },
-      {
-        SvgIcon: Html5,
-        title: "HTML5",
-      },
-      {
-        SvgIcon: Css3,
-        title: "CSS3",
-      },
-      {
-        SvgIcon: Vercel,
-        title: "Vercel",
-      },
-    ],
+    icons: ["JavaScript", "HTML5", "CSS3", "Vercel"],
   },
   {
     title: {
@@ -246,24 +84,7 @@ const rawProjects: Array<Project> = [
       en: ["Landing Page", "3D", "Three.js", "GLTF", "GSAP ScrollTrigger", "Booking"],
       id: ["Landing Page", "3D", "Three.js", "GLTF", "GSAP ScrollTrigger", "Pemesanan"],
     },
-    icons: [
-      {
-        SvgIcon: Javascript,
-        title: "JavaScript",
-      },
-      {
-        SvgIcon: Html5,
-        title: "HTML5",
-      },
-      {
-        SvgIcon: Css3,
-        title: "CSS3",
-      },
-      {
-        SvgIcon: Vercel,
-        title: "Vercel",
-      },
-    ],
+    icons: ["JavaScript", "HTML5", "CSS3", "Vercel"],
   },
   {
     title: {
@@ -282,44 +103,7 @@ const rawProjects: Array<Project> = [
       en: ["Ecosystem", "AI Integration", "Business Growth", "EdTech"],
       id: ["Ekosistem", "Integrasi AI", "Pertumbuhan Bisnis", "EdTech"],
     },
-    icons: [
-      {
-        SvgIcon: NextJS,
-        title: "Next.js",
-      },
-      {
-        SvgIcon: Git,
-        title: "Git",
-      },
-      {
-        SvgIcon: Vercel,
-        title: "Vercel",
-      },
-      {
-        SvgIcon: Express,
-        title: "Express",
-      },
-      {
-        SvgIcon: Postgresql,
-        title: "PostgreSQL",
-      },
-      {
-        SvgIcon: Framer,
-        title: "Framer Motion",
-      },
-      {
-        SvgIcon: Axios,
-        title: "Axios",
-      },
-      {
-        SvgIcon: Typescript,
-        title: "TypeScript",
-      },
-      {
-        SvgIcon: Openai,
-        title: "OpenAI",
-      },
-    ],
+    icons: ["Next.js", "Git", "Vercel", "Express", "PostgreSQL", "Framer Motion", "Axios", "TypeScript", "OpenAI"],
   },
 
   {
@@ -351,48 +135,7 @@ const rawProjects: Array<Project> = [
       en: ["ERP", "Multi-Tenancy", "Accounting", "Inventory", "HR & Payroll", "CRM", "Reporting"],
       id: ["ERP", "Multi-Tenancy", "Akuntansi", "Inventaris", "HR & Payroll", "CRM", "Pelaporan"],
     },
-    icons: [
-      {
-        SvgIcon: ReactJS,
-        title: "React 19",
-      },
-      {
-        SvgIcon: Typescript,
-        title: "TypeScript",
-      },
-      {
-        SvgIcon: Tailwindcss,
-        title: "TailwindCSS v4",
-      },
-      {
-        SvgIcon: Redux,
-        title: "Redux Toolkit",
-      },
-      {
-        SvgIcon: Node,
-        title: "Node.js",
-      },
-      {
-        SvgIcon: Express,
-        title: "Express.js",
-      },
-      {
-        SvgIcon: Mysql,
-        title: "MySQL / MariaDB",
-      },
-      {
-        SvgIcon: Jsonwebtokens,
-        title: "JWT Auth",
-      },
-      {
-        SvgIcon: Axios,
-        title: "Axios",
-      },
-      {
-        SvgIcon: Docker,
-        title: "Docker",
-      },
-    ],
+    icons: ["React 19", "TypeScript", "TailwindCSS v4", "Redux Toolkit", "Node.js", "Express.js", "MySQL / MariaDB", "JWT Auth", "Axios", "Docker"],
   },
   {
     title: {
@@ -423,48 +166,7 @@ const rawProjects: Array<Project> = [
       en: ["CRM", "RBAC", "Auth & 2FA", "Sales Pipeline", "Lead Scoring", "Multi-Tenancy", "Audit Log", "Analytics"],
       id: ["CRM", "RBAC", "Autentikasi & 2FA", "Pipeline Penjualan", "Penilaian Prospek", "Multi-Tenancy", "Log Audit", "Analitik"],
     },
-    icons: [
-      {
-        SvgIcon: ReactJS,
-        title: "React 19",
-      },
-      {
-        SvgIcon: Typescript,
-        title: "TypeScript",
-      },
-      {
-        SvgIcon: Tailwindcss,
-        title: "TailwindCSS v4",
-      },
-      {
-        SvgIcon: Redux,
-        title: "Redux Toolkit",
-      },
-      {
-        SvgIcon: Node,
-        title: "Node.js",
-      },
-      {
-        SvgIcon: Express,
-        title: "Express.js",
-      },
-      {
-        SvgIcon: Mysql,
-        title: "MySQL / MariaDB",
-      },
-      {
-        SvgIcon: Jsonwebtokens,
-        title: "JWT Auth",
-      },
-      {
-        SvgIcon: Axios,
-        title: "Axios",
-      },
-      {
-        SvgIcon: Docker,
-        title: "Docker",
-      },
-    ],
+    icons: ["React 19", "TypeScript", "TailwindCSS v4", "Redux Toolkit", "Node.js", "Express.js", "MySQL / MariaDB", "JWT Auth", "Axios", "Docker"],
   },
   {
     title: {
@@ -496,48 +198,7 @@ const rawProjects: Array<Project> = [
       en: ["HRIS", "Payroll", "Attendance", "Leave Management", "Recruitment", "Performance", "Self-Service", "Multi-Tenancy", "RBAC", "Analytics"],
       id: ["HRIS", "Penggajian", "Absensi", "Manajemen Cuti", "Rekrutmen", "Performa", "Layanan Mandiri", "Multi-Tenancy", "RBAC", "Analitik"],
     },
-    icons: [
-      {
-        SvgIcon: ReactJS,
-        title: "React 19",
-      },
-      {
-        SvgIcon: Typescript,
-        title: "TypeScript",
-      },
-      {
-        SvgIcon: Tailwindcss,
-        title: "TailwindCSS v4",
-      },
-      {
-        SvgIcon: Redux,
-        title: "Redux Toolkit",
-      },
-      {
-        SvgIcon: Node,
-        title: "Node.js",
-      },
-      {
-        SvgIcon: Express,
-        title: "Express.js",
-      },
-      {
-        SvgIcon: Mysql,
-        title: "MySQL / MariaDB",
-      },
-      {
-        SvgIcon: Jsonwebtokens,
-        title: "JWT Auth",
-      },
-      {
-        SvgIcon: Axios,
-        title: "Axios",
-      },
-      {
-        SvgIcon: Docker,
-        title: "Docker",
-      },
-    ],
+    icons: ["React 19", "TypeScript", "TailwindCSS v4", "Redux Toolkit", "Node.js", "Express.js", "MySQL / MariaDB", "JWT Auth", "Axios", "Docker"],
   },
   {
     title: {
@@ -569,48 +230,7 @@ const rawProjects: Array<Project> = [
       en: ["School Management", "LMS", "Admissions (PPDB)", "CBT Exams", "Attendance", "Finance & Billing", "Feature Flags", "Parent Portal", "RBAC"],
       id: ["Manajemen Sekolah", "LMS", "Penerimaan Siswa (PPDB)", "Ujian CBT", "Absensi", "Keuangan & Tagihan", "Feature Flags", "Portal Orang Tua", "RBAC"],
     },
-    icons: [
-      {
-        SvgIcon: ReactJS,
-        title: "React 19",
-      },
-      {
-        SvgIcon: Typescript,
-        title: "TypeScript",
-      },
-      {
-        SvgIcon: Tailwindcss,
-        title: "TailwindCSS v4",
-      },
-      {
-        SvgIcon: Redux,
-        title: "Redux Toolkit",
-      },
-      {
-        SvgIcon: Node,
-        title: "Node.js",
-      },
-      {
-        SvgIcon: Express,
-        title: "Express.js",
-      },
-      {
-        SvgIcon: Mysql,
-        title: "MySQL / MariaDB",
-      },
-      {
-        SvgIcon: Jsonwebtokens,
-        title: "JWT Auth",
-      },
-      {
-        SvgIcon: Google,
-        title: "Google OAuth",
-      },
-      {
-        SvgIcon: Axios,
-        title: "Axios",
-      },
-    ],
+    icons: ["React 19", "TypeScript", "TailwindCSS v4", "Redux Toolkit", "Node.js", "Express.js", "MySQL / MariaDB", "JWT Auth", "Google OAuth", "Axios"],
   },
   {
     title: {
@@ -639,48 +259,7 @@ const rawProjects: Array<Project> = [
       en: ["Restaurant", "QR Menu", "Self-Ordering", "Midtrans Payment", "WhatsApp Verification", "Realtime SSE", "Admin Dashboard", "RBAC"],
       id: ["Restoran", "Menu QR", "Pesan Mandiri", "Pembayaran Midtrans", "Verifikasi WhatsApp", "Realtime SSE", "Dasbor Admin", "RBAC"],
     },
-    icons: [
-      {
-        SvgIcon: ReactJS,
-        title: "React 19",
-      },
-      {
-        SvgIcon: Typescript,
-        title: "TypeScript",
-      },
-      {
-        SvgIcon: Tailwindcss,
-        title: "TailwindCSS v4",
-      },
-      {
-        SvgIcon: Redux,
-        title: "Redux Toolkit",
-      },
-      {
-        SvgIcon: Node,
-        title: "Node.js",
-      },
-      {
-        SvgIcon: Express,
-        title: "Express.js",
-      },
-      {
-        SvgIcon: Mysql,
-        title: "MySQL / MariaDB",
-      },
-      {
-        SvgIcon: Jsonwebtokens,
-        title: "JWT Auth",
-      },
-      {
-        SvgIcon: Google,
-        title: "Google OAuth",
-      },
-      {
-        SvgIcon: Axios,
-        title: "Axios",
-      },
-    ],
+    icons: ["React 19", "TypeScript", "TailwindCSS v4", "Redux Toolkit", "Node.js", "Express.js", "MySQL / MariaDB", "JWT Auth", "Google OAuth", "Axios"],
   },
   {
     title: {
@@ -698,28 +277,7 @@ const rawProjects: Array<Project> = [
       en: ["AI Chatbot", "Customer Support", "Business Automation"],
       id: ["Chatbot AI", "Dukungan Pelanggan", "Otomasi Bisnis"],
     },
-    icons: [
-      {
-        SvgIcon: Whatsapp,
-        title: "WhatsApp",
-      },
-      {
-        SvgIcon: Node,
-        title: "NodeJS",
-      },
-      {
-        SvgIcon: Javascript,
-        title: "JavaScript",
-      },
-      {
-        SvgIcon: Openai,
-        title: "OpenAI",
-      },
-      {
-        SvgIcon: N8N,
-        title: "N8N",
-      },
-    ],
+    icons: ["WhatsApp", "NodeJS", "JavaScript", "OpenAI", "N8N"],
   },
   {
     title: {
@@ -738,36 +296,7 @@ const rawProjects: Array<Project> = [
       en: ["AI Chat", "Multi-AI", "Productivity Tool"],
       id: ["Obrolan AI", "Multi-AI", "Alat Produktivitas"],
     },
-    icons: [
-      {
-        SvgIcon: NextJS,
-        title: "Next.js",
-      },
-      {
-        SvgIcon: Tailwindcss,
-        title: "TailwindCSS",
-      },
-      {
-        SvgIcon: Vercel,
-        title: "Vercel",
-      },
-      {
-        SvgIcon: Express,
-        title: "Express.js",
-      },
-      {
-        SvgIcon: Openai,
-        title: "OpenAI",
-      },
-      {
-        SvgIcon: Axios,
-        title: "Axios",
-      },
-      {
-        SvgIcon: Typescript,
-        title: "TypeScript",
-      },
-    ],
+    icons: ["Next.js", "TailwindCSS", "Vercel", "Express.js", "OpenAI", "Axios", "TypeScript"],
   },
   {
     title: {
@@ -786,32 +315,7 @@ const rawProjects: Array<Project> = [
       en: ["AI Marketplace", "Business", "AI Tools"],
       id: ["Marketplace AI", "Bisnis", "Alat AI"],
     },
-    icons: [
-      {
-        SvgIcon: NextJS,
-        title: "Next.js",
-      },
-      {
-        SvgIcon: Tailwindcss,
-        title: "TailwindCSS",
-      },
-      {
-        SvgIcon: Vercel,
-        title: "Vercel",
-      },
-      {
-        SvgIcon: Express,
-        title: "Express.js",
-      },
-      {
-        SvgIcon: Axios,
-        title: "Axios",
-      },
-      {
-        SvgIcon: Typescript,
-        title: "TypeScript",
-      },
-    ],
+    icons: ["Next.js", "TailwindCSS", "Vercel", "Express.js", "Axios", "TypeScript"],
   },
   {
     title: {
@@ -830,32 +334,7 @@ const rawProjects: Array<Project> = [
       en: ["Webstie", "UI Design", "Marketplace"],
       id: ["Situs Web", "Desain UI", "Marketplace"],
     },
-    icons: [
-      {
-        SvgIcon: NextJS,
-        title: "Next.js",
-      },
-      {
-        SvgIcon: Tailwindcss,
-        title: "TailwindCSS",
-      },
-      {
-        SvgIcon: Vercel,
-        title: "Vercel",
-      },
-      {
-        SvgIcon: Express,
-        title: "Express.js",
-      },
-      {
-        SvgIcon: Axios,
-        title: "Axios",
-      },
-      {
-        SvgIcon: Typescript,
-        title: "TypeScript",
-      },
-    ],
+    icons: ["Next.js", "TailwindCSS", "Vercel", "Express.js", "Axios", "TypeScript"],
   },
   {
     title: {
@@ -873,16 +352,7 @@ const rawProjects: Array<Project> = [
       en: ["Gesture Recognition", "Real-Time Interaction", "Particle Systems"],
       id: ["Pengenalan Gestur", "Interaksi Real-Time", "Sistem Partikel"],
     },
-    icons: [
-      {
-        SvgIcon: Html5,
-        title: "HTML5",
-      },
-      {
-        SvgIcon: Javascript,
-        title: "JavaScript",
-      },
-    ],
+    icons: ["HTML5", "JavaScript"],
   },
   {
     title: {
@@ -900,24 +370,7 @@ const rawProjects: Array<Project> = [
       en: ["Customer Helper", "Wedding Decoration"],
       id: ["Asisten Pelanggan", "Dekorasi Pernikahan"],
     },
-    icons: [
-      {
-        SvgIcon: NextJS,
-        title: "Next.js",
-      },
-      {
-        SvgIcon: Tailwindcss,
-        title: "TailwindCSS",
-      },
-      {
-        SvgIcon: Typescript,
-        title: "TypeScript",
-      },
-      {
-        SvgIcon: Vercel,
-        title: "Vercel",
-      },
-    ],
+    icons: ["Next.js", "TailwindCSS", "TypeScript", "Vercel"],
   },
   {
     title: {
@@ -935,24 +388,7 @@ const rawProjects: Array<Project> = [
       en: ["Analytics", "Social Media", "Web App"],
       id: ["Analitik", "Media Sosial", "Aplikasi Web"],
     },
-    icons: [
-      {
-        SvgIcon: NextJS,
-        title: "Next.js",
-      },
-      {
-        SvgIcon: Tailwindcss,
-        title: "Tailwind CSS",
-      },
-      {
-        SvgIcon: Typescript,
-        title: "TypeScript",
-      },
-      {
-        SvgIcon: Vercel,
-        title: "Vercel",
-      },
-    ],
+    icons: ["Next.js", "Tailwind CSS", "TypeScript", "Vercel"],
   },
   {
     title: {
@@ -970,44 +406,7 @@ const rawProjects: Array<Project> = [
       en: ["E-Learning", "Video Course", "Education"],
       id: ["E-Learning", "Kursus Video", "Pendidikan"],
     },
-    icons: [
-      {
-        SvgIcon: NextJS,
-        title: "Next.js",
-      },
-      {
-        SvgIcon: Git,
-        title: "Git",
-      },
-      {
-        SvgIcon: Vercel,
-        title: "Vercel",
-      },
-      {
-        SvgIcon: Express,
-        title: "Express",
-      },
-      {
-        SvgIcon: Postgresql,
-        title: "PostgreSQL",
-      },
-      {
-        SvgIcon: Framer,
-        title: "Framer Motion",
-      },
-      {
-        SvgIcon: Axios,
-        title: "Axios",
-      },
-      {
-        SvgIcon: Typescript,
-        title: "TypeScript",
-      },
-      {
-        SvgIcon: Openai,
-        title: "OpenAI",
-      },
-    ],
+    icons: ["Next.js", "Git", "Vercel", "Express", "PostgreSQL", "Framer Motion", "Axios", "TypeScript", "OpenAI"],
   },
   {
     title: {
@@ -1025,28 +424,7 @@ const rawProjects: Array<Project> = [
       en: ["Customer Helper", "Air Conditioner Service"],
       id: ["Asisten Pelanggan", "Servis AC"],
     },
-    icons: [
-      {
-        SvgIcon: NextJS,
-        title: "Next.js",
-      },
-      {
-        SvgIcon: Tailwindcss,
-        title: "TailwindCSS",
-      },
-      {
-        SvgIcon: Framer,
-        title: "Framer Motion",
-      },
-      {
-        SvgIcon: Typescript,
-        title: "TypeScript",
-      },
-      {
-        SvgIcon: Vercel,
-        title: "Vercel",
-      },
-    ],
+    icons: ["Next.js", "TailwindCSS", "Framer Motion", "TypeScript", "Vercel"],
   },
   {
     title: {
@@ -1064,28 +442,7 @@ const rawProjects: Array<Project> = [
       en: ["Coffee Shop", "Customer Helper"],
       id: ["Kedai Kopi", "Asisten Pelanggan"],
     },
-    icons: [
-      {
-        SvgIcon: NextJS,
-        title: "Next.js",
-      },
-      {
-        SvgIcon: Tailwindcss,
-        title: "TailwindCSS",
-      },
-      {
-        SvgIcon: Framer,
-        title: "Framer Motion",
-      },
-      {
-        SvgIcon: Typescript,
-        title: "TypeScript",
-      },
-      {
-        SvgIcon: Vercel,
-        title: "Vercel",
-      },
-    ],
+    icons: ["Next.js", "TailwindCSS", "Framer Motion", "TypeScript", "Vercel"],
   },
   {
     title: {
@@ -1103,28 +460,7 @@ const rawProjects: Array<Project> = [
       en: ["Coffee Shop", "Customer Helper"],
       id: ["Kedai Kopi", "Asisten Pelanggan"],
     },
-    icons: [
-      {
-        SvgIcon: NextJS,
-        title: "Next.js",
-      },
-      {
-        SvgIcon: Tailwindcss,
-        title: "TailwindCSS",
-      },
-      {
-        SvgIcon: Framer,
-        title: "Framer Motion",
-      },
-      {
-        SvgIcon: Typescript,
-        title: "TypeScript",
-      },
-      {
-        SvgIcon: Vercel,
-        title: "Vercel",
-      },
-    ],
+    icons: ["Next.js", "TailwindCSS", "Framer Motion", "TypeScript", "Vercel"],
   },
   {
     title: {
@@ -1142,28 +478,7 @@ const rawProjects: Array<Project> = [
       en: ["Coffee Shop", "Customer Helper"],
       id: ["Kedai Kopi", "Asisten Pelanggan"],
     },
-    icons: [
-      {
-        SvgIcon: NextJS,
-        title: "Next.js",
-      },
-      {
-        SvgIcon: Tailwindcss,
-        title: "TailwindCSS",
-      },
-      {
-        SvgIcon: Framer,
-        title: "Framer Motion",
-      },
-      {
-        SvgIcon: Typescript,
-        title: "TypeScript",
-      },
-      {
-        SvgIcon: Vercel,
-        title: "Vercel",
-      },
-    ],
+    icons: ["Next.js", "TailwindCSS", "Framer Motion", "TypeScript", "Vercel"],
   },
   {
     title: {
@@ -1180,40 +495,7 @@ const rawProjects: Array<Project> = [
       en: ["Store Management", "Business Analytics", "Income Tracking", "Inventory Management"],
       id: ["Manajemen Toko", "Analitik Bisnis", "Pelacakan Pendapatan", "Manajemen Inventaris"],
     },
-    icons: [
-      {
-        SvgIcon: NextJS,
-        title: "Next.js",
-      },
-      {
-        SvgIcon: Tailwindcss,
-        title: "TailwindCSS",
-      },
-      {
-        SvgIcon: Postgresql,
-        title: "PostgreSQL",
-      },
-      {
-        SvgIcon: Framer,
-        title: "Framer Motion",
-      },
-      {
-        SvgIcon: Axios,
-        title: "Axios",
-      },
-      {
-        SvgIcon: Typescript,
-        title: "TypeScript",
-      },
-      {
-        SvgIcon: Express,
-        title: "Express.js",
-      },
-      {
-        SvgIcon: Jsonwebtokens,
-        title: "JWT",
-      },
-    ],
+    icons: ["Next.js", "TailwindCSS", "PostgreSQL", "Framer Motion", "Axios", "TypeScript", "Express.js", "JWT"],
   },
   {
     title: {
@@ -1230,40 +512,7 @@ const rawProjects: Array<Project> = [
       en: ["Restaurant Management", "Staff Management", "Branch Management", "Online Order", "Online Payment", "Business Analytics"],
       id: ["Manajemen Restoran", "Manajemen Staf", "Manajemen Cabang", "Pesan Online", "Pembayaran Online", "Analitik Bisnis"],
     },
-    icons: [
-      {
-        SvgIcon: NextJS,
-        title: "Next.js",
-      },
-      {
-        SvgIcon: Tailwindcss,
-        title: "TailwindCSS",
-      },
-      {
-        SvgIcon: Postgresql,
-        title: "PostgreSQL",
-      },
-      {
-        SvgIcon: Framer,
-        title: "Framer Motion",
-      },
-      {
-        SvgIcon: Axios,
-        title: "Axios",
-      },
-      {
-        SvgIcon: Typescript,
-        title: "TypeScript",
-      },
-      {
-        SvgIcon: Express,
-        title: "Express.js",
-      },
-      {
-        SvgIcon: Jsonwebtokens,
-        title: "JWT",
-      },
-    ],
+    icons: ["Next.js", "TailwindCSS", "PostgreSQL", "Framer Motion", "Axios", "TypeScript", "Express.js", "JWT"],
   },
   {
     title: {
@@ -1281,20 +530,7 @@ const rawProjects: Array<Project> = [
       en: ["Gift", "Love", "Personalized", "Web Development"],
       id: ["Hadiah", "Cinta", "Personalisasi", "Pengembangan Web"],
     },
-    icons: [
-      {
-        SvgIcon: Html5,
-        title: "HTML",
-      },
-      {
-        SvgIcon: Css3,
-        title: "CSS",
-      },
-      {
-        SvgIcon: Javascript,
-        title: "JavaScript",
-      },
-    ],
+    icons: ["HTML", "CSS", "JavaScript"],
   },
   {
     title: {
@@ -1311,40 +547,7 @@ const rawProjects: Array<Project> = [
       en: ["Online Store", "E-Commerce"],
       id: ["Toko Online", "E-Commerce"],
     },
-    icons: [
-      {
-        SvgIcon: NextJS,
-        title: "Next.js",
-      },
-      {
-        SvgIcon: Tailwindcss,
-        title: "TailwindCSS",
-      },
-      {
-        SvgIcon: Postgresql,
-        title: "PostgreSQL",
-      },
-      {
-        SvgIcon: Framer,
-        title: "Framer Motion",
-      },
-      {
-        SvgIcon: Axios,
-        title: "Axios",
-      },
-      {
-        SvgIcon: Typescript,
-        title: "TypeScript",
-      },
-      {
-        SvgIcon: Express,
-        title: "Express.js",
-      },
-      {
-        SvgIcon: Jsonwebtokens,
-        title: "JWT",
-      },
-    ],
+    icons: ["Next.js", "TailwindCSS", "PostgreSQL", "Framer Motion", "Axios", "TypeScript", "Express.js", "JWT"],
   },
   {
     title: {
@@ -1362,16 +565,7 @@ const rawProjects: Array<Project> = [
       en: ["Web Application", "QR Code", "ReactJS", "TailwindCSS"],
       id: ["Aplikasi Web", "Kode QR", "ReactJS", "TailwindCSS"],
     },
-    icons: [
-      {
-        SvgIcon: ReactJS,
-        title: "ReactJS",
-      },
-      {
-        SvgIcon: Tailwindcss,
-        title: "TailwindCSS",
-      },
-    ],
+    icons: ["ReactJS", "TailwindCSS"],
   },
   {
     title: {
@@ -1389,20 +583,7 @@ const rawProjects: Array<Project> = [
       en: ["Holiday Website", "Festive Decorations", "Seasonal Joy"],
       id: ["Situs Liburan", "Dekorasi Meriah", "Keceriaan Musiman"],
     },
-    icons: [
-      {
-        SvgIcon: Html5,
-        title: "HTML",
-      },
-      {
-        SvgIcon: Css3,
-        title: "CSS",
-      },
-      {
-        SvgIcon: Javascript,
-        title: "Javascript",
-      },
-    ],
+    icons: ["HTML", "CSS", "Javascript"],
   },
   {
     title: {
@@ -1420,20 +601,7 @@ const rawProjects: Array<Project> = [
       en: ["Gift Website"],
       id: ["Situs Hadiah"],
     },
-    icons: [
-      {
-        SvgIcon: Html5,
-        title: "HTML",
-      },
-      {
-        SvgIcon: Css3,
-        title: "CSS",
-      },
-      {
-        SvgIcon: Javascript,
-        title: "Javascript",
-      },
-    ],
+    icons: ["HTML", "CSS", "Javascript"],
   },
   {
     title: {
@@ -1450,24 +618,7 @@ const rawProjects: Array<Project> = [
       en: ["QR Code", "Web2.0", "AJAX"],
       id: ["Kode QR", "Web2.0", "AJAX"],
     },
-    icons: [
-      {
-        SvgIcon: Laravel,
-        title: "Laravel",
-      },
-      {
-        SvgIcon: Tailwindcss,
-        title: "TailwindCSS",
-      },
-      {
-        SvgIcon: Mysql,
-        title: "MySQL",
-      },
-      {
-        SvgIcon: Cpanel,
-        title: "cPanel",
-      },
-    ],
+    icons: ["Laravel", "TailwindCSS", "MySQL", "cPanel"],
   },
   {
     title: {
@@ -1485,24 +636,7 @@ const rawProjects: Array<Project> = [
       en: ["EducationApp", "QR Code"],
       id: ["Aplikasi Pendidikan", "Kode QR"],
     },
-    icons: [
-      {
-        SvgIcon: Laravel,
-        title: "Laravel",
-      },
-      {
-        SvgIcon: Tailwindcss,
-        title: "TailwindCSS",
-      },
-      {
-        SvgIcon: Mysql,
-        title: "MySQL",
-      },
-      {
-        SvgIcon: Cpanel,
-        title: "cPanel",
-      },
-    ],
+    icons: ["Laravel", "TailwindCSS", "MySQL", "cPanel"],
   },
   {
     title: {
@@ -1520,36 +654,7 @@ const rawProjects: Array<Project> = [
       en: ["RestAPI", "Performance", "EducationApp"],
       id: ["REST API", "Performa", "Aplikasi Pendidikan"],
     },
-    icons: [
-      {
-        SvgIcon: ReactJS,
-        title: "ReactJS",
-      },
-      {
-        SvgIcon: Tailwindcss,
-        title: "TailwindCSS",
-      },
-      {
-        SvgIcon: Axios,
-        title: "Axios",
-      },
-      {
-        SvgIcon: Jsonwebtokens,
-        title: "JWT",
-      },
-      {
-        SvgIcon: Express,
-        title: "ExpressJS",
-      },
-      {
-        SvgIcon: Mysql,
-        title: "MySQL",
-      },
-      {
-        SvgIcon: Cpanel,
-        title: "cPanel",
-      },
-    ],
+    icons: ["ReactJS", "TailwindCSS", "Axios", "JWT", "ExpressJS", "MySQL", "cPanel"],
   },
   {
     title: {
@@ -1567,24 +672,7 @@ const rawProjects: Array<Project> = [
       en: ["Portfolio", "Personal Branding", "Furniture"],
       id: ["Portofolio", "Personal Branding", "Furnitur"],
     },
-    icons: [
-      {
-        SvgIcon: NextJS,
-        title: "NextJS",
-      },
-      {
-        SvgIcon: Typescript,
-        title: "Typescript",
-      },
-      {
-        SvgIcon: Tailwindcss,
-        title: "TailwindCSS",
-      },
-      {
-        SvgIcon: Swiper,
-        title: "Swiper",
-      },
-    ],
+    icons: ["NextJS", "Typescript", "TailwindCSS", "Swiper"],
   },
   {
     title: {
@@ -1601,24 +689,7 @@ const rawProjects: Array<Project> = [
       en: ["Restaurant", "AJAX", "RestAPI", "QRCode"],
       id: ["Restoran", "AJAX", "REST API", "Kode QR"],
     },
-    icons: [
-      {
-        SvgIcon: Laravel,
-        title: "Laravel",
-      },
-      {
-        SvgIcon: Tailwindcss,
-        title: "TailwindCSS",
-      },
-      {
-        SvgIcon: Mysql,
-        title: "MySQL",
-      },
-      {
-        SvgIcon: JQuery,
-        title: "JQuery",
-      },
-    ],
+    icons: ["Laravel", "TailwindCSS", "MySQL", "JQuery"],
   },
   {
     title: {
@@ -1636,24 +707,7 @@ const rawProjects: Array<Project> = [
       en: ["Portfolio", "Personal Branding", "UI/UX"],
       id: ["Portofolio", "Personal Branding", "UI/UX"],
     },
-    icons: [
-      {
-        SvgIcon: NextJS,
-        title: "NextJS",
-      },
-      {
-        SvgIcon: Framer,
-        title: "FramerMotion",
-      },
-      {
-        SvgIcon: Typescript,
-        title: "Typescript",
-      },
-      {
-        SvgIcon: Tailwindcss,
-        title: "TailwindCSS",
-      },
-    ],
+    icons: ["NextJS", "FramerMotion", "Typescript", "TailwindCSS"],
   },
   {
     title: {
@@ -1671,20 +725,7 @@ const rawProjects: Array<Project> = [
       en: ["Comapny Profile", "Landing page"],
       id: ["Profil Perusahaan", "Landing Page"],
     },
-    icons: [
-      {
-        SvgIcon: NextJS,
-        title: "NextJS",
-      },
-      {
-        SvgIcon: Tailwindcss,
-        title: "TailwindCSS",
-      },
-      {
-        SvgIcon: Typescript,
-        title: "Typescript",
-      },
-    ],
+    icons: ["NextJS", "TailwindCSS", "Typescript"],
   },
   {
     title: {
@@ -1702,39 +743,6 @@ const rawProjects: Array<Project> = [
       en: ["Shop Web"],
       id: ["Situs Toko"],
     },
-    icons: [
-      {
-        SvgIcon: NextJS,
-        title: "NextJS",
-      },
-      {
-        SvgIcon: Typescript,
-        title: "Typescript",
-      },
-      {
-        SvgIcon: Tailwindcss,
-        title: "TailwindCSS",
-      },
-    ],
+    icons: ["NextJS", "Typescript", "TailwindCSS"],
   },
 ];
-
-// Normalized projects: every image path is an absolute `/img/...` URL, so a
-// project screenshot loads the same on `/` and on a deep route like
-// `/projects/`.
-export const Projects: Array<Project> = rawProjects.map(normalizeProjectImages);
-
-// Flagship projects (marked with `best: true`), shown in the "Best Project" tab.
-export const BestProjects: Array<Project> = Projects.filter(
-  (project) => project.best === true
-);
-
-// Everything that isn't a flagship project, shown in the "Recent Project" tab.
-export const RecentProjects: Array<Project> = Projects.filter(
-  (project) => project.best !== true
-);
-
-// Convenience helper to grab the list for a given highlight tab.
-export const getProjectsByHighlight = (
-  highlight: ProjectHighlight
-): Array<Project> => (highlight === "best" ? BestProjects : RecentProjects);

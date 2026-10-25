@@ -1,15 +1,8 @@
-import { SOCIAL_LINKS } from "@/config/Identity";
+import { SOCIAL_LINKS } from '../config/Identity';
 
 /**
- * Object containing social media profile links.
- * Values come from the central identity configuration (environment driven),
- * so this project can be rebranded without editing source code.
- *
- * @property {string} instagram - Instagram profile URL
- * @property {string} tiktok    - TikTok profile URL
- * @property {string} youtube   - YouTube channel URL
- * @property {string} linkedin  - LinkedIn profile URL
- * @property {string} github    - GitHub profile URL
+ * Social profile links, resolved from the central identity configuration so
+ * the whole site can be rebranded from one file.
  */
 export const SocialLink = {
   instagram: SOCIAL_LINKS.instagram,
@@ -17,4 +10,7 @@ export const SocialLink = {
   youtube: SOCIAL_LINKS.youtube,
   linkedin: SOCIAL_LINKS.linkedin,
   github: SOCIAL_LINKS.github,
-};
+  threads: SOCIAL_LINKS.threads,
+} as const;
+
+export type SocialLinkKey = keyof typeof SocialLink;

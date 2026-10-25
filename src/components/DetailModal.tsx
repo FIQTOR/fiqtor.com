@@ -1,0 +1,401 @@
+import { useEffect, useRef, useState } from 'react';
+import { S, type Cert, type Project } from '../data/site';
+import { useCatalog, useLanguage } from '../lib/catalog';
+import { Chip } from './Cards';
+import { pad, formatPublished } from '../lib/utils';
+import { ICONS } from '../lib/utils.tsx';
+
+/* =====================================================================
+   Detail modal (project / certificate) + image lightbox.
+   ===================================================================== */
+
+type Gallery = [string, string][];
+
+export function DetailModal() {
+  const { cur, close, step, list } = useCatalog();
+  const { lang } = useLanguage();
+  const [shown, setShown] = useState(false);
+  const [sw, setSw] = useState(false);
+  const [lb, setLb] = useState<{ list: Gallery; i: number } | null>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const prevCur = useRef<{ type: string; i: number } | null>(null);
+
+  useEffect(() => {
+    if (cur) {
+      const swap = prevCur.current !== null && cur.type === prevCur.current.type;
+      prevCur.current = { type: cur.type, i: cur.i };
+      setSw(swap);
+      setShown(true);
+      // The cover sits outside the scroll container, so resetting the scroll
+      // position means resetting `.md-scroll`, not the panel itself.
+      if (scrollRef.current) scrollRef.current.scrollTop = 0;
+      const r1 = requestAnimationFrame(() => requestAnimationFrame(() => setSw(false)));
+      const t = setTimeout(() => panelRef.current?.focus({ preventScroll: true }), 60);
+      return () => {
+        clearTimeout(t);
+        cancelAnimationFrame(r1);
+      };
+    }
+    setShown(false);
+    prevCur.current = null;
+    setLb(null);
+  }, [cur]);
+
+  // Nothing selected → render nothing at all. This used to return an empty
+  // `position:fixed; inset:0` dialog shell, which is pointless DOM on every
+  // page and was the source of the phantom space reported under the footer.
+  if (!cur) return null;
+
+  const isProject = cur.type === 'project';
+  // The modal steps through the list the card came from (filtered on the
+  // certificate page), so "next" never jumps to an item that is off-screen.
+  const items = list.length ? list : isProject ? S.projects : S.certs;
+  const current = items[cur.i];
+  const project = current && 'title' in current ? current : null;
+  const cert = current && 'name' in current ? current : null;
+  const total = items.length;
+  const p = project as Project;
+  const c = cert as Cert;
+  const curVer = cur.i * 2 + (isProject ? 0 : 1);
+  const t = (en: string, id: string) => (lang === 'en' ? en : id);
+
+  return (
+    <>
+      <div
+        className={'md' + (shown ? ' show' : '') + ' open'}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="mdT"
+      >
+        <div className="md-bg" onClick={close} />
+        <div className={'md-p' + (sw ? ' sw' : '')} tabIndex={-1} ref={panelRef}>
+          <button className="md-x" type="button" onClick={close} aria-label={t('Close details', 'Tutup detail')}>
+            ×
+          </button>
+          <div className="md-scroll" ref={scrollRef}>
+          {/* The cover is the first child of the scroll container (not a
+              sibling), so it scrolls away with the copy instead of staying
+              pinned over the panel. */}
+          {project && (
+            <div className="md-cov">
+              <img src={p.thumb} alt={`${p.title[lang]} — cover`} width={1600} height={900} decoding="async" />
+              <div className="md-ct">
+                <div className="md-n">
+                  {t('Project', 'Proyek')} {pad(cur.i + 1)} / {pad(total)} · {p.category}
+                </div>
+                <h2 id="mdT">{p.title[lang]}</h2>
+              </div>
+            </div>
+          )}
+          <div key={curVer}>
+            {project && (
+              <>
+                <div className="md-c">
+                  <div className="md-row">
+                    <div className="chips">
+                      {p.tags.map((tag) => (
+                        <Chip key={tag.en} text={tag[lang]} />
+                      ))}
+                    </div>
+                    <div className="md-meta">
+                      <div>
+                        <small>{t('Category', 'Kategori')}</small>
+                        <b>{p.category}</b>
+                      </div>
+                      <div>
+                        <small>{t('Type', 'Jenis')}</small>
+                        <b>{p.featured ? t('Flagship', 'Unggulan') : t('Shipped', 'Rilis')}</b>
+                      </div>
+                      <div>
+                        <small>{t('Stack', 'Teknologi')}</small>
+                        <b>{p.skills.slice(0, 2).join(', ')}</b>
+                      </div>
+                    </div>
+                  </div>
+                  <p className="md-lead">{firstSentence(p.desc[lang])}</p>
+                  <p className="md-txt">{p.desc[lang]}</p>
+                  <div>
+                    <h3 className="md-h">{t('Built with', 'Dibangun dengan')}</h3>
+                    <div className="sk">
+                      {p.skills.map((s, k) => (
+                        <span key={s} style={{ ['--i' as string]: k }}>
+                          {s}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  {p.gallery.length > 0 && (
+                    <div>
+                      <h3 className="md-h">{t('Screenshots', 'Cuplikan layar')}</h3>
+                      <div className={'gal' + (p.gallery.length === 2 ? ' two' : '')}>
+                        {p.gallery.map((g, k) => (
+                          <button
+                            type="button"
+                            key={g.src + k}
+                            onClick={() => setLb({ list: p.gallery.map((x) => [x.src, x.caption[lang]] as [string, string]), i: k })}
+                            aria-label={`${t('Enlarge', 'Perbesar')}: ${g.caption[lang]}`}
+                          >
+                            <img loading="lazy" src={g.src} alt={g.caption[lang]} />
+                            <span className="cap">{g.caption[lang]}</span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  <div className="md-foot">
+                    {p.url ? (
+                      <a className="cta" href={p.url} target="_blank" rel="noopener">
+                        {t('Open live project', 'Buka proyek')} <span dangerouslySetInnerHTML={{ __html: ICONS.open }} />
+                        <span className="sr"> {t('(new tab)', '(tab baru)')}</span>
+                      </a>
+                    ) : (
+                      <span className="soon">{t('No public link yet', 'Tautan publik belum tersedia')}</span>
+                    )}
+                    <div className="md-nav">
+                      <button type="button" onClick={() => step(-1)}>
+                        ← {t('Previous', 'Sebelumnya')}
+                      </button>
+                      <button type="button" onClick={() => step(1)}>
+                        {t('Next', 'Berikutnya')} →
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
+            {cert && (
+              <>
+                <div className="cert-view">
+                  <button
+                    type="button"
+                    onClick={() => setLb({ list: [[c.img, c.name]], i: 0 })}
+                    aria-label={t('Enlarge certificate image', 'Perbesar gambar sertifikat')}
+                  >
+                    <img src={c.img} alt={`Certificate: ${c.name}`} loading="lazy" decoding="async" />
+                  </button>
+                </div>
+                <div className="md-c">
+                  <div>
+                    <div className="md-n">
+                      {t('Certificate', 'Sertifikat')} {pad(cur.i + 1)} / {pad(total)} · {formatPublished(c.date, lang)}
+                    </div>
+                    <h2
+                      id="mdT"
+                      style={{
+                        fontSize: 'clamp(1.7rem,4vw,3rem)',
+                        letterSpacing: '-.04em',
+                        lineHeight: 1.05,
+                        marginTop: '.5rem',
+                      }}
+                    >
+                      {c.name}
+                    </h2>
+                    <div className="md-sub">
+                      <span>
+                        {t('Issued by', 'Diterbitkan oleh')} <b>{c.issuer[lang]}</b>
+                      </span>
+                      <span>
+                        {t('Issued', 'Tanggal')} <b>{formatPublished(c.date, lang)}</b>
+                      </span>
+                      <span>
+                        {t('Type', 'Jenis')} <b>{c.kind[lang]}</b>
+                      </span>
+                      {c.verified && (
+                        <span className="md-vf">
+                          <b>{t('Verifiable', 'Dapat diverifikasi')}</b>
+                        </span>
+                      )}
+                      {c.count > 1 && (
+                        <span className="md-bundle">
+                          <b>
+                            {c.count} {t('certificates in this bundle', 'sertifikat dalam bundel ini')}
+                          </b>
+                          <span>
+                            {t(
+                              'One record, issued separately — the list is under “Included certificates”.',
+                              'Satu entri yang diterbitkan terpisah — daftarnya ada di “Sertifikat yang termasuk”.',
+                            )}
+                          </span>
+                        </span>
+                      )}
+                      {c.academic && <span>· {t('Academic credential', 'Kredensial akademik')}</span>}
+                    </div>
+                  </div>
+                  <div className="md-row">
+                    <div className="chips">
+                      {c.tags.map((tag) => (
+                        <Chip key={tag.en} text={tag[lang]} />
+                      ))}
+                    </div>
+                  </div>
+                  <p className="md-txt">{c.desc[lang]}</p>
+                  {c.details && c.details.length > 0 && (
+                    <div>
+                      <h3 className="md-h">{t('Included certificates', 'Sertifikat yang termasuk')}</h3>
+                      <ul className="cdet">
+                        {c.details.map((d) => (
+                          <li key={d.label}>
+                            <span>{d.label}</span>
+                            <time>{formatPublished(d.date, lang)}</time>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  {c.secondary && (
+                    <div>
+                      <h3 className="md-h">{c.secondary.label[lang]}</h3>
+                      <div className="gal two">
+                        <button
+                          type="button"
+                          onClick={() => setLb({ list: [[c.secondary!.src, c.secondary!.label[lang]]], i: 0 })}
+                          aria-label={t('Enlarge result sheet', 'Perbesar lembar hasil')}
+                        >
+                          <img loading="lazy" src={c.secondary.src} alt={c.secondary.label[lang]} />
+                          <span className="cap">{c.secondary.label[lang]}</span>
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                  <div>
+                    <h3 className="md-h">{t('Skills verified', 'Skill yang divalidasi')}</h3>
+                    <div className="sk">
+                      {c.skills.map((s, k) => (
+                        <span key={s + k} style={{ ['--i' as string]: k }}>
+                          {s}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="md-foot">
+                    {c.url ? (
+                      <a className="cta" href={c.url} target="_blank" rel="noopener">
+                        {t('Verify credential', 'Verifikasi sertifikat')}{' '}
+                        <span dangerouslySetInnerHTML={{ __html: ICONS.open }} />
+                        <span className="sr"> {t('(new tab)', '(tab baru)')}</span>
+                      </a>
+                    ) : (
+                      <span className="soon">{t('Verification link not available', 'Tautan verifikasi belum tersedia')}</span>
+                    )}
+                    <div className="md-nav">
+                      <button type="button" onClick={() => step(-1)}>
+                        ← {t('Previous', 'Sebelumnya')}
+                      </button>
+                      <button type="button" onClick={() => step(1)}>
+                        {t('Next', 'Berikutnya')} →
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+          </div>
+        </div>
+      </div>
+      {lb && <Lightbox list={lb.list} i={lb.i} setI={(i) => setLb({ ...lb, i })} onClose={() => setLb(null)} />}
+    </>
+  );
+}
+
+function Lightbox({
+  list,
+  i,
+  setI,
+  onClose,
+}: {
+  list: Gallery;
+  i: number;
+  setI: (i: number) => void;
+  onClose: () => void;
+}) {
+  const [out, setOut] = useState(false);
+  const sx0 = useRef<number | null>(null);
+  const wrap = (k: number) => (k + list.length) % list.length;
+  const it = list[wrap(i)];
+  const { lang } = useLanguage();
+  const t = (en: string, id: string) => (lang === 'en' ? en : id);
+
+  // Tracked so closing the lightbox mid-transition cannot call setState on an
+  // unmounted component (React logs a warning and the timer still runs).
+  const goTimer = useRef<number | undefined>(undefined);
+  useEffect(() => () => window.clearTimeout(goTimer.current), []);
+  const goTo = (k: number) => {
+    setOut(true);
+    window.clearTimeout(goTimer.current);
+    goTimer.current = window.setTimeout(() => {
+      setI(wrap(k));
+      setOut(false);
+    }, 180);
+  };
+
+  useEffect(() => {
+    const h = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+      if (e.key === 'ArrowRight') goTo(i + 1);
+      if (e.key === 'ArrowLeft') goTo(i - 1);
+    };
+    addEventListener('keydown', h);
+    return () => removeEventListener('keydown', h);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [i]);
+
+  return (
+    <div
+      className="lb open"
+      role="dialog"
+      aria-modal="true"
+      aria-label={t('Image preview', 'Pratinjau gambar')}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
+      <div
+        className="lb-s"
+        onPointerDown={(e) => {
+          sx0.current = e.clientX;
+        }}
+        onPointerUp={(e) => {
+          if (sx0.current === null) return;
+          const d = e.clientX - sx0.current;
+          sx0.current = null;
+          if (Math.abs(d) > 50) goTo(i + (d < 0 ? 1 : -1));
+        }}
+        onClick={(e) => {
+          if (e.target === e.currentTarget) onClose();
+        }}
+      >
+        <button className="lx" type="button" aria-label={t('Close image', 'Tutup gambar')} onClick={onClose}>
+          ×
+        </button>
+        {list.length > 1 && (
+          <>
+            <button className="lp" type="button" aria-label={t('Previous image', 'Gambar sebelumnya')} onClick={() => goTo(i - 1)}>
+              ‹
+            </button>
+            <button className="ln" type="button" aria-label={t('Next image', 'Gambar berikutnya')} onClick={() => goTo(i + 1)}>
+              ›
+            </button>
+          </>
+        )}
+        <img className={out ? 'out' : ''} src={it[0]} alt={it[1]} />
+      </div>
+      <div className="lb-i">
+        <span>
+          <b>{it[1]}</b>
+        </span>
+        <div className="lb-dots">{list.map((_, j) => <i key={j} className={j === wrap(i) ? 'on' : ''} />)}</div>
+        <span>
+          {wrap(i) + 1} / {list.length}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+/** Cards/modals show the first sentence of a long description up front. */
+function firstSentence(text: string): string {
+  const m = text.match(/^(.+?[.!?])(\s|$)/);
+  return m ? m[1] : text;
+}

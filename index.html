@@ -1,9 +1,21 @@
 <!doctype html>
-<html lang="en">
-  <head><!--vite-html-head--></head>
-
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <!--
+      `charset` and `viewport` MUST stay in this template, not in the injected
+      head block. renderHeadHtml() in src/config/Seo.ts only renders
+      social/canonical metadata; without these two tags every mobile browser
+      falls back to a 980px virtual viewport, so the whole site renders
+      zoomed-out and unreadable. Both must appear within the first 1024 bytes,
+      which is why they come before the injection marker below.
+    -->
+    <!--vite-html-head-->
+  </head>
   <body>
     <div id="root"></div>
+    <!--vite-html-noscript-->
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

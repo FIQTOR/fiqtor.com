@@ -1,23 +1,20 @@
 # ================================================================
-# Cloudflare Pages — routing
+# Cloudflare Pages redirects & SPA fallback.
+#
+# Rules are evaluated TOP-DOWN and the first match wins, so the
+# permanent redirects MUST come before the catch-all fallback.
 # ================================================================
-# Intentionally (nearly) empty of rules.
-#
-# How routing works for this project (Cloudflare Pages, Git integration):
-#
-#   • A URL that matches a file in dist/ is served as-is, including every
-#     prerendered /<route>/index.html (built by vite.config.ts).
-#   • A URL that matches nothing falls back to the SPA shell (index.html,
-#     200) — this is Pages' automatic SPA behavior and is what makes deep
-#     links / client-side routes work.
-#   • The one thing the fallback gets wrong — answering a MISSING image or
-#     asset (e.g. /img/projects/typo.webp) with the HTML shell instead of a
-#     404 — is corrected in `functions/_middleware.js`.
-#
-# ⚠️ Do NOT add a `/* /index.html 200` rule here. Cloudflare follows
-# `_redirects` rules even when a static file exists for the path, so a
-# catch-all would clobber the per-route prerendered HTML.
-#
-# Add only real, permanent redirects below, e.g.:
-#   /old-path /new-path 301
-# ================================================================
+
+# ----- Legacy v2 URLs → v3 ---------------------------------------
+# v2 served /certification (and /certification/…) — v3 calls the page
+# /certificates. Without these, every inbound link and Google result
+# for the old URL would land on the 404 route.
+/certification        /certificates   301
+/certification/       /certificates   301
+/certification/*      /certificates   301
+
+# ----- SPA fallback ----------------------------------------------
+# Route-specific HTML shells are generated at build time for SEO, so
+# /projects, /career, … resolve to real files first; this catches
+# everything else (unknown deep links) and lets the router render 404.
+/* /index.html 200
