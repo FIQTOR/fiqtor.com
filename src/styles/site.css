@@ -10,6 +10,15 @@
 /* ===================== DASAR ===================== */
 :root{--dot-color:#fff;--hero-bg:#08080a;--next-bg:#0e1015;--text:#f4f4f5;--muted:rgba(255,255,255,.62);--line:rgba(255,255,255,.18);--ac:#cfcfcf;--ac2:#8a8a8a;--ease:cubic-bezier(.22,1,.36,1)}
 *{box-sizing:border-box;margin:0;padding:0}html{background:var(--hero-bg)}
+/* `scrollbar-gutter:stable` keeps the scrollbar's width reserved whether or not
+   the page is scrollable right now. Without it the viewport goes from full
+   width (short page / `overflow:hidden` during the loader + route transition)
+   to narrower by the scrollbar (long page), so every layout shift that changes
+   page height also reflows the whole width. Reserving the gutter once means
+   the content never resizes — the scrollbar simply appears inside a lane that
+   was always there. `stable` (not `stable both-edges`) so the page stays
+   visually centred on the document, not on the viewport. */
+html{scrollbar-gutter:stable}
 body{background:var(--next-bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden;line-height:1.5}
 a{color:inherit}img{max-width:100%;display:block}button{font:inherit;color:inherit}
 html{scroll-behavior:smooth;scroll-padding-top:72px}
@@ -64,6 +73,9 @@ html[data-theme="light"] .pt-name{color:#0a0a0a}
 .pt-meta b small{font-size:.28em;letter-spacing:0;margin-left:.15em;color:var(--muted)}
 .pt-bar{position:absolute;left:0;right:0;bottom:0;height:3px;background:rgba(255,255,255,.08)}
 .pt-bar i{display:block;height:100%;width:100%;transform:scaleX(0);transform-origin:left;background:linear-gradient(90deg,var(--ac),var(--ac2))}
+/* `overflow:hidden` on <html> hides the scrollbar but — because the gutter is
+   `stable` — keeps its lane reserved, so locking scroll during the loader and
+   the route curtain no longer nudges the layout sideways. */
 html.ld,html.ld body,html.pt-in,html.pt-in body{overflow:hidden}
 html.ld .pt,html.pt-in .pt{animation:ptfail .01s 9s forwards}
 @keyframes ptfail{to{visibility:hidden}}
@@ -539,6 +551,9 @@ html[data-theme="light"] .md-scroll::-webkit-scrollbar-thumb{background:rgba(10,
 /* toast */
 .toast{position:fixed;left:50%;bottom:max(1.5rem,env(safe-area-inset-bottom));z-index:360;transform:translate(-50%,30px);padding:.8rem 1.3rem;border-radius:999px;background:#fff;color:#08080a;font-weight:600;font-size:.9rem;opacity:0;pointer-events:none;transition:.4s var(--ease);box-shadow:0 14px 50px rgba(0,0,0,.5)}
 .toast.on{opacity:1;transform:translate(-50%,0)}
+/* Scroll lock for modals / the mobile drawer / route transitions. The gutter is
+   `stable` on <html>, so hiding the scrollbar here leaves its lane in place and
+   the page does not jump narrower the moment a lock is applied. */
 body.nosc{overflow:hidden}
 
 /* ===================== HALAMAN DALAM ===================== */
