@@ -8,8 +8,6 @@ import { Icon } from '../lib/utils.tsx';
 import { useLanguage } from '../lib/catalog';
 import { useUI } from '../lib/ui';
 
-const SOC = ['whatsapp', 'instagram', 'tiktok', 'github', 'linkedin', 'mail'] as const;
-
 /**
  * Linktree — a standalone link hub. Shares the global theme but keeps its own
  * layout (centered card, portrait, link list) and a share QR. Its backdrop is
@@ -136,8 +134,6 @@ export default function Linktree() {
     await copy(url, t('Link copied', 'Tautan tersalin'));
   };
 
-  const soc = SOC.map((k) => ({ k, l: S.links.find((x) => x.icon === k) })).filter((x) => x.l);
-
   return (
     <>
       {/* Monochrome backdrop: the hairline grid only. The three blurred glow
@@ -168,15 +164,16 @@ export default function Linktree() {
         </span>
 
         <div className="lt-soc">
-          {soc.map(({ k, l }) => (
+          {S.socialLinks.map((l) => (
             <a
-              key={k}
-              href={l!.url}
-              target={/^https?:/.test(l!.url) ? '_blank' : undefined}
-              rel={/^https?:/.test(l!.url) ? 'noopener' : undefined}
-              aria-label={l!.label[lang]}
+              key={l.icon}
+              href={l.url}
+              target={l.external ? '_blank' : undefined}
+              rel={l.external ? 'noopener' : undefined}
+              aria-label={l.label[lang]}
+              title={l.label[lang]}
             >
-              <Icon name={k} />
+              <Icon name={l.icon} />
             </a>
           ))}
         </div>

@@ -25,6 +25,9 @@ export function SkillLogo({ tech, size = 16 }: { tech: string; size?: number }) 
   const key = SKILL_ICON[tech];
 
   if (!key) {
+    // Deliberately shape-less: a dashed rounded square reads as "no mark on
+    // file", never as a brand. The old sparkle was a dead ringer for the
+    // Gemini glyph, so the two were indistinguishable side by side.
     return (
       <svg
         className="sk-lg sk-gen"
@@ -34,20 +37,25 @@ export function SkillLogo({ tech, size = 16 }: { tech: string; size?: number }) 
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        strokeWidth={1.9}
+        strokeWidth={1.6}
         strokeLinecap="round"
         strokeLinejoin="round"
         aria-hidden="true"
       >
-        <path d="M12 3.5l2.2 6.3 6.3 2.2-6.3 2.2-2.2 6.3-2.2-6.3-6.3-2.2 6.3-2.2z" />
+        <rect x="4.5" y="4.5" width="15" height="15" rx="4" strokeDasharray="3 2.6" />
       </svg>
     );
   }
 
+  // Some marks are wireframes too dense to resolve at chip size; drawing them
+  // at 14px produces noise that reads as a rendering bug. Honour the glyph's
+  // own floor rather than shrinking it into an unreadable blob.
+  const px = Math.max(size, SKILL_GLYPHS[key].min ?? 0);
+
   return (
     <i
       className="sk-lg"
-      style={{ ...style(key), width: size, height: size }}
+      style={{ ...style(key), width: px, height: px }}
       title={SKILL_GLYPHS[key].t}
       aria-hidden="true"
     />

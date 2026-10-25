@@ -150,6 +150,22 @@ export interface LinkItem {
   featured?: boolean;
 }
 
+/**
+ * A destination shown as a round icon in the link-hub's social row.
+ *
+ * This used to be derived by scraping `links` for matching icon names, which
+ * meant a listed-but-unmatched icon (`linkedin`) vanished silently and every
+ * social had to be duplicated as a full row too. Driving the row from its own
+ * list makes one entry = one button, with no hidden cross-references.
+ */
+export interface SocialLink {
+  icon: IconName;
+  label: LocalizedText;
+  url: string;
+  /** `false` for in-site routes so the icon row respects the router. */
+  external: boolean;
+}
+
 export interface Service {
   /** Stable anchor/key: `#pricing-<slug>`. */
   slug: string;
@@ -602,6 +618,7 @@ export interface SiteConfig {
   featuredCerts: Cert[];
   career: CareerItem[];
   links: LinkItem[];
+  socialLinks: SocialLink[];
   hubs: LinktreeHub[];
   /**
    * Form options are bilingual like the rest of the site: an Indonesian
@@ -960,17 +977,43 @@ export const S: SiteConfig = {
   featuredCerts: featuredCerts.filter((c) => c.featured).slice(0, 4),
   career,
 
+  /*
+   * Link-hub rows. Everything here is rendered as a full-width row with a
+   * label and a note, so every entry has to earn its vertical space.
+   *
+   * Deliberately NOT in this list:
+   *  - `Portfolio` (`/`) — a linktree that links to the page you are already
+   *    on is dead weight; the row was previously `featured`, so it also drew
+   *    a "Start here" badge pointing at the current URL.
+   *  - IARTY / IARTY AI — already promoted to the three brand tiles above
+   *    (`hubs`), where they read better and are reachable in one tap.
+   *  - WhatsApp / Instagram / TikTok / GitHub — already in the round icon
+   *    row (`soc`); repeating them as rows put the same five destinations on
+   *    the page twice.
+   * The icon row and the brand tiles are the compact "+2" home for those, so
+   * the list stays reserved for destinations that appear nowhere else.
+   */
   links: [
-    { label: { en: 'Portfolio', id: 'Portofolio' }, note: { en: 'Where all the work comes together', id: 'Tempat semua karya berkumpul' }, url: '/', icon: 'web', featured: true },
-    { label: { en: 'Contact me', id: 'Hubungi saya' }, note: { en: 'Project brief, question, or just say hi', id: 'Ringkasan proyek, pertanyaan, atau sekadar menyapa' }, url: '/contact', icon: 'mail' },
+    { label: { en: 'Contact me', id: 'Hubungi saya' }, note: { en: 'Project brief, question, or just say hi', id: 'Ringkasan proyek, pertanyaan, atau sekadar menyapa' }, url: '/contact', icon: 'mail', featured: true },
     { label: { en: 'Projects', id: 'Proyek' }, note: { en: 'Web apps, AI, business systems', id: 'Aplikasi web, AI, sistem bisnis' }, url: '/projects', icon: 'folder' },
-    { label: { en: 'IARTY', id: 'IARTY' }, note: { en: 'Website, apps, and AI services', id: 'Jasa website, aplikasi, dan AI' }, url: COMPANY.url, icon: 'store' },
-    { label: { en: 'IARTY AI', id: 'IARTY AI' }, note: { en: '50+ AI models in one chat', id: '50+ model AI dalam satu obrolan' }, url: COMPANY.aiUrl, icon: 'star' },
-    { label: { en: 'WhatsApp', id: 'WhatsApp' }, note: { en: 'The fastest way to reach me', id: 'Jalur tercepat menghubungi saya' }, url: `https://wa.me/${WHATSAPP_NUMBER}`, icon: 'whatsapp' },
-    { label: { en: 'Instagram', id: 'Instagram' }, note: { en: '@' + OWNER_ALIAS.toLowerCase() + 'r', id: '@' + OWNER_ALIAS.toLowerCase() + 'r' }, url: SOCIAL_LINKS.instagram, icon: 'instagram' },
-    { label: { en: 'TikTok', id: 'TikTok' }, note: { en: '@' + OWNER_ALIAS.toLowerCase(), id: '@' + OWNER_ALIAS.toLowerCase() }, url: SOCIAL_LINKS.tiktok, icon: 'tiktok' },
-    { label: { en: 'GitHub', id: 'GitHub' }, note: { en: 'Code I write', id: 'Kode yang saya tulis' }, url: SOCIAL_LINKS.github, icon: 'github' },
     { label: { en: 'Certificates', id: 'Sertifikat' }, note: { en: 'Verified learning', id: 'Bukti belajar yang terverifikasi' }, url: '/certificates', icon: 'cert' },
+  ],
+
+  /*
+   * The round icon row. This is now the ONLY place socials are rendered, so
+   * the list below it does not repeat them. Ordered by how likely a visitor
+   * is to want it: messaging first, then places to follow, then code.
+   * `linkedin` was in the old static list but had no matching `links` row, so
+   * it was silently dropped and never appeared at all.
+   * No `mail` entry: "Contact me" is the featured row in `links`, and putting
+   * it here too would show the same destination twice on one screen.
+   */
+  socialLinks: [
+    { icon: 'whatsapp', label: { en: 'WhatsApp', id: 'WhatsApp' }, url: `https://wa.me/${WHATSAPP_NUMBER}`, external: true },
+    { icon: 'instagram', label: { en: 'Instagram', id: 'Instagram' }, url: SOCIAL_LINKS.instagram, external: true },
+    { icon: 'tiktok', label: { en: 'TikTok', id: 'TikTok' }, url: SOCIAL_LINKS.tiktok, external: true },
+    { icon: 'github', label: { en: 'GitHub', id: 'GitHub' }, url: SOCIAL_LINKS.github, external: true },
+    { icon: 'linkedin', label: { en: 'LinkedIn', id: 'LinkedIn' }, url: SOCIAL_LINKS.linkedin, external: true },
   ],
 
   hubs: [
