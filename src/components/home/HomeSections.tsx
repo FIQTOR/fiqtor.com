@@ -560,11 +560,27 @@ export function KeyFacts() {
   );
 }
 
+import { useIsMobile } from '../../hooks/useMediaQuery';
+
 /* ---------- Home page sections ---------- */
+
+/** How many project cards the homepage shows. Phones get fewer: the cards are
+    full-width there, so each one costs a screenful plus its thumbnail. */
+const HOME_PROJECTS_DESKTOP = 5;
+const HOME_PROJECTS_MOBILE = 3;
+
 export function HomeSections() {
   const rootRef = useReveal();
   const { lang } = useLanguage();
+  const isMobile = useIsMobile();
   const t = (en: string, id: string) => (lang === 'en' ? en : id);
+
+  // Sliced from the front of `featuredProjects`. Note that the best-first
+  // ordering in `site.ts` currently has no effect (see the comment on
+  // BEST_ORDER), so this is the authoring order in `projects.ts` — not a
+  // curated ranking. The rest stay one click away via "All N projects", and
+  // every counter elsewhere still reports the true total.
+  const shownProjects = S.featuredProjects.slice(0, isMobile ? HOME_PROJECTS_MOBILE : HOME_PROJECTS_DESKTOP);
 
   return (
     <div ref={rootRef}>
@@ -576,7 +592,7 @@ export function HomeSections() {
         title={t('Built and shipped, not just designed.', 'Dibangun dan dirilis, bukan sekadar dirancang.')}
       >
         <div className="pg">
-          {S.featuredProjects.map((p, i) => {
+          {shownProjects.map((p, i) => {
             // `i` must be the index inside the FULL project list so the modal
             // opens the right item (prev/next steps through all projects).
             const fullIndex = S.projects.findIndex((x) => x.id === p.id);

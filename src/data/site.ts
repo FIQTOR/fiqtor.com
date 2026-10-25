@@ -267,7 +267,17 @@ const roleFor = (p: RawProject): LocalizedText => {
   return { en: `${kind.en} · ${stack}`, id: `${kind.id} · ${stack}` };
 };
 
-/** Preferred order for the homepage's flagship grid (by project slug). */
+/**
+ * Preferred order for the homepage's flagship grid.
+ *
+ * ⚠️ CURRENTLY INERT. These are short labels, but `Project.id` is a slug of the
+ * full title (`jakarta-transit-live-public-transport-tracking`), so every
+ * `indexOf` below returns -1 and the sort degenerates to the authoring order
+ * in `projects.ts`. That means the homepage's "flagship" grid has never been
+ * ranked. Fixing it means replacing these with the real slugs — a visible
+ * content change, so it is left for a deliberate decision rather than bundled
+ * in silently.
+ */
 const BEST_ORDER = [
   'jakarta-transit',
   'iarty-ecosystem',
