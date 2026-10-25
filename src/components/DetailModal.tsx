@@ -11,22 +11,55 @@ import { ICONS } from '../lib/utils.tsx';
 
 type Gallery = [string, string][];
 
+type Cur = { type: string; i: number };
+
+/** Must match the exit transition in `.md-p` / `.md-bg`. */
+const EXIT_MS = 260;
+/** First frame at the "closed" pose, then flip to open so the transition has
+    both endpoints to interpolate between. */
+const nextFrame = (fn: () => void) => requestAnimationFrame(() => requestAnimationFrame(fn));
+
 export function DetailModal() {
-  const { cur, close, step, list } = useCatalog();
+  const { cur: selected, close, step, list } = useCatalog();
   const { lang } = useLanguage();
+  // `shown` = keep the dialog in the DOM (`visibility`). `open` = the animatable
+  // pose. They are separate because an element that mounts already in its final
+  // pose cannot transition into it — it needs one frame at the start pose first.
   const [shown, setShown] = useState(false);
+  const [open, setOpen] = useState(false);
   const [sw, setSw] = useState(false);
   const [lb, setLb] = useState<{ list: Gallery; i: number } | null>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const prevCur = useRef<{ type: string; i: number } | null>(null);
+  /** True while a modal is already on screen — a step then only swaps content. */
+  const prevShown = useRef(false);
+
+  /** The item to render. Held after `cur` goes null so the panel still has
+      content to animate out with; clearing `cur` first would blank it. */
+  const [render, setRender] = useState<Cur | null>(selected);
+  const exitTimer = useRef<number | undefined>(undefined);
 
   useEffect(() => {
-    if (cur) {
-      const swap = prevCur.current !== null && cur.type === prevCur.current.type;
-      prevCur.current = { type: cur.type, i: cur.i };
+    clearTimeout(exitTimer.current);
+
+    if (selected) {
+      const swap = prevCur.current !== null && selected.type === prevCur.current.type;
+      prevCur.current = { type: selected.type, i: selected.i };
       setSw(swap);
+      setRender(selected);
       setShown(true);
+
+      // Keep the same item mounted across a step, so only the content swaps
+      // and the panel itself does not re-enter with an entrance animation.
+      if (prevShown.current) {
+        setOpen(true);
+      } else {
+        setOpen(false);
+        nextFrame(() => setOpen(true));
+      }
+      prevShown.current = true;
+
       // The cover sits outside the scroll container, so resetting the scroll
       // position means resetting `.md-scroll`, not the panel itself.
       if (scrollRef.current) scrollRef.current.scrollTop = 0;
@@ -37,15 +70,36 @@ export function DetailModal() {
         cancelAnimationFrame(r1);
       };
     }
-    setShown(false);
-    prevCur.current = null;
-    setLb(null);
-  }, [cur]);
 
-  // Nothing selected → render nothing at all. This used to return an empty
-  // `position:fixed; inset:0` dialog shell, which is pointless DOM on every
-  // page and was the source of the phantom space reported under the footer.
-  if (!cur) return null;
+    // Closed: play the exit, then unmount. `render` deliberately survives until
+    // the transition is over, otherwise the panel would be emptied before it
+    // had anything to animate out.
+    const wasOpen = prevShown.current;
+    prevCur.current = null;
+    prevShown.current = false;
+    setLb(null);
+    setOpen(false);
+    if (wasOpen) {
+      exitTimer.current = window.setTimeout(() => {
+        setShown(false);
+        setRender(null);
+      }, EXIT_MS);
+    } else {
+      setShown(false);
+      setRender(null);
+    }
+  }, [selected]);
+
+  useEffect(() => () => clearTimeout(exitTimer.current), []);
+
+  // Nothing has ever been selected → render nothing at all. This used to return
+  // an empty `position:fixed; inset:0` dialog shell, which is pointless DOM on
+  // every page and was the source of the phantom space reported under the footer.
+  if (!render) return null;
+
+  // Downstream JSX keeps using `cur`, but it now means "the item on screen" —
+  // which outlives the context value by one exit transition.
+  const cur = render;
 
   const isProject = cur.type === 'project';
   // The modal steps through the list the card came from (filtered on the
@@ -63,7 +117,7 @@ export function DetailModal() {
   return (
     <>
       <div
-        className={'md' + (shown ? ' show' : '') + ' open'}
+        className={'md' + (shown ? ' show' : '') + (open ? ' open' : '') + (open ? '' : ' out')}
         role="dialog"
         aria-modal="true"
         aria-labelledby="mdT"
@@ -311,6 +365,10 @@ function Lightbox({
   onClose: () => void;
 }) {
   const [out, setOut] = useState(false);
+  // Same reason as the modal: mounting straight into `.open` gives the browser
+  // nothing to transition from, so the lightbox would cut in. Start closed, flip
+  // one frame later.
+  const [entered, setEntered] = useState(false);
   const sx0 = useRef<number | null>(null);
   const wrap = (k: number) => (k + list.length) % list.length;
   const it = list[wrap(i)];
@@ -320,7 +378,16 @@ function Lightbox({
   // Tracked so closing the lightbox mid-transition cannot call setState on an
   // unmounted component (React logs a warning and the timer still runs).
   const goTimer = useRef<number | undefined>(undefined);
-  useEffect(() => () => window.clearTimeout(goTimer.current), []);
+  useEffect(() => {
+    // Unmount is immediate for the lightbox (it covers the modal and has no
+    // scroll position to preserve), so no exit timer is needed here.
+    return () => window.clearTimeout(goTimer.current);
+  }, []);
+
+  useEffect(() => {
+    const r = requestAnimationFrame(() => requestAnimationFrame(() => setEntered(true)));
+    return () => cancelAnimationFrame(r);
+  }, []);
   const goTo = (k: number) => {
     setOut(true);
     window.clearTimeout(goTimer.current);
@@ -343,7 +410,7 @@ function Lightbox({
 
   return (
     <div
-      className="lb open"
+      className={'lb' + (entered ? ' open' : '')}
       role="dialog"
       aria-modal="true"
       aria-label={t('Image preview', 'Pratinjau gambar')}

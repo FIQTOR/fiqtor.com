@@ -458,11 +458,28 @@ html[data-theme="light"] .cta-alt a:focus-visible{outline-color:#0a0a0a}
 .ch-f button{border:0;border-radius:50%;width:2.6rem;height:2.6rem;background:#fff;color:#08080a;cursor:pointer;font-size:1.1rem}
 
 /* ===================== MODAL ===================== */
+/* ---------- modal ----------
+   Entrance/exit timing. The panel and the scrim share ONE easing curve and
+   near-identical durations, so they read as a single object arriving rather
+   than two things moving at different speeds. Exit is deliberately shorter
+   than entrance — dismissing should feel immediate. `.md.out` exists so the
+   panel knows it is on its way out (the class is removed on step, when only
+   the content swaps). */
 .md{position:fixed;inset:0;z-index:150;display:flex;align-items:center;justify-content:center;padding:clamp(.6rem,3vw,2rem);visibility:hidden}
 .md.show{visibility:visible}
-.md-bg{position:absolute;inset:0;background:rgba(5,5,8,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);opacity:0;transition:opacity .4s}
+/* The blur is painted once on a stable element and only its opacity is
+   animated. Animating `backdrop-filter` itself would re-run the blur for the
+   whole viewport on every frame. */
+.md-bg{position:absolute;inset:0;background:rgba(5,5,8,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);opacity:0;transition:opacity .32s var(--ease);will-change:opacity}
 .md.open .md-bg{opacity:1}
-.md-p{position:relative;display:flex;flex-direction:column;width:min(1040px,100%);max-height:calc(100svh - 2*clamp(.6rem,3vw,2rem));overflow:hidden;overscroll-behavior:contain;background:#0e1015;border:1px solid var(--line);border-radius:1.5rem;opacity:0;transform:translateY(60px) scale(.95);transition:opacity .45s var(--ease),transform .55s var(--ease);scrollbar-width:thin}
+.md-p{position:relative;display:flex;flex-direction:column;width:min(1040px,100%);max-height:calc(100svh - 2*clamp(.6rem,3vw,2rem));overflow:hidden;overscroll-behavior:contain;background:#0e1015;border:1px solid var(--line);border-radius:1.5rem;opacity:0;transform:translateY(18px) scale(.985);transition:opacity .34s var(--ease),transform .42s var(--ease);scrollbar-width:thin;will-change:transform,opacity}
+.md.open .md-p{opacity:1;transform:none}
+/* Exit. Scoped to `.md.out:not(.open)` so the rule can never outrank the open
+   pose — both selectors have the same specificity, so an unscoped `.md.out`
+   would win on source order and also shorten the ENTRANCE to .2s (the panel
+   carries `out` for the one frame between mount and the first rAF flip). */
+.md.out:not(.open) .md-p{opacity:0;transform:translateY(8px) scale(.99);transition-duration:.2s}
+.md.out:not(.open) .md-bg{opacity:0;transition-duration:.2s}
 /* Single scroll container for the whole panel (cover included). Keeping one
    scroller means the cover scrolls with the copy instead of staying pinned, and
    the scrollbar never reserves width inside a nested box.
@@ -475,9 +492,10 @@ html[data-theme="light"] .cta-alt a:focus-visible{outline-color:#0a0a0a}
 .md-scroll::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,.5);background-clip:content-box}
 html[data-theme="light"] .md-scroll{scrollbar-color:rgba(10,10,10,.3) transparent}
 html[data-theme="light"] .md-scroll::-webkit-scrollbar-thumb{background:rgba(10,10,10,.3);background-clip:content-box}
-.md.open .md-p{opacity:1;transform:none}
-.md-p.sw{animation:swp .45s var(--ease)}
-@keyframes swp{from{opacity:.2;transform:translateX(30px)}}
+/* Step (next/prev within the same type): only the content moves. A slide from
+   the right reads as "the next item arrived"; the panel itself stays put. */
+.md-p.sw{animation:swp .4s var(--ease)}
+@keyframes swp{from{opacity:.35;transform:translateX(24px)}}
 /* Fixed to the panel (not the cover), so it stays in the same corner after the
    cover has scrolled away — an absolute button would have ridden up with the
    artwork and then floated over the description text. `position:fixed` is not
@@ -498,9 +516,13 @@ html[data-theme="light"] .md-scroll::-webkit-scrollbar-thumb{background:rgba(10,
 /* The cover is shown whole: 16:9 art inside a 16:9 frame must never be cropped
    (`cover` inside a taller frame used to shave the right edge off). Frames that
    are narrower than 16:9 (portrait phones) letterbox instead of cropping. */
-.md-cov img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;transform-origin:center;transition:transform .6s var(--ease)}
-.md.open .md-cov img{animation:zin 1.4s var(--ease) both}
-@keyframes zin{from{transform:scale(1.2)}}
+.md-cov img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;transform-origin:center;transition:transform .7s var(--ease)}
+/* A gentle push-in that settles. It used to run 1.4s from scale(1.2) — more
+   than twice the panel's own entrance, so the panel had already finished
+   moving while the image was still drifting. Same curve and duration band as
+   the panel, and a much shorter travel, so they land together. */
+.md.open .md-cov img{animation:zin .8s var(--ease) both}
+@keyframes zin{from{transform:scale(1.06)}}
 .md-cov::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,#0e1015 2%,rgba(14,16,21,.35) 45%,transparent 75%)}
 .md-ct{position:absolute;left:clamp(1.2rem,3.5vw,2.6rem);right:clamp(1.2rem,3.5vw,2.6rem);bottom:clamp(1rem,2.5vw,1.8rem);z-index:2}
 .md-n{font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ac)}
