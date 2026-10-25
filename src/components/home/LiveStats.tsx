@@ -20,10 +20,10 @@ type Social = {
 };
 type Waka = { text: string; since: string };
 
-/** Fallbacks mirror the numbers used by the previous frontend. */
+/** Fallbacks mirror `backend/src/config/social.js`; keep the two in step. */
 const SOCIAL_FALLBACK: Social = {
-  tiktok: { followers: 1955, following: 33, likes: 130000 },
-  instagram: { followers: 696, following: 579 },
+  tiktok: { followers: 1952, following: 33, likes: 130000 },
+  instagram: { followers: 728, following: 579 },
 };
 
 const COIN_META = [
@@ -158,6 +158,16 @@ function CryptoPanel() {
   );
 }
 
+/** One "label — figure" line inside the social panel. */
+function SocialRow({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="lv-row">
+      <span>{label}</span>
+      <b>{value}</b>
+    </div>
+  );
+}
+
 function SocialPanel() {
   const { lang } = useLanguage();
   const { data, done } = usePolling<Social>(
@@ -184,23 +194,24 @@ function SocialPanel() {
         <span className="lv-skel" />
       ) : (
         <>
+          {/* Each platform is one line: a small label on the left, the count on
+              the right. The figure used to float alone as a hero number above
+              its own label, which read like a stray heading and left the two
+              platforms with different visual weight. */}
           {social.tiktok && (
-            <>
-              <b>{formatCompact(social.tiktok.followers)}</b>
-              <small>{t('TikTok followers', 'pengikut TikTok')}</small>
-              <div className="lv-row">
-                <span>
-                  TikTok {t('likes', 'suka')} <b>{formatCompact(social.tiktok.likes)}+</b>
-                </span>
-              </div>
-            </>
+            <SocialRow
+              label={t('TikTok followers', 'pengikut TikTok')}
+              value={formatCompact(social.tiktok.followers)}
+            />
           )}
           {social.instagram && (
-            <div className="lv-row">
-              <span>
-                Instagram <b>{formatCompact(social.instagram.followers)}</b> {t('followers', 'pengikut')}
-              </span>
-            </div>
+            <SocialRow
+              label={t('Instagram followers', 'pengikut Instagram')}
+              value={formatCompact(social.instagram.followers)}
+            />
+          )}
+          {social.tiktok && (
+            <SocialRow label={t('TikTok likes', 'suka TikTok')} value={`${formatCompact(social.tiktok.likes)}+`} />
           )}
           {offline && (
             <small className="lv-stale">

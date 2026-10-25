@@ -905,8 +905,9 @@ html[data-theme="light"]{--dot-invert:1}
 .lv .delta.down{color:#ff9b9b;background:rgba(255,155,155,.12)}
 .lv-skel{height:.9em;border-radius:.4rem;background:linear-gradient(90deg,rgba(255,255,255,.06),rgba(255,255,255,.14),rgba(255,255,255,.06));background-size:200% 100%;animation:sh 1.2s linear infinite;width:60%}
 @keyframes sh{to{background-position:-200% 0}}
-.lv-row{display:flex;justify-content:space-between;gap:1rem;font-size:.85rem;color:var(--muted)}
-.lv-row b{font-size:.95rem;color:#fff;letter-spacing:0}
+.lv-row{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;font-size:.85rem;color:var(--muted)}
+.lv-row span{min-width:0}
+.lv-row b{font-size:.95rem;color:var(--text);letter-spacing:0;font-variant-numeric:tabular-nums;white-space:nowrap}
 /* Fallback numbers must never look live. */
 .lv .lv-stale{display:block;font-size:.72rem;line-height:1.4;color:var(--muted);opacity:.85;padding-left:.9rem;position:relative}
 .lv .lv-stale::before{content:"";position:absolute;left:0;top:.42em;width:.4rem;height:.4rem;border-radius:50%;background:#b7791f}
