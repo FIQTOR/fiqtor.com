@@ -183,7 +183,7 @@ export function DotPortrait({ id, className, started = true }: { id?: string; cl
     }
 
     const ptr = { x: -9999, y: -9999, active: false };
-    const rings: { x: number; y: number; t: number }[] = [];
+    const rings: { x: number; y: number; t: number; target: number }[] = [];
     const setPtr = (e: PointerEvent) => {
       const r = root!.getBoundingClientRect();
       ptr.x = e.clientX - r.left;
@@ -192,7 +192,19 @@ export function DotPortrait({ id, className, started = true }: { id?: string; cl
     };
     const onDown = (e: PointerEvent) => {
       setPtr(e);
-      rings.push({ x: ptr.x, y: ptr.y, t: performance.now() });
+      /* A ripple is drawn as a full circle, but the canvas is a finite
+         rectangle: a circle whose radius reaches past the nearest edge gets
+         cut by the drawing surface, which is what made the wave look broken
+         ("kepotong") when a click landed near a side. Each ripple therefore
+         sizes its own expansion to the room it has — full size in open space,
+         proportionally smaller near an edge — so it always closes into a
+         complete circle instead of being sliced. If even that would be a
+         meaningless blip, the ripple is skipped rather than drawn clipped. */
+      const reach = Math.min(ptr.x, W - ptr.x, ptr.y, H - ptr.y);
+      const target = Math.min(hoverR * 2.4, reach * 0.9);
+      if (target >= hoverR * 0.35) {
+        rings.push({ x: ptr.x, y: ptr.y, t: performance.now(), target });
+      }
       const R = hoverR * 2.4;
       for (let i = 0; i < N; i++) {
         const dx = px[i] - ptr.x;
@@ -295,11 +307,14 @@ export function DotPortrait({ id, className, started = true }: { id?: string; cl
           rings.splice(j, 1);
           continue;
         }
+        // Expand to this ripple's own target (sized to fit its click point),
+        // so the stroke is never clipped by the canvas edge.
+        const r = g.target * easeOut(a);
         ctx!.globalAlpha = (1 - a) * 0.5;
         ctx!.strokeStyle = ctx!.fillStyle;
         ctx!.lineWidth = 1.2;
         ctx!.beginPath();
-        ctx!.arc(g.x, g.y, hoverR * 2.4 * easeOut(a), 0, 6.2832);
+        ctx!.arc(g.x, g.y, r, 0, 6.2832);
         ctx!.stroke();
         ctx!.globalAlpha = 1;
       }
