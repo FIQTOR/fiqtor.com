@@ -443,7 +443,7 @@ function Heatmap() {
         ) : state.live ? (
           <>
             {t('Live data from', 'Data langsung dari')}{' '}
-            <a href={S.social.github} target="_blank" rel="noopener" style={{ color: '#fff' }}>
+            <a href={S.social.github} target="_blank" rel="noopener">
               github.com/{S.github}
             </a>
             .

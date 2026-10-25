@@ -135,7 +135,11 @@ html.ld .pt,html.pt-in .pt{animation:ptfail .01s 9s forwards}
 .tt.in .tc{transform:none}
 .tt.done .tw{overflow:visible}
 .tt.done .tc{transform:translateY(calc(var(--f,0)*-14px)) skewX(calc(var(--f,0)*-8deg)) scale(calc(1 + var(--f,0)*.1));transition:transform .4s var(--ease);transition-delay:0s}
+/* Outline text: the glyph fill is transparent, so the stroke IS the text.
+   It must therefore track the theme — a hard-coded white stroke made this
+   line completely invisible on the light theme's white background. */
 .o{color:transparent;-webkit-text-stroke:1.5px rgba(255,255,255,.85)}
+html[data-theme="light"] .o{-webkit-text-stroke-color:rgba(10,10,10,.85)}
 
 /* reveal saat scroll */
 html.js .rv{opacity:0;translate:0 40px;transition:opacity .9s var(--ease) var(--d,0s),translate .9s var(--ease) var(--d,0s),transform .25s ease-out,border-color .3s,background .3s}
@@ -249,6 +253,7 @@ html[data-theme="light"] .svcv .svc-foot a:hover{border-color:rgba(10,10,10,.6)}
 .ft-dl span{color:var(--muted)}
 .ft-dl a{color:var(--text);text-decoration:none;border-bottom:1px solid var(--line);padding-bottom:1px;transition:border-color .25s}
 .ft-dl a:hover{border-color:rgba(255,255,255,.6)}
+html[data-theme="light"] .ft-dl a:hover{border-color:rgba(10,10,10,.6)}
 .cv-dl{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem 1rem;margin-top:1.2rem;font-size:.85rem}
 .cv-dl a{display:inline-flex;align-items:center;gap:.4rem;color:var(--text);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:.45rem .9rem;transition:border-color .25s,background .25s}
 .cv-dl a:hover{border-color:rgba(255,255,255,.5);background:rgba(255,255,255,.07)}
@@ -351,6 +356,7 @@ html[data-theme="light"] .prt-note{background:rgba(10,10,10,.03)}
 .role{position:relative;overflow:hidden;padding:1.5rem;border:1px solid var(--line);border-radius:1.1rem;background:rgba(255,255,255,.03);transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:border-color .3s,transform .25s ease-out}
 .role::before{content:"";position:absolute;inset:0;background:radial-gradient(320px circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.13),transparent 60%);opacity:0;transition:opacity .3s;pointer-events:none}
 .role:hover{border-color:rgba(255,255,255,.4)}.role:hover::before{opacity:1}
+html[data-theme="light"] .role:hover{border-color:rgba(10,10,10,.4)}
 .role h4{font-size:1.15rem;margin-bottom:.4rem}.role p{color:var(--muted);line-height:1.6;font-size:.95rem}
 .cloud{position:relative;display:flex;flex-wrap:wrap;gap:.7rem;margin-top:clamp(2.5rem,6vw,4rem);padding:1.5rem;border:1px dashed var(--line);border-radius:1.3rem;min-height:9rem;align-content:center;justify-content:center}
 .cloud-hint{position:absolute;top:.8rem;left:1.1rem;margin:0;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
@@ -369,6 +375,10 @@ html[data-theme="light"] .prt-note{background:rgba(10,10,10,.03)}
 .hm i[data-l="3"]{background:rgba(255,255,255,.78)}.hm i[data-l="4"]{background:#fff}
 .hm i.h0{transform:scale(1.9);z-index:2;position:relative;outline:1px solid #fff}.hm i.h1{transform:scale(1.4)}.hm i.h2{transform:scale(1.15)}
 .gh-note{margin-top:.8rem;font-size:.8rem;color:var(--muted)}
+/* Was an inline `color:#fff`, which (a) vanished on the light theme and
+   (b) outranked the light-mode rule below, making it dead code. Painting the
+   link from CSS lets both themes share one source of truth. */
+.gh-note a{color:var(--text)}
 .tip{position:fixed;z-index:340;left:0;top:0;pointer-events:none;padding:.45rem .75rem;border-radius:.6rem;background:#fff;color:#08080a;font-size:.78rem;font-weight:600;white-space:nowrap;opacity:0;transform:translate(-50%,-140%);transition:opacity .15s}
 .tip.on{opacity:1}
 
