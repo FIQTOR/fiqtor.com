@@ -282,6 +282,23 @@ const HOW_TO_STEPS = S.process.map((p) => ({
   text: p.desc.en,
 }));
 
+/**
+ * Client reviews, emitted on the Organization node (see `baseGraph`).
+ *
+ * `itemReviewed` is intentionally omitted: when a Review is nested inside the
+ * entity it reviews, that entity IS the reviewed item, and repeating it as
+ * `itemReviewed` is exactly what the "nested parent_node can't contain
+ * itemReviewed" error flags. The Organization owns these reviews, so it is the
+ * subject by position.
+ */
+const REVIEWS = S.testimonials.slice(0, HOME_REVIEW_COUNT).map((x) => ({
+  '@type': 'Review',
+  author: { '@type': 'Person', name: x.name },
+  reviewBody: x.quote.en,
+  reviewRating: { '@type': 'Rating', ratingValue: 5, bestRating: 5, worstRating: 1 },
+  inLanguage: 'en',
+}));
+
 /** Person / Organization / WebSite graph — the identity every page shares. */
 const baseGraph = (cfg: SeoConfig) => {
   const origin = cfg.origin;
@@ -317,6 +334,38 @@ const baseGraph = (cfg: SeoConfig) => {
       founder: { '@id': personId },
       logo: { '@type': 'ImageObject', url: `${origin}${cfg.logo.url}`, width: cfg.logo.width, height: cfg.logo.height },
       sameAs: Object.values(SOCIAL_LINKS),
+      /**
+       * Client reviews of the BUSINESS (not of the person) belong here, on the
+       * Organization node — the very subject `itemReviewed` points at.
+       *
+       * Why not on `Person`: Google treats the node that OWNS `review` as the
+       * review's `parent_node`. A `Review` inside `Person` that also carries
+       * `itemReviewed` makes the parent (`Person`) the reviewed entity, while
+       * `itemReviewed` names a different one (`Organization`) — an explicit
+       * conflict that the validator rejects with:
+       *   • "Review has multiple aggregate ratings"
+       *   • "Invalid object type for field <parent_node>"
+       *   • "A nested <parent_node> object can't contain the itemReviewed field"
+       * Keeping `Review` + `AggregateRating` together on ONE node that matches
+       * `itemReviewed` is what clears all four issues at once.
+       *
+       * Review-snippet policy: rated items must be visible on the page, so only
+       * the first HOME_REVIEW_COUNT are emitted — exactly the ones rendered
+       * before the Testimonials rail is scrolled — and `reviewCount` matches
+       * that number rather than the full testimonial list.
+       *
+       * No `publisher` on a review: a client's verdict is not published by the
+       * business being reviewed, and stating so trips the validator.
+       */
+      review: REVIEWS,
+      aggregateRating: {
+        '@type': 'AggregateRating',
+        ratingValue: 5,
+        bestRating: 5,
+        worstRating: 1,
+        reviewCount: HOME_REVIEW_COUNT,
+        itemReviewed: { '@id': orgId },
+      },
     },
     {
       '@type': 'Person',
@@ -368,33 +417,6 @@ const baseGraph = (cfg: SeoConfig) => {
         ...(c.url ? { url: c.url } : {}),
       })),
       sameAs: Object.values(SOCIAL_LINKS),
-      /**
-       * Client reviews, mirrored from the Testimonials rail on the homepage.
-       *
-       * Google's review-snippet policy requires the rated items to be visible
-       * on the page, so only the first HOME_REVIEW_COUNT are emitted — exactly
-       * the ones that show before the rail is scrolled — and `reviewCount`
-       * matches that number rather than the full testimonial list.
-       *
-       * No `publisher` on a review: a client's verdict is not published by the
-       * business being reviewed, and stating so trips the validator.
-       */
-      review: S.testimonials.slice(0, HOME_REVIEW_COUNT).map((x) => ({
-        '@type': 'Review',
-        author: { '@type': 'Person', name: x.name },
-        reviewBody: x.quote.en,
-        reviewRating: { '@type': 'Rating', ratingValue: 5, bestRating: 5, worstRating: 1 },
-        itemReviewed: { '@id': orgId },
-        inLanguage: 'en',
-      })),
-      aggregateRating: {
-        '@type': 'AggregateRating',
-        ratingValue: 5,
-        bestRating: 5,
-        worstRating: 1,
-        reviewCount: HOME_REVIEW_COUNT,
-        itemReviewed: { '@id': orgId },
-      },
     },
   ];
 };
