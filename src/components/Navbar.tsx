@@ -65,6 +65,41 @@ export function Navbar() {
     return () => document.body.classList.remove('nosc');
   }, [open]);
 
+  /**
+   * Close the drawer on every navigation.
+   *
+   * The links already call `setMenuOpen(false)` in `onClick`, but that only
+   * covers a tap that actually lands on the link. Any other way the route can
+   * change — the browser Back button, a redirect, the footer's "Let's talk",
+   * the brand logo, a keyboard Enter on a focused link — used to leave
+   * `menuOpen` true. The drawer stayed on screen AND `body.nosc`
+   * (`overflow:hidden`) stayed applied, so the new page could not be
+   * scrolled: it looked like the site had frozen after picking a menu item.
+   *
+   * Keying on `loc.pathname` makes the route the single source of truth for
+   * "a navigation happened", so the drawer cannot outlive the page it was
+   * opened on. Re-opening the same route intentionally does not fire this
+   * (pathname is unchanged), which is correct — the drawer is already closed
+   * in that case because the user just tapped the link.
+   */
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [loc.pathname]);
+
+  // Also drop the lock if the viewport grows past the mobile breakpoint while
+  // the drawer is open (rotate to landscape, resize a window): the burger and
+  // the drawer are both hidden there, so a leftover `nosc` would silently
+  // block scrolling on desktop with no visible way to clear it.
+  useEffect(() => {
+    if (!open) return;
+    const mq = matchMedia('(min-width: 901px)');
+    const onChange = () => {
+      if (mq.matches) setMenuOpen(false);
+    };
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, [open]);
+
   useEffect(() => {
     if (!open) return;
     const h = (e: KeyboardEvent) => {
