@@ -872,33 +872,6 @@ export const S: SiteConfig = {
    */
   testimonials: [
     {
-      name: 'Kedai Nagata',
-      role: { en: 'Owner, Kedai Nagata', id: 'Pemilik, Kedai Nagata' },
-      quote: {
-        en: 'Now customers can see the menu and location themselves, so our team can focus on serving. The coffee and bakmie finally have an online home.',
-        id: 'Sekarang pelanggan bisa lihat menu dan lokasi sendiri, jadi tim kami lebih fokus melayani. Kopi dan bakmie-nya akhirnya punya rumah online.',
-      },
-      img: '/img/testimonials/kedai-nagata.webp',
-    },
-    {
-      name: 'Ijjo Cafe',
-      role: { en: 'Owner, Ijjo Cafe', id: 'Pemilik, Ijjo Cafe' },
-      quote: {
-        en: 'Our idea of a workspace that doubles as a hangout spot came across perfectly on the website. Many visitors came after browsing it on their phone first.',
-        id: 'Konsep ruang kerja sekaligus tempat nongkrong kami tersampaikan dengan pas di website. Banyak yang datang setelah lihat-lihat dulu dari HP.',
-      },
-      img: '/img/testimonials/ijjo-cafe.webp',
-    },
-    {
-      name: '808 Coffeebar',
-      role: { en: 'Owner, 808 Coffeebar', id: 'Pemilik, 808 Coffeebar' },
-      quote: {
-        en: 'Our industrial street-art character is hard to put into words, but IARTY captured it. The website feels like our coffeebar.',
-        id: 'Karakter street-art industrial kami susah dijelaskan pakai kata, tapi IARTY berhasil menangkapnya. Website-nya terasa seperti coffeebar kami.',
-      },
-      img: '/img/testimonials/808-coffeebar.webp',
-    },
-    {
       name: 'Alfahrisyahh',
       role: { en: 'Founder, glofiee.com', id: 'Pendiri, glofiee.com' },
       quote: {
@@ -906,60 +879,6 @@ export const S: SiteConfig = {
         id: 'Kualitas layanan dan dukungan yang kami terima luar biasa. Mereka benar-benar paham apa yang dibutuhkan bisnis.',
       },
       img: '/img/testimonials/alfahrisyah.webp',
-    },
-    {
-      name: 'BM Coffee',
-      role: { en: 'Owner, BM Coffee', id: 'Pemilik, BM Coffee' },
-      quote: {
-        en: 'The website makes us look far more professional to new customers. It was built quickly and the revision process was communicative.',
-        id: 'Website-nya membuat kami terlihat lebih profesional di mata pelanggan baru. Pengerjaannya cepat dan revisinya komunikatif.',
-      },
-      img: '/img/testimonials/bm-coffee.webp',
-    },
-    {
-      name: 'Fine Co Workingspace',
-      role: { en: 'Owner, Fine Co Workingspace Surabaya', id: 'Pemilik, Fine Co Workingspace Surabaya' },
-      quote: {
-        en: 'We are not just a cafe, we are also a workspace. IARTY told both stories on one page without it feeling crowded.',
-        id: 'Bukan cuma cafe, kami juga ruang kerja. IARTY bisa menyusun dua cerita itu dalam satu halaman tanpa terasa penuh.',
-      },
-      img: '/img/testimonials/fine-co-workingspace.webp',
-    },
-    {
-      name: 'Warkop Yangsio',
-      role: { en: 'Owner, Warkop Yangsio Surabaya', id: 'Pemilik, Warkop Yangsio Surabaya' },
-      quote: {
-        en: 'We wanted this friendly coffee spot to feel open to anyone, and that is exactly what the website shows. Many new customers say it is easy to find.',
-        id: 'Kami ingin tempat ngopi yang friendly ini terasa terbuka untuk siapa saja, dan itu yang muncul di websitenya. Pelanggan baru banyak yang bilang gampang dicari.',
-      },
-      img: '/img/testimonials/warkop-yangsio.webp',
-    },
-    {
-      name: 'Nukcoffee',
-      role: { en: 'Owner, Nukcoffee', id: 'Pemilik, Nukcoffee' },
-      quote: {
-        en: 'That warm, at-home feeling was the priority for us, and IARTY understood it without much explanation. A relaxed process with a serious result.',
-        id: 'Kesan hangat seperti di rumah jadi hal utama buat kami, dan IARTY paham itu tanpa perlu banyak dijelaskan. Prosesnya santai tapi hasilnya serius.',
-      },
-      img: '/img/testimonials/nukcoffee.webp',
-    },
-    {
-      name: 'Titik Koma Tenggilis',
-      role: { en: 'Owner, Titik Koma Tenggilis', id: 'Pemilik, Titik Koma Tenggilis' },
-      quote: {
-        en: 'Our menu and the story behind our brewing process became much easier for customers to read. The IARTY team patiently took in every small detail we wanted.',
-        id: 'Menu dan cerita soal proses brewing kami jadi lebih mudah dibaca pelanggan. Tim IARTY sabar menampung detail-detail kecil yang kami mau.',
-      },
-      img: '/img/testimonials/titik-koma-tenggilis.webp',
-    },
-    {
-      name: 'Kokkili Cafe',
-      role: { en: 'Owner, Kokkili Cafe', id: 'Pemilik, Kokkili Cafe' },
-      quote: {
-        en: 'Our coffee and brunch are presented cleanly, never overdone. The final result is proportionate and looks good at every screen size.',
-        id: 'Gambarannya tentang kopi dan brunch kami tampil rapi, tidak berlebihan. Hasil akhirnya proporsional dan enak dilihat di semua ukuran layar.',
-      },
-      img: '/img/testimonials/kokkili-cafe.webp',
     },
     {
       name: 'Djoyo Florist',
