@@ -77,10 +77,47 @@ function isHtmlShell(response) {
   return contentType.includes('text/html');
 }
 
-export async function onRequest(context) {
-  const response = await context.next();
+/**
+ * Google Search Console ownership token, served at its EXACT `.html` URL.
+ *
+ * `public/googled903a8563115dfcf.html` deploys fine, but Pages' clean-URL
+ * handling ALWAYS answers `/foo.html` with a 308 to `/foo`:
+ *
+ *     GET /googled903a8563115dfcf.html → 308 Location: /googled903a8563115dfcf
+ *
+ * Search Console's HTML-file method requires that exact URL to return 200
+ * with the token, so a 308 fails verification with "Your verification file
+ * was not found in the required location." `_redirects` cannot reclaim the
+ * URL (its rules run after the asset match), and a per-route Function in
+ * `functions/<name>.html.js` does not either — Pages serves a matching
+ * static asset ahead of a route Function.
+ *
+ * Middleware, however, runs on EVERY request, so answering here returns 200
+ * before the clean-URL redirect is ever applied. Keep the body byte-identical
+ * to the file in `public/`; if Google reissues the token, update both.
+ */
+const SEARCH_CONSOLE_FILES = {
+  '/googled903a8563115dfcf.html': 'google-site-verification: googled903a8563115dfcf.html',
+};
 
+export async function onRequest(context) {
   const { pathname } = new URL(context.request.url);
+
+  // Serve the verification token before anything can redirect the `.html`
+  // URL away from the path Google checks.
+  const verification = SEARCH_CONSOLE_FILES[pathname];
+  if (verification) {
+    return new Response(verification, {
+      status: 200,
+      headers: {
+        'content-type': 'text/html; charset=utf-8',
+        // Never serve a stale/empty body while the property is being verified.
+        'cache-control': 'public, max-age=0, must-revalidate',
+      },
+    });
+  }
+
+  const response = await context.next();
 
   // A real file was served (image/webp, application/javascript, …): keep it.
   if (!isAssetPath(pathname) || !isHtmlShell(response)) {
