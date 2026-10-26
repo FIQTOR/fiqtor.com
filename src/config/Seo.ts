@@ -17,6 +17,19 @@
  *
  * This module is PURE (no `import.meta.env`) so it can run inside the Vite
  * Node config as well as the browser.
+ *
+ * Google Search Console
+ * ---------------------
+ * The sitemap above is submitted to Search Console, which proves ownership of
+ * the property with the HTML-file method: `/googled903a8563115dfcf.html` in
+ * `public/`, served verbatim and byte-identical to the file Google issued
+ * (it contains exactly one line: `google-site-verification: googled903a8563115dfcf.html`).
+ * Deleting it — or letting a build alter it — drops the property to "not
+ * verified" and silently stops sitemap re-crawls, so it is intentionally not
+ * generated and not listed in the sitemap (it is a verification token, not a
+ * page). `functions/_middleware.js` treats the `.html` path as an asset, so
+ * if it is ever removed the request returns a real 404 instead of the SPA
+ * shell — which is exactly what Search Console reports.
  */
 
 import {
