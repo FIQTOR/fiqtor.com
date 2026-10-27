@@ -1695,11 +1695,20 @@ html[data-theme="light"] .ch-primary:focus-visible{outline-color:#0a0a0a}
 .pd-shots figcaption{margin-top:.5rem;font-size:.82rem;color:var(--muted)}
 .pd-stack h2{font-size:clamp(1.3rem,2.4vw,1.7rem);letter-spacing:-.02em}
 .pd-stack .chips{list-style:none;padding:0;margin-top:.9rem}
-.pd-nav{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:3rem;padding-top:2rem;border-top:1px solid var(--line)}
-.pd-nav-link{display:flex;flex-direction:column;gap:.3rem;text-decoration:none;color:inherit;padding:.9rem 1.1rem;border:1px solid var(--line);border-radius:12px;transition:border-color .25s,background .25s}
+/* `minmax(0,1fr)` not `1fr`: a grid track defaults to min-content, so one long
+   project title widened its column and pushed the pair past the container.
+   The card is also allowed to shrink (`min-width:0`) and its title wraps
+   mid-word only if there is genuinely no other break point. */
+.pd-nav{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:1rem;padding-top:2rem;border-top:1px solid var(--line)}
+/* The footer block follows the stack section, so it only needs a modest gap
+   above rather than the full `.sec` rhythm. It keeps `.sec`'s max-width and
+   side padding, which is the whole point of the wrapper. */
+.pd-foot{padding-top:clamp(1.5rem,4vh,2.5rem);padding-bottom:clamp(3rem,8vh,5rem)}
+.pd-all{margin-top:2rem}
+.pd-nav-link{display:flex;flex-direction:column;gap:.3rem;text-decoration:none;color:inherit;padding:.9rem 1.1rem;border:1px solid var(--line);border-radius:12px;transition:border-color .25s,background .25s;min-width:0}
 .pd-nav-link:hover{border-color:rgba(255,255,255,.5);background:rgba(255,255,255,.05)}
 .pd-nav-link small{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
-.pd-nav-link span{font-weight:600;line-height:1.35}
+.pd-nav-link span{font-weight:600;line-height:1.35;overflow-wrap:anywhere}
 .pd-nav-next{text-align:right;align-items:flex-end}
 html[data-theme="light"] .pd-cover,
 html[data-theme="light"] .pd-shots img{border-color:rgba(10,10,10,.16);background:rgba(10,10,10,.03)}

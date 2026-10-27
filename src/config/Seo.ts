@@ -180,10 +180,49 @@ const titleCase = (s: string): string =>
     .join(' ');
 
 /**
- * One `<RouteSeo>` per project, derived entirely from existing project data —
- * no new copy is authored. `p.desc` already carries several hundred words of
- * real technical detail, and every project has a populated gallery, so these
- * are not thin pages.
+ * Build a `RouteSeo` for one project. Single source of truth for the title,
+ * description and keyword shape of a case-study page, used by BOTH the
+ * prerender pass (`projectRoutes`) and the runtime lookup
+ * (`routeForProject`). If these two were written separately the prerendered
+ * shell and the hydrated page could disagree on the title — the exact class of
+ * mismatch that makes Search Console report a page as inconsistent.
+ */
+const routeForProjectEntry = (p: (typeof S.projects)[number], priority: string): RouteSeo => {
+  const category = titleCase(p.category);
+  const suffix = ` — ${category} Case Study`;
+  /**
+   * Keep the title informative. A SERP truncates around 60 characters, so the
+   * name is clipped to leave room for the suffix — but only once the suffix is
+   * short enough to be worth protecting. Clipping the name to
+   * "AI Marketplace - Find the best…" is worse than letting the tag run a
+   * little long: the searcher learns nothing from the fragment.
+   */
+  const titleBudget = Math.max(44, 64 - suffix.length);
+  const name = p.title.en.length <= titleBudget ? p.title.en : clip(p.title.en, titleBudget);
+
+  return {
+    path: `/projects/${p.id}`,
+    label: p.title.en,
+    crumb: p.title.en,
+    title: `${name}${suffix}`,
+    description: clip(p.desc.en, DESC_MAX),
+    keywords: [
+      p.title.en,
+      ...p.skills,
+      ...p.tags.map((t) => t.en),
+      `${p.category} case study`,
+      `hire ${category.toLowerCase()} developer`,
+    ],
+    priority,
+    changefreq: 'yearly',
+  };
+};
+
+/**
+ * One `<RouteSeo>` per project that gets a prerendered page, derived entirely
+ * from existing project data — no new copy is authored. `p.desc` already
+ * carries several hundred words of real technical detail, and every project
+ * has a populated gallery, so these are not thin pages.
  *
  * The path is `/projects/<p.id>`. That id is also what the gallery cards link
  * to (`/projects#<id>`) and what `useCatalog` resolves deep links against, so
@@ -191,36 +230,7 @@ const titleCase = (s: string): string =>
  */
 export const projectRoutes = (): RouteSeo[] => {
   const source = CASE_STUDY_ALL_PROJECTS ? S.projects : S.projects.filter((p) => p.featured);
-
-  return source.map((p) => {
-    const category = titleCase(p.category);
-    const suffix = ` — ${category} Case Study`;
-    /**
-     * Keep the title informative. A SERP truncates around 60 characters, so
-     * the name is clipped to leave room for the suffix — but only once the
-     * suffix is short enough to be worth protecting. Clipping the name to
-     * "AI Marketplace - Find the best…" is worse than letting the tag run a
-     * little long: the searcher learns nothing from the fragment.
-     */
-    const titleBudget = Math.max(44, 64 - suffix.length);
-    const name = p.title.en.length <= titleBudget ? p.title.en : clip(p.title.en, titleBudget);
-    return {
-      path: `/projects/${p.id}`,
-      label: p.title.en,
-      crumb: p.title.en,
-      title: `${name}${suffix}`,
-      description: clip(p.desc.en, DESC_MAX),
-      keywords: [
-        p.title.en,
-        ...p.skills,
-        ...p.tags.map((t) => t.en),
-        `${p.category} case study`,
-        `hire ${category.toLowerCase()} developer`,
-      ],
-      priority: '0.7',
-      changefreq: 'yearly',
-    };
-  });
+  return source.map((p) => routeForProjectEntry(p, '0.7'));
 };
 
 /**
@@ -260,9 +270,34 @@ export const hasCaseStudy = ((): ((id: string) => boolean) => {
   return (id: string) => paged.has(`/projects/${id}`);
 })();
 
+/**
+ * Build a `RouteSeo` for ANY project, not just the ones that get a
+ * prerendered page.
+ *
+ * `projectRoutes()` only covers the featured set (the ones with a static
+ * shell), but the route `/projects/:slug` resolves for every project. When a
+ * non-featured project is opened directly the runtime lookup used to miss,
+ * fall through to the 404 route, and the tab read "Page Not Found" with a
+ * `noindex` — on a page that rendered perfectly. This builds the metadata
+ * from the same source so any project URL describes itself correctly.
+ */
+export const routeForProject = (id: string): RouteSeo | undefined => {
+  const project = S.projects.find((p) => p.id === id);
+  if (!project) return undefined;
+  // Slightly lower priority than the paged set: the page is equally useful to
+  // a reader, but it is not advertised in the sitemap, which is a crawl-budget
+  // decision rather than a quality judgement.
+  return routeForProjectEntry(project, hasCaseStudy(id) ? '0.7' : '0.6');
+};
+
 export const routeByPath = (path: string): RouteSeo | undefined => {
   const clean = path === '/' ? '/' : `/${path.replace(/^\/+/, '').replace(/\/+$/, '')}`;
-  return ALL_ROUTES.find((r) => r.path === clean);
+  const known = ALL_ROUTES.find((r) => r.path === clean);
+  if (known) return known;
+
+  // Fall back to any project, including ones without a prerendered shell.
+  const match = clean.match(/^\/projects\/([^/]+)$/);
+  return match ? routeForProject(decodeURIComponent(match[1])) : undefined;
 };
 
 /* ---------------------------------------------------------------------

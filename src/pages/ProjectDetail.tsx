@@ -132,30 +132,38 @@ export default function ProjectDetail() {
         )}
       </section>
 
-      <nav className="pd-nav" aria-label={t('More projects', 'Proyek lain')}>
-        {prev ? (
-          <Link to={`/projects/${prev.id}`} className="pd-nav-link">
-            <small>{t('Previous', 'Sebelumnya')}</small>
-            <span>{prev.title[lang]}</span>
-          </Link>
-        ) : (
-          <span />
-        )}
-        {next ? (
-          <Link to={`/projects/${next.id}`} className="pd-nav-link pd-nav-next">
-            <small>{t('Next', 'Berikutnya')}</small>
-            <span>{next.title[lang]}</span>
-          </Link>
-        ) : (
-          <span />
-        )}
-      </nav>
+      {/*
+        The prev/next rail and the "all projects" button live in their own
+        `.sec` so they inherit the same max-width and horizontal padding as
+        every other section. Without it they were direct children of `.pd`,
+        which has no padding, and ran edge-to-edge on the viewport.
+      */}
+      <section className="sec pd-foot">
+        <nav className="pd-nav" aria-label={t('More projects', 'Proyek lain')}>
+          {prev ? (
+            <Link to={`/projects/${prev.id}`} className="pd-nav-link">
+              <small>{t('Previous', 'Sebelumnya')}</small>
+              <span>{prev.title[lang]}</span>
+            </Link>
+          ) : (
+            <span />
+          )}
+          {next ? (
+            <Link to={`/projects/${next.id}`} className="pd-nav-link pd-nav-next">
+              <small>{t('Next', 'Berikutnya')}</small>
+              <span>{next.title[lang]}</span>
+            </Link>
+          ) : (
+            <span />
+          )}
+        </nav>
 
-      <p className="rv" style={{ marginTop: '2rem' }}>
-        <Link className="btn2" to="/projects">
-          {t(`All ${S.projects.length} projects`, `Semua ${S.projects.length} proyek`)} →
-        </Link>
-      </p>
+        <p className="pd-all">
+          <Link className="btn2" to="/projects">
+            {t(`All ${S.projects.length} projects`, `Semua ${S.projects.length} proyek`)} →
+          </Link>
+        </p>
+      </section>
     </div>
   );
 }
