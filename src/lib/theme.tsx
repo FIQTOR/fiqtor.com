@@ -29,9 +29,14 @@ const applyTheme = (theme: Theme) => {
   const root = document.documentElement;
   root.setAttribute('data-theme', theme);
   root.style.colorScheme = theme;
-  // The mobile browser UI follows this meta tag.
-  const meta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
-  if (meta) meta.content = theme === 'dark' ? '#000000' : '#ffffff';
+  // The mobile browser UI follows these meta tags. The prerendered <head>
+  // ships TWO `theme-color` metas (one per `prefers-color-scheme`), so the
+  // choice must be written to BOTH: `querySelector` alone only reached the
+  // dark one and left a light-mode visitor with a black system toolbar.
+  const color = theme === 'dark' ? '#000000' : '#ffffff';
+  document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]').forEach((meta) => {
+    meta.content = color;
+  });
 };
 
 interface ThemeCtx {

@@ -108,6 +108,14 @@ export default function Contact() {
     if (!validate() || status === 'sending') return;
     setStatus('sending');
     setStat(t('Sending…', 'Mengirim…'));
+    // reCAPTCHA v2 tokens are single-use and expire after ~2 minutes. If the
+    // previous attempt failed, the widget still looks "solved" while holding a
+    // token the backend already rejected (or that has since expired), so the
+    // retry would fail too. Reset the widget up front — AFTER the token in the
+    // request below is read, so this attempt still sends the one just verified.
+    const token = captcha;
+    captchaRef.current?.reset();
+    setCaptcha(null);
     try {
       const res = await fetch(`${API_BASE_URL}/v1/contact/send`, {
         method: 'POST',
@@ -121,14 +129,12 @@ export default function Contact() {
           timeline,
           message,
           composed,
-          captcha,
+          captcha: token,
         }),
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       setStatus('success');
       setStat('');
-      captchaRef.current?.reset();
-      setCaptcha(null);
     } catch {
       setStatus('error');
       setStat(t('Sending failed. Try WhatsApp or email instead.', 'Gagal mengirim. Coba WhatsApp atau email.'));

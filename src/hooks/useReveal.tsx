@@ -254,7 +254,8 @@ export function useLocalClock(tz: string, label: string) {
  */
 export function useTypewriter(words: string[]): string {
   const key = words.join('\u0000');
-  const [txt, setTxt] = useState<string>(() => (isReducedMotion() ? (words[0] ?? '') : ''));
+  const reduced = isReducedMotion();
+  const [txt, setTxt] = useState<string>(() => (reduced ? (words[0] ?? '') : ''));
 
   useEffect(() => {
     if (isReducedMotion()) return;
@@ -283,7 +284,14 @@ export function useTypewriter(words: string[]): string {
     return () => clearTimeout(timer);
   }, [key]);
 
-  return txt;
+  /**
+   * Reduced motion has no animation, so the line must simply BE the first word
+   * of the current language list. Reading it at render time (rather than
+   * relying on `txt`) is what keeps a language switch from leaving the line
+   * blank: the effect above bails out under reduced motion, so `txt` would
+   * otherwise keep the previous language's value (or `''` on first mount).
+   */
+  return reduced ? (words[0] ?? '') : txt;
 }
 
 /** Tracks whether the page has scrolled past `threshold` px. */

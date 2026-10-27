@@ -53,6 +53,12 @@ export function CatalogProvider({ children }: { children: ReactNode }) {
   const close = useCallback(() => {
     setCur(null);
     document.body.classList.remove('nosc');
+    // The history entry pushed by `openFromCard` is gone once the modal closes
+    // (Back consumed it, or the visitor clicked ×). Reset the flag so the NEXT
+    // open pushes a fresh entry — otherwise a deep link opened after a manual
+    // close would skip `pushState` and Back would leave the page instead of
+    // closing the modal.
+    historyPushed.current = false;
   }, []);
 
   /** Push a history entry first, so the browser Back button closes the modal. */
@@ -112,11 +118,13 @@ export function CatalogProvider({ children }: { children: ReactNode }) {
       if (!h) return;
       const pi = findCatalogIndex(S.projects, h);
       if (pi > -1) {
-        openFromCard('project', pi, h);
+        // Pass the full list explicitly: the index came from `S.projects`, so
+        // the modal must step through the same array or next/prev desyncs.
+        openFromCard('project', pi, h, S.projects);
         return;
       }
       const ci = findCatalogIndex(S.certs, h);
-      if (ci > -1) openFromCard('cert', ci, h);
+      if (ci > -1) openFromCard('cert', ci, h, S.certs);
     };
     timer = window.setTimeout(check, 350);
     // React Router keeps the DOM node across route changes, so listen for hash

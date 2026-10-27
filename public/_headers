@@ -4,7 +4,7 @@
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
   Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'sha256-HfKfyo8UtRzpZ4X4We84oV36X74Yknfeq5DnnlzNv+s=' https://www.google.com https://www.gstatic.com https://www.recaptcha.net https://www.googletagmanager.com https://static.cloudflareinsights.com https://github-contributions-api.jogruber.de; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https: https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; frame-src https://www.google.com https://recaptcha.google.com https://www.recaptcha.net; frame-ancestors 'none'; base-uri 'self'; object-src 'none'
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'sha256-FY6naYUTKQAuSE6p6hl+C1c368YhWJpClvGhACF9Xrs=' https://www.google.com https://www.gstatic.com https://www.recaptcha.net https://www.googletagmanager.com https://static.cloudflareinsights.com https://github-contributions-api.jogruber.de; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https: https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; frame-src https://www.google.com https://recaptcha.google.com https://www.recaptcha.net; frame-ancestors 'none'; base-uri 'self'; object-src 'none'
 
 /assets/*
   Cache-Control: public, max-age=31536000, immutable

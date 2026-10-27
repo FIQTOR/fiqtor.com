@@ -126,10 +126,21 @@ const localAnswer = (q: string, lang: 'en' | 'id'): string => {
 };
 
 /**
- * POST the prompt and return the streaming response. Some deployments expose
- * the API without the `/api` prefix (bare Express) and some under it (Vercel);
- * a 404 means "wrong prefix", so retry once with the other one instead of
- * silently falling back to canned answers.
+ * POST the prompt and return the streaming response.
+ *
+ * The canonical deployment mounts Express under `/api`
+ * (`…/api/v1/ai/generate`), so `API_BASE_URL` is tried first. Some hosts expose
+ * the same routes without the prefix, so the other form is tried ONCE as a
+ * fallback. A retry is triggered by BOTH:
+ *
+ *   • HTTP 404 — the wrong prefix (an HTML shell or a JSON "not found"),
+ *   • a thrown request — DNS failure, CORS, connection refused, or a
+ *     non-2xx the browser surfaces as a network error.
+ *
+ * The previous version only retried on 404 and then cast `null` to `Response`,
+ * which crashed the caller (`res.ok`) if every attempt failed. An AbortError
+ * (the visitor closed the panel, or a redirect ended the turn) is NOT retried
+ * and is re-thrown so the caller can tell it apart from a real failure.
  */
 async function openStream(
   body: string,
@@ -139,18 +150,33 @@ async function openStream(
   if (API_BASE_URL.endsWith('/api')) bases.push(API_BASE_URL.slice(0, -4));
   else bases.push(`${API_BASE_URL}/api`);
 
+  let lastError: unknown = null;
   let last: Response | null = null;
+
   for (const base of bases) {
-    const res = await fetch(`${base}/v1/ai/generate`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Accept: 'text/event-stream' },
-      body,
-      signal,
-    });
-    if (res.status !== 404) return res;
-    last = res;
+    try {
+      const res = await fetch(`${base}/v1/ai/generate`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'text/event-stream' },
+        body,
+        signal,
+      });
+      // A real answer (the route exists): stream it, whatever the status.
+      if (res.status !== 404) return res;
+      // 404 → the prefix is wrong on this host; remember it and try the other.
+      last = res;
+    } catch (err) {
+      // The request was cancelled: propagate immediately, never retry.
+      if ((err as Error).name === 'AbortError') throw err;
+      // A transport-level failure (CORS, DNS, refused). Try the other prefix.
+      lastError = err;
+    }
   }
-  return last as Response;
+
+  // Every attempt failed. Prefer the last real HTTP response (so the caller can
+  // read its status, e.g. 429) over a thrown error, then surface the error.
+  if (last) return last;
+  throw lastError ?? new Error('AI request failed');
 }
 
 export function ChatProvider({ children }: { children: ReactNode }) {

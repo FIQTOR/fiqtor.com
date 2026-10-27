@@ -21,7 +21,7 @@ export const LOADER_SEEN_KEY = 'seen';
  *
  * with S set to the new script body.
  */
-export const THEME_BOOT_SCRIPT_SHA256 = 'sha256-HfKfyo8UtRzpZ4X4We84oV36X74Yknfeq5DnnlzNv+s=';
+export const THEME_BOOT_SCRIPT_SHA256 = 'sha256-FY6naYUTKQAuSE6p6hl+C1c368YhWJpClvGhACF9Xrs=';
 
 /**
  * Two jobs, both of which MUST happen before the first paint:
@@ -41,4 +41,4 @@ export const THEME_BOOT_SCRIPT_SHA256 = 'sha256-HfKfyo8UtRzpZ4X4We84oV36X74Yknfe
  *    locked. `Loader` mirrors exactly these conditions and remains the
  *    single owner of removal, so there is no double-ownership of state.
  */
-export const THEME_BOOT_SCRIPT = `(function(){var r=document.documentElement;try{var t=localStorage.getItem('${THEME_STORAGE_KEY}')==='light'?'light':'dark';r.setAttribute('data-theme',t);r.style.colorScheme=t;var m=document.querySelector('meta[name="theme-color"]');if(m)m.content=t==='dark'?'#000000':'#ffffff';}catch(e){r.setAttribute('data-theme','dark');}try{if(!/^(\\/|\\/index\\.html)$/.test(location.pathname))return;if(sessionStorage.getItem('${LOADER_SEEN_KEY}'))return;if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;r.classList.add('ld');var s=scrollX,e=scrollY;addEventListener('scroll',function(){if(r.classList.contains('ld')&&(scrollX!==s||scrollY!==e))scrollTo(s,e);},{passive:true});}catch(e){}})();`;
+export const THEME_BOOT_SCRIPT = `(function(){var r=document.documentElement;try{var t=localStorage.getItem('${THEME_STORAGE_KEY}')==='light'?'light':'dark';r.setAttribute('data-theme',t);r.style.colorScheme=t;var ms=document.querySelectorAll('meta[name="theme-color"]');for(var i=0;i<ms.length;i++)ms[i].content=t==='dark'?'#000000':'#ffffff';}catch(e){r.setAttribute('data-theme','dark');}try{if(!/^(\\/|\\/index\\.html)$/.test(location.pathname))return;if(sessionStorage.getItem('${LOADER_SEEN_KEY}'))return;if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;r.classList.add('ld');var s=scrollX,e=scrollY;addEventListener('scroll',function(){if(r.classList.contains('ld')&&(scrollX!==s||scrollY!==e))scrollTo(s,e);},{passive:true});}catch(e){}})();`;
