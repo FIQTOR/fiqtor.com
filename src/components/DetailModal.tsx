@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { S, type Cert, type Project } from '../data/site';
 import { useCatalog, useLanguage } from '../lib/catalog';
 import { Chip } from './Cards';
 import { pad, formatPublished } from '../lib/utils';
 import { ICONS } from '../lib/utils.tsx';
+import { hasCaseStudy } from '../config/Seo';
 
 /* =====================================================================
    Detail modal (project / certificate) + image lightbox.
@@ -198,6 +200,17 @@ export function DetailModal() {
                     </div>
                   )}
                   <div className="md-foot">
+                    {/*
+                      The modal is a dead end for projects that have a full
+                      case-study page: without this link a visitor reads the
+                      summary and stops. `close()` runs first so the dialog is
+                      not still mounted on top of the page it navigates to.
+                    */}
+                    {hasCaseStudy(p.id) && (
+                      <Link className="cta" to={`/projects/${p.id}`} onClick={() => close()}>
+                        {t('Read the full case study', 'Baca studi kasus lengkap')} <span dangerouslySetInnerHTML={{ __html: ICONS.open }} />
+                      </Link>
+                    )}
                     {p.url ? (
                       <a className="cta" href={p.url} target="_blank" rel="noopener">
                         {t('Open live project', 'Buka proyek')} <span dangerouslySetInnerHTML={{ __html: ICONS.open }} />

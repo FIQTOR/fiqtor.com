@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { THEME_BOOT_SCRIPT } from './src/lib/themeBoot.ts';
 import {
-  ROUTES,
+  ALL_ROUTES,
   buildSeoConfig,
   renderHeadHtml,
   renderRobots,
@@ -142,7 +142,10 @@ function seoPlugin(env: EnvRecord): Plugin {
         );
       }
 
-      for (const route of ROUTES) {
+      let shellsWritten = 0;
+      let shellBytes = 0;
+
+      for (const route of ALL_ROUTES) {
         if (route.path === '/') continue;
         const filePath = path.join(outDir, route.path.replace(/^\//, ''), 'index.html');
         const html = indexHtml.replace(
@@ -156,6 +159,25 @@ function seoPlugin(env: EnvRecord): Plugin {
         }
         mkdirSync(path.dirname(filePath), { recursive: true });
         writeFileSync(filePath, html);
+        shellsWritten += 1;
+        shellBytes += Buffer.byteLength(html);
+      }
+
+      /**
+       * Report what the prerender step actually cost.
+       *
+       * Every route shell is a full copy of index.html with a different head.
+       * At six routes that was negligible; with case-study pages it is a real
+       * amount of duplicated bytes, and a silent multiplier is how a deploy
+       * quietly doubles in size. Printing it keeps the cost visible and makes
+       * a sudden jump (a title that stopped slugging uniquely, a route list
+       * that got concatenated twice) obvious in the build log.
+       */
+      if (shellsWritten > 4) {
+        console.log(
+          `\n[seo] wrote ${shellsWritten} route shells, ${(shellBytes / 1024).toFixed(0)} KB total ` +
+            `(avg ${(shellBytes / shellsWritten / 1024).toFixed(1)} KB/route from a ${(Buffer.byteLength(indexHtml) / 1024).toFixed(1)} KB index.html)`,
+        );
       }
     },
   };

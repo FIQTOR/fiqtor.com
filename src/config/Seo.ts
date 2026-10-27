@@ -142,9 +142,127 @@ export const ROUTES: RouteSeo[] = [
   },
 ];
 
+/* ---------------------------------------------------------------------
+   Case-study routes
+   --------------------------------------------------------------------- */
+
+/**
+ * Whether every project gets its own indexable page, or only the featured set.
+ *
+ * Phase C (current): featured only. Case-study pages are new URL surface on a
+ * site that had six routes; publishing 37 at once and immediately declaring
+ * them all in the sitemap is a worse signal than a small, honest first batch
+ * that Search Console actually indexes. Flip this to `true` once the first
+ * batch is indexed — nothing else has to change.
+ *
+ * Non-featured projects are unaffected: they still open in the detail modal
+ * from the gallery, exactly as before.
+ */
+const CASE_STUDY_ALL_PROJECTS = false;
+
+/** Description budget for `<meta name="description">` (~155 chars renders unclipped). */
+const DESC_MAX = 155;
+
+/** Truncate on a word boundary, appending an ellipsis when text was cut. */
+const clip = (s: string, max: number): string => {
+  const text = s.trim().replace(/\s+/g, ' ');
+  if (text.length <= max) return text;
+  const cut = text.slice(0, max);
+  const boundary = cut.lastIndexOf(' ');
+  return `${(boundary > 0 ? cut.slice(0, boundary) : cut).replace(/[\s,.;:—-]+$/, '')}…`;
+};
+
+/** Title-case a category for use in a title tag ("AI & Automation" stays as-is). */
+const titleCase = (s: string): string =>
+  s
+    .split(' ')
+    .map((w) => (/^[A-Z0-9&]+$/.test(w) ? w : w.charAt(0).toUpperCase() + w.slice(1)))
+    .join(' ');
+
+/**
+ * One `<RouteSeo>` per project, derived entirely from existing project data —
+ * no new copy is authored. `p.desc` already carries several hundred words of
+ * real technical detail, and every project has a populated gallery, so these
+ * are not thin pages.
+ *
+ * The path is `/projects/<p.id>`. That id is also what the gallery cards link
+ * to (`/projects#<id>`) and what `useCatalog` resolves deep links against, so
+ * all three agree by construction.
+ */
+export const projectRoutes = (): RouteSeo[] => {
+  const source = CASE_STUDY_ALL_PROJECTS ? S.projects : S.projects.filter((p) => p.featured);
+
+  return source.map((p) => {
+    const category = titleCase(p.category);
+    const suffix = ` — ${category} Case Study`;
+    /**
+     * Keep the title informative. A SERP truncates around 60 characters, so
+     * the name is clipped to leave room for the suffix — but only once the
+     * suffix is short enough to be worth protecting. Clipping the name to
+     * "AI Marketplace - Find the best…" is worse than letting the tag run a
+     * little long: the searcher learns nothing from the fragment.
+     */
+    const titleBudget = Math.max(44, 64 - suffix.length);
+    const name = p.title.en.length <= titleBudget ? p.title.en : clip(p.title.en, titleBudget);
+    return {
+      path: `/projects/${p.id}`,
+      label: p.title.en,
+      crumb: p.title.en,
+      title: `${name}${suffix}`,
+      description: clip(p.desc.en, DESC_MAX),
+      keywords: [
+        p.title.en,
+        ...p.skills,
+        ...p.tags.map((t) => t.en),
+        `${p.category} case study`,
+        `hire ${category.toLowerCase()} developer`,
+      ],
+      priority: '0.7',
+      changefreq: 'yearly',
+    };
+  });
+};
+
+/**
+ * Every route the site publishes, top-level pages first.
+ *
+ * `ROUTES` stays "the six navigable pages" (used for nav, breadcrumbs and the
+ * `<noscript>` block); `ALL_ROUTES` is what the sitemap and the prerender step
+ * iterate. Keeping them separate avoids a case-study page appearing in
+ * navigation by accident.
+ */
+export const ALL_ROUTES: RouteSeo[] = [...ROUTES, ...projectRoutes()];
+
+/**
+ * Fail the build on a route collision.
+ *
+ * Two projects slugging to the same id would silently overwrite each other's
+ * static HTML on disk — the build would "succeed" and ship one page where two
+ * were expected. Cheaper to catch here than in production.
+ */
+{
+  const seen = new Set<string>();
+  for (const r of ALL_ROUTES) {
+    if (seen.has(r.path)) throw new Error(`[seo] duplicate route path: ${r.path}`);
+    seen.add(r.path);
+  }
+}
+
+/**
+ * True when this project has its own case-study page.
+ *
+ * Cards need this to decide between navigating to a real URL and opening the
+ * gallery modal, and they must agree with what the build actually emitted —
+ * so it is derived from `projectRoutes()` rather than re-deciding here.
+ */
+export const hasCaseStudy = ((): ((id: string) => boolean) => {
+  const paged = new Set(projectRoutes().map((r) => r.path));
+  return (id: string) => paged.has(`/projects/${id}`);
+})();
+
 export const routeByPath = (path: string): RouteSeo | undefined => {
   const clean = path === '/' ? '/' : `/${path.replace(/^\/+/, '').replace(/\/+$/, '')}`;
-  return ROUTES.find((r) => r.path === clean);
+  return ALL_ROUTES.find((r) => r.path === clean);
 };
 
 /* ---------------------------------------------------------------------
@@ -425,14 +543,26 @@ const baseGraph = (cfg: SeoConfig) => {
 const routeGraph = (cfg: SeoConfig, route: RouteSeo): Record<string, unknown>[] => {
   const canonical = canonicalFor(cfg, route.path);
 
+  /**
+   * Breadcrumb trail. Case-study pages are three levels deep (/ → Projects →
+   * the project), so they need the intermediate node; everything else is flat.
+   * Only one `BreadcrumbList` is ever emitted — a second `#breadcrumb` node
+   * would give the page two competing trails.
+   */
+  const isCaseStudy = route.path.startsWith('/projects/');
   const breadcrumbs = {
     '@type': 'BreadcrumbList',
     '@id': `${canonical}#breadcrumb`,
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Home', item: `${cfg.origin}/` },
-      ...(route.path === '/'
-        ? []
-        : [{ '@type': 'ListItem', position: 2, name: route.crumb, item: canonical }]),
+      ...(isCaseStudy
+        ? [
+            { '@type': 'ListItem', position: 2, name: 'Projects', item: `${cfg.origin}/projects` },
+            { '@type': 'ListItem', position: 3, name: route.crumb, item: canonical },
+          ]
+        : route.path === '/'
+          ? []
+          : [{ '@type': 'ListItem', position: 2, name: route.crumb, item: canonical }]),
     ],
   };
 
@@ -507,6 +637,13 @@ const routeGraph = (cfg: SeoConfig, route: RouteSeo): Record<string, unknown>[] 
   }
 
   if (route.path === '/projects') {
+    /**
+     * Projects with their own case-study page get that URL; the rest have no
+     * standalone page, so they still resolve to the gallery they are listed
+     * on. Using `#fragment` URLs for everything was previously flagged here as
+     * 20 duplicates of one page — this fixes it for the paged subset.
+     */
+    const paged = new Set(projectRoutes().map((r) => r.path));
     extras.push({
       '@type': 'CollectionPage',
       '@id': `${canonical}#collection`,
@@ -516,33 +653,59 @@ const routeGraph = (cfg: SeoConfig, route: RouteSeo): Record<string, unknown>[] 
         '@type': 'ItemList',
         numberOfItems: S.projects.length,
         itemListElement: S.projects.slice(0, 20).map((p, i) => {
-          /**
-           * `#fragment` URLs all resolve to /projects, so listing them as list
-           * item URLs reads as 20 duplicates of one page. Projects with a live
-           * URL point there; the rest point at the page that describes them.
-           */
+          const projectPath = `/projects/${p.id}`;
+          const caseStudy = paged.has(projectPath);
           return {
             '@type': 'ListItem',
             position: i + 1,
             name: p.title.en,
             description: p.desc.en,
-            url: p.url ?? canonical,
+            url: caseStudy ? canonicalFor(cfg, projectPath) : (p.url ?? canonical),
             item: {
               '@type': 'CreativeWork',
-              '@id': `${cfg.origin}/projects#${p.id}`,
+              '@id': caseStudy
+                ? `${canonicalFor(cfg, projectPath)}#creativework`
+                : `${cfg.origin}/projects#${p.id}`,
               name: p.title.en,
               description: p.desc.en,
               genre: p.category,
               keywords: p.skills.join(', '),
               image: abs(cfg, p.thumb),
               creator: { '@id': `${cfg.origin}/#person` },
-              mainEntityOfPage: canonical,
+              mainEntityOfPage: caseStudy ? canonicalFor(cfg, projectPath) : canonical,
               ...(p.url ? { url: p.url } : {}),
             },
           };
         }),
       },
     });
+  }
+
+  /**
+   * Case-study pages: one `CreativeWork` describing the build. The work is
+   * attributed to the Person rather than claiming an Organization authored
+   * it, and the breadcrumb trail is handled above (three levels, not four
+   * nodes here).
+   */
+  if (isCaseStudy) {
+    const id = route.path.slice('/projects/'.length);
+    const project = S.projects.find((p) => p.id === id);
+    if (project) {
+      extras.push({
+        '@type': 'CreativeWork',
+        '@id': `${canonical}#creativework`,
+        name: project.title.en,
+        description: project.desc.en,
+        genre: project.category,
+        keywords: [...project.skills, ...project.tags.map((t) => t.en)].join(', '),
+        image: project.gallery.slice(0, 6).map((g) => abs(cfg, g.src)),
+        creator: { '@id': `${cfg.origin}/#person` },
+        dateCreated: project.year,
+        inLanguage: 'en',
+        mainEntityOfPage: canonical,
+        ...(project.url ? { sameAs: project.url } : {}),
+      });
+    }
   }
 
   if (route.path === '/certificates') {
@@ -754,7 +917,10 @@ export const renderNoscript = (cfg: SeoConfig): string => noscriptHtml(cfg);
 export const renderRouteHeadHtml = (cfg: SeoConfig, route: RouteSeo): string => metaTags(cfg, route);
 
 export const renderSitemap = (cfg: SeoConfig, lastmod = new Date().toISOString().slice(0, 10)): string => {
-  const urls = ROUTES.map((r) => {
+  // `ALL_ROUTES`, not `ROUTES` — case-study pages are real, distinct,
+  // indexable URLs and belong in the sitemap. Duplicates were rejected at
+  // module load, so every `<loc>` below is unique.
+  const urls = ALL_ROUTES.map((r) => {
     const loc = canonicalFor(cfg, r.path);
     // See `alternateLinks`: there is no separate Indonesian URL, so the
     // sitemap must not advertise one either. `lastmod` is a real per-build
@@ -823,13 +989,21 @@ const certLines = (): string =>
     })
     .join('\n');
 
-const projectLines = (): string =>
-  S.projects
-    .map(
-      (p) =>
-        `  - ${p.title.en} — ${p.category} — ${p.skills.slice(0, 4).join(', ')}${p.url ? ` — ${p.url}` : ''}`,
-    )
+/**
+ * One line per project. Projects that have a case-study page get its URL;
+ * the rest have no page of their own (they open in the gallery modal), so
+ * they are listed without one rather than pointing at a URL that 404s.
+ */
+const projectLines = (cfg: SeoConfig): string => {
+  const paged = new Set(projectRoutes().map((r) => r.path));
+  return S.projects
+    .map((p) => {
+      const path = `/projects/${p.id}`;
+      const caseStudy = paged.has(path) ? ` — case study: ${cfg.origin}${path}` : '';
+      return `  - ${p.title.en} — ${p.category} — ${p.skills.slice(0, 4).join(', ')}${p.url ? ` — ${p.url}` : ''}${caseStudy}`;
+    })
     .join('\n');
+};
 
 const careerLines = (): string =>
   S.career.map((c) => `  - ${c.role.en} · ${c.org} (${c.period.en}) — ${c.location.en}`).join('\n');
@@ -852,6 +1026,7 @@ Profiles: ${Object.values(SOCIAL_LINKS).join(' · ')}
 - [Certificates](${cfg.origin}/certificates): ${totalCertificates()} credentials grouped by type; ${S.certsFeatured.length} flagship credentials highlighted.
 - [Contact](${cfg.origin}/contact): project form, WhatsApp, email, FAQ.
 - [Links](${cfg.origin}/linktree): official social profiles.
+${projectRoutes().length ? `\n## Case studies\n${projectRoutes().map((r) => `- [${r.label}](${cfg.origin}${r.path}): ${r.description}`).join('\n')}\n` : ''}
 
 ## Facts
 ${FAQ_FULL.map((f) => `- Q: ${f.q}\n  A: ${f.a}`).join('\n')}
@@ -891,7 +1066,7 @@ export const renderLlmsFullTxt = (cfg: SeoConfig): string =>
 ${S.stack.join(', ')}
 
 ## Projects (${S.projects.length})
-${projectLines()}
+${projectLines(cfg)}
 
 ## Career (${S.career.length})
 ${careerLines()}

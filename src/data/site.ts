@@ -218,12 +218,40 @@ export type CatalogItem = Project | Cert;
    Helpers
    --------------------------------------------------------------------- */
 
-const slug = (s: string): string =>
-  s
+/**
+ * Maximum slug length. Applies to project ids, which are public URLs
+ * (`/projects/<id>`) since the case-study pages shipped, so this is a budget
+ * for readability in search results as much as for the filesystem.
+ */
+const SLUG_MAX = 60;
+
+/**
+ * Slugify, then truncate at a WORD boundary if the budget is exceeded.
+ *
+ * A blind `.slice(0, 60)` cuts mid-word, which would produce ids like
+ * `a-realtime-public-transport-tracker-i-built-for-greater-jaka`. Cutting on
+ * the last `-` before the budget keeps the tail a whole word instead. The hard
+ * slice remains as a fallback for the degenerate case of one 60+ character
+ * word with no separator at all.
+ *
+ * NOTE: no current title reaches the budget (longest is 53), so this changes
+ * nothing today. It is a guard, not a migration — it exists because these ids
+ * became public URLs (`/projects/<id>`) with the case-study pages, and a
+ * longer title added later must not silently produce a mid-word URL.
+ */
+const slug = (s: string): string => {
+  const full = s
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-    .slice(0, 60);
+    .replace(/^-+|-+$/g, '');
+  if (full.length <= SLUG_MAX) return full;
+
+  const cut = full.slice(0, SLUG_MAX);
+  const boundary = cut.lastIndexOf('-');
+  // `boundary > 0` rejects a slug that is one unbroken word, and also a hyphen
+  // at position 0 (leading hyphens were already stripped above).
+  return (boundary > 0 ? cut.slice(0, boundary) : cut).replace(/-+$/, '');
+};
 
 const toAbsoluteAssetPath = (src: string): string =>
   src.startsWith('/') || /^[a-z]+:\/\//i.test(src) ? src : `/${src}`;

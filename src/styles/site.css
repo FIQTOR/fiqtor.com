@@ -1678,3 +1678,35 @@ html[data-theme="light"] .ch-primary:focus-visible{outline-color:#0a0a0a}
   .ch-primary .ic{width:3rem;height:3rem}
 }
 @media (prefers-reduced-motion:reduce){.ch-primary small .dot{animation:none}}
+
+/* =====================================================================
+   Project case-study page (/projects/:slug)
+   ---------------------------------------------------------------------
+   Reuses `.ph` for the header so the breadcrumb, h1 and lead match every
+   other page exactly. Everything below is page-specific.
+   ===================================================================== */
+.pd-meta{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1.4rem}
+.pd-actions{display:flex;flex-wrap:wrap;gap:.7rem;align-items:center}
+.pd-body{padding-top:1rem}
+.pd-cover{display:block;width:100%;height:auto;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.03)}
+.pd-shots{list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:1rem;margin:1rem 0 0;padding:0}
+.pd-shots figure{margin:0}
+.pd-shots img{display:block;width:100%;height:auto;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.03)}
+.pd-shots figcaption{margin-top:.5rem;font-size:.82rem;color:var(--muted)}
+.pd-stack h2{font-size:clamp(1.3rem,2.4vw,1.7rem);letter-spacing:-.02em}
+.pd-stack .chips{list-style:none;padding:0;margin-top:.9rem}
+.pd-nav{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:3rem;padding-top:2rem;border-top:1px solid var(--line)}
+.pd-nav-link{display:flex;flex-direction:column;gap:.3rem;text-decoration:none;color:inherit;padding:.9rem 1.1rem;border:1px solid var(--line);border-radius:12px;transition:border-color .25s,background .25s}
+.pd-nav-link:hover{border-color:rgba(255,255,255,.5);background:rgba(255,255,255,.05)}
+.pd-nav-link small{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.pd-nav-link span{font-weight:600;line-height:1.35}
+.pd-nav-next{text-align:right;align-items:flex-end}
+html[data-theme="light"] .pd-cover,
+html[data-theme="light"] .pd-shots img{border-color:rgba(10,10,10,.16);background:rgba(10,10,10,.03)}
+html[data-theme="light"] .pd-nav-link{border-color:rgba(10,10,10,.16)}
+html[data-theme="light"] .pd-nav-link:hover{border-color:rgba(10,10,10,.5);background:rgba(10,10,10,.04)}
+@media (max-width:640px){
+  .pd-nav{grid-template-columns:1fr}
+  .pd-nav-next{text-align:left;align-items:flex-start}
+  .pd-nav>span{display:none}
+}

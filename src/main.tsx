@@ -23,6 +23,13 @@ const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: 'projects', element: <Projects /> },
       {
+        // Case-study pages. Deliberately a single lazy route rather than an
+        // eager import: the page renders one project from data the Projects
+        // list has already loaded, so it stays out of the initial bundle.
+        path: 'projects/:slug',
+        lazy: async () => ({ Component: (await import('./pages/ProjectDetail')).default }),
+      },
+      {
         path: 'certificates',
         lazy: async () => ({ Component: (await import('./pages/Certificates')).default }),
       },

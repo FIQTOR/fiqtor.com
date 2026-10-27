@@ -1,8 +1,10 @@
+import { useNavigate } from 'react-router-dom';
 import type { Cert, Project } from '../data/site';
 import { S } from '../data/site';
 import { pad, formatPublished } from '../lib/utils';
 import { ICONS } from '../lib/utils.tsx';
 import { useCatalog, useLanguage } from '../lib/catalog';
+import { hasCaseStudy } from '../config/Seo';
 
 export function Chip({ text }: { text: string }) {
   return <span className="chip">{text}</span>;
@@ -21,18 +23,29 @@ export function ProjectCard({
 }) {
   const { openFromCard } = useCatalog();
   const { lang } = useLanguage();
+  const navigate = useNavigate();
 
-  // The href is a real route: if the modal code is slow or broken the link
-  // still lands on /projects#slug, which the catalog deep-link handler opens.
+  /**
+   * Projects with a case-study page navigate there; the rest still open the
+   * gallery modal, which is the only way to see their screenshots.
+   *
+   * The `href` is a real URL either way, so middle-click / ctrl-click / "open
+   * in new tab" keep working. Modifier clicks are left to the browser — only a
+   * plain left click is intercepted.
+   */
+  const paged = hasCaseStudy(p.id);
+  const href = paged ? `/projects/${p.id}` : `/projects#${p.id}`;
   return (
     <a
       className={`card pc rv${big ? ' pc-big' : ''} ${extraClass}`}
-      href={`/projects#${p.id}`}
-      data-open="project"
+      href={href}
+      data-open={paged ? undefined : 'project'}
       data-cur={lang === 'en' ? 'View' : 'Lihat'}
       onClick={(e) => {
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
         e.preventDefault();
-        openFromCard('project', i, p.id);
+        if (paged) navigate(href);
+        else openFromCard('project', i, p.id);
       }}
     >
       <div className="pc-img">

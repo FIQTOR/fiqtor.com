@@ -30,6 +30,11 @@
   ],
   "rewrites": [
     { "source": "/projects", "destination": "/projects/index.html" },
+    {
+      "comment": "Case-study shells are written to /projects/<slug>/index.html at build time. This must sit AFTER the exact /projects rule above and BEFORE the catch-all, otherwise a project URL falls through to /index.html and serves the homepage's <head> — wrong title, wrong canonical, wrong OG card.",
+      "source": "/projects/([^/]+)",
+      "destination": "/projects/$1/index.html"
+    },
     { "source": "/career", "destination": "/career/index.html" },
     { "source": "/certificates", "destination": "/certificates/index.html" },
     { "source": "/contact", "destination": "/contact/index.html" },
