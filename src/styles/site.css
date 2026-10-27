@@ -24,7 +24,7 @@ a{color:inherit}img{max-width:100%;display:block}button{font:inherit;color:inher
 html{scroll-behavior:smooth;scroll-padding-top:72px}
 ::selection{background:var(--ac);color:#08080a}
 main,.ft,.strip,.nav{position:relative;z-index:1}
-.nav{position:fixed;z-index:50}
+.nav{position:fixed;z-index:65}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .skip{position:fixed;left:1rem;top:-5rem;z-index:400;background:#fff;color:#08080a;padding:.8rem 1.2rem;border-radius:.6rem;font-weight:700;text-decoration:none;transition:top .2s}
 .skip:focus{top:1rem}
@@ -1381,7 +1381,7 @@ html,body{max-width:100%}
   .hero{overflow:hidden}
   .dot-portrait{max-width:118vw}
   /* keep the fixed navbar from overlapping the loader label */
-  .nav{z-index:50}
+  .nav{z-index:65}
   /* certificate / project cards: comfortable single column */
   .pg{gap:.9rem}
   .card,.card:first-child.pc-big{grid-column:span 12}
