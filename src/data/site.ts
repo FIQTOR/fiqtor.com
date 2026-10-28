@@ -724,72 +724,72 @@ export const S: SiteConfig = {
 
   services: [
     {
-      slug: 'app-development',
-      title: { en: 'App Development', id: 'Pengembangan Aplikasi' },
+      slug: 'landing-page',
+      title: { en: 'Landing Page & SMB Site', id: 'Website UMKM & Landing Page' },
       desc: {
-        en: 'Web, mobile, and desktop apps your customers actually enjoy using — quick to open, easy to understand, and ready to grow with your business. From the first sketch to going live, one team handles it all.',
-        id: 'Aplikasi web, mobile, dan desktop yang benar-benar nyaman dipakai pelanggan — cepat dibuka, mudah dimengerti, dan siap tumbuh bersama bisnis Anda. Dari sketsa pertama sampai online, ditangani satu tim.',
+        en: 'Instant, conversion-focused websites for small businesses, local cafés, and products. Clean layout, fast loading, Google Maps, and direct WhatsApp booking ready to launch in days.',
+        id: 'Website instan fokus konversi untuk usaha kecil, kafe/resto lokal, dan produk tunggal. Tampilan bersih, cepat dibuka, peta Google Maps, dan tombol WhatsApp siap meluncur cepat.',
       },
       meta: {
-        en: 'Loads fast · Easy to use · Built to grow',
-        id: 'Cepat dibuka · Mudah dipakai · Siap berkembang',
+        en: 'Instant launch · Mobile-first · Direct WhatsApp CTA',
+        id: 'Cepat tayang · Nyaman di HP · Konversi langsung ke WhatsApp',
       },
       fitsFor: {
-        en: 'Companies, online stores, and internal tools that need a system shaped around their own workflow.',
-        id: 'Perusahaan, toko online, dan tools internal yang butuh sistem mengikuti alur kerja mereka sendiri.',
+        en: 'Small businesses, local shops, events, and single products needing a fast online presence.',
+        id: 'Usaha kecil, toko/kafe lokal, event, dan produk tunggal yang butuh media promosi siap pakai.',
+      },
+      from: { en: 'From Rp 800,000', id: 'Mulai Rp 800.000' },
+    },
+    {
+      slug: 'app-development',
+      title: { en: 'Business Site & Company Profile', id: 'Website Bisnis & Company Profile' },
+      desc: {
+        en: 'Professional multi-page websites and custom web applications that establish brand credibility. Fast, responsive, structured catalog or portfolio, and built for search engine visibility.',
+        id: 'Website multi-halaman profesional dan aplikasi web kustom untuk membangun kredibilitas bisnis. Cepat, responsif, katalog layanan rapi, dan teroptimasi SEO Google.',
+      },
+      meta: {
+        en: 'Clean architecture · Google SEO ready · High credibility',
+        id: 'Arsitektur rapi · Siap SEO Google · Kredibilitas tinggi',
+      },
+      fitsFor: {
+        en: 'Companies, consultants, clinics, and businesses that need strong credibility with multi-page structure.',
+        id: 'Perusahaan, konsultan, klinik, dan bisnis yang butuh kredibilitas tinggi dengan profil multi-halaman.',
       },
       from: { en: 'From Rp 1,500,000', id: 'Mulai Rp 1.500.000' },
     },
     {
-      slug: 'ai-integration',
-      title: { en: 'AI Integration', id: 'Integrasi AI' },
+      slug: 'modular-system',
+      title: { en: 'Web App & Modular System', id: 'Aplikasi Web & Sistem Modular' },
       desc: {
-        en: 'Put a smart assistant inside your product: one that answers customers around the clock on WhatsApp, drafts documents in seconds, and knows your business well enough that you can trust its answers.',
-        id: 'Sematkan asisten pintar ke dalam produk Anda: menjawab pelanggan kapan saja lewat WhatsApp, menyusun dokumen dalam hitungan detik, dan memahami bisnis Anda cukup dalam sehingga jawabannya bisa dipercaya.',
+        en: 'Custom modular web systems built around your operational workflows — start with core modules like POS, inventory, or CRM, and expand as your business grows.',
+        id: 'Aplikasi web modular kustom yang dirancang sesuai operasional bisnis Anda — mulai dari 2 modul inti seperti Kasir, Stok, atau CRM, lalu kembangkan saat bisnis tumbuh.',
       },
       meta: {
-        en: 'Replies 24/7 · Less manual work · Answers you can trust',
-        id: 'Balas 24/7 · Kerja manual berkurang · Jawaban terpercaya',
+        en: 'Modular architecture · Role-based access · Cloud database',
+        id: 'Arsitektur modular · Hak akses staf aman · Database cloud',
       },
       fitsFor: {
-        en: 'Businesses drowning in chats and manual admin, or growing teams that want sales, stock, and finance in one place.',
-        id: 'Bisnis yang kewalahan chat dan admin manual, atau tim berkembang yang ingin penjualan, stok, dan keuangan di satu tempat.',
+        en: 'Growing operations seeking to automate cashier, inventory, client logs, or internal workflows step by step.',
+        id: 'Bisnis berkembang yang ingin mengotomatiskan kasir, stok gudang, CRM, atau operasional internal secara bertahap.',
       },
-      from: { en: 'From Rp 1,800,000', id: 'Mulai Rp 1.800.000' },
+      from: { en: 'From Rp 3,500,000', id: 'Mulai Rp 3.500.000' },
     },
     {
       slug: 'it-consulting',
-      title: { en: 'IT Consulting', id: 'Konsultasi IT' },
+      title: { en: 'IT Consulting & AI', id: 'Konsultasi IT & Integrasi AI' },
       desc: {
-        en: 'Clear advice on what to build next — and what to skip. You get a practical plan, a realistic budget, and straight answers, so every rupiah goes to technology that actually moves the business forward.',
-        id: 'Saran jelas tentang apa yang perlu dibangun berikutnya — dan apa yang sebaiknya dilewati. Anda dapat rencana praktis, anggaran realistis, dan jawaban jujur, sehingga setiap rupiah dipakai untuk teknologi yang benar-benar memajukan bisnis.',
+        en: 'Direct consultation on software architecture, automation, or embedding AI assistants into your business workflow. Honest advice on what to build next and realistic scoping.',
+        id: 'Konsultasi langsung arsitektur sistem, otomatisasi, atau integrasi AI ke alur kerja bisnis Anda. Saran jujur dan realistis sebelum mengalokasikan anggaran teknologi.',
       },
       meta: {
         en: 'Clear direction · No wasted budget · Decisions you can defend',
         id: 'Arah jelas · Anggaran tidak terbuang · Keputusan berbasis data',
       },
       fitsFor: {
-        en: 'Businesses that already have a system (or a plan) and need an honest second opinion before spending more.',
-        id: 'Bisnis yang sudah punya sistem (atau rencana) dan butuh pendapat kedua yang jujur sebelum mengeluarkan biaya lagi.',
+        en: 'Businesses that already have a system or need a second opinion on software architecture and AI implementation.',
+        id: 'Bisnis yang sudah punya sistem atau butuh pendapat kedua sebelum berinvestasi pada software & AI.',
       },
       from: { en: 'Scoped per project', id: 'Sesuai lingkup' },
-    },
-    {
-      slug: 'automation',
-      title: { en: 'Automation Everything', id: 'Otomatisasi Segalanya' },
-      desc: {
-        en: 'Stop doing the same task by hand every day. Leads get followed up, reports get sent, and orders get handled automatically — so your team spends its time on customers and work that matters.',
-        id: 'Berhenti mengerjakan tugas yang sama secara manual setiap hari. Follow-up prospek, laporan, dan pesanan berjalan otomatis — sehingga tim Anda bisa fokus pada pelanggan dan pekerjaan yang penting.',
-      },
-      meta: {
-        en: 'Hours saved every week · Fewer mistakes · Grows without extra staff',
-        id: 'Hemat jam kerja · Minim salah input · Naik skala tanpa tambah staf',
-      },
-      fitsFor: {
-        en: 'Schools, campuses, restaurants, and cafés that want to cut admin hours and serve customers faster.',
-        id: 'Sekolah, kampus, restoran, dan kafe yang ingin memangkas jam administrasi dan melayani pelanggan lebih cepat.',
-      },
-      from: { en: 'From Rp 1,200,000', id: 'Mulai Rp 1.200.000' },
     },
   ],
 
@@ -1069,15 +1069,13 @@ export const S: SiteConfig = {
     { en: 'Other', id: 'Lainnya' },
   ],
   /*
-   * Budget bands mirror the published price ladder (Automation 1,2jt · App
-   * 1,5jt · AI 1,8jt). The old top band was `> Rp 3jt`, i.e. above every
-   * service floor, so every serious lead picked the same chip and the field
-   * stopped qualifying anyone.
+   * Budget bands mirror the published price ladder (Landing Page 800rb · Business
+   * Site 1,5jt · Modular System 3,5jt).
    */
   budgets: [
-    { en: '< Rp 1,5jt', id: '< Rp 1,5jt' },
-    { en: 'Rp 1,5jt – 3jt', id: 'Rp 1,5jt – 3jt' },
-    { en: 'Rp 3jt – 7jt', id: 'Rp 3jt – 7jt' },
+    { en: '< Rp 1jt', id: '< Rp 1jt' },
+    { en: 'Rp 1jt – 3jt', id: 'Rp 1jt – 3jt' },
+    { en: 'Rp 3,5jt – 7jt', id: 'Rp 3,5jt – 7jt' },
     { en: '> Rp 7jt', id: '> Rp 7jt' },
     { en: 'Not sure yet', id: 'Belum tahu' },
   ],
