@@ -758,6 +758,23 @@ export const S: SiteConfig = {
       from: { en: 'From Rp 1,500,000', id: 'Mulai Rp 1.500.000' },
     },
     {
+      slug: 'ecommerce',
+      title: { en: 'E-Commerce & Online Store', id: 'Toko Online & E-Commerce D2C' },
+      desc: {
+        en: 'Direct-to-consumer online stores without marketplace commission fees. Integrated with payment gateways (QRIS, VA, e-Wallet), automated courier shipping calculator, and instant WhatsApp order notifications.',
+        id: 'Toko online mandiri tanpa potongan komisi marketplace. Dilengkapi payment gateway otomatis (QRIS, VA, e-Wallet), cek ongkir kurir nasional otomatis, dan notifikasi order instan via WhatsApp.',
+      },
+      meta: {
+        en: 'Zero marketplace fees · Auto shipping calculator · QRIS & VA',
+        id: 'Bebas komisi · Cek ongkir otomatis · QRIS & VA siap pakai',
+      },
+      fitsFor: {
+        en: 'Retail brands, fashion, F&B, and distributors wanting direct online sales and full customer ownership.',
+        id: 'Brand retail, fashion, F&B, dan distributor yang ingin berjualan langsung ke pembeli.',
+      },
+      from: { en: 'From Rp 2,900,000', id: 'Mulai Rp 2.900.000' },
+    },
+    {
       slug: 'modular-system',
       title: { en: 'Web App & Modular System', id: 'Aplikasi Web & Sistem Modular' },
       desc: {
@@ -775,21 +792,38 @@ export const S: SiteConfig = {
       from: { en: 'From Rp 3,500,000', id: 'Mulai Rp 3.500.000' },
     },
     {
-      slug: 'it-consulting',
-      title: { en: 'IT Consulting & AI', id: 'Konsultasi IT & Integrasi AI' },
+      slug: 'ai-integration',
+      title: { en: 'AI Integration & Smart Assistant', id: 'Integrasi AI & Asisten Cerdas' },
       desc: {
-        en: 'Direct consultation on software architecture, automation, or embedding AI assistants into your business workflow. Honest advice on what to build next and realistic scoping.',
-        id: 'Konsultasi langsung arsitektur sistem, otomatisasi, atau integrasi AI ke alur kerja bisnis Anda. Saran jujur dan realistis sebelum mengalokasikan anggaran teknologi.',
+        en: 'Embed smart LLM assistants into your website or operations: 24/7 WhatsApp customer service, custom document/knowledge-base RAG, and automated workflow pipelines.',
+        id: 'Sematkan asisten LLM cerdas ke web atau sistem operasional Anda: customer service WhatsApp 24/7, knowledge base RAG berbasis data internal, dan otomasi alur kerja.',
       },
       meta: {
-        en: 'Clear direction · No wasted budget · Decisions you can defend',
-        id: 'Arah jelas · Anggaran tidak terbuang · Keputusan berbasis data',
+        en: '24/7 Smart RAG · WhatsApp webhook · Zero hallucination guards',
+        id: 'RAG 24/7 akurat · Integrasi webhook WhatsApp · Guardrail anti-halusinasi',
       },
       fitsFor: {
-        en: 'Businesses that already have a system or need a second opinion on software architecture and AI implementation.',
-        id: 'Bisnis yang sudah punya sistem atau butuh pendapat kedua sebelum berinvestasi pada software & AI.',
+        en: 'Businesses handling high chat volumes or wanting AI-driven automation over internal documents.',
+        id: 'Bisnis yang kewalahan melayani chat manual atau ingin mengotomatiskan analisis dokumen internal dengan AI.',
       },
-      from: { en: 'Scoped per project', id: 'Sesuai lingkup' },
+      from: { en: 'From Rp 4,900,000', id: 'Mulai Rp 4.900.000' },
+    },
+    {
+      slug: 'cloud-maintenance',
+      title: { en: 'Managed Cloud & Maintenance', id: 'Managed Cloud & Pemeliharaan' },
+      desc: {
+        en: 'Proactive server uptime monitoring, automated database backups, security patches, bug fixes, and continuous technical support so your software stays fast and reliable.',
+        id: 'Pemantauan uptime server 24/7, auto-backup database berkala, pembaruan keamanan, perbaikan bug, dan jaminan operasional sistem bebas gangguan.',
+      },
+      meta: {
+        en: '24/7 Uptime · Auto backup · Dedicated WhatsApp support',
+        id: 'Monitoring 24/7 · Backup otomatis · Jalur prioritas WhatsApp',
+      },
+      fitsFor: {
+        en: 'Businesses with active systems needing dedicated maintenance, server management, and peace of mind.',
+        id: 'Bisnis dengan sistem aktif yang membutuhkan jaminan operasional server dan pemeliharaan rutin.',
+      },
+      from: { en: 'From Rp 750,000 / mo', id: 'Mulai Rp 750.000 / bln' },
     },
   ],
 
