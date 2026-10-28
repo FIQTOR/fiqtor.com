@@ -37,7 +37,7 @@ import { galleryLabel } from './galleryLabels';
 import type { IconName } from '../lib/utils';
 
 export type Language = 'en' | 'id' | 'zh';
-export type LocalizedText = { en: string; id: string; zh?: string };
+export type LocalizedText = { en: string; id: string; [key: string]: string | undefined };
 
 /**
  * How many testimonials are visible on the homepage *before* the rail is
@@ -68,7 +68,7 @@ export interface RawProject {
   urlDirect?: string;
   srcImage: string;
   images?: string[];
-  tags?: Record<Language, string[]>;
+  tags?: { en: string[]; id: string[]; zh?: string[] };
   /** Tech names (was: icon components in the old frontend). */
   icons: string[];
   best?: boolean;
@@ -327,7 +327,7 @@ const projects: Project[] = rawProjects.map((p) => {
   const images = (p.images ?? []).map(toAbsoluteAssetPath);
   const gallery: GalleryItem[] = (images.length ? images : [thumb]).map((src) => ({
     src,
-    caption: { en: galleryLabel(src, 'en'), id: galleryLabel(src, 'id') },
+    caption: { en: galleryLabel(src, 'en'), id: galleryLabel(src, 'id'), zh: galleryLabel(src, 'zh') },
   }));
   return {
     id: slug(p.title.en),
@@ -335,7 +335,7 @@ const projects: Project[] = rawProjects.map((p) => {
     year: '2025',
     role: roleFor(p),
     desc: p.description,
-    tags: (p.tags?.en ?? []).map((t, k) => ({ en: t, id: p.tags?.id?.[k] ?? t })),
+    tags: (p.tags?.en ?? []).map((t, k) => ({ en: t, id: p.tags?.id?.[k] ?? t, zh: p.tags?.zh?.[k] ?? t })),
     skills: p.icons,
     url: p.urlDirect,
     thumb,

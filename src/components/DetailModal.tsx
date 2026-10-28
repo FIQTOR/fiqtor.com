@@ -151,7 +151,7 @@ export function DetailModal() {
                   <div className="md-row">
                     <div className="chips">
                       {p.tags.map((tag) => (
-                        <Chip key={tag.en} text={tag[lang]} />
+                        <Chip key={tag.en} text={tag[lang] || tag.en} />
                       ))}
                     </div>
                     <div className="md-meta">
@@ -169,8 +169,8 @@ export function DetailModal() {
                       </div>
                     </div>
                   </div>
-                  <p className="md-lead">{firstSentence(p.desc[lang])}</p>
-                  <p className="md-txt">{p.desc[lang]}</p>
+                  <p className="md-lead">{firstSentence(p.desc[lang] || p.desc.en)}</p>
+                  <p className="md-txt">{p.desc[lang] || p.desc.en}</p>
                   <div>
                     <h3 className="md-h">{t('Built with', 'Dibangun dengan')}</h3>
                     <div className="sk">
@@ -292,11 +292,11 @@ export function DetailModal() {
                   <div className="md-row">
                     <div className="chips">
                       {c.tags.map((tag) => (
-                        <Chip key={tag.en} text={tag[lang]} />
+                        <Chip key={tag.en} text={tag[lang] || tag.en} />
                       ))}
                     </div>
                   </div>
-                  <p className="md-txt">{c.desc[lang]}</p>
+                  <p className="md-txt">{c.desc[lang] || c.desc.en}</p>
                   {c.details && c.details.length > 0 && (
                     <div>
                       <h3 className="md-h">{t('Included certificates', 'Sertifikat yang termasuk')}</h3>
@@ -312,15 +312,15 @@ export function DetailModal() {
                   )}
                   {c.secondary && (
                     <div>
-                      <h3 className="md-h">{c.secondary.label[lang]}</h3>
+                      <h3 className="md-h">{c.secondary.label[lang] || c.secondary.label.en}</h3>
                       <div className="gal two">
                         <button
                           type="button"
-                          onClick={() => setLb({ list: [[c.secondary!.src, c.secondary!.label[lang]]], i: 0 })}
+                          onClick={() => setLb({ list: [[c.secondary!.src, c.secondary!.label[lang] || c.secondary!.label.en]], i: 0 })}
                           aria-label={t('Enlarge result sheet', 'Perbesar lembar hasil')}
                         >
-                          <img loading="lazy" src={c.secondary.src} alt={c.secondary.label[lang]} />
-                          <span className="cap">{c.secondary.label[lang]}</span>
+                          <img loading="lazy" src={c.secondary.src} alt={c.secondary.label[lang] || c.secondary.label.en} />
+                          <span className="cap">{c.secondary.label[lang] || c.secondary.label.en}</span>
                         </button>
                       </div>
                     </div>

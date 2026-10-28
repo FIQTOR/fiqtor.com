@@ -111,41 +111,34 @@ export function CertCard({
                 : `${c.count} sertifikat digabung dalam entri ini`
             }
           >
-            ×{c.count}
+            {c.count} {lang === 'zh' ? '份证书' : lang === 'en' ? 'certs' : 'sertifikat'}
             <span className="sr">
               {lang === 'zh'
                 ? `（${c.count} 份证书）`
                 : lang === 'en'
-                ? `(${c.count} certificates)`
-                : `(${c.count} sertifikat)`}
+                ? ` (${c.count} certificates bundled in this entry)`
+                : ` (${c.count} sertifikat digabung dalam entri ini)`}
             </span>
           </span>
         )}
-        <h3>{c.title}</h3>
-        <p className="ci-by">
-          {c.issuer[lang] || c.issuer.en} · {formatPublished(c.period, lang)}
-        </p>
-        <div className="chips">
-          {c.tags.slice(0, 3).map((t) => (
-            <Chip key={t.en} text={t[lang] || t.en} />
-          ))}
-        </div>
+        <img loading="lazy" decoding="async" src={c.img} alt={`Certificate — ${c.name} (${c.issuer.en})`} width={1200} height={900} />
+      </div>
       <div className="cb">
         <span className="iss">
-          {c.issuer[lang]}
+          {c.issuer[lang] || c.issuer.en}
           {c.verified && (
-            <span className="vf" title={lang === 'en' ? 'Verifiable with the issuer' : 'Dapat diverifikasi ke penerbit'}>
+            <span className="vf" title={lang === 'zh' ? '可在发证机构官方验证' : lang === 'en' ? 'Verifiable with the issuer' : 'Dapat diverifikasi ke penerbit'}>
               <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <path d="M4.5 12.5l5 5 10-11" />
               </svg>
-              {lang === 'en' ? 'Verified' : 'Terverifikasi'}
+              {lang === 'zh' ? '已验证' : lang === 'en' ? 'Verified' : 'Terverifikasi'}
             </span>
           )}
         </span>
         <h4>{c.name}</h4>
         <div className="chips">
           {c.tags.slice(0, 2).map((t) => (
-            <Chip key={t.en} text={t[lang]} />
+            <Chip key={t.en} text={t[lang] || t.en} />
           ))}
         </div>
         <span className="yr">

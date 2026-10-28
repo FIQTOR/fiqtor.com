@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import type { Cert, CertGroup, Project } from '../data/site';
+import type { Cert, CertGroup, Project, Language } from '../data/site';
 import { CertCard, ProjectCard } from './Cards';
 import { InteractiveTitle, useReveal } from '../hooks/useReveal';
 import { useLanguage } from '../lib/catalog';
@@ -194,7 +194,7 @@ export function CertificateGallery({
         c.name.toLowerCase().includes(qq) ||
         c.issuer.en.toLowerCase().includes(qq) ||
         c.skills.join(' ').toLowerCase().includes(qq) ||
-        c.kind[lang].toLowerCase().includes(qq)
+        (c.kind[lang] || c.kind.en || '').toLowerCase().includes(qq)
       );
     });
   }, [all, q, verifiedOnly, lang]);
@@ -289,8 +289,8 @@ export function CertificateGallery({
                 <CertSection
                   key={group.id}
                   id={group.id}
-                  title={group.label[lang]}
-                  desc={group.desc[lang]}
+                  title={group.label[lang] || group.label.en}
+                  desc={group.desc[lang] || group.desc.en}
                   certs={list}
                 />
               ))}

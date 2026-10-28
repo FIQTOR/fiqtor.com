@@ -89,8 +89,8 @@ export default function NotFound() {
         {LINKS.map((l, i) => (
           <Link key={l.to} to={l.to} className="nf-card" style={{ ['--i' as string]: i }}>
             <span>{String(i + 1).padStart(2, '0')}</span>
-            <b>{l[lang]}</b>
-            <small>{l.note[lang]}</small>
+            <b>{(l as Record<string, any>)[lang] || l.en}</b>
+            <small>{(l.note as Record<string, string>)[lang] || l.note.en}</small>
           </Link>
         ))}
       </section>

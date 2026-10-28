@@ -583,8 +583,8 @@ export function KeyFacts() {
       <dl>
         {facts.map((f) => (
           <div key={f.k.en}>
-            <dt>{f.k[lang]}</dt>
-            <dd>{f.v[lang]}</dd>
+            <dt>{(f.k as Record<string, string>)[lang] || f.k.en}</dt>
+            <dd>{(f.v as Record<string, string>)[lang] || f.v.en}</dd>
           </div>
         ))}
       </dl>
