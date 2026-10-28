@@ -10,6 +10,7 @@ import { Analytics } from './Analytics';
 import { UIProvider } from '../lib/ui';
 import { ChatProvider } from '../lib/chat';
 import { CatalogProvider, LanguageProvider } from '../lib/catalog';
+import { CurrencyProvider } from '../lib/currency';
 import { ThemeProvider } from '../lib/theme';
 
 /**
@@ -50,12 +51,14 @@ export default function Layout() {
     <ThemeProvider>
       <UIProvider>
         <LanguageProvider>
-          <ChatProvider>
-            <CatalogProvider>
-              <GlobalEffects />
-              <Content />
-            </CatalogProvider>
-          </ChatProvider>
+          <CurrencyProvider>
+            <ChatProvider>
+              <CatalogProvider>
+                <GlobalEffects />
+                <Content />
+              </CatalogProvider>
+            </ChatProvider>
+          </CurrencyProvider>
         </LanguageProvider>
       </UIProvider>
     </ThemeProvider>

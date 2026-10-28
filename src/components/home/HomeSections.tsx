@@ -5,6 +5,7 @@ import { isFinePointer, isReducedMotion } from '../../lib/utils';
 import { CountUp, InteractiveTitle, useReveal } from '../../hooks/useReveal';
 import { CertCard, ProjectCard } from '../Cards';
 import { useLanguage } from '../../lib/catalog';
+import { useCurrency, SUPPORTED_CURRENCIES } from '../../lib/currency';
 import { LiveStats } from './LiveStats';
 import { SkillLogo } from '../SkillLogo';
 import { FaqList } from '../FaqList';
@@ -112,6 +113,7 @@ function Section({
    descriptions moved to /contact, where they sit right above the form. */
 function Pricing() {
   const { lang } = useLanguage();
+  const { currency, setCurrency, formatPrice } = useCurrency();
   const t = (en: string, id: string, zh?: string) => (lang === 'zh' ? zh || en : lang === 'en' ? en : id);
 
   return (
@@ -120,6 +122,34 @@ function Pricing() {
       kick={t('Services & pricing', 'Layanan & harga', '服务与报价')}
       title={t('What we can build together.', 'Apa yang bisa kita bangun.', '我们能共同打造的数字化成果。')}
     >
+      <div className="prt-toolbar" style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
+        <label htmlFor="currency-select" style={{ fontSize: '0.82rem', color: 'var(--muted)', fontWeight: 600 }}>
+          {t('Currency / Country:', 'Mata Uang / Negara:', '货币 / 地区结算:')}
+        </label>
+        <select
+          id="currency-select"
+          value={currency}
+          onChange={(e) => setCurrency(e.target.value as any)}
+          style={{
+            padding: '4px 10px',
+            borderRadius: '999px',
+            border: '1px solid var(--line)',
+            background: 'var(--bg-sub, rgba(255,255,255,0.06))',
+            color: 'var(--fg)',
+            fontSize: '0.82rem',
+            fontWeight: 700,
+            cursor: 'pointer',
+            outline: 'none',
+          }}
+        >
+          {SUPPORTED_CURRENCIES.map((c) => (
+            <option key={c.code} value={c.code} style={{ background: '#121214', color: '#fff' }}>
+              {c.code} ({c.symbol}) — {c.country}
+            </option>
+          ))}
+        </select>
+      </div>
+
       <div className="prt-wrap rv">
         <table className="prt">
           <caption className="sr">
@@ -136,25 +166,28 @@ function Pricing() {
             </tr>
           </thead>
           <tbody>
-            {S.services.map((s) => (
-              <tr key={s.slug} id={`pricing-${s.slug}`}>
-                <th scope="row" data-label={t('Service', 'Layanan', '服务项目')}>
-                  <span className="prt-name">{s.title[lang] || s.title.en}</span>
-                  <span className="prt-meta">{s.meta[lang] || s.meta.en}</span>
-                </th>
-                <td data-label={t('Best for', 'Cocok untuk', '适用场景')} className="prt-fit">
-                  {s.fitsFor[lang] || s.fitsFor.en}
-                </td>
-                <td data-label={t('Starting from', 'Mulai dari', '起步价')} className="prt-price">
-                  {s.from[lang] || s.from.en}
-                </td>
-                <td className="prt-cta">
-                  <a className="sv-cta" href={waLink(lang, s.title[lang] || s.title.en)} target="_blank" rel="noopener">
-                    {t('Discuss', 'Konsultasi', '咨询')} →
-                  </a>
-                </td>
-              </tr>
-            ))}
+            {S.services.map((s) => {
+              const displayPrice = s.amountIDR ? formatPrice(s.amountIDR, s.periodSuffix) : (s.from[lang] || s.from.en);
+              return (
+                <tr key={s.slug} id={`pricing-${s.slug}`}>
+                  <th scope="row" data-label={t('Service', 'Layanan', '服务项目')}>
+                    <span className="prt-name">{s.title[lang] || s.title.en}</span>
+                    <span className="prt-meta">{s.meta[lang] || s.meta.en}</span>
+                  </th>
+                  <td data-label={t('Best for', 'Cocok untuk', '适用场景')} className="prt-fit">
+                    {s.fitsFor[lang] || s.fitsFor.en}
+                  </td>
+                  <td data-label={t('Starting from', 'Mulai dari', '起步价')} className="prt-price">
+                    {displayPrice}
+                  </td>
+                  <td className="prt-cta">
+                    <a className="sv-cta" href={waLink(lang, s.title[lang] || s.title.en)} target="_blank" rel="noopener">
+                      {t('Discuss', 'Konsultasi', '咨询')} →
+                    </a>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
         <p className="prt-note">{S.budgetNote[lang] || S.budgetNote.en}</p>

@@ -175,6 +175,10 @@ export interface Service {
   meta: LocalizedText;
   /** Who this service is for — lets a visitor recognise themselves. */
   fitsFor: LocalizedText;
+  /** Starting price in IDR integer for currency conversion. */
+  amountIDR?: number;
+  /** Optional recurring period suffix (e.g. / mo). */
+  periodSuffix?: LocalizedText;
   /**
    * Starting price label. Mirrors IARTY's published packages; deliberately a
    * string (not a number) so "Sesuai lingkup" can sit beside real figures.
@@ -741,6 +745,7 @@ export const S: SiteConfig = {
         id: 'Usaha kecil, toko/kafe lokal, event, dan produk tunggal yang butuh media promosi siap pakai.',
         zh: '需要快速建立官方网络形象的小型企业、线下门店、品牌活动或单一产品。',
       },
+      amountIDR: 800000,
       from: { en: 'From Rp 800,000', id: 'Mulai Rp 800.000', zh: '起价 Rp 800.000' },
     },
     {
@@ -761,6 +766,7 @@ export const S: SiteConfig = {
         id: 'Perusahaan, konsultan, klinik, dan bisnis yang butuh kredibilitas tinggi dengan profil multi-halaman.',
         zh: '需要完整多页面展现专业实力的中大型企业、咨询机构、诊所与服务商。',
       },
+      amountIDR: 1500000,
       from: { en: 'From Rp 1,500,000', id: 'Mulai Rp 1.500.000', zh: '起价 Rp 1.500.000' },
     },
     {
@@ -781,6 +787,7 @@ export const S: SiteConfig = {
         id: 'Brand retail, fashion, F&B, dan distributor yang ingin berjualan langsung ke pembeli.',
         zh: '希望完全掌握客户数据并直接触达消费者的零售品牌、服装、餐饮与分销商。',
       },
+      amountIDR: 2900000,
       from: { en: 'From Rp 2,900,000', id: 'Mulai Rp 2.900.000', zh: '起价 Rp 2.900.000' },
     },
     {
@@ -801,6 +808,7 @@ export const S: SiteConfig = {
         id: 'Bisnis berkembang yang ingin mengotomatiskan kasir, stok gudang, CRM, atau operasional internal secara bertahap.',
         zh: '需要循序渐进实现收银、库房、客户档案或内部流程数字化的成长型企业。',
       },
+      amountIDR: 3500000,
       from: { en: 'From Rp 3,500,000', id: 'Mulai Rp 3.500.000', zh: '起价 Rp 3.500.000' },
     },
     {
@@ -821,6 +829,7 @@ export const S: SiteConfig = {
         id: 'Bisnis yang kewalahan melayani chat manual atau ingin mengotomatiskan analisis dokumen internal dengan AI.',
         zh: '面临繁重客户咨询压力，或希望借助 AI 对企业内部资料进行自动化知识处理的组织。',
       },
+      amountIDR: 4900000,
       from: { en: 'From Rp 4,900,000', id: 'Mulai Rp 4.900.000', zh: '起价 Rp 4.900.000' },
     },
     {
@@ -841,6 +850,8 @@ export const S: SiteConfig = {
         id: 'Bisnis dengan sistem aktif yang membutuhkan jaminan operasional server dan pemeliharaan rutin.',
         zh: '已有在线业务系统且需要专业服务器托管运维、高可用保障的企业与团队。',
       },
+      amountIDR: 750000,
+      periodSuffix: { en: ' / mo', id: ' / bln', zh: ' / 月' },
       from: { en: 'From Rp 750,000 / mo', id: 'Mulai Rp 750.000 / bln', zh: '起价 Rp 750.000 / 月' },
     },
   ],
