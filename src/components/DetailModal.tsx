@@ -135,12 +135,12 @@ export function DetailModal() {
               pinned over the panel. */}
           {project && (
             <div className="md-cov">
-              <img src={p.thumb} alt={`${p.title[lang]} — cover`} width={1600} height={900} decoding="async" />
+              <img src={p.thumb} alt={`${p.title[lang] || p.title.en} — cover`} width={1600} height={900} decoding="async" />
               <div className="md-ct">
                 <div className="md-n">
                   {t('Project', 'Proyek', '项目')} {pad(cur.i + 1)} / {pad(total)} · {p.category}
                 </div>
-                <h2 id="mdT">{p.title[lang]}</h2>
+                <h2 id="mdT">{p.title[lang] || p.title.en}</h2>
               </div>
             </div>
           )}
@@ -266,7 +266,7 @@ export function DetailModal() {
                         {t('Issued', 'Tanggal', '颁发日期')} <b>{formatPublished(c.date, lang)}</b>
                       </span>
                       <span>
-                        {t('Type', 'Jenis', '类型')} <b>{c.kind[lang]}</b>
+                        {t('Type', 'Jenis', '类型')} <b>{c.kind[lang] || c.kind.en}</b>
                       </span>
                       {c.verified && (
                         <span className="md-vf">

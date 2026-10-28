@@ -237,10 +237,10 @@ function Testimonials() {
                   />
                   <figcaption>
                     <b>{x.name}</b>
-                    <span>{x.role[lang]}</span>
+                    <span>{x.role[lang] || x.role.en}</span>
                   </figcaption>
                 </div>
-                <blockquote>{x.quote[lang]}</blockquote>
+                <blockquote>{x.quote[lang] || x.quote.en}</blockquote>
                 <div className="ts-stars" aria-label={t('Rated 5 out of 5', 'Dinilai 5 dari 5', '评分 5 / 5')}>
                   {Array.from({ length: 5 }, (_, k) => (
                     <svg key={k} viewBox="0 0 20 20" aria-hidden="true">

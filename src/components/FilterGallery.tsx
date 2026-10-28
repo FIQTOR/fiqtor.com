@@ -272,7 +272,7 @@ export function CertificateGallery({
               <div className="cgroup-nav" id={ARCHIVE_ID} aria-hidden="false">
                 {groups.map((g) => (
                   <span key={g.id}>
-                    {g.label[lang]} · {g.ids.length}
+                    {g.label[lang] || g.label.en} · {g.ids.length}
                   </span>
                 ))}
               </div>
@@ -282,7 +282,7 @@ export function CertificateGallery({
               <nav className="cgroup-nav" aria-label={t('Jump to category', 'Lompat ke kategori', '跳转到类别')}>
                 {groups.map((g) => (
                   <a key={g.id} href={`#cert-${g.id}`}>
-                    {g.label[lang]} · {g.ids.length}
+                    {g.label[lang] || g.label.en} · {g.ids.length}
                   </a>
                 ))}
               </nav>

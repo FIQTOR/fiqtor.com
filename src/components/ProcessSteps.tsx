@@ -17,8 +17,8 @@ export function ProcessSteps({ limit }: { limit?: number }) {
     <div className="prc">
       {steps.map((p) => (
         <div className="pr rv" key={p.title.en}>
-          <h3>{p.title[lang]}</h3>
-          <p>{p.desc[lang]}</p>
+          <h3>{p.title[lang] || p.title.en}</h3>
+          <p>{p.desc[lang] || p.desc.en}</p>
         </div>
       ))}
     </div>

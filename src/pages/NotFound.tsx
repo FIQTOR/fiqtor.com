@@ -113,7 +113,7 @@ export default function NotFound() {
               <li key={p.id}>
                 <Link to={`/projects#${p.id}`}>
                   <span>{p.category}</span>
-                  <b>{p.title[lang]}</b>
+                  <b>{p.title[lang] || p.title.en}</b>
                 </Link>
               </li>
             ))}

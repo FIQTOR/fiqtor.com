@@ -116,12 +116,12 @@ export default function Career() {
                           </span>
                         )}
                       </time>
-                      <h3>{c.role[lang]}</h3>
+                      <h3>{c.role[lang] || c.role.en}</h3>
                       <div className="org">{c.org}</div>
                       <div className="loc">{c.location[lang]}</div>
                     </div>
                   </div>
-                  <p className="ds">{c.desc[lang]}</p>
+                  <p className="ds">{c.desc[lang] || c.desc.en}</p>
                   <div className="ct-actions">
                     <button
                       type="button"

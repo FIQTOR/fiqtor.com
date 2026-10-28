@@ -30,6 +30,7 @@ import {
   PORTRAIT_IMAGE,
 } from '../config/Identity';
 import { rawProjects } from './projects';
+import { PROJECTS_ZH } from './projectsZh';
 import { rawCertificates } from './certificates';
 import { CERTIFICATE_DESCRIPTIONS } from './certificatesExtra';
 import { CERT_GROUPS, FEATURED_CERTS, MERGED_CERT_GROUPS } from './certGroups';
@@ -329,13 +330,18 @@ const projects: Project[] = rawProjects.map((p) => {
     src,
     caption: { en: galleryLabel(src, 'en'), id: galleryLabel(src, 'id'), zh: galleryLabel(src, 'zh') },
   }));
+  const zhData = PROJECTS_ZH[p.title.en];
   return {
     id: slug(p.title.en),
-    title: p.title,
+    title: { en: p.title.en, id: p.title.id, zh: zhData?.title ?? p.title.zh ?? p.title.en },
     year: '2025',
     role: roleFor(p),
-    desc: p.description,
-    tags: (p.tags?.en ?? []).map((t, k) => ({ en: t, id: p.tags?.id?.[k] ?? t, zh: p.tags?.zh?.[k] ?? t })),
+    desc: { en: p.description.en, id: p.description.id, zh: zhData?.desc ?? p.description.zh ?? p.description.en },
+    tags: (p.tags?.en ?? []).map((t, k) => ({
+      en: t,
+      id: p.tags?.id?.[k] ?? t,
+      zh: zhData?.tags?.[k] ?? p.tags?.zh?.[k] ?? t,
+    })),
     skills: p.icons,
     url: p.urlDirect,
     thumb,

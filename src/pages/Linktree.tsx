@@ -148,7 +148,7 @@ export default function Linktree() {
           {S.hubs.map((h) => (
             <a key={h.domain} href={h.href} target="_blank" rel="noopener">
               <img src={h.image} alt="" width={34} height={34} />
-              <b>{h.label[lang]}</b>
+              <b>{h.label[lang] || h.label.en}</b>
               <small>{h.domain}</small>
             </a>
           ))}
@@ -170,8 +170,8 @@ export default function Linktree() {
               href={l.url}
               target={l.external ? '_blank' : undefined}
               rel={l.external ? 'noopener' : undefined}
-              aria-label={l.label[lang]}
-              title={l.label[lang]}
+              aria-label={l.label[lang] || l.label.en}
+              title={l.label[lang] || l.label.en}
             >
               <Icon name={l.icon} />
             </a>
@@ -214,7 +214,7 @@ export default function Linktree() {
                   <Icon name={l.icon} />
                 </span>
                 <span>
-                  <b>{l.label[lang]}</b>
+                  <b>{l.label[lang] || l.label.en}</b>
                   <small>{l.note[lang]}</small>
                 </span>
                 <span className="ar" aria-hidden="true">

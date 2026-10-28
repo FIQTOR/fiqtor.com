@@ -49,13 +49,13 @@ export default function ProjectDetail() {
           <Link to="/">{t('Home', 'Beranda', '首页')}</Link> / <Link to="/projects">{t('Projects', 'Proyek', '项目')}</Link> /{' '}
           {project.category}
         </p>
-        <h1>{project.title[lang]}</h1>
-        <p className="lead rv">{project.desc[lang]}</p>
+        <h1>{project.title[lang] || project.title.en}</h1>
+        <p className="lead rv">{project.desc[lang] || project.desc.en}</p>
 
         <div className="pd-meta rv">
           <span className="chip">{project.category}</span>
           <span className="chip">{project.year}</span>
-          <span className="chip">{project.role[lang]}</span>
+          <span className="chip">{project.role[lang] || project.role.en}</span>
         </div>
 
         <div className="ph-cta rv pd-actions">
@@ -65,7 +65,7 @@ export default function ProjectDetail() {
               <span className="sr"> {t('(opens in a new tab)', '(membuka tab baru)', '(在新标签打开)')}</span>
             </a>
           )}
-          <a className="cta-ghost" href={waLink(lang, project.title[lang])} target="_blank" rel="noopener">
+          <a className="cta-ghost" href={waLink(lang, project.title[lang] || project.title.en)} target="_blank" rel="noopener">
             {t('Want something like this?', 'Ingin yang seperti ini?', '想要类似的项目?')}
             <span className="sr"> {t('(opens WhatsApp)', '(membuka WhatsApp)', '(打开 WhatsApp)')}</span>
           </a>
@@ -76,7 +76,7 @@ export default function ProjectDetail() {
         <img
           className="pd-cover rv"
           src={cover}
-          alt={`${project.title[lang]} — ${t('screenshot', 'cuplikan', '截图')}`}
+          alt={`${project.title[lang] || project.title.en} — ${t('screenshot', 'cuplikan', '截图')}`}
           width={1600}
           height={900}
           loading="eager"
@@ -90,7 +90,7 @@ export default function ProjectDetail() {
                 <figure>
                   <img
                     src={g.src}
-                    alt={`${project.title[lang]} — ${g.caption[lang]}`}
+                    alt={`${project.title[lang] || project.title.en} — ${g.caption[lang] || g.caption.en}`}
                     width={1600}
                     height={900}
                     loading="lazy"
@@ -143,7 +143,7 @@ export default function ProjectDetail() {
           {prev ? (
             <Link to={`/projects/${prev.id}`} className="pd-nav-link">
               <small>{t('Previous', 'Sebelumnya', '上一个')}</small>
-              <span>{prev.title[lang]}</span>
+              <span>{prev.title[lang] || prev.title.en}</span>
             </Link>
           ) : (
             <span />
@@ -151,7 +151,7 @@ export default function ProjectDetail() {
           {next ? (
             <Link to={`/projects/${next.id}`} className="pd-nav-link pd-nav-next">
               <small>{t('Next', 'Berikutnya', '下一个')}</small>
-              <span>{next.title[lang]}</span>
+              <span>{next.title[lang] || next.title.en}</span>
             </Link>
           ) : (
             <span />
