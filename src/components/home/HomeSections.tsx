@@ -683,28 +683,28 @@ export function HomeSections() {
               )}
               <b>{S.legalName}</b>
               {t(
-                '. I'm an ',
+                '. I\'m an ',
                 '. Saya seorang ',
-                '。我是一名 ',
+                '. 我是一名 ',
               )}
               <b>{t('AI & software engineer', 'AI & software engineer', 'AI 与软件工程师')}</b>
               {t(
                 ' with a background in computer engineering. I build web apps, AI automation, and business systems — and I use them to run ',
                 ' berlatar computer engineering. Saya membangun aplikasi web, otomasi AI, dan sistem bisnis — dan saya memakainya untuk menjalankan ',
-                '，计算机工程背景。我构建 Web 应用、AI 自动化和业务系统 — 并用它们来运营 ',
+                ', 计算机工程背景. 我构建 Web 应用, AI 自动化和业务系统 — 并用它们来运营 ',
               )}
               <b>{S.company.name}</b>
               {t(
                 ', so the solutions are proven in the field rather than in theory.',
                 ', jadi solusinya teruji di lapangan, bukan teori.',
-                '，因此这些解决方案是实战验证过的，而非纸上谈兵。',
+                ', 因此这些解决方案是实战验证过的, 而非纸上谈兵.',
               )}
             </p>
             <p className="about-aka rv">
               {t(
                 'On every platform the name is simply FIQTOR; Taufiiqul Hakim is the name that appears on certificates and official documents.',
                 'Di semua platform namanya cukup FIQTOR; Taufiiqul Hakim adalah nama yang tercantum pada sertifikat dan dokumen resmi.',
-                '在所有平台上名称都是 FIQTOR；Taufiiqul Hakim 是出现在证书和官方文件上的名字。',
+                '在所有平台上名称都是 FIQTOR, Taufiiqul Hakim 是出现在证书和官方文件上的名字.',
               )}
             </p>
             <Link className="btn2 rv" to="/career" style={{ display: 'inline-block', marginTop: '1.4rem' }}>
@@ -738,7 +738,7 @@ export function HomeSections() {
                 {t(
                   'Web apps, AI integrations, and business platforms. From idea to deploy, one person can take it end to end.',
                   'Aplikasi web, integrasi AI, dan platform bisnis. Dari ide sampai deploy, satu orang bisa menuntaskannya.',
-                  'Web 应用、AI 集成和业务平台。从想法到部署，一个人可以全程完成。',
+                  'Web 应用, AI 集成和业务平台. 从想法到部署, 一个人可以全程完成.',
                 )}
               </p>
             </div>
@@ -751,7 +751,7 @@ export function HomeSections() {
                 {t(
                   'IARTY: websites, apps, AI, education, and a marketplace. Built and run in-house.',
                   'IARTY: website, aplikasi, AI, edukasi, dan marketplace. Dibangun dan dikelola sendiri.',
-                  'IARTY：网站、应用、AI、教育和市场。自主构建和运营。',
+                  'IARTY: 网站, 应用, AI, 教育和市场. 自主构建和运营.',
                 )}
               </p>
             </div>
@@ -788,8 +788,8 @@ export function HomeSections() {
 
       <section className="cta-s" id="contact">
         <div className="big">
-          <InteractiveTitle text={t('Got a project?', 'Punya proyek?', '有项目吗？')} as="span" />
-          <InteractiveTitle text={t('Let's build it.', 'Kita bangun.', '一起实现。')} as="span" className="o" />
+          <InteractiveTitle text={t('Got a project?', 'Punya proyek?', '有项目吗?')} as="span" />
+          <InteractiveTitle text={t('Let\'s build it.', 'Kita bangun.', '一起实现.')} as="span" className="o" />
         </div>
         <div className="cta-row rv">
           {/* One primary action. Four buttons of equal weight forced the
