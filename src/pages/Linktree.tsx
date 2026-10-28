@@ -17,20 +17,20 @@ export default function Linktree() {
   const { toast, copy } = useUI();
   const { lang } = useLanguage();
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const t = (en: string, id: string) => (lang === 'en' ? en : id);
+  const t = (en: string, id: string, zh?: string) => (lang === 'zh' ? zh || en : lang === 'en' ? en : id);
 
   // One array, memoised: useTypewriter keys off the CONTENT, but building the
   // list inline still re-allocates on every render, and a stable reference
   // makes the intent obvious.
-  const headline = t('AI & software engineer', 'AI & software engineer');
+  const headline = t('AI & software engineer', 'AI & software engineer', 'AI 与软件工程师');
   // One array, memoised on `lang` (which is what `t` reads through).
   const words = useMemo(
-    () => [headline, (lang === 'en' ? 'Founder ' : 'Pendiri ') + S.company.name, 'Web · Apps · AI'],
+    () => [headline, (lang === 'zh' ? '创始人 ' : lang === 'en' ? 'Founder ' : 'Pendiri ') + S.company.name, 'Web · Apps · AI'],
     [headline, lang],
   );
   const typed = useTypewriter(words);
   const hour = localHour(S.tz);
-  const status = hour >= 8 && hour < 22 ? t('Online now · quick replies', 'Online sekarang · balas cepat') : t('Resting · messages still read', 'Sedang istirahat · pesan tetap dibaca');
+  const status = hour >= 8 && hour < 22 ? t('Online now · quick replies', 'Online sekarang · balas cepat', '当前在线 · 快速回复') : t('Resting · messages still read', 'Sedang istirahat · pesan tetap dibaca', '休息中 · 消息仍会查看');
 
   // `location.href` is only meaningful on the client; derive it in an effect
   // so the page can also be server-rendered headlessly.
@@ -118,7 +118,7 @@ export default function Linktree() {
     document.body.appendChild(a);
     a.click();
     a.remove();
-    toast(t('Contact downloaded', 'Kontak diunduh'));
+    toast(t('Contact downloaded', 'Kontak diunduh', '联系人已下载'));
   };
 
   const share = async () => {
@@ -131,7 +131,7 @@ export default function Linktree() {
         if ((e as Error).name === 'AbortError') return;
       }
     }
-    await copy(url, t('Link copied', 'Tautan tersalin'));
+    await copy(url, t('Link copied', 'Tautan tersalin', '链接已复制'));
   };
 
   return (
@@ -180,13 +180,13 @@ export default function Linktree() {
 
         <div className="lt-acts">
           <button type="button" onClick={saveVCard}>
-            <Icon name="download" size={18} /> {t('Save contact', 'Simpan kontak')}
+            <Icon name="download" size={18} /> {t('Save contact', 'Simpan kontak', '保存联系人')}
           </button>
           <button type="button" onClick={() => void share()}>
-            <Icon name="share" size={18} /> {t('Share', 'Bagikan')}
+            <Icon name="share" size={18} /> {t('Share', 'Bagikan', '分享')}
           </button>
           <button type="button" onClick={() => setShowQr((v) => !v)} aria-expanded={showQr}>
-            {t('QR code', 'Kode QR')}
+            {t('QR code', 'Kode QR', '二维码')}
           </button>
         </div>
 
@@ -195,7 +195,7 @@ export default function Linktree() {
             <div className="qr-card">
               <QRCodeSVG value={shareUrl} size={150} level="M" bgColor="#ffffff" fgColor="#0a0a0a" />
             </div>
-            <small>{t('Scan to open this page on another device', 'Pindai untuk membuka halaman ini di perangkat lain')}</small>
+            <small>{t('Scan to open this page on another device', 'Pindai untuk membuka halaman ini di perangkat lain', '扫描以在其他设备上打开此页面')}</small>
           </div>
         )}
 
@@ -207,9 +207,9 @@ export default function Linktree() {
                 href={l.url}
                 target={/^https?:/.test(l.url) ? '_blank' : undefined}
                 rel={/^https?:/.test(l.url) ? 'noopener' : undefined}
-                data-cur={t('Open', 'Buka')}
+                data-cur={t('Open', 'Buka', '打开')}
               >
-                {l.featured && <span className="bd2">{t('Start here', 'Mulai di sini')}</span>}
+                {l.featured && <span className="bd2">{t('Start here', 'Mulai di sini', '从这里开始')}</span>}
                 <span className="ik">
                   <Icon name={l.icon} />
                 </span>
@@ -224,7 +224,7 @@ export default function Linktree() {
             </li>
           ))}
         </ul>
-        <p className="lt-note">{t('Move the cursor over the portrait, then pick a destination.', 'Gerakkan kursor ke potret, lalu pilih tujuanmu.')}</p>
+        <p className="lt-note">{t('Move the cursor over the portrait, then pick a destination.', 'Gerakkan kursor ke potret, lalu pilih tujuanmu.', '将光标移到肖像上, 然后选择目的地.')}</p>
       </section>
       <canvas className="burst" ref={canvasRef} />
     </>

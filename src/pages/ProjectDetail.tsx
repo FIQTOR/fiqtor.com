@@ -25,7 +25,7 @@ export default function ProjectDetail() {
   const { slug } = useParams<{ slug: string }>();
   const ref = useReveal();
   const { lang } = useLanguage();
-  const t = (en: string, id: string) => (lang === 'en' ? en : id);
+  const t = (en: string, id: string, zh?: string) => (lang === 'zh' ? zh || en : lang === 'en' ? en : id);
 
   const index = S.projects.findIndex((p) => p.id === slug);
   const project = index >= 0 ? S.projects[index] : undefined;
@@ -46,7 +46,7 @@ export default function ProjectDetail() {
 
       <div className="ph">
         <p className="bc rv">
-          <Link to="/">{t('Home', 'Beranda')}</Link> / <Link to="/projects">{t('Projects', 'Proyek')}</Link> /{' '}
+          <Link to="/">{t('Home', 'Beranda', '首页')}</Link> / <Link to="/projects">{t('Projects', 'Proyek', '项目')}</Link> /{' '}
           {project.category}
         </p>
         <h1>{project.title[lang]}</h1>
@@ -61,22 +61,22 @@ export default function ProjectDetail() {
         <div className="ph-cta rv pd-actions">
           {project.url && (
             <a className="btn2" href={project.url} target="_blank" rel="noopener">
-              {t('View live', 'Lihat langsung')}
-              <span className="sr"> {t('(opens in a new tab)', '(membuka tab baru)')}</span>
+              {t('View live', 'Lihat langsung', '查看线上')}
+              <span className="sr"> {t('(opens in a new tab)', '(membuka tab baru)', '(在新标签打开)')}</span>
             </a>
           )}
           <a className="cta-ghost" href={waLink(lang, project.title[lang])} target="_blank" rel="noopener">
-            {t('Want something like this?', 'Ingin yang seperti ini?')}
-            <span className="sr"> {t('(opens WhatsApp)', '(membuka WhatsApp)')}</span>
+            {t('Want something like this?', 'Ingin yang seperti ini?', '想要类似的项目?')}
+            <span className="sr"> {t('(opens WhatsApp)', '(membuka WhatsApp)', '(打开 WhatsApp)')}</span>
           </a>
         </div>
       </div>
 
-      <section className="sec pd-body" aria-label={t('Screenshots', 'Cuplikan layar')}>
+      <section className="sec pd-body" aria-label={t('Screenshots', 'Cuplikan layar', '屏幕截图')}>
         <img
           className="pd-cover rv"
           src={cover}
-          alt={`${project.title[lang]} — ${t('screenshot', 'cuplikan')}`}
+          alt={`${project.title[lang]} — ${t('screenshot', 'cuplikan', '截图')}`}
           width={1600}
           height={900}
           loading="eager"
@@ -106,7 +106,7 @@ export default function ProjectDetail() {
 
       <section className="sec pd-stack" aria-labelledby="pd-stack-h">
         <h2 id="pd-stack-h" className="rv">
-          {t('Built with', 'Dibangun dengan')}
+          {t('Built with', 'Dibangun dengan', '构建技术')}
         </h2>
         <ul className="chips rv">
           {project.skills.map((s) => (
@@ -119,7 +119,7 @@ export default function ProjectDetail() {
         {project.tags.length > 0 && (
           <>
             <h2 className="rv" style={{ marginTop: '2rem' }}>
-              {t('What it does', 'Yang dikerjakan')}
+              {t('What it does', 'Yang dikerjakan', '功能特性')}
             </h2>
             <ul className="chips rv">
               {project.tags.map((tag, i) => (
@@ -139,10 +139,10 @@ export default function ProjectDetail() {
         which has no padding, and ran edge-to-edge on the viewport.
       */}
       <section className="sec pd-foot">
-        <nav className="pd-nav" aria-label={t('More projects', 'Proyek lain')}>
+        <nav className="pd-nav" aria-label={t('More projects', 'Proyek lain', '更多项目')}>
           {prev ? (
             <Link to={`/projects/${prev.id}`} className="pd-nav-link">
-              <small>{t('Previous', 'Sebelumnya')}</small>
+              <small>{t('Previous', 'Sebelumnya', '上一个')}</small>
               <span>{prev.title[lang]}</span>
             </Link>
           ) : (
@@ -150,7 +150,7 @@ export default function ProjectDetail() {
           )}
           {next ? (
             <Link to={`/projects/${next.id}`} className="pd-nav-link pd-nav-next">
-              <small>{t('Next', 'Berikutnya')}</small>
+              <small>{t('Next', 'Berikutnya', '下一个')}</small>
               <span>{next.title[lang]}</span>
             </Link>
           ) : (
@@ -160,7 +160,7 @@ export default function ProjectDetail() {
 
         <p className="pd-all">
           <Link className="btn2" to="/projects">
-            {t(`All ${S.projects.length} projects`, `Semua ${S.projects.length} proyek`)} →
+            {t(`All ${S.projects.length} projects`, `Semua ${S.projects.length} proyek`, `全部 ${S.projects.length} 个项目`)} →
           </Link>
         </p>
       </section>

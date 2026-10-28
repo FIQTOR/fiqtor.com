@@ -904,59 +904,67 @@ export const S: SiteConfig = {
    */
   faq: [
     {
-      q: { en: `Who is ${BRAND_NAME}?`, id: `Siapa ${BRAND_NAME}?` },
+      q: { en: `Who is ${BRAND_NAME}?`, id: `Siapa ${BRAND_NAME}?`, zh: `${BRAND_NAME} 是谁?` },
       a: {
         en: `${BRAND_NAME} is an AI and software engineer from ${COUNTRY}, founder of ${COMPANY.name}, with ${YEARS_OF_EXPERIENCE}+ years of experience and ${projects.length} shipped projects.`,
         id: `${BRAND_NAME} adalah AI & software engineer dari ${COUNTRY}, pendiri ${COMPANY.name}, dengan pengalaman ${YEARS_OF_EXPERIENCE}+ tahun dan ${projects.length} proyek yang sudah dirilis.`,
+        zh: `${BRAND_NAME} 是来自 ${COUNTRY} 的 AI 与软件工程师, ${COMPANY.name} 创始人, 拥有 ${YEARS_OF_EXPERIENCE}+ 年经验和 ${projects.length} 个已交付项目.`,
       },
     },
     {
-      q: { en: 'What can you build?', id: 'Apa saja yang bisa dikerjakan?' },
+      q: { en: 'What can you build?', id: 'Apa saja yang bisa dikerjakan?', zh: '能开发什么?' },
       a: {
         en: 'Web apps, business systems (ERP, CRM, HRIS, school platforms), e-commerce, AI integrations, automation, and interactive 3D experiences. If you are unsure whether your need fits, just ask — you will get an honest answer.',
         id: 'Aplikasi web, sistem bisnis (ERP, CRM, HRIS, platform sekolah), e-commerce, integrasi AI, otomasi, dan pengalaman 3D interaktif. Kalau ragu apakah kebutuhanmu cocok, tanyakan saja — jawabannya jujur.',
+        zh: 'Web 应用, 业务系统 (ERP, CRM, HRIS, 学校平台), 电商, AI 集成, 自动化, 以及交互式 3D 体验. 不确定是否符合您的需求? 尽管问 — 会得到诚实回答.',
       },
     },
     {
-      q: { en: 'What technology stack do you use?', id: 'Teknologi apa yang dipakai?' },
+      q: { en: 'What technology stack do you use?', id: 'Teknologi apa yang dipakai?', zh: '使用什么技术栈?' },
       a: {
         en: 'Mainly TypeScript, React, Next.js, Node.js, Laravel, PostgreSQL, MySQL, Docker, AWS, the OpenAI and Gemini APIs, n8n, and Three.js — chosen per project rather than forced.',
         id: 'Terutama TypeScript, React, Next.js, Node.js, Laravel, PostgreSQL, MySQL, Docker, AWS, API OpenAI dan Gemini, n8n, serta Three.js — dipilih sesuai proyek, bukan dipaksakan.',
+        zh: '主要是 TypeScript, React, Next.js, Node.js, Laravel, PostgreSQL, MySQL, Docker, AWS, OpenAI 和 Gemini API, n8n, 以及 Three.js — 按项目选择, 不强制.',
       },
     },
     {
-      q: { en: 'How much does it cost?', id: 'Berapa biayanya?' },
+      q: { en: 'How much does it cost?', id: 'Berapa biayanya?', zh: '费用是多少?' },
       a: {
         en: 'It depends on scope. Send the brief through the form or WhatsApp and an estimate follows once the requirements are understood.',
         id: 'Tergantung ruang lingkup. Kirim ringkasan lewat form atau WhatsApp, lalu estimasi dikirim setelah kebutuhan dipahami.',
+        zh: '取决于范围. 通过表单或 WhatsApp 发送简报, 了解需求后会提供报价.',
       },
     },
     {
-      q: { en: 'How long does a project take?', id: 'Berapa lama pengerjaannya?' },
+      q: { en: 'How long does a project take?', id: 'Berapa lama pengerjaannya?', zh: '项目周期多长?' },
       a: {
         en: 'A landing page is a matter of days; a full platform takes longer. The timeline is agreed up front and tracked in the open.',
         id: 'Landing page hitungan hari; platform penuh butuh lebih lama. Jadwal disepakati di awal dan dipantau secara terbuka.',
+        zh: '落地页只需几天, 完整平台需要更长时间. 时间表提前商定并公开追踪.',
       },
     },
     {
-      q: { en: 'What certifications do you hold?', id: 'Sertifikasi apa saja yang dimiliki?' },
+      q: { en: 'What certifications do you hold?', id: 'Sertifikasi apa saja yang dimiliki?', zh: '持有什么证书?' },
       a: {
         en: `${BRAND_NAME} holds the BNSP national Junior Web Developer competency certificate, was 1st of 24 teams in the SEAMEO QITEP in Science web cloud engineering competition, placed 4th of 44 in LKS Web Technologies (East Java), and completed freeCodeCamp, Dicoding and W3Docs programs — ${certs.reduce((n, c) => n + c.count, 0)} credentials in total.`,
         id: `${BRAND_NAME} memegang sertifikat kompetensi nasional BNSP Junior Web Developer, juara 1 dari 24 tim di kompetisi web cloud engineering SEAMEO QITEP in Science, peringkat 4 dari 44 di LKS Web Technologies (Jawa Timur), serta menuntaskan program freeCodeCamp, Dicoding, dan W3Docs — total ${certs.reduce((n, c) => n + c.count, 0)} kredensial.`,
+        zh: `${BRAND_NAME} 持有 BNSP 国家级初级 Web 开发者能力证书, 在 SEAMEO QITEP in Science Web 云工程竞赛中 24 支队伍获第 1 名, 在 LKS Web Technologies (东爪哇) 44 人中排第 4, 并完成 freeCodeCamp, Dicoding 和 W3Docs 项目 — 共 ${certs.reduce((n, c) => n + c.count, 0)} 个证书.`,
       },
     },
     {
-      q: { en: 'Do you work with international clients?', id: 'Apakah bisa bekerja dengan klien luar negeri?' },
+      q: { en: 'Do you work with international clients?', id: 'Apakah bisa bekerja dengan klien luar negeri?', zh: '能与海外客户合作吗?' },
       a: {
         en: 'Yes. Communication is available in English and Bahasa Indonesia, in the GMT+7 (WIB) timezone with overlap for other regions.',
         id: 'Bisa. Komunikasi tersedia dalam bahasa Inggris dan Indonesia, zona waktu GMT+7 (WIB) dengan overlap untuk wilayah lain.',
+        zh: '可以. 支持英语和印尼语沟通, GMT+7 (WIB) 时区, 与其他地区有时间重叠.',
       },
     },
     {
-      q: { en: 'How do we start?', id: 'Bagaimana cara memulai?' },
+      q: { en: 'How do we start?', id: 'Bagaimana cara memulai?', zh: '如何开始?' },
       a: {
         en: 'Pick a channel: the form, WhatsApp, or email. The clearer the brief, the faster the estimate.',
         id: 'Pilih jalur: form, WhatsApp, atau email. Semakin jelas ringkasannya, semakin cepat estimasinya.',
+        zh: '选择渠道: 表单, WhatsApp, 或邮件. 简报越清晰, 报价越快.',
       },
     },
   ],

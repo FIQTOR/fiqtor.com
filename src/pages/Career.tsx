@@ -54,22 +54,23 @@ export default function Career() {
     };
   }, []);
 
-  const t = (en: string, id: string) => (lang === 'en' ? en : id);
+  const t = (en: string, id: string, zh?: string) => (lang === 'zh' ? zh || en : lang === 'en' ? en : id);
 
   return (
     <div ref={ref}>
       <PageHeader
-        crumb={t('Career', 'Karier')}
-        title={t('My journey so far.', 'Perjalanan saya.')}
+        crumb={t('Career', 'Karier', '经历')}
+        title={t('My journey so far.', 'Perjalanan saya.', '我的职业历程.')}
         lead={t(
           'Newest first. Tap a card to read the highlights of each role.',
           'Terbaru di atas. Ketuk kartu untuk membaca pencapaian tiap peran.',
+          '最新优先. 点击卡片查看每个角色的亮点.',
         )}
       >
         <p className="ph-cta rv">
           <a className="cta-ghost" href={waLink(lang)} target="_blank" rel="noopener">
-            {t('Need someone like this?', 'Butuh orang seperti ini?')}
-            <span className="sr"> {t('(opens WhatsApp)', '(membuka WhatsApp)')}</span>
+            {t('Need someone like this?', 'Butuh orang seperti ini?', '需要这样的人?')}
+            <span className="sr"> {t('(opens WhatsApp)', '(membuka WhatsApp)', '(打开 WhatsApp)')}</span>
           </a>
         </p>
       </PageHeader>
@@ -109,9 +110,9 @@ export default function Career() {
                       <time>
                         {c.period[lang]}
                         {c.end === null && (
-                          <span className="ct-now" title={t('Ongoing role', 'Peran yang masih berjalan')}>
+                          <span className="ct-now" title={t('Ongoing role', 'Peran yang masih berjalan', '进行中的角色')}>
                             <i aria-hidden="true" />
-                            {t('Now', 'Sekarang')}
+                            {t('Now', 'Sekarang', '现在')}
                           </span>
                         )}
                       </time>
@@ -129,7 +130,7 @@ export default function Career() {
                       aria-expanded={isOpen}
                       onClick={() => setOpen(isOpen ? null : i)}
                     >
-                      {isOpen ? t('Hide highlights', 'Sembunyikan') : t('See highlights', 'Lihat pencapaian')}
+                      {isOpen ? t('Hide highlights', 'Sembunyikan', '隐藏亮点') : t('See highlights', 'Lihat pencapaian', '查看亮点')}
                     </button>
                     {c.website && (
                       // A plain <a>: `website` is an absolute external URL, and
@@ -137,7 +138,7 @@ export default function Career() {
                       // in-app history entry — for a cross-origin href that
                       // leaves a dead entry and never actually navigating.
                       <a href={c.website} target="_blank" rel="noopener" data-open>
-                        {t('Visit', 'Kunjungi')} ↗
+                        {t('Visit', 'Kunjungi', '访问')} ↗
                       </a>
                     )}
                   </div>
@@ -158,13 +159,13 @@ export default function Career() {
 
         <div style={{ display: 'flex', gap: '.8rem', flexWrap: 'wrap', marginTop: '2rem' }}>
           <a className="btn2" href={lang === 'en' ? S.resume.atsEn : S.resume.atsId} target="_blank" rel="noopener">
-            {t('Download résumé (PDF)', 'Unduh CV (PDF)')} ↓
+            {t('Download résumé (PDF)', 'Unduh CV (PDF)', '下载简历 (PDF)')} ↓
           </a>
           <a className="btn2" href={lang === 'en' ? S.resume.creativeEn : S.resume.creativeId} target="_blank" rel="noopener">
-            {t('Creative résumé', 'CV kreatif')} ↗
+            {t('Creative résumé', 'CV kreatif', '创意简历')} ↗
           </a>
           <Link className="btn2" to="/contact">
-            {t('Work with me', 'Bekerja sama')} →
+            {t('Work with me', 'Bekerja sama', '与我合作')} →
           </Link>
         </div>
       </section>
