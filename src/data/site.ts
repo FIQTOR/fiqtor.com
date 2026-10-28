@@ -438,17 +438,20 @@ const baseCerts: Cert[] = rawCertificates.map((c) => {
     secondary: c.srcImageSecondary
       ? {
           src: toAbsoluteAssetPath(c.srcImageSecondary),
-          label: { en: c.secondaryLabel ?? 'Result sheet', id: c.secondaryLabel ?? 'Lembar hasil' },
+          label: { en: c.secondaryLabel ?? 'Result sheet', id: c.secondaryLabel ?? 'Lembar hasil', zh: c.secondaryLabel ? c.secondaryLabel : '评分明细表' },
         }
       : undefined,
     tags: tags.map((t) => ({ en: t, id: t })),
     desc: {
       en:
-        CERTIFICATE_DESCRIPTIONS[c.title] ??
+        CERTIFICATE_DESCRIPTIONS[c.title]?.en ??
         `${name}${subtitle ? ' — ' + subtitle : ''}. Issued ${c.published}. ${tags.length ? 'Covers: ' + tags.join(', ') + '.' : ''}`,
       id:
-        CERTIFICATE_DESCRIPTIONS[c.title] ??
+        CERTIFICATE_DESCRIPTIONS[c.title]?.id ??
         `${name}${subtitle ? ' — ' + subtitle : ''}. Diterbitkan ${c.published}. ${tags.length ? 'Mencakup: ' + tags.join(', ') + '.' : ''}`,
+      zh:
+        CERTIFICATE_DESCRIPTIONS[c.title]?.zh ??
+        `${name}${subtitle ? ' — ' + subtitle : ''}。颁发于 ${c.published}。${tags.length ? '涵盖：' + tags.join(', ') + '。' : ''}`,
     },
     skills: tags.length ? tags : [prettyFileName(c.srcImage)],
     academic: c.thisAcademic,
@@ -484,6 +487,7 @@ const mergedCerts: Cert[] = MERGED_CERT_GROUPS.map((g): Cert | null => {
     desc: {
       en: `Six separate W3Docs skill quizzes, each passed with a perfect score (100/100) covering HTML5, CSS3, JavaScript, PHP, TypeScript, and React. Grouped here because they test the same fundamentals — the individual certificates are still available in the detail view.`,
       id: `Enam kuis keterampilan W3Docs terpisah, semuanya lulus dengan skor sempurna (100/100) mencakup HTML5, CSS3, JavaScript, PHP, TypeScript, dan React. Digabung di sini karena menguji dasar yang sama — sertifikat aslinya tetap tersedia di tampilan detail.`,
+      zh: `六项独立的 W3Docs 核心技能测验，均以 100/100 满分成绩通过，涵盖 HTML5、CSS3、JavaScript、PHP、TypeScript 与 React。在此处合并归集以便快速浏览，各独立证书依然可在详情弹窗中逐一查验。`,
     },
   };
   return merged;
@@ -533,80 +537,84 @@ const featuredCerts: Cert[] = (() => {
  */
 const careerRaw: CareerItem[] = [
   {
-    period: { en: 'Mar 2025 — Present', id: 'Mar 2025 — Sekarang' },
+    period: { en: 'Mar 2025 — Present', id: 'Mar 2025 — Sekarang', zh: '2025年3月 — 至今' },
     start: '2025-03',
     end: null,
-    role: { en: 'Founder', id: 'Pendiri' },
+    role: { en: 'Founder', id: 'Pendiri', zh: '创始人' },
     org: COMPANY.name,
-    location: { en: 'Bekasi, Indonesia', id: 'Bekasi, Indonesia' },
+    location: { en: 'Bekasi, Indonesia', id: 'Bekasi, Indonesia', zh: '印度尼西亚，勿加泗' },
     website: COMPANY.url,
     logo: COMPANY.image,
     desc: {
       en: 'Built and scaled the IARTY ecosystem across education, AI, digital products, and services — leading end-to-end business strategy, product development, marketing, and operations.',
       id: 'Membangun dan mengembangkan ekosistem IARTY di bidang pendidikan, AI, produk digital, dan layanan — memimpin strategi bisnis dari hulu ke hilir, pengembangan produk, pemasaran, dan operasional.',
+      zh: '创立并全面扩展涵盖教育培训、AI 解决方案、数字产品与企业级软件服务的 IARTY 商业生态系统 — 主导端到端商业战略规划、产品研发迭代、品牌营销与日常运营。',
     },
     points: [
-      { en: 'Shipped the IARTY ecosystem: website, IARTY AI, education, and marketplace.', id: 'Merilis ekosistem IARTY: website, IARTY AI, education, dan marketplace.' },
-      { en: 'Built AI-powered products and automation for real business workflows.', id: 'Membangun produk bertenaga AI dan otomasi untuk alur kerja bisnis nyata.' },
-      { en: 'Grew a multi-platform presence (Instagram, TikTok, YouTube, Threads) with tech-focused content.', id: 'Menumbuhkan kehadiran multi-platform (Instagram, TikTok, YouTube, Threads) dengan konten bertema teknologi.' },
-      { en: 'Produced educational content for academy.iarichty, simplifying complex tech and AI topics.', id: 'Memproduksi konten edukatif untuk academy.iarichty, menyederhanakan topik teknologi dan AI yang rumit.' },
+      { en: 'Shipped the IARTY ecosystem: website, IARTY AI, education, and marketplace.', id: 'Merilis ekosistem IARTY: website, IARTY AI, education, dan marketplace.', zh: '成功交付并上线 IARTY 全套产品生态：官网门户、IARTY AI 智能助手、在线学院与数字交易平台。' },
+      { en: 'Built AI-powered products and automation for real business workflows.', id: 'Membangun produk bertenaga AI dan otomasi untuk alur kerja bisnis nyata.', zh: '研发基于先进大语言模型的落地 AI 产品与业务自动化流，赋能真实商业生产力。' },
+      { en: 'Grew a multi-platform presence (Instagram, TikTok, YouTube, Threads) with tech-focused content.', id: 'Menumbuhkan kehadiran multi-platform (Instagram, TikTok, YouTube, Threads) dengan konten bertema teknologi.', zh: '建立并运营跨平台技术影响力矩阵（Instagram、TikTok、YouTube、Threads），持续输出前沿技术干货。' },
+      { en: 'Produced educational content for academy.iarichty, simplifying complex tech and AI topics.', id: 'Memproduksi konten edukatif untuk academy.iarichty, menyederhanakan topik teknologi dan AI yang rumit.', zh: '为 academy.iarichty 研发系统化实战教程，将复杂的软件工程与 AI 概念深入浅出地传递给学员。' },
     ],
   },
   {
-    period: { en: 'Nov 2025 — Apr 2026', id: 'Nov 2025 — Apr 2026' },
+    period: { en: 'Nov 2025 — Apr 2026', id: 'Nov 2025 — Apr 2026', zh: '2025年11月 — 2026年4月' },
     start: '2025-11',
     end: '2026-04',
-    role: { en: 'Freelance Web Programming Trainer', id: 'Trainer Pemrograman Web Freelance' },
+    role: { en: 'Freelance Web Programming Trainer', id: 'Trainer Pemrograman Web Freelance', zh: '特聘 Web 全栈编程讲师' },
     org: 'Flashcom Indonesia',
-    location: { en: 'Surabaya, Indonesia', id: 'Surabaya, Indonesia' },
+    location: { en: 'Surabaya, Indonesia', id: 'Surabaya, Indonesia', zh: '印度尼西亚，泗水' },
     website: 'https://flashcomindonesia.com',
     logo: '/img/career/flashcom-indonesia.webp',
     desc: {
       en: 'Teaching and mentoring students in website development, covering both front-end and back-end fundamentals through hands-on projects.',
       id: 'Mengajar dan membimbing siswa dalam pengembangan website, mencakup dasar front-end dan back-end melalui proyek praktik.',
+      zh: '为学员提供系统的 Web 网站全栈开发授课与项目实战指导，通过真实商业案例贯通前后端核心技术与工程规范。',
     },
     points: [
-      { en: 'Taught front-end and back-end fundamentals to cohorts of learners.', id: 'Mengajar dasar front-end dan back-end kepada angkatan peserta.' },
-      { en: 'Guided learners through hands-on projects that build portfolio-ready skills.', id: 'Membimbing peserta lewat proyek praktik yang membangun keterampilan siap kerja.' },
-      { en: 'Prepared students for careers or freelance work in web development.', id: 'Menyiapkan peserta untuk karier atau kerja freelance di bidang pengembangan web.' },
+      { en: 'Taught front-end and back-end fundamentals to cohorts of learners.', id: 'Mengajar dasar front-end dan back-end kepada angkatan peserta.', zh: '讲授现代前后端开发基石（HTML5/CSS3/JavaScript/Node/PHP），建立扎实的技术底座。' },
+      { en: 'Guided learners through hands-on projects that build portfolio-ready skills.', id: 'Membimbing peserta lewat proyek praktik yang membangun keterampilan siap kerja.', zh: '全程带教实战开发项目，帮助学员积累能直接用于面试求职与商业交付的作品集。' },
+      { en: 'Prepared students for careers or freelance work in web development.', id: 'Menyiapkan peserta untuk karier atau kerja freelance di bidang pengembangan web.', zh: '培养学员的商业项目交付思维，助力顺利开启 Web 开发全职或自由职业生涯。' },
     ],
   },
   {
-    period: { en: 'Jan 2024 — Jun 2024', id: 'Jan 2024 — Jun 2024' },
+    period: { en: 'Jan 2024 — Jun 2024', id: 'Jan 2024 — Jun 2024', zh: '2024年1月 — 2024年6月' },
     start: '2024-01',
     end: '2024-06',
-    role: { en: 'Full Stack Developer & IT Support', id: 'Full Stack Developer & Dukungan IT' },
+    role: { en: 'Full Stack Developer & IT Support', id: 'Full Stack Developer & Dukungan IT', zh: '全栈开发工程师与 IT 技术支持' },
     org: 'SEAQIS',
-    location: { en: 'Bandung, Indonesia', id: 'Bandung, Indonesia' },
+    location: { en: 'Bandung, Indonesia', id: 'Bandung, Indonesia', zh: '印度尼西亚，万隆' },
     website: 'https://www.qitepinscience.org',
     logo: '/img/career/seaqis.webp',
     desc: {
       en: 'Designed and implemented a QR code-based attendance system, improving data accuracy and HR operational efficiency.',
       id: 'Merancang dan mengimplementasikan sistem absensi berbasis kode QR, meningkatkan akurasi data dan efisiensi operasional HR.',
+      zh: '独立设计并落地基于动态二维码的智能打卡考勤管理系统，大幅提升企业考勤数据精准度与 HR 人事运营效率。',
     },
     points: [
-      { en: 'Built a QR-based check-in/check-out system that replaced manual attendance.', id: 'Membangun sistem absen berbasis QR yang menggantikan pencatatan manual.' },
-      { en: 'Reduced manual errors and improved data accuracy for HR reporting.', id: 'Menekan kesalahan manual dan meningkatkan akurasi data untuk pelaporan HR.' },
-      { en: 'Collaborated with stakeholders to integrate the system into existing workflows.', id: 'Berkolaborasi dengan pemangku kepentingan untuk mengintegrasikan sistem ke alur kerja yang ada.' },
+      { en: 'Built a QR-based check-in/check-out system that replaced manual attendance.', id: 'Membangun sistem absen berbasis QR yang menggantikan pencatatan manual.', zh: '打造二维码快速签到/签退系统，完全替代低效的人工纸质记录与手动录入。' },
+      { en: 'Reduced manual errors and improved data accuracy for HR reporting.', id: 'Menekan kesalahan manual dan meningkatkan akurasi data untuk pelaporan HR.', zh: '根除人为统计误差，显著提高人力资源日常报表与考勤审计的真实性与合规性。' },
+      { en: 'Collaborated with stakeholders to integrate the system into existing workflows.', id: 'Berkolaborasi dengan pemangku kepentingan untuk mengintegrasikan sistem ke alur kerja yang ada.', zh: '深入业务部门调研需求，将考勤系统无缝嵌入现有机构运作机制与管理流程中。' },
     ],
   },
   {
-    period: { en: 'Feb 2024 — Apr 2024', id: 'Feb 2024 — Apr 2024' },
+    period: { en: 'Feb 2024 — Apr 2024', id: 'Feb 2024 — Apr 2024', zh: '2024年2月 — 2024年4月' },
     start: '2024-02',
     end: '2024-04',
-    role: { en: 'Founder', id: 'Pendiri' },
+    role: { en: 'Founder', id: 'Pendiri', zh: '创始人' },
     org: 'KodeSatSet',
-    location: { en: 'Jombang, Indonesia', id: 'Jombang, Indonesia' },
+    location: { en: 'Jombang, Indonesia', id: 'Jombang, Indonesia', zh: '印度尼西亚，戎邦' },
     website: 'https://www.instagram.com/kodesatset',
     logo: '/img/career/kodesatset.webp',
     desc: {
       en: 'Founded a technology course program focused on mobile app development, designing the curriculum and running classes.',
       id: 'Mendirikan program kursus teknologi yang berfokus pada pengembangan aplikasi mobile, merancang kurikulum, dan menjalankan kelas.',
+      zh: '创立专注于跨平台移动端应用开发的编程实训营，主导教学大纲定制、实操课件编撰与教学班级运营。',
     },
     points: [
-      { en: 'Trained 50+ students in React Native using Android Studio and emulators.', id: 'Melatih 50+ siswa dalam React Native dengan Android Studio dan emulator.' },
-      { en: 'Designed the curriculum and structured learning materials.', id: 'Merancang kurikulum dan materi belajar yang terstruktur.' },
-      { en: 'Ran class operations and provided direct, hands-on mentorship.', id: 'Mengelola operasional kelas dan memberikan bimbingan langsung.' },
+      { en: 'Trained 50+ students in React Native using Android Studio and emulators.', id: 'Melatih 50+ siswa dalam React Native dengan Android Studio dan emulator.', zh: '系统指导 50+ 名学员使用 React Native、Android Studio 及真机模拟器掌握移动端开发技能。' },
+      { en: 'Designed the curriculum and structured learning materials.', id: 'Merancang kurikulum dan materi belajar yang terstruktur.', zh: '从零编写层次分明的课程指南与阶段实操文档，降低学习曲线。' },
+      { en: 'Ran class operations and provided direct, hands-on mentorship.', id: 'Mengelola operasional kelas dan memberikan bimbingan langsung.', zh: '负责班级日常排课与代码 Debug 手把手专项辅导，确保每位学员顺利完成期末作品。' },
     ],
   },
 ];
@@ -976,100 +984,111 @@ export const S: SiteConfig = {
   testimonials: [
     {
       name: 'Kedai Nagata',
-      role: { en: 'Owner, Kedai Nagata', id: 'Pemilik, Kedai Nagata' },
+      role: { en: 'Owner, Kedai Nagata', id: 'Pemilik, Kedai Nagata', zh: 'Kedai Nagata 创始人' },
       quote: {
         en: 'Now customers can see the menu and location themselves, so our team can focus on serving. The coffee and bakmie finally have an online home.',
         id: 'Sekarang pelanggan bisa lihat menu dan lokasi sendiri, jadi tim kami lebih fokus melayani. Kopi dan bakmie-nya akhirnya punya rumah online.',
+        zh: '现在顾客可以自己在官网上查看完整菜单和门店位置，我们的团队能更专注于服务。我们的咖啡与招牌面食终于有了温馨的线上展示空间。',
       },
       img: '/img/testimonials/kedai-nagata.webp',
     },
     {
       name: 'Ijjo Cafe',
-      role: { en: 'Owner, Ijjo Cafe', id: 'Pemilik, Ijjo Cafe' },
+      role: { en: 'Owner, Ijjo Cafe', id: 'Pemilik, Ijjo Cafe', zh: 'Ijjo Cafe 创始人' },
       quote: {
         en: 'Our idea of a workspace that doubles as a hangout spot came across perfectly on the website. Many visitors came after browsing it on their phone first.',
         id: 'Konsep ruang kerja sekaligus tempat nongkrong kami tersampaikan dengan pas di website. Banyak yang datang setelah lihat-lihat dulu dari HP.',
+        zh: '我们将工作空间与休闲聚会场所融为一体的经营理念，在网站上得到了绝佳呈现。很多新客人都是先在手机上浏览完后慕名而来的。',
       },
       img: '/img/testimonials/ijjo-cafe.webp',
     },
     {
       name: '808 Coffeebar',
-      role: { en: 'Owner, 808 Coffeebar', id: 'Pemilik, 808 Coffeebar' },
+      role: { en: 'Owner, 808 Coffeebar', id: 'Pemilik, 808 Coffeebar', zh: '808 Coffeebar 创始人' },
       quote: {
         en: 'Our industrial street-art character is hard to put into words, but IARTY captured it. The website feels like our coffeebar.',
         id: 'Karakter street-art industrial kami susah dijelaskan pakai kata, tapi IARTY berhasil menangkapnya. Website-nya terasa seperti coffeebar kami.',
+        zh: '我们咖啡馆独特的工业街头艺术风格很难用言语完全传达，但 IARTY 完美捕捉并再现了这一灵魂。网站的格调就像亲临我们的吧台一样。',
       },
       img: '/img/testimonials/808-coffeebar.webp',
     },
     {
       name: 'Alfahrisyahh',
-      role: { en: 'Founder, glofiee.com', id: 'Pendiri, glofiee.com' },
+      role: { en: 'Founder, glofiee.com', id: 'Pendiri, glofiee.com', zh: 'glofiee.com 创始人' },
       quote: {
         en: 'The quality of service and support we received was outstanding. They truly understand what businesses need.',
         id: 'Kualitas layanan dan dukungan yang kami terima luar biasa. Mereka benar-benar paham apa yang dibutuhkan bisnis.',
+        zh: '我们所获得的服务质量和后续技术支持令人惊艳。他们真正深入理解了初创品牌在数字化转型中最迫切的核心诉求。',
       },
       img: '/img/testimonials/alfahrisyah.webp',
     },
     {
       name: 'BM Coffee',
-      role: { en: 'Owner, BM Coffee', id: 'Pemilik, BM Coffee' },
+      role: { en: 'Owner, BM Coffee', id: 'Pemilik, BM Coffee', zh: 'BM Coffee 创始人' },
       quote: {
         en: 'The website makes us look far more professional to new customers. It was built quickly and the revision process was communicative.',
         id: 'Website-nya membuat kami terlihat lebih profesional di mata pelanggan baru. Pengerjaannya cepat dan revisinya komunikatif.',
+        zh: '这个网站让我们在新顾客眼中显得格外专业与值得信赖。开发推进迅速，修改反馈过程中的沟通也极其顺畅透彻。',
       },
       img: '/img/testimonials/bm-coffee.webp',
     },
     {
       name: 'Fine Co Workingspace',
-      role: { en: 'Owner, Fine Co Workingspace Surabaya', id: 'Pemilik, Fine Co Workingspace Surabaya' },
+      role: { en: 'Owner, Fine Co Workingspace Surabaya', id: 'Pemilik, Fine Co Workingspace Surabaya', zh: 'Fine Co 共享办公（泗水）主理人' },
       quote: {
         en: 'We are not just a cafe, we are also a workspace. IARTY told both stories on one page without it feeling crowded.',
         id: 'Bukan cuma cafe, kami juga ruang kerja. IARTY bisa menyusun dua cerita itu dalam satu halaman tanpa terasa penuh.',
+        zh: '我们不仅是一家咖啡馆，更是一个高效的共享办公空间。IARTY 将这两层故事在一个页面中交代得井井有条，丝毫不显拥挤。',
       },
       img: '/img/testimonials/fine-co-workingspace.webp',
     },
     {
       name: 'Warkop Yangsio',
-      role: { en: 'Owner, Warkop Yangsio Surabaya', id: 'Pemilik, Warkop Yangsio Surabaya' },
+      role: { en: 'Owner, Warkop Yangsio Surabaya', id: 'Pemilik, Warkop Yangsio Surabaya', zh: 'Warkop Yangsio（泗水）主理人' },
       quote: {
         en: 'We wanted this friendly coffee spot to feel open to anyone, and that is exactly what the website shows. Many new customers say it is easy to find.',
         id: 'Kami ingin tempat ngopi yang friendly ini terasa terbuka untuk siapa saja, dan itu yang muncul di websitenya. Pelanggan baru banyak yang bilang gampang dicari.',
+        zh: '我们希望这家亲切的街角咖啡小聚点对每个人都充满开放包容感，而网站精准展现了这一点。许多新客人反映在网上一下就能找到我们。',
       },
       img: '/img/testimonials/warkop-yangsio.webp',
     },
     {
       name: 'Nukcoffee',
-      role: { en: 'Owner, Nukcoffee', id: 'Pemilik, Nukcoffee' },
+      role: { en: 'Owner, Nukcoffee', id: 'Pemilik, Nukcoffee', zh: 'Nukcoffee 主理人' },
       quote: {
         en: 'That warm, at-home feeling was the priority for us, and IARTY understood it without much explanation. A relaxed process with a serious result.',
         id: 'Kesan hangat seperti di rumah jadi hal utama buat kami, dan IARTY paham itu tanpa perlu banyak dijelaskan. Prosesnya santai tapi hasilnya serius.',
+        zh: '像家一样温馨舒适的氛围是我们最看重的特质，IARTY 无需我们过多解释就敏锐地领会了。合作过程轻松愉悦，但最终成品的专业度令人信服。',
       },
       img: '/img/testimonials/nukcoffee.webp',
     },
     {
       name: 'Titik Koma Tenggilis',
-      role: { en: 'Owner, Titik Koma Tenggilis', id: 'Pemilik, Titik Koma Tenggilis' },
+      role: { en: 'Owner, Titik Koma Tenggilis', id: 'Pemilik, Titik Koma Tenggilis', zh: 'Titik Koma Tenggilis 店长' },
       quote: {
         en: 'Our menu and the story behind our brewing process became much easier for customers to read. The IARTY team patiently took in every small detail we wanted.',
         id: 'Menu dan cerita soal proses brewing kami jadi lebih mudah dibaca pelanggan. Tim IARTY sabar menampung detail-detail kecil yang kami mau.',
+        zh: '顾客现在能更清晰地阅读我们的特色菜单和手冲萃取背后的品牌故事。IARTY 团队极其耐心地听取并实现了我们想要的每一个细节。',
       },
       img: '/img/testimonials/titik-koma-tenggilis.webp',
     },
     {
       name: 'Kokkili Cafe',
-      role: { en: 'Owner, Kokkili Cafe', id: 'Pemilik, Kokkili Cafe' },
+      role: { en: 'Owner, Kokkili Cafe', id: 'Pemilik, Kokkili Cafe', zh: 'Kokkili Cafe 主理人' },
       quote: {
         en: 'Our coffee and brunch are presented cleanly, never overdone. The final result is proportionate and looks good at every screen size.',
         id: 'Gambarannya tentang kopi dan brunch kami tampil rapi, tidak berlebihan. Hasil akhirnya proporsional dan enak dilihat di semua ukuran layar.',
+        zh: '我们的精品咖啡与早午餐在网站上呈现得干净利落、恰到好处。整体布局比例非常舒适，在各种不同尺寸的屏幕上都显得优雅精致。',
       },
       img: '/img/testimonials/kokkili-cafe.webp',
     },
     {
       name: 'Djoyo Florist',
-      role: { en: 'Owner, Djoyo Florist', id: 'Pemilik, Djoyo Florist' },
+      role: { en: 'Owner, Djoyo Florist', id: 'Pemilik, Djoyo Florist', zh: 'Djoyo Florist 花艺主理人' },
       quote: {
         en: 'Your website is really useful for displaying my flower decoration business products, thank you.',
         id: 'Websitenya sangat berguna untuk menampilkan produk bisnis dekorasi bunga saya, terima kasih.',
+        zh: '你们搭建的网站在展示我们花艺装饰业务的各类产品上实在太实用了，非常感谢！',
       },
       img: '/img/testimonials/djoyo-florist.webp',
     },

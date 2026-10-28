@@ -97,8 +97,8 @@ export default function Career() {
                     aria-controls={`ct-px-${i}`}
                     aria-label={
                       isOpen
-                        ? t(`Hide highlights for ${c.role.en}`, `Sembunyikan pencapaian ${c.role.id}`)
-                        : t(`See highlights for ${c.role.en}`, `Lihat pencapaian ${c.role.id}`)
+                        ? t(`Hide highlights for ${c.role.en}`, `Sembunyikan pencapaian ${c.role.id}`, `隐藏 ${c.role[lang] || c.role.en} 的成就亮点`)
+                        : t(`See highlights for ${c.role.en}`, `Lihat pencapaian ${c.role.id}`, `查看 ${c.role[lang] || c.role.en} 的成就亮点`)
                     }
                     onClick={() => setOpen(isOpen ? null : i)}
                   >
