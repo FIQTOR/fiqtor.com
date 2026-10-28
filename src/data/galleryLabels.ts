@@ -85,10 +85,13 @@ const bySlug = new Map(GALLERY_CAPTIONS.map((c) => [c.slug, c.label]));
 const slugsByLength = GALLERY_CAPTIONS.map((c) => c.slug).toSorted((a, b) => b.length - a.length);
 
 /** Resolve a caption for a gallery image path. */
-export const galleryLabel = (src: string, lang: 'en' | 'id'): string => {
+export const galleryLabel = (src: string, lang: 'en' | 'id' | 'zh'): string => {
   const file = src.split('/').pop()?.replace(/\.\w+$/, '') ?? '';
   const hit = slugsByLength.find((slug) => file === slug || file.startsWith(slug + '-'));
-  if (hit) return bySlug.get(hit)![lang];
+  if (hit) {
+    const val = bySlug.get(hit);
+    if (val) return (val as Record<string, string>)[lang] || val.en;
+  }
   // Fallback: tidy the file name into "Title Case".
   return file
     .replace(/[-_]+/g, ' ')

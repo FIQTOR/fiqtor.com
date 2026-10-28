@@ -112,53 +112,52 @@ function Section({
    descriptions moved to /contact, where they sit right above the form. */
 function Pricing() {
   const { lang } = useLanguage();
-  const t = (en: string, id: string) => (lang === 'en' ? en : id);
+  const t = (en: string, id: string, zh?: string) => (lang === 'zh' ? zh || en : lang === 'en' ? en : id);
 
   return (
     <Section
       id="services"
-      kick={t('Services & pricing', 'Layanan & harga')}
-      title={t('What we can build together.', 'Apa yang bisa kita bangun.')}
+      kick={t('Services & pricing', 'Layanan & harga', '服务与报价')}
+      title={t('What we can build together.', 'Apa yang bisa kita bangun.', '我们能共同打造的数字化成果。')}
     >
       <div className="prt-wrap rv">
         <table className="prt">
           <caption className="sr">
-            {t('Services and starting prices', 'Layanan dan harga awal')}
+            {t('Services and starting prices', 'Layanan dan harga awal', '服务与起步报价')}
           </caption>
           <thead>
             <tr>
-              <th scope="col">{t('Service', 'Layanan')}</th>
-              <th scope="col">{t('Best for', 'Cocok untuk')}</th>
-              <th scope="col">{t('Starting from', 'Mulai dari')}</th>
+              <th scope="col">{t('Service', 'Layanan', '服务项目')}</th>
+              <th scope="col">{t('Best for', 'Cocok untuk', '适用场景')}</th>
+              <th scope="col">{t('Starting from', 'Mulai dari', '起步价')}</th>
               <th scope="col">
-                <span className="sr">{t('Action', 'Tindakan')}</span>
+                <span className="sr">{t('Action', 'Tindakan', '操作')}</span>
               </th>
             </tr>
           </thead>
           <tbody>
             {S.services.map((s) => (
               <tr key={s.slug} id={`pricing-${s.slug}`}>
-                <th scope="row" data-label={t('Service', 'Layanan')}>
-                  <span className="prt-name">{s.title[lang]}</span>
-                  <span className="prt-meta">{s.meta[lang]}</span>
+                <th scope="row" data-label={t('Service', 'Layanan', '服务项目')}>
+                  <span className="prt-name">{s.title[lang] || s.title.en}</span>
+                  <span className="prt-meta">{s.meta[lang] || s.meta.en}</span>
                 </th>
-                <td data-label={t('Best for', 'Cocok untuk')} className="prt-fit">
-                  {s.fitsFor[lang]}
+                <td data-label={t('Best for', 'Cocok untuk', '适用场景')} className="prt-fit">
+                  {s.fitsFor[lang] || s.fitsFor.en}
                 </td>
-                <td data-label={t('Starting from', 'Mulai dari')} className="prt-price">
-                  {s.from[lang]}
+                <td data-label={t('Starting from', 'Mulai dari', '起步价')} className="prt-price">
+                  {s.from[lang] || s.from.en}
                 </td>
-                <td data-label={t('Action', 'Tindakan')} className="prt-act">
-                  <a className="sv-cta" href={waLink(lang, s.title[lang])} target="_blank" rel="noopener">
-                    {t('Ask about this', 'Tanya layanan ini')}
-                    <span className="sr"> {t('(opens WhatsApp)', '(membuka WhatsApp)')}</span>
+                <td className="prt-cta">
+                  <a className="sv-cta" href={waLink(lang, s.title[lang] || s.title.en)} target="_blank" rel="noopener">
+                    {t('Discuss', 'Konsultasi', '咨询')} →
                   </a>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
-        <p className="prt-note">{S.budgetNote[lang]}</p>
+        <p className="prt-note">{S.budgetNote[lang] || S.budgetNote.en}</p>
       </div>
     </Section>
   );

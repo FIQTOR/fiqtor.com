@@ -36,8 +36,8 @@ import { CERT_GROUPS, FEATURED_CERTS, MERGED_CERT_GROUPS } from './certGroups';
 import { galleryLabel } from './galleryLabels';
 import type { IconName } from '../lib/utils';
 
-export type Language = 'en' | 'id';
-export type LocalizedText = Record<Language, string>;
+export type Language = 'en' | 'id' | 'zh';
+export type LocalizedText = { en: string; id: string; zh?: string };
 
 /**
  * How many testimonials are visible on the homepage *before* the rail is
@@ -280,19 +280,19 @@ const roleFor = (p: RawProject): LocalizedText => {
   const stack = [primary, ...extra].join(' · ');
   const kind =
     p.category === 'Creative'
-      ? { en: 'Creative build', id: 'Karya kreatif' }
+      ? { en: 'Creative build', id: 'Karya kreatif', zh: '创意开发' }
       : p.category === 'Template'
-        ? { en: 'Template', id: 'Template' }
+        ? { en: 'Template', id: 'Template', zh: '网站模板' }
         : p.category === 'Landing Page'
-          ? { en: 'Landing page', id: 'Landing page' }
+          ? { en: 'Landing page', id: 'Landing page', zh: '品牌落地页' }
           : p.category === 'E-Commerce'
-            ? { en: 'E-commerce', id: 'E-commerce' }
+            ? { en: 'E-commerce', id: 'E-commerce', zh: '独立电商' }
             : p.category === 'Business System'
-              ? { en: 'Business system', id: 'Sistem bisnis' }
+              ? { en: 'Business system', id: 'Sistem bisnis', zh: '企业系统' }
               : p.category === 'AI & Automation'
-                ? { en: 'AI & automation', id: 'AI & otomatisasi' }
-                : { en: 'Web app', id: 'Aplikasi web' };
-  return { en: `${kind.en} · ${stack}`, id: `${kind.id} · ${stack}` };
+                ? { en: 'AI & automation', id: 'AI & otomatisasi', zh: 'AI与自动化' }
+                : { en: 'Web app', id: 'Aplikasi web', zh: 'Web 应用' };
+  return { en: `${kind.en} · ${stack}`, id: `${kind.id} · ${stack}`, zh: `${kind.zh} · ${stack}` };
 };
 
 /**
@@ -387,25 +387,25 @@ const issuerFor = (title: string, tags: string[], subtitle?: string): string =>
  * any certificate that is not grouped yet.
  */
 const kindFor = (id: string, title: string, merged: boolean): LocalizedText => {
-  if (merged) return { en: 'Quiz bundle', id: 'Paket kuis' };
+  if (merged) return { en: 'Quiz bundle', id: 'Paket kuis', zh: '小测题库合辑' };
   const group = CERT_GROUPS.find((g) => g.ids.includes(id));
   switch (group?.id) {
     case 'competition':
-      return { en: 'Competition', id: 'Kompetisi' };
+      return { en: 'Competition', id: 'Kompetisi', zh: '竞赛奖项' };
     case 'national':
       return /internship|praktik kerja/i.test(title)
-        ? { en: 'Internship', id: 'Magang' }
-        : { en: 'National certification', id: 'Sertifikasi nasional' };
+        ? { en: 'Internship', id: 'Magang', zh: '企业实习' }
+        : { en: 'National certification', id: 'Sertifikasi nasional', zh: '国家职业资质' };
     case 'course':
-      return { en: 'Course', id: 'Kursus' };
+      return { en: 'Course', id: 'Kursus', zh: '专业课程' };
     case 'language':
-      return { en: 'Language & soft skills', id: 'Bahasa & soft skill' };
+      return { en: 'Language & soft skills', id: 'Bahasa & soft skill', zh: '语言与软技能' };
     case 'event':
-      return /webinar/i.test(title) ? { en: 'Webinar', id: 'Webinar' } : { en: 'Event', id: 'Event' };
+      return /webinar/i.test(title) ? { en: 'Webinar', id: 'Webinar', zh: '线上研讨会' } : { en: 'Event', id: 'Event', zh: '技术会议/活动' };
     default:
       return /competition|champion|lks|airofest/i.test(title)
-        ? { en: 'Competition', id: 'Kompetisi' }
-        : { en: 'Certificate', id: 'Sertifikat' };
+        ? { en: 'Competition', id: 'Kompetisi', zh: '竞赛奖项' }
+        : { en: 'Certificate', id: 'Sertifikat', zh: '资格证书' };
   }
 };
 
@@ -725,135 +725,157 @@ export const S: SiteConfig = {
   services: [
     {
       slug: 'landing-page',
-      title: { en: 'Landing Page & SMB Site', id: 'Website UMKM & Landing Page' },
+      title: { en: 'Landing Page & SMB Site', id: 'Website UMKM & Landing Page', zh: '企业落地页与中小微官网' },
       desc: {
         en: 'Instant, conversion-focused websites for small businesses, local cafés, and products. Clean layout, fast loading, Google Maps, and direct WhatsApp booking ready to launch in days.',
         id: 'Website instan fokus konversi untuk usaha kecil, kafe/resto lokal, dan produk tunggal. Tampilan bersih, cepat dibuka, peta Google Maps, dan tombol WhatsApp siap meluncur cepat.',
+        zh: '面向小微企业、咖啡馆与单品的极速转化落地页。界面清爽、极速加载、集成谷歌地图与 WhatsApp 直达咨询，数日内即可交付。',
       },
       meta: {
         en: 'Instant launch · Mobile-first · Direct WhatsApp CTA',
         id: 'Cepat tayang · Nyaman di HP · Konversi langsung ke WhatsApp',
+        zh: '快速上线 · 移动端优先 · WhatsApp直达转化',
       },
       fitsFor: {
         en: 'Small businesses, local shops, events, and single products needing a fast online presence.',
         id: 'Usaha kecil, toko/kafe lokal, event, dan produk tunggal yang butuh media promosi siap pakai.',
+        zh: '需要快速建立官方网络形象的小型企业、线下门店、品牌活动或单一产品。',
       },
-      from: { en: 'From Rp 800,000', id: 'Mulai Rp 800.000' },
+      from: { en: 'From Rp 800,000', id: 'Mulai Rp 800.000', zh: '起价 Rp 800.000' },
     },
     {
       slug: 'app-development',
-      title: { en: 'Business Site & Company Profile', id: 'Website Bisnis & Company Profile' },
+      title: { en: 'Business Site & Company Profile', id: 'Website Bisnis & Company Profile', zh: '企业官网与品牌形象站' },
       desc: {
         en: 'Professional multi-page websites and custom web applications that establish brand credibility. Fast, responsive, structured catalog or portfolio, and built for search engine visibility.',
         id: 'Website multi-halaman profesional dan aplikasi web kustom untuk membangun kredibilitas bisnis. Cepat, responsif, katalog layanan rapi, dan teroptimasi SEO Google.',
+        zh: '专为提升企业公信力打造的专业多页面官网与定制 Web 应用。响应迅速、产品服务目录条理分明、深度优化谷歌 SEO 排名。',
       },
       meta: {
         en: 'Clean architecture · Google SEO ready · High credibility',
         id: 'Arsitektur rapi · Siap SEO Google · Kredibilitas tinggi',
+        zh: '架构整洁 · 谷歌SEO优化 · 高信任度',
       },
       fitsFor: {
         en: 'Companies, consultants, clinics, and businesses that need strong credibility with multi-page structure.',
         id: 'Perusahaan, konsultan, klinik, dan bisnis yang butuh kredibilitas tinggi dengan profil multi-halaman.',
+        zh: '需要完整多页面展现专业实力的中大型企业、咨询机构、诊所与服务商。',
       },
-      from: { en: 'From Rp 1,500,000', id: 'Mulai Rp 1.500.000' },
+      from: { en: 'From Rp 1,500,000', id: 'Mulai Rp 1.500.000', zh: '起价 Rp 1.500.000' },
     },
     {
       slug: 'ecommerce',
-      title: { en: 'E-Commerce & Online Store', id: 'Toko Online & E-Commerce D2C' },
+      title: { en: 'E-Commerce & Online Store', id: 'Toko Online & E-Commerce D2C', zh: '独立电商与品牌网店' },
       desc: {
         en: 'Direct-to-consumer online stores without marketplace commission fees. Integrated with payment gateways (QRIS, VA, e-Wallet), automated courier shipping calculator, and instant WhatsApp order notifications.',
         id: 'Toko online mandiri tanpa potongan komisi marketplace. Dilengkapi payment gateway otomatis (QRIS, VA, e-Wallet), cek ongkir kurir nasional otomatis, dan notifikasi order instan via WhatsApp.',
+        zh: '免平台抽佣的品牌独立网店。原生集成印尼在线支付网关（QRIS、虚拟账户、电子钱包）、全国快递运费自动计算与 WhatsApp 实时订单提醒。',
       },
       meta: {
         en: 'Zero marketplace fees · Auto shipping calculator · QRIS & VA',
         id: 'Bebas komisi · Cek ongkir otomatis · QRIS & VA siap pakai',
+        zh: '零平台抽成 · 自动运费计算 · 支持QRIS与网银',
       },
       fitsFor: {
         en: 'Retail brands, fashion, F&B, and distributors wanting direct online sales and full customer ownership.',
         id: 'Brand retail, fashion, F&B, dan distributor yang ingin berjualan langsung ke pembeli.',
+        zh: '希望完全掌握客户数据并直接触达消费者的零售品牌、服装、餐饮与分销商。',
       },
-      from: { en: 'From Rp 2,900,000', id: 'Mulai Rp 2.900.000' },
+      from: { en: 'From Rp 2,900,000', id: 'Mulai Rp 2.900.000', zh: '起价 Rp 2.900.000' },
     },
     {
       slug: 'modular-system',
-      title: { en: 'Web App & Modular System', id: 'Aplikasi Web & Sistem Modular' },
+      title: { en: 'Web App & Modular System', id: 'Aplikasi Web & Sistem Modular', zh: 'Web 应用与模块化业务系统' },
       desc: {
         en: 'Custom modular web systems built around your operational workflows — start with core modules like POS, inventory, or CRM, and expand as your business grows.',
         id: 'Aplikasi web modular kustom yang dirancang sesuai operasional bisnis Anda — mulai dari 2 modul inti seperti Kasir, Stok, atau CRM, lalu kembangkan saat bisnis tumbuh.',
+        zh: '根据真实业务流程定制开发的模块化系统——支持从收银 POS、进销存或 CRM 等核心模块起步，伴随企业规模灵活扩展。',
       },
       meta: {
         en: 'Modular architecture · Role-based access · Cloud database',
         id: 'Arsitektur modular · Hak akses staf aman · Database cloud',
+        zh: '模块化架构 · 员工权限分级 · 云端数据库',
       },
       fitsFor: {
         en: 'Growing operations seeking to automate cashier, inventory, client logs, or internal workflows step by step.',
         id: 'Bisnis berkembang yang ingin mengotomatiskan kasir, stok gudang, CRM, atau operasional internal secara bertahap.',
+        zh: '需要循序渐进实现收银、库房、客户档案或内部流程数字化的成长型企业。',
       },
-      from: { en: 'From Rp 3,500,000', id: 'Mulai Rp 3.500.000' },
+      from: { en: 'From Rp 3,500,000', id: 'Mulai Rp 3.500.000', zh: '起价 Rp 3.500.000' },
     },
     {
       slug: 'ai-integration',
-      title: { en: 'AI Integration & Smart Assistant', id: 'Integrasi AI & Asisten Cerdas' },
+      title: { en: 'AI Integration & Smart Assistant', id: 'Integrasi AI & Asisten Cerdas', zh: 'AI 深度集成与智能助手' },
       desc: {
         en: 'Embed smart LLM assistants into your website or operations: 24/7 WhatsApp customer service, custom document/knowledge-base RAG, and automated workflow pipelines.',
         id: 'Sematkan asisten LLM cerdas ke web atau sistem operasional Anda: customer service WhatsApp 24/7, knowledge base RAG berbasis data internal, dan otomasi alur kerja.',
+        zh: '为您的网站或内部系统注入大语言模型能力：24/7 全天候 WhatsApp 智能客服、私有企业知识库 RAG 检索问答与自动化业务管线。',
       },
       meta: {
         en: '24/7 Smart RAG · WhatsApp webhook · Zero hallucination guards',
         id: 'RAG 24/7 akurat · Integrasi webhook WhatsApp · Guardrail anti-halusinasi',
+        zh: '24/7精准RAG · WhatsApp对接 · 防幻觉护栏',
       },
       fitsFor: {
         en: 'Businesses handling high chat volumes or wanting AI-driven automation over internal documents.',
         id: 'Bisnis yang kewalahan melayani chat manual atau ingin mengotomatiskan analisis dokumen internal dengan AI.',
+        zh: '面临繁重客户咨询压力，或希望借助 AI 对企业内部资料进行自动化知识处理的组织。',
       },
-      from: { en: 'From Rp 4,900,000', id: 'Mulai Rp 4.900.000' },
+      from: { en: 'From Rp 4,900,000', id: 'Mulai Rp 4.900.000', zh: '起价 Rp 4.900.000' },
     },
     {
       slug: 'cloud-maintenance',
-      title: { en: 'Managed Cloud & Maintenance', id: 'Managed Cloud & Pemeliharaan' },
+      title: { en: 'Managed Cloud & Maintenance', id: 'Managed Cloud & Pemeliharaan', zh: '托管云服务与系统运维' },
       desc: {
         en: 'Proactive server uptime monitoring, automated database backups, security patches, bug fixes, and continuous technical support so your software stays fast and reliable.',
         id: 'Pemantauan uptime server 24/7, auto-backup database berkala, pembaruan keamanan, perbaikan bug, dan jaminan operasional sistem bebas gangguan.',
+        zh: '全天候 24/7 服务器状态监控、云端数据库自动异地备份、安全漏洞热补丁与专项技术支持，保障系统持久平稳运转。',
       },
       meta: {
         en: '24/7 Uptime · Auto backup · Dedicated WhatsApp support',
         id: 'Monitoring 24/7 · Backup otomatis · Jalur prioritas WhatsApp',
+        zh: '全天候监控 · 自动备份 · WhatsApp专属支持通道',
       },
       fitsFor: {
         en: 'Businesses with active systems needing dedicated maintenance, server management, and peace of mind.',
         id: 'Bisnis dengan sistem aktif yang membutuhkan jaminan operasional server dan pemeliharaan rutin.',
+        zh: '已有在线业务系统且需要专业服务器托管运维、高可用保障的企业与团队。',
       },
-      from: { en: 'From Rp 750,000 / mo', id: 'Mulai Rp 750.000 / bln' },
+      from: { en: 'From Rp 750,000 / mo', id: 'Mulai Rp 750.000 / bln', zh: '起价 Rp 750.000 / 月' },
     },
   ],
 
   process: [
     {
-      title: { en: 'Talk', id: 'Ngobrol' },
+      title: { en: 'Talk', id: 'Ngobrol', zh: '沟通' },
       desc: {
         en: 'Tell me the idea and the goal. We turn it into clear, written requirements.',
         id: 'Ceritakan ide dan tujuannya. Kita ubah menjadi kebutuhan yang jelas dan tertulis.',
+        zh: '倾听您的构想与业务目标，将其转化为清晰明确的文档化需求。',
       },
     },
     {
-      title: { en: 'Plan', id: 'Rencana' },
+      title: { en: 'Plan', id: 'Rencana', zh: '规划' },
       desc: {
         en: 'Scope, timeline, and budget are agreed before a single line is written.',
         id: 'Ruang lingkup, waktu, dan biaya disepakati sebelum satu baris kode ditulis.',
+        zh: '在写下第一行代码前，共同敲定交付范围、开发周期与透明预算。',
       },
     },
     {
-      title: { en: 'Build', id: 'Bangun' },
+      title: { en: 'Build', id: 'Bangun', zh: '开发' },
       desc: {
         en: 'Work happens in visible increments — you can review progress and leave feedback.',
         id: 'Pengerjaan bertahap dan terlihat — Anda bisa meninjau progres dan memberi masukan.',
+        zh: '采用可见的敏捷递增方式迭代开发，您可以实时查验阶段性成果并反馈。',
       },
     },
     {
-      title: { en: 'Ship', id: 'Rilis' },
+      title: { en: 'Ship', id: 'Rilis', zh: '上线' },
       desc: {
-        en: 'Launch, hand-over, and support afterwards. Nothing is dropped after deploy.',
-        id: 'Peluncuran, serah terima, dan dukungan setelahnya. Tidak ada yang ditinggal setelah deploy.',
+        en: 'Production deployment, domain setup, analytics, and handoff so you own the code.',
+        id: 'Deploy produksi, setup domain, analitik, dan serah terima sehingga kode sepenuhnya milik Anda.',
+        zh: '生产环境部署、域名绑定、数据分析集成与完整源码无保留交付。',
       },
     },
   ],
@@ -1095,33 +1117,34 @@ export const S: SiteConfig = {
   ],
 
   contactTypes: [
-    { en: 'Web App', id: 'Aplikasi Web' },
-    { en: 'AI Integration', id: 'Integrasi AI' },
-    { en: 'Business System', id: 'Sistem Bisnis' },
-    { en: 'Automation', id: 'Otomatisasi' },
-    { en: 'Landing Page', id: 'Landing Page' },
-    { en: 'Other', id: 'Lainnya' },
+    { en: 'Web App', id: 'Aplikasi Web', zh: 'Web 应用' },
+    { en: 'AI Integration', id: 'Integrasi AI', zh: 'AI 深度集成' },
+    { en: 'Business System', id: 'Sistem Bisnis', zh: '企业系统' },
+    { en: 'Automation', id: 'Otomatisasi', zh: '工作流自动化' },
+    { en: 'Landing Page', id: 'Landing Page', zh: '品牌落地页' },
+    { en: 'Other', id: 'Lainnya', zh: '其他需求' },
   ],
   /*
    * Budget bands mirror the published price ladder (Landing Page 800rb · Business
    * Site 1,5jt · Modular System 3,5jt).
    */
   budgets: [
-    { en: '< Rp 1jt', id: '< Rp 1jt' },
-    { en: 'Rp 1jt – 3jt', id: 'Rp 1jt – 3jt' },
-    { en: 'Rp 3,5jt – 7jt', id: 'Rp 3,5jt – 7jt' },
-    { en: '> Rp 7jt', id: '> Rp 7jt' },
-    { en: 'Not sure yet', id: 'Belum tahu' },
+    { en: '< Rp 1jt', id: '< Rp 1jt', zh: '< Rp 100万' },
+    { en: 'Rp 1jt – 3jt', id: 'Rp 1jt – 3jt', zh: 'Rp 100万 – 300万' },
+    { en: 'Rp 3,5jt – 7jt', id: 'Rp 3,5jt – 7jt', zh: 'Rp 350万 – 700万' },
+    { en: '> Rp 7jt', id: '> Rp 7jt', zh: '> Rp 700万' },
+    { en: 'Not sure yet', id: 'Belum tahu', zh: '暂不确定' },
   ],
   timelines: [
-    { en: 'ASAP', id: 'Secepatnya' },
-    { en: '2 – 4 weeks', id: '2 – 4 minggu' },
-    { en: '1 – 2 months', id: '1 – 2 bulan' },
-    { en: 'Flexible', id: 'Fleksibel' },
+    { en: 'ASAP', id: 'Secepatnya', zh: '越快越好' },
+    { en: '2 – 4 weeks', id: '2 – 4 minggu', zh: '2 – 4 周' },
+    { en: '1 – 2 months', id: '1 – 2 bulan', zh: '1 – 2 个月' },
+    { en: 'Flexible', id: 'Fleksibel', zh: '时间灵活' },
   ],
   budgetNote: {
     en: 'Prices are starting points, not fixed quotes — the final figure follows your scope. Tell me your budget and I will say honestly whether it fits.',
     id: 'Harga di atas adalah titik awal, bukan harga mati — angka akhirnya mengikuti lingkup pekerjaan. Sebutkan budget Anda dan saya akan bilang jujur apakah masuk atau tidak.',
+    zh: '上述价格为初始起步参考价，最终报价取决于具体项目范围。请告诉我您的预算预期，我将坦诚评估可行性。',
   },
 };
 
@@ -1140,17 +1163,23 @@ export const S: SiteConfig = {
  * `topic` is the service title (or any short label) shown to the owner, so a
  * reply can be answered with the right context from the first second.
  */
-export const waLink = (lang: 'en' | 'id', topic?: string): string => {
+export const waLink = (lang: Language, topic?: string): string => {
   const head =
-    lang === 'en'
-      ? `Hi ${S.name}, I'd like to discuss a project`
-      : `Halo ${S.name}, saya mau diskusi proyek`;
+    lang === 'zh'
+      ? `你好 ${S.name}，我想咨询一个项目合作`
+      : lang === 'id'
+      ? `Halo ${S.name}, saya mau diskusi proyek`
+      : `Hi ${S.name}, I'd like to discuss a project`;
   const body = topic
-    ? lang === 'en'
-      ? `${head} — ${topic}. Here is what I have in mind:`
-      : `${head} — ${topic}. Kira-kira begini kebutuhannya:`
-    : lang === 'en'
-      ? `${head}. Here is what I have in mind:`
-      : `${head}. Kira-kira begini kebutuhannya:`;
+    ? lang === 'zh'
+      ? `${head} — ${topic}。我的具体需求如下：`
+      : lang === 'id'
+      ? `${head} — ${topic}. Kira-kira begini kebutuhannya:`
+      : `${head} — ${topic}. Here is what I have in mind:`
+    : lang === 'zh'
+      ? `${head}。我的具体需求如下：`
+      : lang === 'id'
+      ? `${head}. Kira-kira begini kebutuhannya:`
+      : `${head}. Here is what I have in mind:`;
   return `https://wa.me/${S.wa}?text=${encodeURIComponent(body)}`;
 };

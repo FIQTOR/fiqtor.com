@@ -163,7 +163,13 @@ export function CatalogProvider({ children }: { children: ReactNode }) {
    Language
    --------------------------------------------------------------------- */
 
-export type Language = 'en' | 'id';
+export type Language = 'en' | 'id' | 'zh';
+
+export const tr = (lang: Language, en: string, id: string, zh?: string): string => {
+  if (lang === 'zh') return zh || en;
+  if (lang === 'id') return id;
+  return en;
+};
 
 interface LangCtx {
   lang: Language;
@@ -176,23 +182,25 @@ const LangContext = createContext<LangCtx | null>(null);
 const LANG_KEY = 'fiqtor.lang';
 
 const readLang = (): Language => {
-  // 1. `?lang=id` — the target of the hreflang alternate links, so a crawler
-  //    or a shared link opens the Indonesian version deterministically.
+  // 1. `?lang=id` or `?lang=zh`
   try {
     const q = new URLSearchParams(location.search).get('lang');
-    if (q === 'en' || q === 'id') return q;
+    if (q === 'en' || q === 'id' || q === 'zh') return q;
   } catch {
     /* ignore */
   }
   // 2. The visitor's explicit choice.
   try {
     const saved = localStorage.getItem(LANG_KEY);
-    if (saved === 'en' || saved === 'id') return saved;
+    if (saved === 'en' || saved === 'id' || saved === 'zh') return saved as Language;
   } catch {
     /* ignore */
   }
   // 3. Browser language, then English.
-  if (typeof navigator !== 'undefined' && /^id\b/i.test(navigator.language)) return 'id';
+  if (typeof navigator !== 'undefined') {
+    if (/^zh\b/i.test(navigator.language)) return 'zh';
+    if (/^id\b/i.test(navigator.language)) return 'id';
+  }
   return 'en';
 };
 
@@ -248,7 +256,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     try {
       const u = new URL(window.location.href);
       const q = u.searchParams.get('lang');
-      if (q === 'en' || q === 'id') return;
+      if (q === 'en' || q === 'id' || q === 'zh') return;
       if (!u.searchParams.has('lang')) return;
       u.searchParams.delete('lang');
       history.replaceState(history.state, '', u.pathname + (u.search || '') + u.hash);
@@ -290,7 +298,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname, location.search, location.hash]);
 
-  const toggle = useCallback(() => setLang(lang === 'en' ? 'id' : 'en'), [lang, setLang]);
+  const toggle = useCallback(() => setLang(lang === 'en' ? 'id' : lang === 'id' ? 'zh' : 'en'), [lang, setLang]);
   const value = useMemo(() => ({ lang, setLang, toggle }), [lang, setLang, toggle]);
   return <LangContext.Provider value={value}>{children}</LangContext.Provider>;
 }

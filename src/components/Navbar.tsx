@@ -11,25 +11,28 @@ import { Icon, type IconName } from '../lib/utils.tsx';
  * compact icon button instead of a text link (Linktree sits beside the theme
  * switch so it reads as "all my profiles" rather than a sixth page).
  */
-const MENU: Array<{ to: string; label: { en: string; id: string }; icon?: IconName }> = [
-  { to: '/', label: { en: 'Home', id: 'Beranda' } },
-  { to: '/projects', label: { en: 'Projects', id: 'Proyek' } },
-  { to: '/career', label: { en: 'Career', id: 'Karier' } },
-  { to: '/certificates', label: { en: 'Certificates', id: 'Sertifikat' } },
-  { to: '/contact', label: { en: 'Contact', id: 'Kontak' } },
-  { to: '/linktree', label: { en: 'Linktree', id: 'Linktree' }, icon: 'linktree' },
+const MENU: Array<{ to: string; label: { en: string; id: string; zh?: string }; icon?: IconName }> = [
+  { to: '/', label: { en: 'Home', id: 'Beranda', zh: '首页' } },
+  { to: '/projects', label: { en: 'Projects', id: 'Proyek', zh: '项目' } },
+  { to: '/career', label: { en: 'Career', id: 'Karier', zh: '经历' } },
+  { to: '/certificates', label: { en: 'Certificates', id: 'Sertifikat', zh: '证书' } },
+  { to: '/contact', label: { en: 'Contact', id: 'Kontak', zh: '联系' } },
+  { to: '/linktree', label: { en: 'Linktree', id: 'Linktree', zh: '社交链接' }, icon: 'linktree' },
 ];
 
-/** Two-state language switch (EN / ID). */
+/** Three-state language switch (EN / ID / 中文). */
 export function LanguageSwitch() {
   const { lang, setLang } = useLanguage();
   return (
-    <div className="lang-sw" role="group" aria-label="Language / Bahasa">
+    <div className="lang-sw" role="group" aria-label="Language / Bahasa / 语言">
       <button type="button" className={lang === 'en' ? 'on' : ''} aria-pressed={lang === 'en'} onClick={() => setLang('en')}>
         EN
       </button>
       <button type="button" className={lang === 'id' ? 'on' : ''} aria-pressed={lang === 'id'} onClick={() => setLang('id')}>
         ID
+      </button>
+      <button type="button" className={lang === 'zh' ? 'on' : ''} aria-pressed={lang === 'zh'} onClick={() => setLang('zh')}>
+        中文
       </button>
     </div>
   );
@@ -208,7 +211,7 @@ export function Navbar() {
               onPointerEnter={(e) => movePill(e.currentTarget)}
               onFocus={(e) => movePill(e.currentTarget)}
             >
-              {m.label[lang]}
+              {m.label[lang] || m.label.en}
             </NavLink>
           ))}
         </nav>
@@ -218,8 +221,8 @@ export function Navbar() {
               key={m.to}
               to={m.to}
               className={({ isActive }) => 'nav-ico' + (isActive ? ' on' : '')}
-              aria-label={m.label[lang]}
-              title={m.label[lang]}
+              aria-label={m.label[lang] || m.label.en}
+              title={m.label[lang] || m.label.en}
             >
               <Icon name={m.icon as IconName} size={18} />
             </NavLink>
@@ -227,7 +230,7 @@ export function Navbar() {
           <LanguageSwitch />
           <ThemeSwitch />
           <Link className="nav-cta" to="/contact">
-            {lang === 'en' ? "Let's talk" : 'Hubungi saya'}
+            {lang === 'zh' ? '联系合作' : lang === 'id' ? 'Hubungi saya' : "Let's talk"}
           </Link>
           <button
             className={'burger' + (open ? ' open' : '')}
@@ -257,10 +260,10 @@ export function Navbar() {
                 <Icon name={m.icon} size={26} />
               </span>
             )}
-            <span className="mm-t">{m.label[lang]}</span>
+            <span className="mm-t">{m.label[lang] || m.label.en}</span>
             {/* A short "all profiles" hint: on mobile the icon-only Linktree
                 button is hidden, so the drawer entry has to explain itself. */}
-            {m.icon && <small className="mm-hint">{lang === 'en' ? 'all profiles' : 'semua profil'}</small>}
+            {m.icon && <small className="mm-hint">{lang === 'zh' ? '所有主页' : lang === 'id' ? 'semua profil' : 'all profiles'}</small>}
           </NavLink>
         ))}
         {/* The drawer covers the navbar, so it carries its own controls. */}
@@ -268,7 +271,7 @@ export function Navbar() {
           <LanguageSwitch />
           <ThemeSwitch compact />
           <Link className="nav-cta" to="/contact" tabIndex={open ? 0 : -1} onClick={() => setMenuOpen(false)}>
-            {lang === 'en' ? "Let's talk" : 'Hubungi saya'}
+            {lang === 'zh' ? '联系合作' : lang === 'id' ? 'Hubungi saya' : "Let's talk"}
           </Link>
         </div>
       </div>

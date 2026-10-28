@@ -21,7 +21,7 @@ export default function Contact() {
   const { lang } = useLanguage();
   const { copy } = useUI();
   const clock = useLocalClock(S.tz, S.tzLabel);
-  const t = useCallback((en: string, id: string) => (lang === 'en' ? en : id), [lang]);
+  const t = useCallback((en: string, id: string, zh?: string) => (lang === 'zh' ? zh || en : lang === 'en' ? en : id), [lang]);
 
   /* ---------- form state ---------- */
   const [name, setName] = useState('');
@@ -412,31 +412,31 @@ export default function Contact() {
               <div className="opts">
                 {S.contactTypes.map((o) => (
                   <button key={o.en} type="button" aria-pressed={type === o.en} onClick={() => setType(o.en)}>
-                    {o[lang]}
+                    {o[lang] || o.en}
                   </button>
                 ))}
               </div>
             </div>
             <div role="group" aria-labelledby="l2">
               <span className="lbl" id="l2">
-                {t('Budget estimate', 'Perkiraan budget')} <em>({t('optional', 'opsional')})</em>
+                {t('Budget estimate', 'Perkiraan budget', '预算预估')} <em>({t('optional', 'opsional', '选填')})</em>
               </span>
               <div className="opts">
                 {S.budgets.map((o) => (
-                  <button key={o.en} type="button" aria-pressed={budget === o[lang]} onClick={() => setBudget(budget === o[lang] ? '' : o[lang])}>
-                    {o[lang]}
+                  <button key={o.en} type="button" aria-pressed={budget === (o[lang] || o.en)} onClick={() => setBudget(budget === (o[lang] || o.en) ? '' : (o[lang] || o.en))}>
+                    {o[lang] || o.en}
                   </button>
                 ))}
               </div>
             </div>
             <div role="group" aria-labelledby="l3">
               <span className="lbl" id="l3">
-                {t('Timeline', 'Target waktu')} <em>({t('optional', 'opsional')})</em>
+                {t('Timeline', 'Target waktu', '期望周期')} <em>({t('optional', 'opsional', '选填')})</em>
               </span>
               <div className="opts">
                 {S.timelines.map((o) => (
-                  <button key={o.en} type="button" aria-pressed={timeline === o[lang]} onClick={() => setTimeline(timeline === o[lang] ? '' : o[lang])}>
-                    {o[lang]}
+                  <button key={o.en} type="button" aria-pressed={timeline === (o[lang] || o.en)} onClick={() => setTimeline(timeline === (o[lang] || o.en) ? '' : (o[lang] || o.en))}>
+                    {o[lang] || o.en}
                   </button>
                 ))}
               </div>

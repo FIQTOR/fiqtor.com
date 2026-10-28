@@ -117,9 +117,10 @@ const FALLBACK: [RegExp, { en: string; id: string }][] = [
   ],
 ];
 
-const localAnswer = (q: string, lang: 'en' | 'id'): string => {
+const localAnswer = (q: string, lang: 'en' | 'id' | 'zh'): string => {
   const hit = FALLBACK.find(([re]) => re.test(q));
-  if (hit) return hit[1][lang];
+  if (hit) return (hit[1] as Record<string, string>)[lang] || hit[1].en;
+  if (lang === 'zh') return `该问题建议直接与我沟通更高效 — WhatsApp +${S.wa} 或发送邮件至 ${S.email}。`;
   return lang === 'en'
     ? `That one is quicker to answer directly — WhatsApp +${S.wa} or email ${S.email}.`
     : `Pertanyaan itu lebih cepat dijawab langsung — WhatsApp +${S.wa} atau email ${S.email}.`;

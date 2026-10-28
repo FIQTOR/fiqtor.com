@@ -25,14 +25,16 @@ const MONTHS_ID = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep'
  * "Jan 2025"). `id` gets the localized short month; anything unparsable is
  * returned untouched.
  */
-export const formatPublished = (raw: string, lang: 'en' | 'id'): string => {
+export const formatPublished = (raw: string, lang: 'en' | 'id' | 'zh'): string => {
   if (lang === 'en') return raw;
   const m = raw.match(/^([A-Za-z]{3})[a-z]*\s+(\d{4})$/);
   if (!m) return raw;
   const i = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'].indexOf(
     m[1].toLowerCase(),
   );
-  return i === -1 ? raw : `${MONTHS_ID[i]} ${m[2]}`;
+  if (i === -1) return raw;
+  if (lang === 'zh') return `${m[2]}年 ${i + 1}月`;
+  return `${MONTHS_ID[i]} ${m[2]}`;
 };
 
 export const pad = (n: number): string => String(n).padStart(2, '0');

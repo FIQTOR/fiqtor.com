@@ -31,7 +31,7 @@ export function PageHeader({
 
 type Item = (Project | Cert) & { tags: { en: string; id: string }[]; skills?: string[] };
 
-const nameOf = (x: Project | Cert, lang: 'en' | 'id') => ('title' in x ? x.title[lang] : x.name);
+const nameOf = (x: Project | Cert, lang: Language) => ('title' in x ? (x.title[lang] || x.title.en) : x.name);
 
 /**
  * Filterable gallery for projects: category chips + free-text search.
@@ -41,17 +41,17 @@ export function FilterGallery<T extends Item>({ list, kind }: { list: T[]; kind:
   const [q, setQ] = useState('');
   const t = (en: string, id: string) => (lang === 'en' ? en : id);
 
-  /** Tag list in BOTH languages, so the active filter survives a language switch. */
+  /** Tag list in all languages, so the active filter survives a language switch. */
   const tagOptions = useMemo(() => {
-    const make = (l: 'en' | 'id') => {
+    const make = (l: Language) => {
       const all = list.flatMap((x) =>
-        'category' in x ? [x.category as string] : x.tags.map((tg) => tg[l]),
+        'category' in x ? [x.category as string] : x.tags.map((tg) => tg[l] || tg.en),
       );
       return ['All', ...Array.from(new Set(all))];
     };
-    return { en: make('en'), id: make('id') };
+    return { en: make('en'), id: make('id'), zh: make('zh') };
   }, [list]);
-  const tags = tagOptions[lang];
+  const tags = tagOptions[lang] || tagOptions.en;
 
   // Persist the chosen filter across language switches by remembering its slot.
   const [tagIdx, setTagIdx] = useState(0);

@@ -14,21 +14,19 @@ import { useLanguage } from '../lib/catalog';
  */
 export function ServiceList({ anchor }: { anchor?: string }) {
   const { lang } = useLanguage();
-  const t = (en: string, idn: string) => (lang === 'en' ? en : idn);
+  const t = (en: string, idn: string, zh?: string) => (lang === 'zh' ? zh || en : lang === 'en' ? en : idn);
 
   return (
     <div className="svcv rv" id={anchor}>
       {S.services.map((s) => (
         <section className="svc" key={s.slug} aria-labelledby={`svc-${s.slug}`}>
-          <h3 id={`svc-${s.slug}`}>{s.title[lang]}</h3>
-          <p className="svc-desc">{s.desc[lang]}</p>
-          <p className="svc-meta">{s.meta[lang]}</p>
-          <div className="svc-foot">
-            <b>{s.from[lang]}</b>
-            <a href="#contact-form">{t('Describe your project', 'Ceritakan proyek Anda')} ↓</a>
-            <a href={waLink(lang, s.title[lang])} target="_blank" rel="noopener">
-              {t('Ask on WhatsApp', 'Tanya via WhatsApp')}
-              <span className="sr"> {t('(opens in a new tab)', '(tab baru)')}</span>
+          <h3 id={`svc-${s.slug}`}>{s.title[lang] || s.title.en}</h3>
+          <p className="svc-desc">{s.desc[lang] || s.desc.en}</p>
+          <p className="svc-meta">{s.meta[lang] || s.meta.en}</p>
+          <div className="svc-cta-r">
+            <b>{s.from[lang] || s.from.en}</b>
+            <a href={waLink(lang, s.title[lang] || s.title.en)} target="_blank" rel="noopener">
+              {t('Consult this service', 'Konsultasi layanan ini', '咨询此项服务')} →
             </a>
           </div>
         </section>
