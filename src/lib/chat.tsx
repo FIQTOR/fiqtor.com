@@ -90,30 +90,54 @@ export const useChat = (): ChatCtx => {
 };
 
 /** Local fallback answers when the backend is unreachable. */
-const FALLBACK: [RegExp, { en: string; id: string }][] = [
+const FALLBACK: [RegExp, { en: string; id: string; zh: string }][] = [
   [
-    /halo|hai|hi\b|hello|hey/i,
-    { en: 'Hi! Ask me about services, projects, or how to get in touch.', id: 'Halo! Tanya saya soal layanan, proyek, atau cara menghubungi.' },
+    /halo|hai|hi\b|hello|hey|你好|您好/i,
+    {
+      en: 'Hi! Ask me about services, projects, or how to get in touch.',
+      id: 'Halo! Tanya saya soal layanan, proyek, atau cara menghubungi.',
+      zh: '你好！欢迎向我咨询各项技术开发服务、实战项目案例或获取直连沟通方式。',
+    },
   ],
   [
-    /project|proyek|portfolio|karya|portofolio/i,
-    { en: 'There are 35+ projects on the Projects page — filter by category or search a tech name.', id: 'Ada 35+ proyek di halaman Projects — filter per kategori atau cari nama teknologi.' },
+    /project|proyek|portfolio|karya|portofolio|项目|作品|案例/i,
+    {
+      en: 'There are 35+ projects on the Projects page — filter by category or search a tech name.',
+      id: 'Ada 35+ proyek di halaman Projects — filter per kategori atau cari nama teknologi.',
+      zh: '“项目”页面展示了 35+ 个精选实战交付项目 — 支持按业务类型筛选或按技术关键词搜索。',
+    },
   ],
   [
-    /service|layanan|jasa|iarty|build|bikin|buat/i,
-    { en: `${S.company.name} builds web apps, AI integrations, and business systems. Automation is available too.`, id: `${S.company.name} membuat aplikasi web, integrasi AI, dan sistem bisnis. Otomasi juga tersedia.` },
+    /service|layanan|jasa|iarty|build|bikin|buat|服务|定制|开发/i,
+    {
+      en: `${S.company.name} builds web apps, AI integrations, and business systems. Automation is available too.`,
+      id: `${S.company.name} membuat aplikasi web, integrasi AI, dan sistem bisnis. Otomasi juga tersedia.`,
+      zh: `${S.company.name} 专注于全栈 Web 应用、AI 深度集成与企业级业务系统开发，同时提供业务流程自动化服务。`,
+    },
   ],
   [
-    /price|harga|cost|biaya|budget/i,
-    { en: 'Pricing depends on scope. Send a brief through the Contact form or WhatsApp and you get an estimate.', id: 'Harga tergantung ruang lingkup. Kirim ringkasan lewat form Kontak atau WhatsApp dan Anda dapat estimasi.' },
+    /price|harga|cost|biaya|budget|价格|费用|报价|预算/i,
+    {
+      en: 'Pricing depends on scope. Send a brief through the Contact form or WhatsApp and you get an estimate.',
+      id: 'Harga tergantung ruang lingkup. Kirim ringkasan lewat form Kontak atau WhatsApp dan Anda dapat estimasi.',
+      zh: '费用取决于具体需求和开发范围。通过联系表单或 WhatsApp 发送简要需求，即可获得定制报价估算。',
+    },
   ],
   [
-    /contact|kontak|whatsapp|wa\b|email|hubung/i,
-    { en: `Email: ${S.email}\nWhatsApp: +${S.wa}`, id: `Email: ${S.email}\nWhatsApp: +${S.wa}` },
+    /contact|kontak|whatsapp|wa\b|email|hubung|联系|邮箱|微信/i,
+    {
+      en: `Email: ${S.email}\nWhatsApp: +${S.wa}`,
+      id: `Email: ${S.email}\nWhatsApp: +${S.wa}`,
+      zh: `电子邮箱：${S.email}\nWhatsApp：+${S.wa}`,
+    },
   ],
   [
-    /skill|stack|tech|teknologi/i,
-    { en: 'Core stack: ' + S.stack.slice(0, 8).join(', ') + ', plus AI integrations.', id: 'Stack utama: ' + S.stack.slice(0, 8).join(', ') + ', plus integrasi AI.' },
+    /skill|stack|tech|teknologi|技术|技能|技术栈/i,
+    {
+      en: 'Core stack: ' + S.stack.slice(0, 8).join(', ') + ', plus AI integrations.',
+      id: 'Stack utama: ' + S.stack.slice(0, 8).join(', ') + ', plus integrasi AI.',
+      zh: '核心技术栈：' + S.stack.slice(0, 8).join('、') + '，以及前沿 AI 方案集成。',
+    },
   ],
 ];
 
@@ -200,7 +224,9 @@ export function ChatProvider({ children }: { children: ReactNode }) {
       id: ++idRef.current,
       who: 'b',
       text:
-        lang === 'en'
+        lang === 'zh'
+          ? `你好！我是 ${S.alias} 的 AI 智能助手。你可以向我咨询服务报价、项目案例或联系方式。`
+          : lang === 'en'
           ? `Hi! I'm ${S.alias}'s AI assistant. Ask me about services, projects, or contact details.`
           : `Halo! Saya asisten AI ${S.alias}. Tanya soal layanan, proyek, atau kontak.`,
     }),
@@ -251,7 +277,7 @@ export function ChatProvider({ children }: { children: ReactNode }) {
       // turn already produced an answer (redirect / streamed text).
       let handled = false;
       try {
-        const res = await openStream(JSON.stringify({ input: q, history }), ctrl.signal);
+        const res = await openStream(JSON.stringify({ input: q, history, lang }), ctrl.signal);
         if (!res.ok || !res.body) {
           // 429 (rate limit / daily quota) is a real, explainable answer from
           // the backend: its JSON body says which limit was hit. Showing the
@@ -263,11 +289,15 @@ export function ChatProvider({ children }: { children: ReactNode }) {
             const mins = wait > 0 ? Math.ceil(wait / 60) : 0;
             append(
               mins
-                ? lang === 'en'
+                ? lang === 'zh'
+                  ? `消息发送已达上限。请在约 ${mins} 分钟后重试 — 或直接通过 WhatsApp 与我联系。`
+                  : lang === 'en'
                   ? `I've hit my message limit. Please try again in about ${mins} minute${mins === 1 ? '' : 's'} — or reach me on WhatsApp right away.`
                   : `Batas pesan tercapai. Coba lagi sekitar ${mins} menit lagi — atau langsung hubungi saya lewat WhatsApp.`
                 : (info && (info.error || info.message)) ||
-                    (lang === 'en'
+                    (lang === 'zh'
+                      ? `消息发送已达上限。请稍后重试 — 或直接通过 WhatsApp 联系。`
+                      : lang === 'en'
                       ? `I've hit my message limit. Please try again later — or reach me on WhatsApp.`
                       : `Batas pesan tercapai. Coba lagi nanti — atau hubungi saya lewat WhatsApp.`),
             );
