@@ -40,7 +40,7 @@ export function ProjectCard({
       className={`card pc rv${big ? ' pc-big' : ''} ${extraClass}`}
       href={href}
       data-open={paged ? undefined : 'project'}
-      data-cur={lang === 'en' ? 'View' : 'Lihat'}
+      data-cur={lang === 'zh' ? '查看' : lang === 'en' ? 'View' : 'Lihat'}
       onClick={(e) => {
         if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
         e.preventDefault();
@@ -90,7 +90,7 @@ export function CertCard({
       className={`cert rv ${extraClass}`}
       href={`/certificates#${c.id}`}
       data-open="cert"
-      data-cur={lang === 'en' ? 'View' : 'Lihat'}
+      data-cur={lang === 'zh' ? '查看' : lang === 'en' ? 'View' : 'Lihat'}
       onClick={(e) => {
         e.preventDefault();
         openFromCard('cert', i, c.id, list ?? S.certs);

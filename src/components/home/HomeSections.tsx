@@ -67,7 +67,7 @@ export function Marquee() {
   }, []);
 
   return (
-    <div className="strip" aria-label={lang === 'en' ? 'Tech stack' : 'Teknologi'}>
+    <div className="strip" aria-label={lang === 'zh' ? '技术栈' : lang === 'en' ? 'Tech stack' : 'Teknologi'}>
       <div className="mq" ref={ref}>
         {S.stack.map((t) => (
           <span key={t}>
@@ -199,7 +199,7 @@ function Pricing() {
 /* ---------- Testimonials (real client quotes) ---------- */
 function Testimonials() {
   const { lang } = useLanguage();
-  const t = (en: string, id: string) => (lang === 'en' ? en : id);
+  const t = (en: string, id: string, zh?: string) => (lang === 'zh' ? zh || en : lang === 'en' ? en : id);
   // All quotes are rendered; only the first HOME_REVIEW_COUNT are visible
   // before the rail is scrolled — the same number JSON-LD declares as
   // `reviewCount`, so every rated item really is on the page.
@@ -210,19 +210,20 @@ function Testimonials() {
     <div ref={reveal}>
       <Section
         id="testimonials"
-        kick={t('Testimonials', 'Testimoni')}
-        title={t('What clients say.', 'Kata klien.')}
+        kick={t('Testimonials', 'Testimoni', '客户评价')}
+        title={t('What clients say.', 'Kata klien.', '客户怎么说。')}
       >
         <p className="lead-sub rv">
           {t(
             `Real quotes from ${items.length} business owners whose sites and systems are live today — swipe for more.`,
             `Kutipan asli dari ${items.length} pemilik usaha yang situs dan sistemnya sudah berjalan hari ini — geser untuk yang lain.`,
+            `来自 ${items.length} 位企业主的真实评价，他们的网站和系统正在运行 — 滑动查看更多。`,
           )}
         </p>
         {/* `ts-rated` marks the quotes declared in JSON-LD `reviewCount`: the
             ones visible without scrolling. The rest sit further along the rail. */}
         <div className="tsm-wrap">
-          <div className="tsm tsm-rail" tabIndex={0} role="region" aria-label={t('Client testimonials', 'Testimoni klien')}>
+          <div className="tsm tsm-rail" tabIndex={0} role="region" aria-label={t('Client testimonials', 'Testimoni klien', '客户评价')}>
             {items.map((x, i) => (
               <figure className={i < HOME_REVIEW_COUNT ? 'ts rv ts-rated' : 'ts rv'} key={x.name}>
                 <div className="ts-h">
@@ -240,7 +241,7 @@ function Testimonials() {
                   </figcaption>
                 </div>
                 <blockquote>{x.quote[lang]}</blockquote>
-                <div className="ts-stars" aria-label={t('Rated 5 out of 5', 'Dinilai 5 dari 5')}>
+                <div className="ts-stars" aria-label={t('Rated 5 out of 5', 'Dinilai 5 dari 5', '评分 5 / 5')}>
                   {Array.from({ length: 5 }, (_, k) => (
                     <svg key={k} viewBox="0 0 20 20" aria-hidden="true">
                       <path d="M9.05 2.93a1 1 0 0 1 1.9 0l1.07 3.29a1 1 0 0 0 .95.69h3.46a1 1 0 0 1 .59 1.81l-2.8 2.03a1 1 0 0 0-.37 1.12l1.07 3.29a1 1 0 0 1-1.54 1.12l-2.8-2.03a1 1 0 0 0-1.17 0l-2.8 2.03a1 1 0 0 1-1.54-1.12l1.07-3.29a1 1 0 0 0-.36-1.12L2.98 8.72a1 1 0 0 1 .58-1.81h3.46a1 1 0 0 0 .95-.69z" />
@@ -309,8 +310,8 @@ function Cloud() {
   };
 
   return (
-    <div className="cloud rv" id="cloud" aria-label={lang === 'en' ? 'Tech stack' : 'Teknologi'} ref={ref} onClick={onClick}>
-      <p className="cloud-hint">{lang === 'en' ? 'Hover a skill' : 'Dekatkan kursor ke skill'}</p>
+    <div className="cloud rv" id="cloud" aria-label={lang === 'zh' ? '技术栈' : lang === 'en' ? 'Tech stack' : 'Teknologi'} ref={ref} onClick={onClick}>
+      <p className="cloud-hint">{lang === 'zh' ? '悬停在技能上' : lang === 'en' ? 'Hover a skill' : 'Dekatkan kursor ke skill'}</p>
       {S.stack.map((t) => (
         <button type="button" key={t}>
           <SkillLogo tech={t} />
@@ -371,7 +372,7 @@ function Heatmap() {
   });
   const hmRef = useRef<HTMLDivElement>(null);
   const [hover, setHover] = useState<{ text: string; x: number; y: number } | null>(null);
-  const t = (en: string, id: string) => (lang === 'en' ? en : id);
+  const t = (en: string, id: string, zh?: string) => (lang === 'zh' ? zh || en : lang === 'en' ? en : id);
 
   useEffect(() => {
     let cancelled = false;
@@ -438,25 +439,27 @@ function Heatmap() {
   const off = first ? new Date(first.date + 'T00:00:00Z').getUTCDay() : 0;
   const dayLabel = (d: Day) => {
     const n = d.count;
-    return lang === 'en'
+    return lang === 'zh'
+      ? `${n} 次贡献 · ${d.date}`
+      : lang === 'en'
       ? `${n} contribution${n === 1 ? '' : 's'} · ${d.date}`
       : `${n} kontribusi · ${d.date}`;
   };
 
   return (
-    <Section id="github" kick={t('Activity', 'Aktivitas')} title={t('Shipping code, every week.', 'Ngoding tiap minggu, terlihat.')}>
+    <Section id="github" kick={t('Activity', 'Aktivitas', '活跃度')} title={t('Shipping code, every week.', 'Ngoding tiap minggu, terlihat.', '每周持续编码，有据可查。')}>
       <div className="ghh rv">
         <div>
           <b>
             {state.loading ? <span className="lv-skel" style={{ display: 'inline-block', width: '4rem', height: '1em' }} /> : <CountUp value={stats.tot} />}
           </b>
-          <small>{t('contributions in the last year', 'kontribusi setahun terakhir')}</small>
+          <small>{t('contributions in the last year', 'kontribusi setahun terakhir', '过去一年的贡献')}</small>
         </div>
         <div>
           <b>
             {state.loading ? <span className="lv-skel" style={{ display: 'inline-block', width: '3rem', height: '1em' }} /> : <CountUp value={stats.best} />}
           </b>
-          <small>{t('longest daily streak', 'streak harian terpanjang')}</small>
+          <small>{t('longest daily streak', 'streak harian terpanjang', '最长连续天数')}</small>
         </div>
       </div>
       <div className="hmw rv" style={{ opacity: state.live || state.loading ? undefined : 0.55 }}>
@@ -471,10 +474,10 @@ function Heatmap() {
       </div>
       <p className="gh-note">
         {state.loading ? (
-          t('Loading contributions…', 'Memuat kontribusi…')
+          t('Loading contributions…', 'Memuat kontribusi…', '加载贡献数据…')
         ) : state.live ? (
           <>
-            {t('Live data from', 'Data langsung dari')}{' '}
+            {t('Live data from', 'Data langsung dari', '实时数据来自')}{' '}
             <a href={S.social.github} target="_blank" rel="noopener">
               github.com/{S.github}
             </a>
@@ -484,6 +487,7 @@ function Heatmap() {
           t(
             'GitHub is unreachable right now — showing a placeholder grid. Open the profile for live activity.',
             'GitHub tidak dapat dijangkau saat ini — menampilkan grid contoh. Buka profil untuk aktivitas langsung.',
+            'GitHub 暂时无法访问 — 显示占位网格。打开个人资料查看实时活动。',
           )
         )}
       </p>
@@ -506,16 +510,16 @@ function Heatmap() {
  */
 function ClientProof() {
   const { lang } = useLanguage();
-  const t = (en: string, id: string) => (lang === 'en' ? en : id);
+  const t = (en: string, id: string, zh?: string) => (lang === 'zh' ? zh || en : lang === 'en' ? en : id);
   const facts = [
-    { v: S.clients, suffix: '+', k: t('Clients served', 'Klien dilayani') },
-    { v: S.projects.length, suffix: '', k: t('Projects shipped', 'Proyek dirilis') },
-    { v: 24, prefix: '<', suffix: 'h', k: t('Typical reply time', 'Waktu balas') },
-    { v: S.years, suffix: '+', k: t('Years building', 'Tahun berkarya') },
+    { v: S.clients, suffix: '+', k: t('Clients served', 'Klien dilayani', '服务客户') },
+    { v: S.projects.length, suffix: '', k: t('Projects shipped', 'Proyek dirilis', '已交付项目') },
+    { v: 24, prefix: '<', suffix: 'h', k: t('Typical reply time', 'Waktu balas', '典型回复时间') },
+    { v: S.years, suffix: '+', k: t('Years building', 'Tahun berkarya', '开发年限') },
   ];
 
   return (
-    <div className="proof rv" aria-label={t('What you can expect', 'Yang bisa Anda harapkan')}>
+    <div className="proof rv" aria-label={t('What you can expect', 'Yang bisa Anda harapkan', '您可以期待的')}>
       {facts.map((f) => (
         <div className="pf" key={f.k}>
           <b>
@@ -543,43 +547,45 @@ export function KeyFacts() {
   const totalCerts = S.certs.reduce((n, c) => n + c.count, 0);
   const facts = [
     {
-      k: { en: 'Who', id: 'Siapa' },
-      v: { en: `${S.name} — AI & software engineer, founder of ${S.company.name}.`, id: `${S.name} — AI & software engineer, pendiri ${S.company.name}.` },
+      k: { en: 'Who', id: 'Siapa', zh: '关于' },
+      v: { en: `${S.name} — AI & software engineer, founder of ${S.company.name}.`, id: `${S.name} — AI & software engineer, pendiri ${S.company.name}.`, zh: `${S.name} — AI 与软件工程师，${S.company.name} 创始人。` },
     },
     {
-      k: { en: 'Based in', id: 'Berbasis di' },
-      v: { en: 'Indonesia · GMT+7 (WIB)', id: 'Indonesia · GMT+7 (WIB)' },
+      k: { en: 'Based in', id: 'Berbasis di', zh: '所在地' },
+      v: { en: 'Indonesia · GMT+7 (WIB)', id: 'Indonesia · GMT+7 (WIB)', zh: '印度尼西亚 · GMT+7 (WIB)' },
     },
     {
-      k: { en: 'Experience', id: 'Pengalaman' },
-      v: { en: `${S.years}+ years · ${S.projects.length} shipped projects`, id: `${S.years}+ tahun · ${S.projects.length} proyek dirilis` },
+      k: { en: 'Experience', id: 'Pengalaman', zh: '经验' },
+      v: { en: `${S.years}+ years · ${S.projects.length} shipped projects`, id: `${S.years}+ tahun · ${S.projects.length} proyek dirilis`, zh: `${S.years}+ 年 · ${S.projects.length} 个已交付项目` },
     },
     {
-      k: { en: 'Builds', id: 'Membangun' },
+      k: { en: 'Builds', id: 'Membangun', zh: '技术领域' },
       v: {
         en: 'Web apps, AI integration & automation, business systems, e-commerce, landing pages',
         id: 'Aplikasi web, integrasi & otomasi AI, sistem bisnis, e-commerce, landing page',
+        zh: 'Web 应用、AI 集成与自动化、业务系统、电商、落地页',
       },
     },
     {
-      k: { en: 'Certified in', id: 'Sertifikasi' },
+      k: { en: 'Certified in', id: 'Sertifikasi', zh: '认证' },
       v: {
         en: `BNSP national web developer competency, ${totalCerts} credentials in total`,
         id: `Kompetensi nasional BNSP web developer, total ${totalCerts} kredensial`,
+        zh: `BNSP 国家级 Web 开发者资质，共 ${totalCerts} 个证书`,
       },
     },
     {
-      k: { en: 'Languages', id: 'Bahasa' },
-      v: { en: 'English, Bahasa Indonesia', id: 'Inggris, Bahasa Indonesia' },
+      k: { en: 'Languages', id: 'Bahasa', zh: '语言' },
+      v: { en: 'English, Bahasa Indonesia', id: 'Inggris, Bahasa Indonesia', zh: '英语、印尼语' },
     },
     {
-      k: { en: 'Contact', id: 'Kontak' },
-      v: { en: `${S.email} · WhatsApp · replies within 24 hours`, id: `${S.email} · WhatsApp · dibalas dalam 24 jam` },
+      k: { en: 'Contact', id: 'Kontak', zh: '联系方式' },
+      v: { en: `${S.email} · WhatsApp · replies within 24 hours`, id: `${S.email} · WhatsApp · dibalas dalam 24 jam`, zh: `${S.email} · WhatsApp · 24小时内回复` },
     },
   ];
   return (
-    <div className="kfacts rv" aria-label={lang === 'en' ? 'Key facts' : 'Fakta singkat'}>
-      <h3>{lang === 'en' ? 'Key facts' : 'Fakta singkat'}</h3>
+    <div className="kfacts rv" aria-label={lang === 'zh' ? '核心信息' : lang === 'en' ? 'Key facts' : 'Fakta singkat'}>
+      <h3>{lang === 'zh' ? '核心信息' : lang === 'en' ? 'Key facts' : 'Fakta singkat'}</h3>
       <dl>
         {facts.map((f) => (
           <div key={f.k.en}>
@@ -605,7 +611,7 @@ export function HomeSections() {
   const rootRef = useReveal();
   const { lang } = useLanguage();
   const isMobile = useIsMobile();
-  const t = (en: string, id: string) => (lang === 'en' ? en : id);
+  const t = (en: string, id: string, zh?: string) => (lang === 'zh' ? zh || en : lang === 'en' ? en : id);
 
   // Sliced from the front of `featuredProjects`. Note that the best-first
   // ordering in `site.ts` currently has no effect (see the comment on
@@ -620,8 +626,8 @@ export function HomeSections() {
 
       <Section
         id="projects"
-        kick={t('Projects', 'Proyek')}
-        title={t('Built and shipped, not just designed.', 'Dibangun dan dirilis, bukan sekadar dirancang.')}
+        kick={t('Projects', 'Proyek', '项目')}
+        title={t('Built and shipped, not just designed.', 'Dibangun dan dirilis, bukan sekadar dirancang.', '已构建并交付，而非仅停留在设计。')}
       >
         <div className="pg">
           {shownProjects.map((p, i) => {
@@ -633,7 +639,7 @@ export function HomeSections() {
         </div>
         <p className="rv" style={{ marginTop: '1.5rem' }}>
           <Link className="btn2" to="/projects">
-            {t(`All ${S.projects.length} projects`, `Semua ${S.projects.length} proyek`)} →
+            {t(`All ${S.projects.length} projects`, `Semua ${S.projects.length} proyek`, `全部 ${S.projects.length} 个项目`)} →
           </Link>
         </p>
       </Section>
@@ -648,97 +654,104 @@ export function HomeSections() {
 
       <Section
         id="how"
-        kick={t('How it works', 'Cara kerjanya')}
-        title={t('From first message to live.', 'Dari chat pertama sampai online.')}
+        kick={t('How it works', 'Cara kerjanya', '合作流程')}
+        title={t('From first message to live.', 'Dari chat pertama sampai online.', '从第一条消息到上线。')}
       >
         <ProcessSteps />
         <div className="home-faq">
-          <h3 className="rv">{t('Common questions.', 'Pertanyaan umum.')}</h3>
+          <h3 className="rv">{t('Common questions.', 'Pertanyaan umum.', '常见问题。')}</h3>
           <FaqList limit={4} compact />
           <p className="rv">
             <Link className="btn2" to="/contact">
-              {t('All questions & the contact form', 'Semua pertanyaan & form kontak')} →
+              {t('All questions & the contact form', 'Semua pertanyaan & form kontak', '全部问题与联系表单')} →
             </Link>
           </p>
         </div>
       </Section>
 
 
-      <Section id="about" kick={t('About', 'Tentang')} title={t('An engineer who also runs the business.', 'Engineer yang juga menjalankan bisnis.')}>
+      <Section id="about" kick={t('About', 'Tentang', '关于')} title={t('An engineer who also runs the business.', 'Engineer yang juga menjalankan bisnis.', '既编码又经营的工程师。')}>
         <div className="ab">
           <div>
             <p className="big rv">
-              {t('I go by ', 'Nama panggilan saya ')}
+              {t('I go by ', 'Nama panggilan saya ', '我是 ')}
               <b>{S.name}</b>
               {t(
                 ' — previously known as ',
                 ' — sebelumnya dikenal sebagai ',
+                ' — 原名 ',
               )}
               <b>{S.legalName}</b>
               {t(
-                '. I’m an ',
+                '. I'm an ',
                 '. Saya seorang ',
+                '。我是一名 ',
               )}
-              <b>{t('AI & software engineer', 'AI & software engineer')}</b>
+              <b>{t('AI & software engineer', 'AI & software engineer', 'AI 与软件工程师')}</b>
               {t(
                 ' with a background in computer engineering. I build web apps, AI automation, and business systems — and I use them to run ',
                 ' berlatar computer engineering. Saya membangun aplikasi web, otomasi AI, dan sistem bisnis — dan saya memakainya untuk menjalankan ',
+                '，计算机工程背景。我构建 Web 应用、AI 自动化和业务系统 — 并用它们来运营 ',
               )}
               <b>{S.company.name}</b>
               {t(
                 ', so the solutions are proven in the field rather than in theory.',
                 ', jadi solusinya teruji di lapangan, bukan teori.',
+                '，因此这些解决方案是实战验证过的，而非纸上谈兵。',
               )}
             </p>
             <p className="about-aka rv">
               {t(
                 'On every platform the name is simply FIQTOR; Taufiiqul Hakim is the name that appears on certificates and official documents.',
                 'Di semua platform namanya cukup FIQTOR; Taufiiqul Hakim adalah nama yang tercantum pada sertifikat dan dokumen resmi.',
+                '在所有平台上名称都是 FIQTOR；Taufiiqul Hakim 是出现在证书和官方文件上的名字。',
               )}
             </p>
             <Link className="btn2 rv" to="/career" style={{ display: 'inline-block', marginTop: '1.4rem' }}>
-              {t('See the career timeline', 'Lihat perjalanan karier')} →
+              {t('See the career timeline', 'Lihat perjalanan karier', '查看职业时间线')} →
             </Link>
             <div className="nums">
               <div className="num rv">
                 <b>
                   <CountUp value={S.projects.length} />
                 </b>
-                <small>{t('Projects', 'Proyek')}</small>
+                <small>{t('Projects', 'Proyek', '项目')}</small>
               </div>
               <div className="num rv">
                 <b>
                   <CountUp value={S.years} />+
                 </b>
-                <small>{t('Years', 'Tahun')}</small>
+                <small>{t('Years', 'Tahun', '年')}</small>
               </div>
               <div className="num rv">
                 <b>
                   <CountUp value={S.certs.reduce((n, c) => n + c.count, 0)} />
                 </b>
-                <small>{t('Certificates', 'Sertifikat')}</small>
+                <small>{t('Certificates', 'Sertifikat', '证书')}</small>
               </div>
             </div>
           </div>
           <div className="roles">
             <div className="role rv">
-              <h4>{t('AI & Software Engineer', 'AI & Software Engineer')}</h4>
+              <h4>{t('AI & Software Engineer', 'AI & Software Engineer', 'AI 与软件工程师')}</h4>
               <p>
                 {t(
                   'Web apps, AI integrations, and business platforms. From idea to deploy, one person can take it end to end.',
                   'Aplikasi web, integrasi AI, dan platform bisnis. Dari ide sampai deploy, satu orang bisa menuntaskannya.',
+                  'Web 应用、AI 集成和业务平台。从想法到部署，一个人可以全程完成。',
                 )}
               </p>
             </div>
             <div className="role rv">
               <h4>
-                {t('Founder, ', 'Pendiri, ')}
+                {t('Founder, ', 'Pendiri, ', '创始人，')}
                 {S.company.name}
               </h4>
               <p>
                 {t(
                   'IARTY: websites, apps, AI, education, and a marketplace. Built and run in-house.',
                   'IARTY: website, aplikasi, AI, edukasi, dan marketplace. Dibangun dan dikelola sendiri.',
+                  'IARTY：网站、应用、AI、教育和市场。自主构建和运营。',
                 )}
               </p>
             </div>
@@ -748,12 +761,12 @@ export function HomeSections() {
         <Cloud />
       </Section>
 
-      <Section id="live" kick={t('Live', 'Live')} title={t('Real numbers, updated live.', 'Angka nyata, diperbarui langsung.')}>
+      <Section id="live" kick={t('Live', 'Live', '实时')} title={t('Real numbers, updated live.', 'Angka nyata, diperbarui langsung.', '实时更新的真实数据。')}>
         <ClientProof />
         <LiveStats />
       </Section>
 
-      <Section id="certs" kick={t('Certificates', 'Sertifikat')} title={t('Validated skills.', 'Skill yang tervalidasi.')}>
+      <Section id="certs" kick={t('Certificates', 'Sertifikat', '证书')} title={t('Validated skills.', 'Skill yang tervalidasi.', '经过验证的技能。')}>
         <div className="cg">
           {S.featuredCerts.map((c) => (
             <CertCard key={c.id} c={c} i={S.certs.findIndex((x) => x.id === c.id)} />
@@ -764,6 +777,7 @@ export function HomeSections() {
             {t(
               `All ${S.certs.reduce((n, c) => n + c.count, 0)} certificates`,
               `Semua ${S.certs.reduce((n, c) => n + c.count, 0)} sertifikat`,
+              `全部 ${S.certs.reduce((n, c) => n + c.count, 0)} 个证书`,
             )}{' '}
             →
           </Link>
@@ -774,8 +788,8 @@ export function HomeSections() {
 
       <section className="cta-s" id="contact">
         <div className="big">
-          <InteractiveTitle text={t('Got a project?', 'Punya proyek?')} as="span" />
-          <InteractiveTitle text={t('Let’s build it.', 'Kita bangun.')} as="span" className="o" />
+          <InteractiveTitle text={t('Got a project?', 'Punya proyek?', '有项目吗？')} as="span" />
+          <InteractiveTitle text={t('Let's build it.', 'Kita bangun.', '一起实现。')} as="span" className="o" />
         </div>
         <div className="cta-row rv">
           {/* One primary action. Four buttons of equal weight forced the
@@ -783,17 +797,17 @@ export function HomeSections() {
               already ranked (WhatsApp fastest) — the alternatives are now
               quiet text links. */}
           <a className="cta" href={waLink(lang)} target="_blank" rel="noopener">
-            {t('Chat on WhatsApp', 'Chat WhatsApp')}
+            {t('Chat on WhatsApp', 'Chat WhatsApp', '通过 WhatsApp 联系')}
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M5 12h14M13 6l6 6-6 6" />
             </svg>
-            <span className="sr"> {t('(new tab)', '(tab baru)')}</span>
+            <span className="sr"> {t('(new tab)', '(tab baru)', '（新标签）')}</span>
           </a>
           <span className="cta-alt">
             <a href={`mailto:${S.email}`} data-no-transition>
-              {t('Email', 'Email')}
+              {t('Email', 'Email', '邮件')}
             </a>
-            <Link to="/contact">{t('Contact form', 'Form kontak')}</Link>
+            <Link to="/contact">{t('Contact form', 'Form kontak', '联系表单')}</Link>
             <Link to="/linktree">Linktree</Link>
           </span>
         </div>

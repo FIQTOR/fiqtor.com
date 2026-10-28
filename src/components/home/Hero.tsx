@@ -266,7 +266,7 @@ export function Hero({ started }: { started: boolean }) {
     return () => window.clearTimeout(id);
   }, []);
 
-  const t = (en: string, id: string) => (lang === 'en' ? en : id);
+  const t = (en: string, id: string, zh?: string) => (lang === 'zh' ? zh || en : lang === 'en' ? en : id);
 
   return (
     <section className="hero" id="hero" ref={heroRef}>
@@ -321,13 +321,14 @@ export function Hero({ started }: { started: boolean }) {
 
       <div className="side right">
         <h2 className="title outline" data-split="lines">
-          <span className="line">{t('From idea', 'Dari ide')}</span>
-          <span className="line">{t('to real.', 'jadi nyata.')}</span>
+          <span className="line">{t('From idea', 'Dari ide', '从想法')}</span>
+          <span className="line">{t('to real.', 'jadi nyata.', '到现实。')}</span>
         </h2>
         <p className="lead" data-split="words">
           {t(
             'Full stack web, AI automation, and business systems — from a first sketch to production.',
             'Web full stack, otomasi AI, dan sistem bisnis — dari sketsa pertama sampai produksi.',
+            '全栈 Web、AI 自动化和业务系统 — 从最初的草图到生产部署。',
           )}
         </p>
         {/* Each tag also carries the mark of the tech it stands for, so the
@@ -352,7 +353,7 @@ export function Hero({ started }: { started: boolean }) {
         </div>
         <div className="cta-row-hero" data-anim="fade">
           <Link className="cta" data-no-transition to="/projects">
-            {t('See the work', 'Lihat karya')}
+            {t('See the work', 'Lihat karya', '查看作品')}
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M5 12h14M13 6l6 6-6 6" />
             </svg>
@@ -360,15 +361,15 @@ export function Hero({ started }: { started: boolean }) {
           {/* A visitor who already knows what they want should not have to
               scroll to the footer to start a conversation. */}
           <a className="cta-ghost" href={waLink(lang)} target="_blank" rel="noopener">
-            {t('Start a project', 'Mulai proyek')}
-            <span className="sr"> {t('(opens WhatsApp)', '(membuka WhatsApp)')}</span>
+            {t('Start a project', 'Mulai proyek', '启动项目')}
+            <span className="sr"> {t('(opens WhatsApp)', '(membuka WhatsApp)', '（打开 WhatsApp）')}</span>
           </a>
         </div>
       </div>
 
       <div className="scroll-hint" data-anim="fade">
         <span />
-        {t('Scroll', 'Gulir')}
+        {t('Scroll', 'Gulir', '滚动')}
       </div>
     </section>
   );

@@ -20,7 +20,7 @@ export function PageHeader({
   return (
     <div className="ph">
       <p className="bc rv">
-        <Link to="/">{lang === 'en' ? 'Home' : 'Beranda'}</Link> / {crumb}
+        <Link to="/">{lang === 'zh' ? '首页' : lang === 'en' ? 'Home' : 'Beranda'}</Link> / {crumb}
       </p>
       <InteractiveTitle as="h1" text={title} />
       <p className="lead rv">{lead}</p>
@@ -39,7 +39,7 @@ const nameOf = (x: Project | Cert, lang: Language) => ('title' in x ? (x.title[l
 export function FilterGallery<T extends Item>({ list, kind }: { list: T[]; kind: 'project' | 'cert' }) {
   const { lang } = useLanguage();
   const [q, setQ] = useState('');
-  const t = (en: string, id: string) => (lang === 'en' ? en : id);
+  const t = (en: string, id: string, zh?: string) => (lang === 'zh' ? zh || en : lang === 'en' ? en : id);
 
   /** Tag list in all languages, so the active filter survives a language switch. */
   const tagOptions = useMemo(() => {
@@ -80,22 +80,22 @@ export function FilterGallery<T extends Item>({ list, kind }: { list: T[]; kind:
   return (
     <section className="sec pgsec" ref={scope}>
       <div className="tools rv">
-        <div className="flt" role="group" aria-label={t('Filter', 'Filter')}>
+        <div className="flt" role="group" aria-label={t('Filter', 'Filter', '筛选')}>
           {tags.map((tg, k) => (
             <button type="button" key={tg} aria-pressed={k === tagIdx} onClick={() => setTagIdx(k)}>
-              {tg === 'All' ? t('All', 'Semua') : tg}
+              {tg === 'All' ? t('All', 'Semua', '全部') : tg}
             </button>
           ))}
         </div>
         <label className="srch">
-          <span className="sr">{t('Search', 'Cari')}</span>
+          <span className="sr">{t('Search', 'Cari', '搜索')}</span>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
             <circle cx="11" cy="11" r="7" />
             <path d="M20 20l-3.5-3.5" />
           </svg>
           <input
             type="search"
-            placeholder={t('Search name or tech…', 'Cari nama atau teknologi…')}
+            placeholder={t('Search name or tech…', 'Cari nama atau teknologi…', '搜索名称或技术…')}
             autoComplete="off"
             value={q}
             onChange={(e) => setQ(e.target.value)}
@@ -103,12 +103,12 @@ export function FilterGallery<T extends Item>({ list, kind }: { list: T[]; kind:
         </label>
       </div>
       <p className="cnt" aria-live="polite">
-        {hits.length} {kind === 'project' ? t('projects', 'proyek') : t('certificates', 'sertifikat')}{' '}
-        {t('shown', 'ditampilkan')}
+        {hits.length} {kind === 'project' ? t('projects', 'proyek', '个项目') : t('certificates', 'sertifikat', '个证书')}{' '}
+        {t('shown', 'ditampilkan', '显示')}
       </p>
       {hits.length === 0 ? (
         <div className="empty">
-          {t('Nothing matches that search. Try another keyword.', 'Tidak ada yang cocok. Coba kata kunci lain.')}
+          {t('Nothing matches that search. Try another keyword.', 'Tidak ada yang cocok. Coba kata kunci lain.', '无匹配结果。请尝试其他关键词。')}
         </div>
       ) : (
         <div className="pg">
@@ -177,7 +177,7 @@ export function CertificateGallery({
   groups: CertGroup[];
 }) {
   const { lang } = useLanguage();
-  const t = (en: string, id: string) => (lang === 'en' ? en : id);
+  const t = (en: string, id: string, zh?: string) => (lang === 'zh' ? zh || en : lang === 'en' ? en : id);
   const [expanded, setExpanded] = useState(false);
   const [q, setQ] = useState('');
   const [verifiedOnly, setVerifiedOnly] = useState(false);
@@ -216,22 +216,22 @@ export function CertificateGallery({
     <section className="sec pgsec" ref={scope}>
       <div className="tools rv">
         <label className="srch">
-          <span className="sr">{t('Search', 'Cari')}</span>
+          <span className="sr">{t('Search', 'Cari', '搜索')}</span>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
             <circle cx="11" cy="11" r="7" />
             <path d="M20 20l-3.5-3.5" />
           </svg>
           <input
             type="search"
-            placeholder={t('Search issuer, topic, or type…', 'Cari penerbit, topik, atau jenis…')}
+            placeholder={t('Search issuer, topic, or type…', 'Cari penerbit, topik, atau jenis…', '搜索颁发机构、主题或类型…')}
             autoComplete="off"
             value={q}
             onChange={(e) => setQ(e.target.value)}
           />
         </label>
-        <div className="flt" role="group" aria-label={t('Filters', 'Filter')}>
+        <div className="flt" role="group" aria-label={t('Filters', 'Filter', '筛选')}>
           <button type="button" aria-pressed={verifiedOnly} onClick={() => setVerifiedOnly((v) => !v)}>
-            {t('Verified only', 'Hanya terverifikasi')}
+            {t('Verified only', 'Hanya terverifikasi', '仅已验证')}
           </button>
         </div>
       </div>
@@ -239,23 +239,23 @@ export function CertificateGallery({
       <p className="cnt" aria-live="polite">
         {searching ? (
           <>
-            {hits.length} {t('certificates shown', 'sertifikat ditampilkan')}
+            {hits.length} {t('certificates shown', 'sertifikat ditampilkan', '个证书显示')}
           </>
         ) : (
           <>
-            {featured.length} {t('flagship credentials shown', 'kredensial unggulan ditampilkan')} ·{' '}
-            {t(`${all.length} in the full record`, `${all.length} di arsip lengkap`)}
+            {featured.length} {t('flagship credentials shown', 'kredensial unggulan ditampilkan', '个旗舰证书显示')} ·{' '}
+            {t(`${all.length} in the full record`, `${all.length} di arsip lengkap`, `完整记录中有 ${all.length} 个`)}
           </>
         )}
       </p>
 
       {hits.length === 0 ? (
-        <div className="empty">{t('Nothing matches that search. Try another keyword.', 'Tidak ada yang cocok. Coba kata kunci lain.')}</div>
+        <div className="empty">{t('Nothing matches that search. Try another keyword.', 'Tidak ada yang cocok. Coba kata kunci lain.', '无匹配结果。请尝试其他关键词。')}</div>
       ) : searching ? (
-        <CertSection id="results" title={t('Results', 'Hasil')} certs={hits} />
+        <CertSection id="results" title={t('Results', 'Hasil', '结果')} certs={hits} />
       ) : (
         <>
-          <CertSection id="flagship" title={t('Flagship credentials', 'Kredensial unggulan')} certs={featured} />
+          <CertSection id="flagship" title={t('Flagship credentials', 'Kredensial unggulan', '旗舰证书')} certs={featured} />
 
           {!expanded ? (
             <div className="cmore rv">
@@ -263,10 +263,11 @@ export function CertificateGallery({
                 {t(
                   `The remaining ${all.length - featured.length} records are grouped by type — competitions, courses, events, language tests.`,
                   `${all.length - featured.length} catatan lainnya dikelompokkan per jenis — kompetisi, kursus, event, tes bahasa.`,
+                  `其余 ${all.length - featured.length} 条记录按类型分组 — 竞赛、课程、活动、语言测试。`,
                 )}
               </p>
               <button type="button" className="btn2" onClick={() => setExpanded(true)} aria-expanded={false} aria-controls={ARCHIVE_ID}>
-                {t(`Show all ${all.length} certificates`, `Lihat semua ${all.length} sertifikat`)} →
+                {t(`Show all ${all.length} certificates`, `Lihat semua ${all.length} sertifikat`, `显示全部 ${all.length} 个证书`)} →
               </button>
               <div className="cgroup-nav" id={ARCHIVE_ID} aria-hidden="false">
                 {groups.map((g) => (
@@ -278,7 +279,7 @@ export function CertificateGallery({
             </div>
           ) : (
             <div id="cert-archive">
-              <nav className="cgroup-nav" aria-label={t('Jump to category', 'Lompat ke kategori')}>
+              <nav className="cgroup-nav" aria-label={t('Jump to category', 'Lompat ke kategori', '跳转到类别')}>
                 {groups.map((g) => (
                   <a key={g.id} href={`#cert-${g.id}`}>
                     {g.label[lang]} · {g.ids.length}
@@ -295,11 +296,11 @@ export function CertificateGallery({
                 />
               ))}
               {grouped.rest.length > 0 && (
-                <CertSection id="other" title={t('Other', 'Lainnya')} certs={grouped.rest} />
+                <CertSection id="other" title={t('Other', 'Lainnya', '其他')} certs={grouped.rest} />
               )}
               <div className="cmore">
                 <button type="button" className="btn2" onClick={() => setExpanded(false)} aria-expanded={false} aria-controls={ARCHIVE_ID}>
-                  {t('Collapse back to the highlights', 'Kembali ke ringkasan')} ↑
+                  {t('Collapse back to the highlights', 'Kembali ke ringkasan', '收起回到精选')} ↑
                 </button>
               </div>
             </div>
@@ -312,8 +313,9 @@ export function CertificateGallery({
           {badgeIcon}
         </span>
         {t(
-          '“Verified” means the credential carries a public verification link, or comes from a national certification body.',
-          '“Terverifikasi” berarti kredensial punya tautan verifikasi publik, atau diterbitkan lembaga sertifikasi nasional.',
+          '"Verified" means the credential carries a public verification link, or comes from a national certification body.',
+          '"Terverifikasi" berarti kredensial punya tautan verifikasi publik, atau diterbitkan lembaga sertifikasi nasional.',
+          '"已验证"意味着该证书附有公开验证链接，或由国家认证机构颁发。',
         )}
       </p>
     </section>

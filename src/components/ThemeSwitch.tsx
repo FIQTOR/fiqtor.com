@@ -10,10 +10,14 @@ export function ThemeSwitch({ compact = false }: { compact?: boolean }) {
   const { lang } = useLanguage();
   const isDark = theme === 'dark';
   const label = isDark
-    ? lang === 'en'
+    ? lang === 'zh'
+      ? '切换到浅色主题'
+      : lang === 'en'
       ? 'Switch to light theme'
       : 'Ganti ke tema terang'
-    : lang === 'en'
+    : lang === 'zh'
+      ? '切换到深色主题'
+      : lang === 'en'
       ? 'Switch to dark theme'
       : 'Ganti ke tema gelap';
 

@@ -122,7 +122,7 @@ function CryptoPanel() {
               {c.name}
             </div>
             {done ? (
-              <small>{lang === 'en' ? 'Price feed offline — open CoinGecko for live rates.' : 'Feed harga mati — buka CoinGecko untuk harga live.'}</small>
+              <small>{lang === 'zh' ? '价格源离线 — 访问 CoinGecko 查看实时价格。' : lang === 'en' ? 'Price feed offline — open CoinGecko for live rates.' : 'Feed harga mati — buka CoinGecko untuk harga live.'}</small>
             ) : (
               <span className="lv-skel" />
             )}
@@ -182,13 +182,13 @@ function SocialPanel() {
   // so this one does too.
   const offline = !data && done;
   const social = data ?? (done ? SOCIAL_FALLBACK : null);
-  const t = (en: string, id: string) => (lang === 'en' ? en : id);
+  const t = (en: string, id: string, zh?: string) => (lang === 'zh' ? zh || en : lang === 'en' ? en : id);
 
   return (
     <div className="lv">
       <div className="lv-h">
         <Icon name="tiktok" size={17} />
-        {t('Social reach', 'Jangkauan sosial')}
+        {t('Social reach', 'Jangkauan sosial', '社交覆盖')}
       </div>
       {!social ? (
         <span className="lv-skel" />
@@ -200,22 +200,22 @@ function SocialPanel() {
               platforms with different visual weight. */}
           {social.tiktok && (
             <SocialRow
-              label={t('TikTok followers', 'pengikut TikTok')}
+              label={t('TikTok followers', 'pengikut TikTok', 'TikTok 粉丝')}
               value={formatCompact(social.tiktok.followers)}
             />
           )}
           {social.instagram && (
             <SocialRow
-              label={t('Instagram followers', 'pengikut Instagram')}
+              label={t('Instagram followers', 'pengikut Instagram', 'Instagram 粉丝')}
               value={formatCompact(social.instagram.followers)}
             />
           )}
           {social.tiktok && (
-            <SocialRow label={t('TikTok likes', 'suka TikTok')} value={`${formatCompact(social.tiktok.likes)}+`} />
+            <SocialRow label={t('TikTok likes', 'suka TikTok', 'TikTok 点赞')} value={`${formatCompact(social.tiktok.likes)}+`} />
           )}
           {offline && (
             <small className="lv-stale">
-              {t('Last known figures — feed offline', 'Angka terakhir diketahui — feed mati')}
+              {t('Last known figures — feed offline', 'Angka terakhir diketahui — feed mati', '最后已知数据 — 数据源离线')}
             </small>
           )}
           <a href={S.social.tiktok} target="_blank" rel="noopener" style={{ fontSize: '.82rem', width: 'fit-content' }}>
@@ -243,14 +243,14 @@ function WakaPanel() {
     <div className="lv">
       <div className="lv-h">
         <Icon name="cert" size={17} />
-        {lang === 'en' ? 'Coding lifetime' : 'Total waktu coding'}
+        {lang === 'zh' ? '总编码时长' : lang === 'en' ? 'Coding lifetime' : 'Total waktu coding'}
       </div>
       {data ? (
         <>
           <b>{data.text}</b>
           {data.since && (
             <small>
-              {lang === 'en' ? 'Since' : 'Sejak'} {data.since}
+              {lang === 'zh' ? '自 ' : lang === 'en' ? 'Since' : 'Sejak'} {data.since}
             </small>
           )}
           <a href={`https://wakatime.com/@${S.wakatime}`} target="_blank" rel="noopener" style={{ fontSize: '.82rem', width: 'fit-content' }}>
@@ -259,7 +259,9 @@ function WakaPanel() {
         </>
       ) : done ? (
         <small>
-          {lang === 'en'
+          {lang === 'zh'
+            ? '统计维护中 — 请直接访问 WakaTime 主页。'
+            : lang === 'en'
             ? 'Stats are being maintained — check the WakaTime profile directly.'
             : 'Statistik sedang dalam pemeliharaan — cek profil WakaTime langsung.'}
         </small>
@@ -288,10 +290,10 @@ function GithubPanel() {
     <div className="lv">
       <div className="lv-h">
         <Icon name="github" size={17} />
-        {lang === 'en' ? 'GitHub contributions' : 'Kontribusi GitHub'}
+        {lang === 'zh' ? 'GitHub 贡献' : lang === 'en' ? 'GitHub contributions' : 'Kontribusi GitHub'}
       </div>
-      {data ? <b>{new Intl.NumberFormat('en').format(data.total)}</b> : done ? <small>{lang === 'en' ? 'Open the profile for live activity.' : 'Buka profil untuk aktivitas langsung.'}</small> : <span className="lv-skel" />}
-      <small>{lang === 'en' ? 'last 12 months' : '12 bulan terakhir'}</small>
+      {data ? <b>{new Intl.NumberFormat('en').format(data.total)}</b> : done ? <small>{lang === 'zh' ? '访问主页查看实时活动。' : lang === 'en' ? 'Open the profile for live activity.' : 'Buka profil untuk aktivitas langsung.'}</small> : <span className="lv-skel" />}
+      <small>{lang === 'zh' ? '过去 12 个月' : lang === 'en' ? 'last 12 months' : '12 bulan terakhir'}</small>
       <a href={S.social.github} target="_blank" rel="noopener" style={{ fontSize: '.82rem', width: 'fit-content' }}>
         github.com/{S.github} ↗
       </a>

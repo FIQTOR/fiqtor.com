@@ -114,7 +114,7 @@ export function DetailModal() {
   const p = project as Project;
   const c = cert as Cert;
   const curVer = cur.i * 2 + (isProject ? 0 : 1);
-  const t = (en: string, id: string) => (lang === 'en' ? en : id);
+  const t = (en: string, id: string, zh?: string) => (lang === 'zh' ? zh || en : lang === 'en' ? en : id);
 
   return (
     <>
@@ -126,7 +126,7 @@ export function DetailModal() {
       >
         <div className="md-bg" onClick={close} />
         <div className={'md-p' + (sw ? ' sw' : '')} tabIndex={-1} ref={panelRef}>
-          <button className="md-x" type="button" onClick={close} aria-label={t('Close details', 'Tutup detail')}>
+          <button className="md-x" type="button" onClick={close} aria-label={t('Close details', 'Tutup detail', '关闭详情')}>
             ×
           </button>
           <div className="md-scroll" ref={scrollRef}>
@@ -138,7 +138,7 @@ export function DetailModal() {
               <img src={p.thumb} alt={`${p.title[lang]} — cover`} width={1600} height={900} decoding="async" />
               <div className="md-ct">
                 <div className="md-n">
-                  {t('Project', 'Proyek')} {pad(cur.i + 1)} / {pad(total)} · {p.category}
+                  {t('Project', 'Proyek', '项目')} {pad(cur.i + 1)} / {pad(total)} · {p.category}
                 </div>
                 <h2 id="mdT">{p.title[lang]}</h2>
               </div>
@@ -156,15 +156,15 @@ export function DetailModal() {
                     </div>
                     <div className="md-meta">
                       <div>
-                        <small>{t('Category', 'Kategori')}</small>
+                        <small>{t('Category', 'Kategori', '类别')}</small>
                         <b>{p.category}</b>
                       </div>
                       <div>
-                        <small>{t('Type', 'Jenis')}</small>
-                        <b>{p.featured ? t('Flagship', 'Unggulan') : t('Shipped', 'Rilis')}</b>
+                        <small>{t('Type', 'Jenis', '类型')}</small>
+                        <b>{p.featured ? t('Flagship', 'Unggulan', '旗舰') : t('Shipped', 'Rilis', '已发布')}</b>
                       </div>
                       <div>
-                        <small>{t('Stack', 'Teknologi')}</small>
+                        <small>{t('Stack', 'Teknologi', '技术栈')}</small>
                         <b>{p.skills.slice(0, 2).join(', ')}</b>
                       </div>
                     </div>
@@ -172,7 +172,7 @@ export function DetailModal() {
                   <p className="md-lead">{firstSentence(p.desc[lang] || p.desc.en)}</p>
                   <p className="md-txt">{p.desc[lang] || p.desc.en}</p>
                   <div>
-                    <h3 className="md-h">{t('Built with', 'Dibangun dengan')}</h3>
+                    <h3 className="md-h">{t('Built with', 'Dibangun dengan', '构建技术')}</h3>
                     <div className="sk">
                       {p.skills.map((s, k) => (
                         <span key={s} style={{ ['--i' as string]: k }}>
@@ -183,14 +183,14 @@ export function DetailModal() {
                   </div>
                   {p.gallery.length > 0 && (
                     <div>
-                      <h3 className="md-h">{t('Screenshots', 'Cuplikan layar')}</h3>
+                      <h3 className="md-h">{t('Screenshots', 'Cuplikan layar', '屏幕截图')}</h3>
                       <div className={'gal' + (p.gallery.length === 2 ? ' two' : '')}>
                         {p.gallery.map((g, k) => (
                           <button
                             type="button"
                             key={g.src + k}
                             onClick={() => setLb({ list: p.gallery.map((x) => [x.src, x.caption[lang]] as [string, string]), i: k })}
-                            aria-label={`${t('Enlarge', 'Perbesar')}: ${g.caption[lang]}`}
+                            aria-label={`${t('Enlarge', 'Perbesar', '放大')}: ${g.caption[lang]}`}
                           >
                             <img loading="lazy" src={g.src} alt={g.caption[lang]} />
                             <span className="cap">{g.caption[lang]}</span>
@@ -205,26 +205,26 @@ export function DetailModal() {
                       case-study page: without this link a visitor reads the
                       summary and stops. `close()` runs first so the dialog is
                       not still mounted on top of the page it navigates to.
-                    */}
+                     */}
                     {hasCaseStudy(p.id) && (
                       <Link className="cta" to={`/projects/${p.id}`} onClick={() => close()}>
-                        {t('Read the full case study', 'Baca studi kasus lengkap')} <span dangerouslySetInnerHTML={{ __html: ICONS.open }} />
+                        {t('Read the full case study', 'Baca studi kasus lengkap', '阅读完整案例研究')} <span dangerouslySetInnerHTML={{ __html: ICONS.open }} />
                       </Link>
                     )}
                     {p.url ? (
                       <a className="cta" href={p.url} target="_blank" rel="noopener">
-                        {t('Open live project', 'Buka proyek')} <span dangerouslySetInnerHTML={{ __html: ICONS.open }} />
-                        <span className="sr"> {t('(new tab)', '(tab baru)')}</span>
+                        {t('Open live project', 'Buka proyek', '打开线上项目')} <span dangerouslySetInnerHTML={{ __html: ICONS.open }} />
+                        <span className="sr"> {t('(new tab)', '(tab baru)', '（新标签）')}</span>
                       </a>
                     ) : (
-                      <span className="soon">{t('No public link yet', 'Tautan publik belum tersedia')}</span>
+                      <span className="soon">{t('No public link yet', 'Tautan publik belum tersedia', '暂无公开链接')}</span>
                     )}
                     <div className="md-nav">
                       <button type="button" onClick={() => step(-1)}>
-                        ← {t('Previous', 'Sebelumnya')}
+                        ← {t('Previous', 'Sebelumnya', '上一个')}
                       </button>
                       <button type="button" onClick={() => step(1)}>
-                        {t('Next', 'Berikutnya')} →
+                        {t('Next', 'Berikutnya', '下一个')} →
                       </button>
                     </div>
                   </div>
@@ -237,7 +237,7 @@ export function DetailModal() {
                   <button
                     type="button"
                     onClick={() => setLb({ list: [[c.img, c.name]], i: 0 })}
-                    aria-label={t('Enlarge certificate image', 'Perbesar gambar sertifikat')}
+                    aria-label={t('Enlarge certificate image', 'Perbesar gambar sertifikat', '放大证书图片')}
                   >
                     <img src={c.img} alt={`Certificate: ${c.name}`} loading="lazy" decoding="async" />
                   </button>
@@ -245,7 +245,7 @@ export function DetailModal() {
                 <div className="md-c">
                   <div>
                     <div className="md-n">
-                      {t('Certificate', 'Sertifikat')} {pad(cur.i + 1)} / {pad(total)} · {formatPublished(c.date, lang)}
+                      {t('Certificate', 'Sertifikat', '证书')} {pad(cur.i + 1)} / {pad(total)} · {formatPublished(c.date, lang)}
                     </div>
                     <h2
                       id="mdT"
@@ -260,33 +260,34 @@ export function DetailModal() {
                     </h2>
                     <div className="md-sub">
                       <span>
-                        {t('Issued by', 'Diterbitkan oleh')} <b>{c.issuer[lang]}</b>
+                        {t('Issued by', 'Diterbitkan oleh', '颁发机构')} <b>{c.issuer[lang]}</b>
                       </span>
                       <span>
-                        {t('Issued', 'Tanggal')} <b>{formatPublished(c.date, lang)}</b>
+                        {t('Issued', 'Tanggal', '颁发日期')} <b>{formatPublished(c.date, lang)}</b>
                       </span>
                       <span>
-                        {t('Type', 'Jenis')} <b>{c.kind[lang]}</b>
+                        {t('Type', 'Jenis', '类型')} <b>{c.kind[lang]}</b>
                       </span>
                       {c.verified && (
                         <span className="md-vf">
-                          <b>{t('Verifiable', 'Dapat diverifikasi')}</b>
+                          <b>{t('Verifiable', 'Dapat diverifikasi', '可验证')}</b>
                         </span>
                       )}
                       {c.count > 1 && (
                         <span className="md-bundle">
                           <b>
-                            {c.count} {t('certificates in this bundle', 'sertifikat dalam bundel ini')}
+                            {c.count} {t('certificates in this bundle', 'sertifikat dalam bundel ini', '个证书在此合集中')}
                           </b>
                           <span>
                             {t(
-                              'One record, issued separately — the list is under “Included certificates”.',
-                              'Satu entri yang diterbitkan terpisah — daftarnya ada di “Sertifikat yang termasuk”.',
+                              'One record, issued separately — the list is under "Included certificates".',
+                              'Satu entri yang diterbitkan terpisah — daftarnya ada di "Sertifikat yang termasuk".',
+                              '单条记录，分别颁发 — 列表位于"包含的证书"中。',
                             )}
                           </span>
                         </span>
                       )}
-                      {c.academic && <span>· {t('Academic credential', 'Kredensial akademik')}</span>}
+                      {c.academic && <span>· {t('Academic credential', 'Kredensial akademik', '学术证书')}</span>}
                     </div>
                   </div>
                   <div className="md-row">
@@ -299,7 +300,7 @@ export function DetailModal() {
                   <p className="md-txt">{c.desc[lang] || c.desc.en}</p>
                   {c.details && c.details.length > 0 && (
                     <div>
-                      <h3 className="md-h">{t('Included certificates', 'Sertifikat yang termasuk')}</h3>
+                      <h3 className="md-h">{t('Included certificates', 'Sertifikat yang termasuk', '包含的证书')}</h3>
                       <ul className="cdet">
                         {c.details.map((d) => (
                           <li key={d.label}>
@@ -317,7 +318,7 @@ export function DetailModal() {
                         <button
                           type="button"
                           onClick={() => setLb({ list: [[c.secondary!.src, c.secondary!.label[lang] || c.secondary!.label.en]], i: 0 })}
-                          aria-label={t('Enlarge result sheet', 'Perbesar lembar hasil')}
+                          aria-label={t('Enlarge result sheet', 'Perbesar lembar hasil', '放大成绩单')}
                         >
                           <img loading="lazy" src={c.secondary.src} alt={c.secondary.label[lang] || c.secondary.label.en} />
                           <span className="cap">{c.secondary.label[lang] || c.secondary.label.en}</span>
@@ -386,7 +387,7 @@ function Lightbox({
   const wrap = (k: number) => (k + list.length) % list.length;
   const it = list[wrap(i)];
   const { lang } = useLanguage();
-  const t = (en: string, id: string) => (lang === 'en' ? en : id);
+  const t = (en: string, id: string, zh?: string) => (lang === 'zh' ? zh || en : lang === 'en' ? en : id);
 
   // Tracked so closing the lightbox mid-transition cannot call setState on an
   // unmounted component (React logs a warning and the timer still runs).
@@ -426,7 +427,7 @@ function Lightbox({
       className={'lb' + (entered ? ' open' : '')}
       role="dialog"
       aria-modal="true"
-      aria-label={t('Image preview', 'Pratinjau gambar')}
+      aria-label={t('Image preview', 'Pratinjau gambar', '图片预览')}
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
@@ -446,15 +447,15 @@ function Lightbox({
           if (e.target === e.currentTarget) onClose();
         }}
       >
-        <button className="lx" type="button" aria-label={t('Close image', 'Tutup gambar')} onClick={onClose}>
+        <button className="lx" type="button" aria-label={t('Close image', 'Tutup gambar', '关闭图片')} onClick={onClose}>
           ×
         </button>
         {list.length > 1 && (
           <>
-            <button className="lp" type="button" aria-label={t('Previous image', 'Gambar sebelumnya')} onClick={() => goTo(i - 1)}>
+            <button className="lp" type="button" aria-label={t('Previous image', 'Gambar sebelumnya', '上一张图片')} onClick={() => goTo(i - 1)}>
               ‹
             </button>
-            <button className="ln" type="button" aria-label={t('Next image', 'Gambar berikutnya')} onClick={() => goTo(i + 1)}>
+            <button className="ln" type="button" aria-label={t('Next image', 'Gambar berikutnya', '下一张图片')} onClick={() => goTo(i + 1)}>
               ›
             </button>
           </>
