@@ -46,12 +46,15 @@ function splitChars(line: HTMLElement): HTMLElement[] {
 }
 
 function splitWords(el: HTMLElement): HTMLElement[] {
-  const words = (el.textContent ?? '').trim().split(/\s+/);
+  const txt = (el.textContent ?? '').trim();
   el.textContent = '';
+  // For CJK texts without spaces, segment into individual characters or space-separated words
+  const hasSpaces = /\s/.test(txt);
+  const words = hasSpaces ? txt.split(/\s+/) : Array.from(txt);
   return words.map((w, i) => {
     const s = document.createElement('span');
     s.className = 'w';
-    s.textContent = w + (i < words.length - 1 ? ' ' : '');
+    s.textContent = w + (hasSpaces && i < words.length - 1 ? ' ' : '');
     el.appendChild(s);
     return s;
   });
@@ -78,7 +81,8 @@ export function Hero({ started }: { started: boolean }) {
   const setPlay = useRef<() => void>(() => {});
   const startedRef = useRef(started);
   const { lang } = useLanguage();
-  const rotating = useTypewriter(S.headlineRotator);
+  const headlineWords = S.headlineRotator[lang] || S.headlineRotator.en;
+  const rotating = useTypewriter(headlineWords);
 
   useEffect(() => {
     startedRef.current = started;
@@ -269,50 +273,51 @@ export function Hero({ started }: { started: boolean }) {
   const t = (en: string, id: string, zh?: string) => (lang === 'zh' ? zh || en : lang === 'en' ? en : id);
 
   return (
-    <section className="hero" id="hero" ref={heroRef}>
+    <section className="hero" id="hero" key={lang} ref={heroRef}>
       <div className="side left">
         <div className="eyebrow" data-anim="fade" style={{ opacity: 0 }}>
           <i />
-          {t('Available for new projects', 'Tersedia untuk proyek baru')}
+          {t('Available for new projects', 'Tersedia untuk proyek baru', '接受新项目合作')}
         </div>
         <h1 className="title" data-split="lines">
-          <span className="line">{t('Hi, I’m', 'Halo, saya')}</span>
+          <span className="line">{t('Hi, I’m', 'Halo, saya', '你好，我是')}</span>
           <span className="line">{S.name}</span>
         </h1>
         <p className="lead" data-split="words">
           {t(
             'I design and build fast, accessible products with real business value.',
             'Saya merancang dan membangun produk yang cepat, mudah diakses, dan bernilai bisnis nyata.',
+            '我设计并打造快速、无障碍且具有真实商业价值的产品。',
           )}
         </p>
         <p className="hero-rot" style={{ opacity: 0 }}>
-          <span>{t('I build', 'Saya membangun')}</span>
-          <b>{rotating || S.headlineRotator[0]}</b>
+          <span>{t('I build', 'Saya membangun', '我专注于构建')}</span>
+          <b>{rotating || headlineWords[0]}</b>
           <span className="caret" aria-hidden="true" />
         </p>
-        <div className="hero-stats" style={{ opacity: 0 }} aria-label={t('Quick facts', 'Ringkasan')}>
+        <div className="hero-stats" style={{ opacity: 0 }} aria-label={t('Quick facts', 'Ringkasan', '核心数据')}>
           <div>
             <b>{S.years}+</b>
-            <small>{t('Years', 'Tahun')}</small>
+            <small>{t('Years', 'Tahun', '年经验')}</small>
           </div>
           <div>
             <b>{S.projects.length}</b>
-            <small>{t('Projects', 'Proyek')}</small>
+            <small>{t('Projects', 'Proyek', '已上线项目')}</small>
           </div>
           <div>
             <b>{S.certs.reduce((n, c) => n + c.count, 0)}</b>
             {/* 30 credentials sit in 25 records (multi-course bundles are
                 merged); the sub-label states both so the numbers on the hero,
                 the About block and the certificate page never disagree. */}
-            <small>{t('Certificates', 'Sertifikat')}</small>
+            <small>{t('Certificates', 'Sertifikat', '专业证书')}</small>
             <em className="hs-sub">
-              {t(`${S.certs.length} records`, `${S.certs.length} entri`)}
+              {t(`${S.certs.length} records`, `${S.certs.length} entri`, `${S.certs.length} 份档案`)}
             </em>
           </div>
           <div>
             <b>{S.clients}+</b>
-            <small>{t('Clients', 'Klien')}</small>
-            <em className="hs-sub">{t('satisfied', 'puas')}</em>
+            <small>{t('Clients', 'Klien', '合作客户')}</small>
+            <em className="hs-sub">{t('satisfied', 'puas', '好评满意')}</em>
           </div>
         </div>
       </div>

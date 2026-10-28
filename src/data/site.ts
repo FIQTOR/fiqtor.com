@@ -647,7 +647,7 @@ export interface SiteConfig {
   process: Step[];
   faq: Faq[];
   /** Rotating words under the hero title. */
-  headlineRotator: string[];
+  headlineRotator: Record<Language, string[]>;
   projects: Project[];
   /** Flagship projects for the homepage grid. */
   featuredProjects: Project[];
@@ -1075,12 +1075,26 @@ export const S: SiteConfig = {
     },
   ],
 
-  headlineRotator: [
-    'full stack web apps',
-    'AI automation',
-    'business systems',
-    'interactive 3D',
-  ],
+  headlineRotator: {
+    en: [
+      'full stack web apps',
+      'AI automation',
+      'business systems',
+      'interactive 3D',
+    ],
+    id: [
+      'aplikasi web full stack',
+      'otomasi AI',
+      'sistem bisnis',
+      '3D interaktif',
+    ],
+    zh: [
+      '全栈 Web 应用',
+      'AI 智能自动化',
+      '企业业务系统',
+      '交互式 3D 体验',
+    ],
+  },
 
   projects,
   featuredProjects: featured,
@@ -1107,9 +1121,9 @@ export const S: SiteConfig = {
    * the list stays reserved for destinations that appear nowhere else.
    */
   links: [
-    { label: { en: 'Contact me', id: 'Hubungi saya' }, note: { en: 'Project brief, question, or just say hi', id: 'Ringkasan proyek, pertanyaan, atau sekadar menyapa' }, url: '/contact', icon: 'mail', featured: true },
-    { label: { en: 'Projects', id: 'Proyek' }, note: { en: 'Web apps, AI, business systems', id: 'Aplikasi web, AI, sistem bisnis' }, url: '/projects', icon: 'folder' },
-    { label: { en: 'Certificates', id: 'Sertifikat' }, note: { en: 'Verified learning', id: 'Bukti belajar yang terverifikasi' }, url: '/certificates', icon: 'cert' },
+    { label: { en: 'Contact me', id: 'Hubungi saya', zh: '联系我' }, note: { en: 'Project brief, question, or just say hi', id: 'Ringkasan proyek, pertanyaan, atau sekadar menyapa', zh: '项目需求、咨询或打个招呼' }, url: '/contact', icon: 'mail', featured: true },
+    { label: { en: 'Projects', id: 'Proyek', zh: '精选项目' }, note: { en: 'Web apps, AI, business systems', id: 'Aplikasi web, AI, sistem bisnis', zh: 'Web 应用、AI、企业系统' }, url: '/projects', icon: 'folder' },
+    { label: { en: 'Certificates', id: 'Sertifikat', zh: '专业证书' }, note: { en: 'Verified learning', id: 'Bukti belajar yang terverifikasi', zh: '经官方验证的学习认证' }, url: '/certificates', icon: 'cert' },
   ],
 
   /*
@@ -1122,17 +1136,17 @@ export const S: SiteConfig = {
    * it here too would show the same destination twice on one screen.
    */
   socialLinks: [
-    { icon: 'whatsapp', label: { en: 'WhatsApp', id: 'WhatsApp' }, url: `https://wa.me/${WHATSAPP_NUMBER}`, external: true },
-    { icon: 'instagram', label: { en: 'Instagram', id: 'Instagram' }, url: SOCIAL_LINKS.instagram, external: true },
-    { icon: 'tiktok', label: { en: 'TikTok', id: 'TikTok' }, url: SOCIAL_LINKS.tiktok, external: true },
-    { icon: 'github', label: { en: 'GitHub', id: 'GitHub' }, url: SOCIAL_LINKS.github, external: true },
-    { icon: 'linkedin', label: { en: 'LinkedIn', id: 'LinkedIn' }, url: SOCIAL_LINKS.linkedin, external: true },
+    { icon: 'whatsapp', label: { en: 'WhatsApp', id: 'WhatsApp', zh: 'WhatsApp' }, url: `https://wa.me/${WHATSAPP_NUMBER}`, external: true },
+    { icon: 'instagram', label: { en: 'Instagram', id: 'Instagram', zh: 'Instagram' }, url: SOCIAL_LINKS.instagram, external: true },
+    { icon: 'tiktok', label: { en: 'TikTok', id: 'TikTok', zh: 'TikTok' }, url: SOCIAL_LINKS.tiktok, external: true },
+    { icon: 'github', label: { en: 'GitHub', id: 'GitHub', zh: 'GitHub' }, url: SOCIAL_LINKS.github, external: true },
+    { icon: 'linkedin', label: { en: 'LinkedIn', id: 'LinkedIn', zh: 'LinkedIn' }, url: SOCIAL_LINKS.linkedin, external: true },
   ],
 
   hubs: [
-    { label: { en: 'Official Website', id: 'Situs Resmi' }, domain: 'iarty.biz.id', href: COMPANY.url, image: COMPANY.image },
-    { label: { en: 'IARTY AI', id: 'IARTY AI' }, domain: 'ai.iarty.biz.id', href: COMPANY.aiUrl, image: COMPANY.image },
-    { label: { en: 'Marketplace', id: 'Marketplace' }, domain: 'marketplace.iarty.biz.id', href: COMPANY.marketplaceUrl, image: COMPANY.image },
+    { label: { en: 'Official Website', id: 'Situs Resmi', zh: '官方网站' }, domain: 'iarty.biz.id', href: COMPANY.url, image: COMPANY.image },
+    { label: { en: 'IARTY AI', id: 'IARTY AI', zh: 'IARTY AI' }, domain: 'ai.iarty.biz.id', href: COMPANY.aiUrl, image: COMPANY.image },
+    { label: { en: 'Marketplace', id: 'Marketplace', zh: '产品市场' }, domain: 'marketplace.iarty.biz.id', href: COMPANY.marketplaceUrl, image: COMPANY.image },
   ],
 
   contactTypes: [

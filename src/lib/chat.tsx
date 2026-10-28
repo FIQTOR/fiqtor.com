@@ -307,9 +307,10 @@ export function ChatProvider({ children }: { children: ReactNode }) {
             // A full navigation would interrupt the chat mid-conversation.
             // Stay in the SPA and close the panel instead.
             const label = LABELS[target] ?? 'that page';
-            append(lang === 'en' ? `Opening ${label}…` : `Membuka halaman ${label}…`);
+            const msgOpen = lang === 'zh' ? `正在跳转至 ${label}…` : lang === 'en' ? `Opening ${label}…` : `Membuka halaman ${label}…`;
+            append(msgOpen);
             setPending(false);
-            setToast(lang === 'en' ? `Opening ${label}…` : `Membuka halaman ${label}…`);
+            setToast(msgOpen);
             openChat(false);
             setTimeout(() => {
               // Same path + hash (e.g. already on "/") would be a no-op for
@@ -322,7 +323,7 @@ export function ChatProvider({ children }: { children: ReactNode }) {
             return true;
           }
           if (evt.type === 'redirect' && evt.platform) {
-            append(lang === 'en' ? `Opening ${evt.platform}…` : `Membuka ${evt.platform}…`);
+            append(lang === 'zh' ? `正在打开 ${evt.platform}…` : lang === 'en' ? `Opening ${evt.platform}…` : `Membuka ${evt.platform}…`);
             setPending(false);
             window.open(evt.platform, '_blank', 'noopener');
             handled = true;
@@ -410,7 +411,11 @@ export function ChatProvider({ children }: { children: ReactNode }) {
 
   const value = useMemo(() => ({ open, available, openChat, toggle }), [open, available, openChat, toggle]);
   const suggestions =
-    lang === 'en' ? ['What can you build?', 'Show me projects', 'How do I contact you?'] : ['Bisa buat apa saja?', 'Lihat proyek', 'Cara menghubungi'];
+    lang === 'zh'
+      ? ['你能开发什么？', '展示项目案例', '如何联系你？']
+      : lang === 'en'
+      ? ['What can you build?', 'Show me projects', 'How do I contact you?']
+      : ['Bisa buat apa saja?', 'Lihat proyek', 'Cara menghubungi'];
 
   return (
     <Ctx.Provider value={value}>
@@ -418,12 +423,12 @@ export function ChatProvider({ children }: { children: ReactNode }) {
       {available && (
         <>
           <span className="chat-tip" style={{ display: open ? 'none' : undefined }} aria-hidden="true">
-            {lang === 'en' ? 'Ask my AI 👋' : 'Tanya AI saya 👋'}
+            {lang === 'zh' ? '问问我的 AI 👋' : lang === 'en' ? 'Ask my AI 👋' : 'Tanya AI saya 👋'}
           </span>
           <button
             className="chat-fab"
             type="button"
-            aria-label={lang === 'en' ? 'Open AI assistant' : 'Buka asisten AI'}
+            aria-label={lang === 'zh' ? '打开 AI 助手' : lang === 'en' ? 'Open AI assistant' : 'Buka asisten AI'}
             aria-expanded={open}
             onClick={() => toggle()}
           >
@@ -431,12 +436,12 @@ export function ChatProvider({ children }: { children: ReactNode }) {
               <path d="M21 12a8 8 0 0 1-11.6 7.1L3 20l1-4.6A8 8 0 1 1 21 12z" />
             </svg>
           </button>
-          <div className={'chat' + (open ? ' open' : '')} role="dialog" aria-label={lang === 'en' ? 'AI assistant' : 'Asisten AI'}>
+          <div className={'chat' + (open ? ' open' : '')} role="dialog" aria-label={lang === 'zh' ? 'AI 助手' : lang === 'en' ? 'AI assistant' : 'Asisten AI'}>
             {toast && <div className="ch-toast">{toast}</div>}
             <div className="ch-h">
               <i />
-              {lang === 'en' ? 'AI assistant' : 'Asisten AI'}
-              <button type="button" aria-label={lang === 'en' ? 'Close' : 'Tutup'} onClick={() => openChat(false)}>
+              {lang === 'zh' ? 'AI 智能助手' : lang === 'en' ? 'AI assistant' : 'Asisten AI'}
+              <button type="button" aria-label={lang === 'zh' ? '关闭' : lang === 'en' ? 'Close' : 'Tutup'} onClick={() => openChat(false)}>
                 ×
               </button>
             </div>
@@ -465,14 +470,14 @@ export function ChatProvider({ children }: { children: ReactNode }) {
             >
               <input
                 ref={inputRef}
-                placeholder={lang === 'en' ? 'Ask anything…' : 'Tulis pertanyaan…'}
+                placeholder={lang === 'zh' ? '随时提问…' : lang === 'en' ? 'Ask anything…' : 'Tulis pertanyaan…'}
                 autoComplete="off"
-                aria-label={lang === 'en' ? 'Question' : 'Pertanyaan'}
+                aria-label={lang === 'zh' ? '提问' : lang === 'en' ? 'Question' : 'Pertanyaan'}
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 maxLength={1200}
               />
-              <button aria-label={lang === 'en' ? 'Send' : 'Kirim'} disabled={pending || !input.trim()}>
+              <button aria-label={lang === 'zh' ? '发送' : lang === 'en' ? 'Send' : 'Kirim'} disabled={pending || !input.trim()}>
                 <Icon name="arrow" size={18} />
               </button>
             </form>

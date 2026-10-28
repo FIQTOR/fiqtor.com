@@ -327,7 +327,7 @@ export function DetailModal() {
                     </div>
                   )}
                   <div>
-                    <h3 className="md-h">{t('Skills verified', 'Skill yang divalidasi')}</h3>
+                    <h3 className="md-h">{t('Skills verified', 'Skill yang divalidasi', '验证掌握技能')}</h3>
                     <div className="sk">
                       {c.skills.map((s, k) => (
                         <span key={s + k} style={{ ['--i' as string]: k }}>
@@ -339,19 +339,19 @@ export function DetailModal() {
                   <div className="md-foot">
                     {c.url ? (
                       <a className="cta" href={c.url} target="_blank" rel="noopener">
-                        {t('Verify credential', 'Verifikasi sertifikat')}{' '}
+                        {t('Verify credential', 'Verifikasi sertifikat', '验证证书真伪')}{' '}
                         <span dangerouslySetInnerHTML={{ __html: ICONS.open }} />
-                        <span className="sr"> {t('(new tab)', '(tab baru)')}</span>
+                        <span className="sr"> {t('(new tab)', '(tab baru)', '(新标签打开)')}</span>
                       </a>
                     ) : (
-                      <span className="soon">{t('Verification link not available', 'Tautan verifikasi belum tersedia')}</span>
+                      <span className="soon">{t('Verification link not available', 'Tautan verifikasi belum tersedia', '暂无在线验证链接')}</span>
                     )}
                     <div className="md-nav">
                       <button type="button" onClick={() => step(-1)}>
-                        ← {t('Previous', 'Sebelumnya')}
+                        ← {t('Previous', 'Sebelumnya', '上一项')}
                       </button>
                       <button type="button" onClick={() => step(1)}>
-                        {t('Next', 'Berikutnya')} →
+                        {t('Next', 'Berikutnya', '下一项')} →
                       </button>
                     </div>
                   </div>
