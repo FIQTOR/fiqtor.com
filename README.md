@@ -99,6 +99,10 @@ export const PORTRAIT_IMAGE = '/icon.webp';    // replace public/icon.webp
 | `skills.ts` | Skill → icon mapping |
 | `social.ts` | Social link labels & icons |
 | `galleryLabels.ts` | Screenshot captions |
+| `portrait.ts` | Hero dot-matrix interactive face particles (`PORTRAIT: { w, h, d: [[x, y, size], ...] }`) |
+
+> 💡 **Customizing Hero Dot Face (`portrait.ts`):**  
+> Mengubah visual dot-matrix wajah di hero section jauh lebih cepat dan rapi jika menggunakan **Claude / AI**. Unggah foto portrait diri dengan kontras jelas, lalu minta Claude membuat array dot matrix `[x, y, size]` yang sesuai dengan interface `PortraitData` di `src/data/portrait.ts`.
 
 **Images** go in `public/img/{projects,career,certificate,cryptocurrency,testimonials}/`
 (use `.webp` for speed). **Résumés** go in `public/pdf/`. Then update the paths in `Identity.ts`.
