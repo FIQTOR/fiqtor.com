@@ -55,7 +55,7 @@ export function ServiceList({ anchor }: { anchor?: string }) {
             <h3 id={`svc-${s.slug}`}>{s.title[lang] || s.title.en}</h3>
             <p className="svc-desc">{s.desc[lang] || s.desc.en}</p>
             <p className="svc-meta">{s.meta[lang] || s.meta.en}</p>
-            <div className="svc-cta-r">
+            <div className="svc-foot">
               <b>{displayPrice}</b>
               <a href={waLink(lang, s.title[lang] || s.title.en)} target="_blank" rel="noopener">
                 {t('Consult this service', 'Konsultasi layanan ini', '咨询此项服务')} →
