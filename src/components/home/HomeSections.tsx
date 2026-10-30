@@ -5,7 +5,7 @@ import { isFinePointer, isReducedMotion } from '../../lib/utils';
 import { CountUp, InteractiveTitle, useReveal } from '../../hooks/useReveal';
 import { CertCard, ProjectCard } from '../Cards';
 import { useLanguage } from '../../lib/catalog';
-import { useCurrency, SUPPORTED_CURRENCIES } from '../../lib/currency';
+import { useCurrency, SUPPORTED_CURRENCIES, type CurrencyCode } from '../../lib/currency';
 import { LiveStats } from './LiveStats';
 import { SkillLogo } from '../SkillLogo';
 import { FaqList } from '../FaqList';
@@ -129,7 +129,7 @@ function Pricing() {
         <select
           id="currency-select"
           value={currency}
-          onChange={(e) => setCurrency(e.target.value as any)}
+          onChange={(e) => setCurrency(e.target.value as CurrencyCode)}
           style={{
             padding: '4px 10px',
             borderRadius: '999px',

@@ -1,6 +1,6 @@
 import { S, waLink } from '../data/site';
 import { useLanguage } from '../lib/catalog';
-import { useCurrency, SUPPORTED_CURRENCIES } from '../lib/currency';
+import { useCurrency, SUPPORTED_CURRENCIES, type CurrencyCode } from '../lib/currency';
 
 /**
  * The long, benefit-focused description of each service.
@@ -27,7 +27,7 @@ export function ServiceList({ anchor }: { anchor?: string }) {
         <select
           id="svc-currency-select"
           value={currency}
-          onChange={(e) => setCurrency(e.target.value as any)}
+          onChange={(e) => setCurrency(e.target.value as CurrencyCode)}
           style={{
             padding: '4px 10px',
             borderRadius: '999px',

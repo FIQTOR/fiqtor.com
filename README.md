@@ -27,8 +27,8 @@ of plain TypeScript files.
 | --- | --- |
 | 🎨 **Distinctive design** | Dark canvas, dot grid, oversized typography, one-click **monochrome light theme** |
 | ✨ **Motion system** | GSAP hero intro, column-curtain page transitions, scroll reveals, magnetic buttons, interactive dot portrait — all respect `prefers-reduced-motion` |
-| 🌍 **Bilingual (EN / ID)** | Every string is localized; a language switch in the navbar and `<head>` `hreflang` |
-| 🗂️ **Real content catalogue** | 37 projects, 30 certificates, 4 career roles — filterable, searchable, with a detail modal + gallery lightbox |
+| 🌍 **Trilingual (EN / ID / ZH)** | Every string is localized across English, Indonesian, and Simplified Chinese; a language switch in the navbar and `<head>` `hreflang` |
+| 🗂️ **Real content catalogue** | 37 projects, 30 certificates (49 credential items), 4 career roles, 9-currency dynamic price converter — filterable, searchable, with a detail modal + gallery lightbox |
 | 🔌 **Live integrations** | AI assistant (SSE streaming), contact form (reCAPTCHA), GitHub contributions, WakaTime, crypto prices, social stats — each **degrades gracefully** if the backend is down |
 | 🔎 **SEO · AEO · GEO** | Per-route static HTML, `sitemap.xml`, `robots.txt`, JSON-LD (`Person`, `FAQPage`, `HowTo`, `ItemList`…), `llms.txt` / `llms-full.txt` |
 | 📱 **Mobile-audited** | 320–430px safe, bottom-sheet modals, iOS-safe inputs, ≥2.9rem tap targets |
