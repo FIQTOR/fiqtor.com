@@ -219,13 +219,20 @@ html.js .rv.in{opacity:1;translate:none}
 .svcv h3{font-size:1.15rem;font-weight:800;letter-spacing:-.02em;color:#fff}
 .svcv .svc-desc{margin-top:.6rem;color:var(--muted);font-size:.94rem;line-height:1.68;max-width:66ch}
 .svcv .svc-meta{margin-top:.65rem;color:var(--ac);font-size:.83rem;letter-spacing:.03em}
-.svcv .svc-foot{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1.1rem;margin-top:1rem}
+.svcv .svc-foot{display:flex;flex-wrap:wrap;align-items:center;gap:.75rem 1.25rem;margin-top:1.1rem}
 .svcv .svc-foot b{font-size:.98rem;font-weight:800;color:#fff}
-.svcv .svc-foot a{font-size:.83rem;font-weight:600;color:var(--text);text-decoration:none;border-bottom:1px solid var(--line);padding-bottom:1px;transition:border-color .25s}
-.svcv .svc-foot a:hover{border-color:rgba(255,255,255,.6)}
+.svcv .svc-btn-wa{display:inline-flex;align-items:center;gap:.45rem;padding:.4rem .9rem;font-size:.82rem;font-weight:600;color:var(--text);background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:999px;text-decoration:none;transition:border-color .2s,background .2s,transform .2s;white-space:nowrap}
+.svcv .svc-btn-wa:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.4);transform:translateY(-1px);color:#fff}
+.svcv .svc-btn-wa svg{flex-shrink:0;color:#25d366}
+.svcv .svc-currency-bar{display:flex;justify-content:flex-end;align-items:center;gap:.6rem;margin-bottom:1.2rem}
+.svcv .svc-currency-select{padding:.35rem .85rem;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--fg);font-size:.82rem;font-weight:700;cursor:pointer;outline:none;transition:border-color .2s,background .2s}
+.svcv .svc-currency-select:hover,.svcv .svc-currency-select:focus{border-color:rgba(255,255,255,.4)}
 html[data-theme="light"] .svcv .svc{background:rgba(10,10,10,.025)}
 html[data-theme="light"] .svcv h3,html[data-theme="light"] .svcv .svc-foot b{color:#0a0a0a}
-html[data-theme="light"] .svcv .svc-foot a:hover{border-color:rgba(10,10,10,.6)}
+html[data-theme="light"] .svcv .svc-btn-wa{background:rgba(10,10,10,.04);color:#1a1a1a}
+html[data-theme="light"] .svcv .svc-btn-wa:hover{background:rgba(10,10,10,.08);border-color:rgba(10,10,10,.3);color:#000}
+html[data-theme="light"] .svcv .svc-currency-select{background:rgba(10,10,10,.04);color:#1a1a1a}
+html[data-theme="light"] .svcv .svc-currency-select:hover,html[data-theme="light"] .svcv .svc-currency-select:focus{border-color:rgba(10,10,10,.3)}
 
 /* ===================== TESTIMONI ===================== */
 .lead-sub{color:var(--muted);max-width:56ch;line-height:1.65;margin-top:-.6rem}

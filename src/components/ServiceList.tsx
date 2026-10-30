@@ -1,6 +1,7 @@
 import { S, waLink } from '../data/site';
 import { useLanguage } from '../lib/catalog';
 import { useCurrency, SUPPORTED_CURRENCIES, type CurrencyCode } from '../lib/currency';
+import { Icon } from '../lib/utils';
 
 /**
  * The long, benefit-focused description of each service.
@@ -20,25 +21,15 @@ export function ServiceList({ anchor }: { anchor?: string }) {
 
   return (
     <div className="svcv rv" id={anchor}>
-      <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
+      <div className="svc-currency-bar">
         <label htmlFor="svc-currency-select" style={{ fontSize: '0.82rem', color: 'var(--muted)', fontWeight: 600 }}>
           {t('Currency / Country:', 'Mata Uang / Negara:', '货币 / 地区结算:')}
         </label>
         <select
           id="svc-currency-select"
+          className="svc-currency-select"
           value={currency}
           onChange={(e) => setCurrency(e.target.value as CurrencyCode)}
-          style={{
-            padding: '4px 10px',
-            borderRadius: '999px',
-            border: '1px solid var(--line)',
-            background: 'var(--bg-sub, rgba(255,255,255,0.06))',
-            color: 'var(--fg)',
-            fontSize: '0.82rem',
-            fontWeight: 700,
-            cursor: 'pointer',
-            outline: 'none',
-          }}
         >
           {SUPPORTED_CURRENCIES.map((c) => (
             <option key={c.code} value={c.code} style={{ background: '#121214', color: '#fff' }}>
@@ -57,8 +48,15 @@ export function ServiceList({ anchor }: { anchor?: string }) {
             <p className="svc-meta">{s.meta[lang] || s.meta.en}</p>
             <div className="svc-foot">
               <b>{displayPrice}</b>
-              <a href={waLink(lang, s.title[lang] || s.title.en)} target="_blank" rel="noopener">
-                {t('Consult this service', 'Konsultasi layanan ini', '咨询此项服务')} →
+              <a
+                className="svc-btn-wa"
+                href={waLink(lang, s.title[lang] || s.title.en)}
+                target="_blank"
+                rel="noopener"
+              >
+                <Icon name="whatsapp" size={15} />
+                <span>{t('Consult this service', 'Konsultasi layanan ini', '咨询此项服务')}</span>
+                <span aria-hidden="true">→</span>
               </a>
             </div>
           </section>
