@@ -32,7 +32,7 @@ export function ServiceList({ anchor }: { anchor?: string }) {
           onChange={(e) => setCurrency(e.target.value as CurrencyCode)}
         >
           {SUPPORTED_CURRENCIES.map((c) => (
-            <option key={c.code} value={c.code} style={{ background: '#121214', color: '#fff' }}>
+            <option key={c.code} value={c.code}>
               {c.code} ({c.symbol}) — {c.country}
             </option>
           ))}
@@ -40,22 +40,25 @@ export function ServiceList({ anchor }: { anchor?: string }) {
       </div>
 
       {S.services.map((s) => {
+        const title = s.title[lang] || s.title.en;
         const displayPrice = s.amountIDR ? formatPrice(s.amountIDR, s.periodSuffix) : (s.from[lang] || s.from.en);
+        const ctaText = t('Consult this service', 'Konsultasi layanan ini', '咨询此项服务');
         return (
           <section className="svc" key={s.slug} aria-labelledby={`svc-${s.slug}`}>
-            <h3 id={`svc-${s.slug}`}>{s.title[lang] || s.title.en}</h3>
+            <h3 id={`svc-${s.slug}`}>{title}</h3>
             <p className="svc-desc">{s.desc[lang] || s.desc.en}</p>
             <p className="svc-meta">{s.meta[lang] || s.meta.en}</p>
             <div className="svc-foot">
               <b>{displayPrice}</b>
               <a
                 className="svc-btn-wa"
-                href={waLink(lang, s.title[lang] || s.title.en)}
+                href={waLink(lang, title)}
                 target="_blank"
                 rel="noopener"
+                aria-label={`${ctaText} - ${title} (WhatsApp)`}
               >
                 <Icon name="whatsapp" size={15} />
-                <span>{t('Consult this service', 'Konsultasi layanan ini', '咨询此项服务')}</span>
+                <span>{ctaText}</span>
                 <span aria-hidden="true">→</span>
               </a>
             </div>

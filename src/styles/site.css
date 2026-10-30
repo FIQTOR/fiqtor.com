@@ -224,14 +224,16 @@ html.js .rv.in{opacity:1;translate:none}
 .svcv .svc-btn-wa{display:inline-flex;align-items:center;gap:.45rem;padding:.4rem .9rem;font-size:.82rem;font-weight:600;color:var(--text);background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:999px;text-decoration:none;transition:border-color .2s,background .2s,transform .2s;white-space:nowrap}
 .svcv .svc-btn-wa:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.4);transform:translateY(-1px);color:#fff}
 .svcv .svc-btn-wa svg{flex-shrink:0;color:#25d366}
-.svcv .svc-currency-bar{display:flex;justify-content:flex-end;align-items:center;gap:.6rem;margin-bottom:1.2rem}
+.svcv .svc-currency-bar{display:flex;justify-content:flex-end;align-items:center;flex-wrap:wrap;gap:.6rem;margin-bottom:1.2rem}
 .svcv .svc-currency-select{padding:.35rem .85rem;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--fg);font-size:.82rem;font-weight:700;cursor:pointer;outline:none;transition:border-color .2s,background .2s}
+.svcv .svc-currency-select option{background:var(--bg,#0a0a0c);color:var(--fg,#fff)}
 .svcv .svc-currency-select:hover,.svcv .svc-currency-select:focus{border-color:rgba(255,255,255,.4)}
 html[data-theme="light"] .svcv .svc{background:rgba(10,10,10,.025)}
 html[data-theme="light"] .svcv h3,html[data-theme="light"] .svcv .svc-foot b{color:#0a0a0a}
 html[data-theme="light"] .svcv .svc-btn-wa{background:rgba(10,10,10,.04);color:#1a1a1a}
 html[data-theme="light"] .svcv .svc-btn-wa:hover{background:rgba(10,10,10,.08);border-color:rgba(10,10,10,.3);color:#000}
 html[data-theme="light"] .svcv .svc-currency-select{background:rgba(10,10,10,.04);color:#1a1a1a}
+html[data-theme="light"] .svcv .svc-currency-select option{background:#ffffff;color:#111827}
 html[data-theme="light"] .svcv .svc-currency-select:hover,html[data-theme="light"] .svcv .svc-currency-select:focus{border-color:rgba(10,10,10,.3)}
 
 /* ===================== TESTIMONI ===================== */
