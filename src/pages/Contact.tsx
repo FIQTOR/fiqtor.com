@@ -356,6 +356,7 @@ export default function Contact() {
                   ref={nameRef}
                   autoComplete="name"
                   required
+                  placeholder={t('John Doe', 'Nama lengkap', '您的称呼')}
                   aria-invalid={!!errors.name}
                   aria-describedby="en"
                   value={name}
@@ -377,6 +378,7 @@ export default function Contact() {
                   ref={emailRef}
                   autoComplete="email"
                   required
+                  placeholder="name@example.com"
                   aria-invalid={!!errors.email}
                   aria-describedby="ee"
                   value={email}
@@ -453,6 +455,11 @@ export default function Contact() {
                 ref={msgRef}
                 maxLength={1500}
                 required
+                placeholder={t(
+                  'Brief overview of your project, goals, or questions…',
+                  'Jelaskan ringkasan proyek, tujuan, atau pertanyaanmu…',
+                  '简要描述您的项目背景、目标或咨询问题…',
+                )}
                 aria-invalid={!!errors.message}
                 aria-describedby="em cn"
                 value={message}
