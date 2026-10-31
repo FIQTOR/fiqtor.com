@@ -1,7 +1,7 @@
 import { S, waLink } from '../data/site';
 import { useLanguage } from '../lib/catalog';
 import { useCurrency, SUPPORTED_CURRENCIES, type CurrencyCode } from '../lib/currency';
-import { Icon } from '../lib/utils';
+import { Icon } from '../lib/utils.tsx';
 
 /**
  * The long, benefit-focused description of each service.
