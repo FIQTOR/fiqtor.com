@@ -1146,7 +1146,8 @@ export const S: SiteConfig = {
    * the list stays reserved for destinations that appear nowhere else.
    */
   links: [
-    { label: { en: 'Contact me', id: 'Hubungi saya', zh: '联系我' }, note: { en: 'Project brief, question, or just say hi', id: 'Ringkasan proyek, pertanyaan, atau sekadar menyapa', zh: '项目需求、咨询或打个招呼' }, url: '/contact', icon: 'mail', featured: true },
+    { label: { en: 'Main Portfolio', id: 'Portofolio Utama', zh: '个人主页' }, note: { en: 'Interactive showcase & background', id: 'Showcase interaktif & latar belakang', zh: '交互式主页与个人介绍' }, url: '/', icon: 'web', featured: true },
+    { label: { en: 'Contact me', id: 'Hubungi saya', zh: '联系我' }, note: { en: 'Project brief, question, or just say hi', id: 'Ringkasan proyek, pertanyaan, atau sekadar menyapa', zh: '项目需求、咨询或打个招呼' }, url: '/contact', icon: 'mail' },
     { label: { en: 'Projects', id: 'Proyek', zh: '精选项目' }, note: { en: 'Web apps, AI, business systems', id: 'Aplikasi web, AI, sistem bisnis', zh: 'Web 应用、AI、企业系统' }, url: '/projects', icon: 'folder' },
     { label: { en: 'Certificates', id: 'Sertifikat', zh: '专业证书' }, note: { en: 'Verified learning', id: 'Bukti belajar yang terverifikasi', zh: '经官方验证的学习认证' }, url: '/certificates', icon: 'cert' },
   ],
