@@ -2,7 +2,7 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "build": {
     "env": {
-      "VITE_DOMAIN": "fiqtor.com",
+      "VITE_DOMAIN": "fiqtor.pages.dev",
       "VITE_API_BASE_URL": "https://api.fiqtor.com/api",
       "VITE_ENABLE_AI": "TRUE"
     }

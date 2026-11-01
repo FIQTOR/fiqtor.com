@@ -559,7 +559,7 @@ export const rawProjects: RawProject[] = [
       en: "A free, open-source QR code generator I built that creates custom QR codes for any link, menu, or event in seconds. It solves the problem of needing quick QR codes without sign-ups, accounts, paywalls, or watermarks — anyone can generate and download one instantly.",
       id: "Pembuat kode QR gratis dan open source yang saya bangun yang membuat kode QR kustom untuk tautan, menu, atau acara apa pun dalam hitungan detik. Ini menyelesaikan masalah kebutuhan kode QR cepat tanpa daftar, akun, paywall, atau watermark — siapa saja bisa membuat dan mengunduhnya seketika.",
     },
-    urlDirect: "https://qrcode.fiqtor.com",
+    urlDirect: "https://qrcode-generator-fiqtors-projects.vercel.app",
     srcImage: "img/projects/qrcode-generator.webp",
     tags: {
       en: ["Web Application", "QR Code", "ReactJS", "TailwindCSS"],
@@ -701,7 +701,7 @@ export const rawProjects: RawProject[] = [
       en: "My personal portfolio website (an earlier version) that showcases skills, projects, achievements, and contact details in a responsive design. It solves the problem of presenting professional experience in one credible place — visitors immediately see who I am and what I've built. (The current site is the newer version you're viewing.)",
       id: "Situs portofolio pribadi saya (versi lebih lama) yang menampilkan keterampilan, proyek, pencapaian, dan detail kontak dalam desain responsif. Ini menyelesaikan masalah menyajikan pengalaman profesional di satu tempat yang kredibel — pengunjung langsung melihat siapa saya dan apa yang telah saya bangun. (Situs saat ini adalah versi terbaru yang sedang Anda lihat.)",
     },
-    urlDirect: "https://fiqtor.com",
+    urlDirect: "https://fiqtor.pages.dev",
     srcImage: "/img/projects/personal-website.webp",
     tags: {
       en: ["Portfolio", "Personal Branding", "UI/UX"],

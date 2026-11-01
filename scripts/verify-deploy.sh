@@ -14,7 +14,7 @@
 # ================================================================
 set -uo pipefail
 
-BASE="${1:-https://fiqtor.com}"
+BASE="${1:-https://fiqtor.pages.dev}"
 BASE="${BASE%/}"
 
 PASS=0

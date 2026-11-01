@@ -6,14 +6,14 @@
 built with React 19 · TypeScript · Vite — bilingual, SEO/AEO/GEO-ready, and easy to make yours.
 
 [![Use this template](https://img.shields.io/badge/Use%20this%20template-2ea44f?style=for-the-badge&logo=github&logoColor=white)](https://github.com/FIQTOR/fiqtor.com/generate)
-[![Live demo](https://img.shields.io/badge/Live%20demo-fiqtor.com-000000?style=for-the-badge&logo=googlechrome&logoColor=white)](https://fiqtor.com)
+[![Live demo](https://img.shields.io/badge/Live%20demo-fiqtor.pages.dev-000000?style=for-the-badge&logo=googlechrome&logoColor=white)](https://fiqtor.pages.dev)
 [![License: MIT](https://img.shields.io/badge/License-MIT-3b82f6?style=for-the-badge)](./LICENSE)
 
 </div>
 
 ![FIQTOR Portfolio — dark hero with interactive dot portrait](./docs/preview.png)
 
-<sub><a href="https://fiqtor.com">Live demo</a> · screenshots captured from the real site. Swap them for your own after rebranding (see <a href="#make-it-yours">Make it yours</a>).</sub>
+<sub><a href="https://fiqtor.pages.dev">Live demo</a> · screenshots captured from the real site. Swap them for your own after rebranding (see <a href="#make-it-yours">Make it yours</a>).</sub>
 
 ---
 
@@ -82,7 +82,7 @@ contact details, socials, timezone, résumé paths, company, and portrait.
 export const BRAND_NAME = 'FIQTOR';            // name shown everywhere in the UI
 export const LEGAL_NAME = 'Taufiiqul Hakim';   // only in About + structured data
 export const JOB_TITLE  = 'AI & Software Engineer';
-export const SITE_ORIGIN = 'https://fiqtor.com';
+export const SITE_ORIGIN = 'https://fiqtor.pages.dev';
 export const SOCIAL_LINKS = { github: '…', linkedin: '…', … };
 export const PORTRAIT_IMAGE = '/icon.webp';    // replace public/icon.webp
 ```
@@ -325,7 +325,7 @@ and the diff reviewable. Fork it and add a blog route if you need one.
 
 ## Credits & license
 
-Built by [FIQTOR](https://fiqtor.com). Released under the **MIT License** — free to use,
+Built by [FIQTOR](https://fiqtor.pages.dev). Released under the **MIT License** — free to use,
 modify, and ship, including commercially. See [LICENSE](./LICENSE).
 
 If this template helped you, a ⭐ on the repo is appreciated. Remove the `LICENSE`/attribution

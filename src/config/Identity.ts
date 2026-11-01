@@ -76,7 +76,7 @@ export const TWITTER_HANDLE = '@fiqtor';
 export const GA_MEASUREMENT_ID = 'G-FTJ2LRGE5P';
 
 /** Canonical site origin (no trailing slash). */
-export const SITE_ORIGIN = 'https://fiqtor.com';
+export const SITE_ORIGIN = 'https://fiqtor.pages.dev';
 
 /** Social profile URLs. */
 export const SOCIAL_LINKS = {
